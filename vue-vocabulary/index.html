@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+	<link rel='shortcut icon' type='image/x-icon' href=''/>
+
+	<style>
+		body {
+			background-color: #232323;
+			color: #ccc;
+		}
+
+		html {
+		  position: relative;
+		  min-height: 100%;
+		}
+
+		input {
+			background-color: #424242 !important;
+			color: #ccc !important;
+		}
+
+		#app {
+			margin: 1em;
+		}
+
+		#head {
+			color: #565656 !important;
+		} #head p {
+			margin-left: 0.5em;
+		} #head a {
+			margin-left: 1em;
+			color: #565656;
+		}
+
+		#vocab-card {
+			margin-top: 25em;
+		}
+
+		.modal-content {
+			background-color: #232323 !important;
+		}
+	</style>
+
+	<title>vue-vocab</title>
+</head>
+<body>
+  <div id="app" class="container-fluid">
+		<div class="modal fade" id="settingsModal">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Config</h5>
+		      </div>
+		      <div class="modal-body">
+		        <form>
+							<div class="form-group">
+								<label>Vocables source: </label>
+								<input class="form-control" type="text" placeholder="https://gist.github.com/.../...">
+							</div>
+						</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="row" id="head">
+			<h5>vue-vocab</h5>
+			<p> by fsoc.</p>
+			<a href="#" @click="settings()"><h5>settings</h5></a>
+		</div>
+
+		<vocab-card :vocables="vocables" :config="config"></vocab-card>
+  </div>
+
+
+
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/vue"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+	<script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+	<script src="app.js"></script>
+</body>
+</html>

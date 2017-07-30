@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+	<style>
+    .form-inline button { margin-left: 1rem !important; }
+	</style>
+
+	<title>vue-stocks</title>
+</head>
+<body>
+  <div id="app">
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">vue-stocks</h1>
+        <hr class="my-4">
+        <form class="form-inline" @submit.prevent="add()">
+          <div class="input-group">
+            <div class="input-group-addon">Symbol </div>
+            <input type="text" class="form-control" placeholder="MSFT" v-model="symbol">
+          </div>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="card-deck">
+        <div class="card" v-for="(config, symbol) in symbols" :class="`col-md-${config.size}`">
+          {{ symbol }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>-->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vue"></script>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+	<link rel='shortcut icon' type='image/x-icon' href='https://vuejs.org/images/icons/favicon-32x32.png'/>
+
+	<style>
+		html {
+			position: relative;
+			min-height: 100%;
+		}
+
+		body {
+			/* Margin bottom by footer height */
+			margin-bottom: 60px;
+		}
+
+		footer form {
+			margin-left: 1em;
+		}
+
+		footer form button {
+			margin-left: 0.5em;
+		}
+
+		.footer {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			/* Set the fixed height of the footer here */
+			height: 60px;
+			line-height: 60px; /* Vertically center the text there */
+			background-color: #f5f5f5;
+		}
+
+		.dark {
+			background-color: #232323;
+			color: #ccc;
+		}
+
+		#vocab-form {
+			margin-top: 22em;
+		}
+	</style>
+
+	<title>vue-vocabulary</title>
+</head>
+<body>
+  <div id="app">
+		<div class="container" v-if="!input || input.length == 0" id="vocab-form">
+			<form>
+				<h3>Select vocables.</h3>
+				<p>Currently, only importing from a JSON string is supported.</p>
+				<div class="form-group">
+					<input type="text" class="form-control w-50" placeholder="{ ... }" v-model="raw"></input>
+				</div>
+				<button type="submit" class="btn btn-primary" @click.prevent="set()">Submit</button>
+			</form>
+		</div>
+
+		<classroom v-else :inp="input"></classroom>
+
+		<footer class="footer">
+      <div class="container">
+				<div class="row">
+	        <span class="text-muted">Made by fsoc.</span>
+					<form class="form-inline">
+						<button class="btn btn-secondary" @click.prevent="reset()">Reset</button>
+						<button class="btn btn-secondary" @click.prevent="dark = !dark">Toggle {{ dark ? 'Light' : 'Dark' }}</button>
+					</form>
+				</div>
+      </div>
+    </footer>
+  </div>
+
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/vue"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+	<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "vocables": {
+    "eins": "one",
+    "zwei": "two",
+    "drei": "three"
+  },
+  "languages": [
+    "german",
+    "english"
+  ]
+}

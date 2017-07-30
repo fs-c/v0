@@ -1,0 +1,25 @@
+{
+  "name": "steamgroup-scraper",
+  "version": "1.0.0",
+  "description": "A simple steamgroup scraper intended for testing.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LW2904/node-steamgroup-scraper.git"
+  },
+  "author": "fsoc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LW2904/node-steamgroup-scraper/issues"
+  },
+  "homepage": "https://github.com/LW2904/node-steamgroup-scraper#readme",
+  "dependencies": {
+    "console-stamp": "^0.2.5",
+    "mongodb": "^2.2.30",
+    "steamcommunity": "^3.31.0"
+  }
+}
