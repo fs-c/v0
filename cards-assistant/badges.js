@@ -9,8 +9,6 @@ if (!KEY) KEY = require('../../steamdata.json').main.apikey
 
 module.exports = {
   get (id, callback) {
-    log.verbose(`getting badges of ${id}.`)
-
     // TODO: Move from callback to promise system.
     request(`${URL}?key=${KEY}&steamid=${id}&format=json`, (err, res, body) => {
       if (err || res.statusCode !== 200) {
@@ -19,7 +17,7 @@ module.exports = {
       }
 
       let badges = JSON.parse(body).response.badges
-      log.info(`retrieved ${badges.length} badges from ${id}.`)
+      log.verbose(`retrieved badges from ${id}.`)
 
       callback(null, badges)
     })
