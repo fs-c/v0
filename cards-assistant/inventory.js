@@ -3,23 +3,54 @@ const log = require('winston')
 const SteamCommunity = require('steamcommunity')
 let community = new SteamCommunity()
 
-module.exports = function get (id, callback) {
-  id = new (SteamCommunity.SteamID)(id)
-  community.getSteamUser(id, (err, user) => {
-    if (err) {
-      callback(err)
-      return
-    }
-    log.info(`got profile of ${id}.`)
+const fs = require('fs')
+const request = require('request')
 
-    // Steam = 753, Community contextID = 6, tradeable only
-    user.getInventoryContents(753, 6, true, (err, inv, c, total) => {
+module.exports = {
+  load (id, callback) {
+    id = new (SteamCommunity.SteamID)(id)
+    community.getSteamUser(id, (err, user) => {
       if (err) {
         callback(err)
         return
       }
-      log.info(`got ${total} items from ${id}'s inventory.`)
-      callback(null, inv)
+      log.info(`got profile of ${id}.`)
+
+      // Steam = 753, Community contextID = 6, tradeable only
+      user.getInventoryContents(753, 6, true, (err, inv, c, total) => {
+        if (err) {
+          callback(err)
+          return
+        }
+        log.info(`got ${total} items from ${id}'s inventory.`)
+        callback(null, inv)
+      })
     })
-  })
+  },
+  parse (inv, callback) {
+    // I do this because I don't want to make calls to cdn.steam.tools too often.
+    function getData (callback) {
+      if (fs.existsSync('set_data.json')) {
+        log.verbose(`set_data.json found, read data.`)
+        callback(require('./set_data'))
+      } else {
+        log.verbose(`set_data.json not found, requesting data from steam.tools`)
+        request('http://cdn.steam.tools/data/set_data.json', (err, res, body) => {
+          if (err || !(res.statusCode === 200)) return
+          callback(JSON.parse(body))
+          fs.writeFileSync('set_data.json', body)
+          log.verbose(`wrote set_data.json.`)
+        })
+      }
+    }
+
+    getData(data => {
+      log.warn(`processing ${data.game_count} sets, this might take a while and/or cause RAM problems.`)
+      for (let set of data.sets) {
+        if (inv[set.appid]) {
+
+        }
+      }
+    })
+  }
 }
