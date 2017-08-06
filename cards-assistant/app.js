@@ -13,16 +13,19 @@ badges.get(config.partner, (err, badges) => {
     if (badge.appid) partnerIDs.push(badge.appid)
   }
 
-  let ownerIDs = []
+  let ownerCards = {}
   inventory(config.owner, (err, items) => {
     if (err) log.error(err)
 
     for (let item of items) {
       let id = card.parse(item)
-      if (id && !ownerIDs.includes(id))
-        ownerIDs.push(id)
+      if (id) {
+        if (ownerCards[id]) { ownerCards[id].push(item) }
+        else { ownerCards[id] = [item] }
+      }
     }
 
-    log.info(`parsed all item data and found trading cards for ${ownerIDs.length} games.`)
+    log.info(`parsed all item data and found trading cards for ${Object.keys(ownerCards).length} games.`)
+    console.log(ownerCards)
   })
 })
