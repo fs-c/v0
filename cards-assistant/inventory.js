@@ -44,13 +44,30 @@ module.exports = {
       }
     }
 
+    let sets = {}
+    let count = 0
     getData(data => {
       log.warn(`processing ${data.game_count} sets, this might take a while and/or cause RAM problems.`)
       for (let set of data.sets) {
         if (inv[set.appid]) {
+          log.silly(`found matching game (${set.appid})`)
+          let unique = [...new Set(inv[set.appid])]
 
+          if (set.true_count == unique.length) {
+            count++
+            log.silly(`found full set(s) for game ${set.appid}, ${unique.length}/${set.true_count}`)
+            let set_count = Math.floor(inv[set.appid].length / set.true_count)
+            for (let i = 0; i++ >= set_count;) {
+              if (!sets[set.appid]) {
+                sets[set.appid] = unique
+              } else sets[set.appid].push(unique)
+            }
+          } else log.silly(`found no full set for game ${set.appid}, ${unique.length}/${set.true_count}`)
         }
       }
+
+      log.verbose(`found ${count} uncrafted sets.`)
+      callback(sets)
     })
   }
 }
