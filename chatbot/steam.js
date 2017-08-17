@@ -15,11 +15,13 @@ function logOn (account) {
       reject(e)
     })
 
-    // TODO: This gets emitted even when creds are wrong, implement checks.
+    // TODO: Suboptimal check
     client.on('loggedOn', details => {
       log.silly(`loggedOn event received.`)
 
-      resolve(client)
+      if (details.vanity_url !== '') {
+        resolve(client)
+      } else reject(new Error(`Credentials most likely incorrect.`))
     })
 
     client.on('webSession', (sessionID, cookies) => {

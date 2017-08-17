@@ -21,6 +21,6 @@ steam.logOn(ACCOUNT)
     log.info(`bot logged on.`)
     return new Bot(client)
   })
-  .then() => {
+  .then(() => {
     log.info(`bot is ready.`)
   })
