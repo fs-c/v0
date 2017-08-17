@@ -1,0 +1,6 @@
+{
+  "defaults": {
+    "chatResponse": "Hello world.",
+    "welcomeMessage": "Welcome, friend."
+  }
+}
