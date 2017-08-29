@@ -1,0 +1,17 @@
+{
+  "name": "tradebox",
+  "version": "0.1.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.18.1",
+    "readline-sync": "^1.4.7",
+    "steam-tradeoffer-manager": "^2.9.0",
+    "winston": "^2.3.1"
+  }
+}
