@@ -19,10 +19,6 @@ steam.logOn(account)
   log.info(`logged on to steam.`)
   return new Bot(client)
 })
-.catch(err => {
-  log.error(`something went wrong while initializing bot: ${err.message || err.msg || err}`)
-  err.stack && log.debug(err.stack)
-})
 .then(bot => {
-  log.info(`bot initialized successfully.`)
+  log.info(`bot initialized.`)
 })
