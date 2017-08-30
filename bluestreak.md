@@ -18,7 +18,7 @@ I am a moderator in another community, with close to 5000 members, and there are
 
 Considering that by far not every member is active that ratio is probably closer to 1:200, but if you apply that same logic to Bluestreak you get 12 staff members for 24 (active) users. __That's stupid.__
 
-Hell, 24 active members might actually be a bit generous: my script, which is monitoring the comment section, picked up only about 20 different SteamIDs in the last 24 hours, of which only a few made more than one post.
+Hell, 24 active members might actually be a bit generous: my script, which is monitoring the comment section, picked up only about 20 different SteamIDs in the last 24 hours, of which only a few made more than one post. *Note that this information is somewhat dated - check [here](https://lw2904.github.io/comments-site/stats/) for updated stats.*
 
 I realise that I am potentially endangering my own position in the staff team with this, but I just wanted to throw this out there - it's up to everyone reading this, to decide what they are going to do with this analysis.
 
