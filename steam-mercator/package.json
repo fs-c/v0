@@ -12,6 +12,7 @@
     "moment": "^2.18.1",
     "readline-sync": "^1.4.7",
     "steam-tradeoffer-manager": "^2.9.0",
+    "steamcommunity": "^3.32.2",
     "winston": "^2.3.1"
   }
 }

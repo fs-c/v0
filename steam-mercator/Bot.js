@@ -2,6 +2,7 @@ const log = require('winston')
 
 const Steam = require('steam-user')
 const Trader = require('steam-tradeoffer-manager')
+const Community = require('steamcommunity')
 
 const EventEmitter = require('events')
 
@@ -17,13 +18,18 @@ function Bot (client) {
   EventEmitter.call(this)
 
   this._client = client
+  this._community = new Community()
   this._manager = new Trader({
     steam: client,
     domain: 'fsoc.space',
     language: 'en'
   })
 
+  this._community.setCookies(this._client._webSession.cookies)
+
   this.inventory = {}
+  this.ready = false
+  this.steamID = this._client.steamID || this._community.steamID
 
   this._client.setPersona(Steam.EPersonaState.Online)
 
@@ -31,11 +37,13 @@ function Bot (client) {
     log.silly(`friendMessage event received from ${steamID.toString()} (${message.length > 25 ? message.slice(0, 25) + '...' : message}).`)
 
     if (!spam(steamID.toString(), message)) {
-      let inp = parse(message)
-      if (inp) {
-        log.verbose(`parsed message, `, inp)
-        this.emit('cmd', inp)
-      } else this._client.chatMessage(steamID, `Couldn't parse input.`)
+      if (this.ready) {
+        let inp = parse(message)
+        if (inp) {
+          log.verbose(`parsed message, `, inp)
+          this.emit('cmd', inp)
+        } else this._client.chatMessage(steamID, `Couldn't parse input.`)
+      } else this._client.chatMessage(steamID, `Bot not ready yet.`)
     }
   })
 
@@ -51,4 +59,11 @@ function Bot (client) {
   // Allow the app to gracefully shit it's pants. 'error' event is only emitted if fatal.
   this._client.on('error', err =>
     log.error(`bot encountered fatal error: ${err.message || err}`))
+
+  this.getSteamUser()
+  .then(user => {
+    log.info(`got user ${user.name}`)
+  }).catch(err => log.error(`error while getting user: ${err}`))
 }
+
+require('./components/community')

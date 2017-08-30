@@ -22,13 +22,15 @@ function logOn (account) {
     client.on('loggedOn', details => {
       log.silly(`loggedOn event received.`)
 
-      if (details.vanity_url !== '') {
-        resolve(client)
-      } else reject(new Error(`Credentials most likely incorrect.`))
+      if (details.vanity_url === '') {
+        reject(new Error(`Credentials most likely incorrect.`))
+      }
     })
 
     client.on('webSession', (sessionID, cookies) => {
       log.silly(`webSession event received (${sessionID}).`)
+      client._webSession = { sessionID, cookies }
+      resolve(client)
     })
 
     client.on('steamGuard', (domain, callback) => {
