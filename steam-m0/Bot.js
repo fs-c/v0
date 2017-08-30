@@ -1,5 +1,6 @@
 const EventEmitter = require('events')
 
+// TODO: use of util.inherits is discouraged by nodejs.
 require('util').inherits(Bot, EventEmitter)
 
 module.exports = Bot
@@ -16,13 +17,15 @@ function Bot (account) {
   this.client = new User()
   this.web = new Community()
   this.trader = new Manager({
-    steam: client,
+    steam: this.client,
     domain: 'fsoc.space',
     language: 'en'
   })
 
+  // Forward all steam-user events to bot emitter.
   fwd(this.client, this)
 
+  // We'll do that ourselves.
   this.client.setOption('promptSteamGuardCode', false)
   this.client.logOn(account)
 
@@ -31,6 +34,7 @@ function Bot (account) {
     else { callback(require('readline-sync').question(`${domain ? 'Email' : 'Mobile'} code: `)) }
   })
 
+  // Unlike loggedOn this only gets called when logOn was indeed successful.
   this.client.on('webSession', (sessionID, cookies) => {
     this.web.setCookies(cookies)
     this.trader.setCookies(cookies)
