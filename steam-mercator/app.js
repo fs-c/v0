@@ -10,6 +10,7 @@ const Bot = require('./Bot')
 
 let account = require(PATH).bot
 
+let bot
 steam.logOn(account)
 .catch(err => {
   log.error(`something went wrong while logging on: ${err.message || err.msg || err}`)
@@ -17,11 +18,5 @@ steam.logOn(account)
 })
 .then(client => {
   log.info(`logged on to steam.`)
-  return new Bot(client)
-})
-.then(bot => {
-  log.info(`bot initialized.`)
-})
-.catch(err => {
-  log.error(`something went wrong: ${err.message || err.msg || err}`)
+  bot = new Bot(client)
 })

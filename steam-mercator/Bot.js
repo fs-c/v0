@@ -27,7 +27,7 @@ function Bot (client) {
 
   this._community.setCookies(this._client._webSession.cookies)
 
-  this.inventory = {}
+  this.user = {}
   this.ready = false
   this.steamID = this._client.steamID || this._community.steamID
 
@@ -59,11 +59,6 @@ function Bot (client) {
   // Allow the app to gracefully shit it's pants. 'error' event is only emitted if fatal.
   this._client.on('error', err =>
     log.error(`bot encountered fatal error: ${err.message || err}`))
-
-  this.getSteamUser()
-  .then(user => {
-    log.info(`got user ${user.name}`)
-  }).catch(err => log.error(`error while getting user: ${err}`))
 }
 
 require('./components/community')
