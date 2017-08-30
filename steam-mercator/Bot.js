@@ -3,12 +3,19 @@ const log = require('winston')
 const Steam = require('steam-user')
 const Trader = require('steam-tradeoffer-manager')
 
+const EventEmitter = require('events')
+
 const spam = require('./scripts/spam')
 const parse = require('./scripts/parse')
+
+// TODO: usage of util.inherits() is discouraged by nodejs.
+require('util').inherits(Bot, EventEmitter)
 
 module.exports = Bot
 
 function Bot (client) {
+  EventEmitter.call(this)
+
   this._client = client
   this._manager = new Trader({
     steam: client,
@@ -26,7 +33,8 @@ function Bot (client) {
     if (!spam(steamID.toString(), message)) {
       let inp = parse(message)
       if (inp) {
-        
+        log.verbose(`parsed message, `, inp)
+        this.emit('cmd', inp)
       } else this._client.chatMessage(steamID, `Couldn't parse input.`)
     }
   })

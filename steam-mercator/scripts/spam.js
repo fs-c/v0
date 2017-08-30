@@ -1,4 +1,4 @@
-const INTERVAL = (process.env.SPAM_INTERVAL || 10) * 1000
+const INTERVAL = (process.env.NODE_ENV === 'dev' ? 0 : (process.env.SPAM_INTERVAL || 10)) * 1000
 
 let m = {}
 

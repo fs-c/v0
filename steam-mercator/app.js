@@ -8,6 +8,8 @@ const steam = require('./steam')
 
 const Bot = require('./Bot')
 
+const ops = require('./ops')
+
 let account = require(PATH).bot
 
 steam.logOn(account)
@@ -21,4 +23,8 @@ steam.logOn(account)
 })
 .then(bot => {
   log.info(`bot initialized.`)
+
+  bot.on('cmd', (c) => {
+
+  })
 })
