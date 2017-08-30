@@ -9,8 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "moment": "^2.18.1",
     "steam-tradeoffer-manager": "^2.9.0",
     "steam-user": "^3.21.7",
-    "steamcommunity": "^3.32.2"
+    "steamcommunity": "^3.32.2",
+    "winston": "^2.3.1"
   }
 }
