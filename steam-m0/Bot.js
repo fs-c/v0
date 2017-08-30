@@ -22,8 +22,10 @@ function Bot (account) {
     language: 'en'
   })
 
-  // Forward all steam-user events to bot emitter.
+  // Forward all steam interface events to our emitter.
   fwd(this.client, this)
+  fwd(this.web, this)
+  fwd(this.trader, this)
 
   // We'll do that ourselves.
   this.client.setOption('promptSteamGuardCode', false)
@@ -34,7 +36,7 @@ function Bot (account) {
     else { callback(require('readline-sync').question(`${domain ? 'Email' : 'Mobile'} code: `)) }
   })
 
-  // Unlike loggedOn this only gets called when logOn was indeed successful.
+  // Unlike loggedOn this only gets emitted when logOn really was successful.
   this.client.on('webSession', (sessionID, cookies) => {
     this.web.setCookies(cookies)
     this.trader.setCookies(cookies)
