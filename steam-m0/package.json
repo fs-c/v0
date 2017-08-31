@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "fwd": "^0.2.2",
     "moment": "^2.18.1",
     "steam-tradeoffer-manager": "^2.9.0",
     "steam-user": "^3.21.7",

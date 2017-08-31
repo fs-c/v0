@@ -22,6 +22,16 @@ function Bot (account) {
     language: 'en'
   })
 
+  this.options = {
+    spamProtection: false
+  }
+
+  // These are fatal, allow the app to gracefully shit its pants.
+  this.client.on('error', err => {
+    this.emit('steamUserError', err)
+    setTimeout(this.client.logOn(account), 10*60*1000)
+  })
+
   // Forward all steam interface events to our emitter.
   fwd(this.client, this)
   fwd(this.web, this)
@@ -36,11 +46,22 @@ function Bot (account) {
     else { callback(require('readline-sync').question(`${domain ? 'Email' : 'Mobile'} code: `)) }
   })
 
-  // Unlike loggedOn this only gets emitted when logOn really was successful.
+  // Unlike loggedOn, this only gets emitted when logOn really was successful.
   this.client.on('webSession', (sessionID, cookies) => {
     this.web.setCookies(cookies)
     this.trader.setCookies(cookies)
 
+    this.client.setPersona(1)
+
     this.emit('ready')
   })
 }
+
+// TODO: Add check for valid option value parameter.
+Bot.prototype.setOption = function (option, value) {
+  this.emit('setOption', option, value, this.options[option])
+  this.options[option] = value
+}
+
+require('./components/handlers')
+require('./components/spam')
