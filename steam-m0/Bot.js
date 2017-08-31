@@ -22,6 +22,8 @@ function Bot (account) {
     language: 'en'
   })
 
+  this.cards = {}
+  this.inventory = {}
   this.options = {
     spamProtection: false
   }
@@ -51,9 +53,10 @@ function Bot (account) {
     this.web.setCookies(cookies)
     this.trader.setCookies(cookies)
 
+    // Set state to online.
     this.client.setPersona(1)
 
-    this.emit('ready')
+    this.emit('initialized')
   })
 }
 
@@ -64,4 +67,5 @@ Bot.prototype.setOption = function (option, value) {
 }
 
 require('./components/handlers')
+require('./components/helpers')
 require('./components/spam')
