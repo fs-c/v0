@@ -1,0 +1,87 @@
+<!-- Welcome, friend. >_ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+	<style>
+  #app { margin-top: 1em; }
+	#app .alert { margin-bottom: 5em; }
+
+  .card { margin-bottom: 2em; }
+  .card h4 { padding-bottom: 0.5em; }
+
+  .card-footer kbd { margin-left: 0.5em; }
+
+	</style>
+
+	<title>fsoc api docs</title>
+</head>
+<body>
+  <div class="container" id="app">
+    <h3>Fsoc API documentation.</h3>
+    <p class="text-muted">If you can even call that an API...</p>
+
+    <div class="card">
+			<h4 class="card-header">/group</h4>
+      <div class="card-body">
+        <p>/comments/:type
+					<span class="text-muted">Gets all comments from the bluestreak group, either in
+					<a href="https://fsoc.space/api/group/comments/slim">slim</a> or in
+					<a href="https://fsoc.space/api/group/comments/full">full</a> format,
+					as specified with :type.</span>
+				</p>
+      </div>
+
+      <div class="card-footer">
+	       Example URL: <kbd>https://fsoc.space/api/group/comments/slim</kbd>
+      </div>
+    </div>
+
+    <div class="card">
+			<h4 class="card-header">/user</h4>
+      <div class="card-body">
+        <p>/:id <span class="text-muted">Gets a steam user. :id should be of the SteamID64 type.</span></p>
+
+
+				<p>/:id/inventory/?appID=X&contextID=Y
+					<span class="text-muted">Gets the inventory of a steam user. Read more on appID and contextID in
+					<a href="https://dev.doctormckay.com/topic/332-identifying-steam-items/">this</a> post by DoctorMcKay.
+					More information on the item properties can be found <a href="https://github.com/DoctorMcKay/node-steamcommunity/wiki/CEconItem#properties">here</a>.</span>
+				</p>
+			</div>
+
+      <div class="card-footer">
+        <p>Example URL: <kbd>https://fsoc.space/api/user/76561198091491690</kbd></p>
+				<p>Example URL with inventory: <kbd>https://fsoc.space/api/user/76561198091491690/inventory?appID=730&contextID=2</kbd></br>
+				<small class="text-muted">Gets the public (contextID=2) CS:GO (appID=730) inventory of user 76561198091491690.</small></p>
+      </div>
+    </div>
+
+		<div class="card">
+			<h4 class="card-header">/countries <span class="badge badge-secondary">Frozen</span></h4>
+      <div class="card-body">
+        <p>/ <span class="text-muted">Returns an object with country names as keys and the number of users as properties.</span></p>
+				<p>This endpoint serves a file that is being updated every 10 seconds, with data a scraper gathers. It isn't complete by far, and is more of a proof of concept and something to play with.</p>
+			</div>
+
+			<div class="card-body">
+				<p>8/25/17 - <b>This endpoints data is not being updated anymore, for the time being.</b> The underlying infrastructure is being worked on. Content served is static and was gatherd over a span of about 4 hours.</p>
+			</div>
+
+      <div class="card-footer">
+        <p>Example URL: <kbd>https://fsoc.space/api/countries</kbd></p>
+      </div>
+    </div>
+
+		<div class="alert alert-danger">
+			<h5 class="alert-heading">All endpoints are <strong>rate limited</strong>!</h5>
+			The default is 100 requests / 15 minutes, check the <code>&lt;X-RateLimit-Limit&gt;</code>
+			and <code>&lt;X-RateLimit-Remaining&gt;</code> headers for information on individial endpoints.
+		</div>
+  </div>
+</body>
+</html>

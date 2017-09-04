@@ -1,6 +1,6 @@
 {
-  "name": "steam-group-comments",
-  "version": "1.0.0",
+  "name": "server",
+  "version": "0.1.0",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LW2904/steam-group-comments.git"
+    "url": "git+https://github.com/LW2904/server.git"
   },
   "author": "fsoc",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/LW2904/steam-group-comments/issues"
+    "url": "https://github.com/LW2904/server/issues"
   },
-  "homepage": "https://github.com/LW2904/steam-group-comments#readme",
+  "homepage": "https://github.com/LW2904/server#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
     "cheerio": "^1.0.0-rc.2",
@@ -24,6 +24,8 @@
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "express-force-https": "^1.0.0",
+    "express-rate-limit": "^2.9.0",
+    "helmet": "^3.8.1",
     "moment": "^2.18.1",
     "readline-sync": "^1.4.7",
     "request": "^2.81.0",

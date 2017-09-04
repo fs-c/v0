@@ -1,18 +1,20 @@
 const log = require('./logger')
 
-const cPATH = process.env.COMMENTS_PATH || './comments/comments.json'
-const sPATH = process.env.SLIM_PATH || './comments/slim.json'
+const express = require('express')
+let app = express()
 
-if (process.env.CLEAR === 'true') {
-  const fs = require('fs')
-  fs.writeFileSync(cPATH, JSON.stringify([]))
-  fs.writeFileSync(sPATH, JSON.stringify({ start: Date.now() }))
+app.enable('trust proxy')
 
-  log.info(`cleared old files.`)
-}
+const helmet = require('helmet')
+app.use(helmet())
 
+app.get('/', (req, res) => {
+  log.verbose(`GET / served (${req.ip}).`)
+  res.sendFile(__dirname + '/public/index.html')
+})
 
-let app = require('./app')
-const PORT = 8080
+const API = require('./api/ApiController')
+app.use('/api', API)
 
-app.listen(PORT, () => log.info(`server listening on ${PORT}.`))
+const PORT = process.env.PORT || 8080
+app.listen(PORT, () => log.info(`listening on port ${PORT}.`))
