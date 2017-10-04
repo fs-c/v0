@@ -3,13 +3,11 @@ const request = require('request')
 
 // BLS: 103582791437945007
 
-get('103582791437945007', '0', '200')
-.catch(err => console.error(`ERROR GETTING COMMENTS: ${err}`))
-.then(parse).then(comments => {
-  console.log(comments)
-})
+parse(require('fs').readFileSync('./body.html'))
+.then(cmts => console.log(cmts))
+.catch(err => console.log(err))
 
-function get (id, start, count, cb) {
+function get (id, start, count) {
   return new Promise((resolve, reject) => {
     request.post({
       url: `http://steamcommunity.com/comment/Clan/render/${id}/-1/`,
@@ -19,13 +17,13 @@ function get (id, start, count, cb) {
       // Write res body to disk and get it again to take advantage of require()s parsing,
       // remove file after callback.
       require('fs').writeFileSync('body.json', body)
-      resolve(require('./body.json').comments_html)
-      require('fs').unlinkSync('body.json')
+      resolve(body)
+      require('fs').unlinkSync('body.json') // Delete file again.
     })
   })
 }
 
-function parse (html, cb) {
+function parse (html) {
   return new Promise((resolve, reject) => {
     let comments = []
 
@@ -33,6 +31,7 @@ function parse (html, cb) {
 
     $('.commentthread_comment').each((i, e) => {
       const $content = $(e).children('.commentthread_comment_content')
+      const $avatar = $(e).children('.commentthread_comment_avatar')
       const $author = $content.children('.commentthread_comment_author')
 
       let id = $content.children('.commentthread_comment_text').attr('id').slice(16).trim()
@@ -40,16 +39,21 @@ function parse (html, cb) {
       let text = $content.children('.commentthread_comment_text').text().trim()
       let href = $author.children('.commentthread_author_link').attr('href')
 
+      let date = new Date($author.children('.commentthread_comment_timestamp').attr('title'))
+
       let author = {
         name: $author.children('.commentthread_author_link').text().trim(),
-        vanityURL: href.indexOf('/profiles/') === -1 ? href.slice(29) : false,
-        id: href.indexOf('/profiles/') === -1 ? undefined : href.slice(36)
+        customURL: href.indexOf('/id/') === -1 ? href.slice(29) : false, // It's ok if this isn't here.
+        id: href.indexOf('/profiles/') === -1 ? href.slice(36) : undefined, // Undefined because we should get this later.
+        avatar: $avatar.children('a').children('img').attr('src'),
+        rank: $author.children('img').attr('title') || 'Member'
       }
 
       comments.push({
         id,
         author,
-        text
+        text,
+        date
       })
     })
 
