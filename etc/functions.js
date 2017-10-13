@@ -1,8 +1,7 @@
 /**
 *   TODO:
-*     - Fibonacci numbers.
-*     - Largest prime factor. e.g.: 5 * 7 * 13 * 29 = 13195 - solution: 29
-*     - Largest palindrome number made from the product of two 3-digit numbers.
+*     - Fibonacci sequence.
+*     - Largest prime factor of x. e.g.: 5 * 7 * 13 * 29 = 13195 - solution: 29
 *     - What is the smallest positive number that is evenly divisible by all of the numbers from x to y?
 */
 
@@ -28,4 +27,7 @@ const fizzbuzz = (a = []) => {
 // Returns the faculty of integer x.
 const faculty = x => x === 1 ? 1 : x * faculty(x - 1)
 
-console.log(reverse('reverse'))
+// Returns the greatest common factor of integers x and y.
+const gcf = (x, y) => !(x % y) ? y : gcf(y, x % y)
+
+console.log()
