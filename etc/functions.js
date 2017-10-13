@@ -1,6 +1,5 @@
 /**
 *   TODO:
-*     - Fibonacci sequence.
 *     - Largest prime factor of x. e.g.: 5 * 7 * 13 * 29 = 13195 - solution: 29
 *     - What is the smallest positive number that is evenly divisible by all of the numbers from x to y?
 */
@@ -30,4 +29,7 @@ const faculty = x => x === 1 ? 1 : x * faculty(x - 1)
 // Returns the greatest common factor of integers x and y.
 const gcf = (x, y) => !(x % y) ? y : gcf(y, x % y)
 
-console.log()
+// Returns the fibonnaci numbers up to sequence m, which is an integer.
+const fibonacci = (m = 10, i = 1, s = '0,1', a = s.split(',').map(e => parseInt(e))) => i < m ? fibonacci(m, ++i, `${s},${a[a.length - 1] + a[a.length - 2]}`) : a
+
+console.log(fibonacci())
