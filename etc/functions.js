@@ -23,13 +23,21 @@ const fizzbuzz = (a = []) => {
   return a.map((e, i) => !(i % 3) ? !(i % 5) ? 'FizzBuzz' : 'Fizz' : !(i % 5) ? 'Buzz' : i)
 }
 
-// Returns the faculty of integer x.
-const faculty = x => x === 1 ? 1 : x * faculty(x - 1)
+// Returns the factorial of integer x.
+const factorial = x => x === 1 ? 1 : x * faculty(x - 1)
 
 // Returns the greatest common factor of integers x and y.
 const gcf = (x, y) => !(x % y) ? y : gcf(y, x % y)
 
 // Returns the fibonnaci numbers up to sequence m, which is an integer.
-const fibonacci = (m = 10, i = 1, s = '0,1', a = s.split(',').map(e => parseInt(e))) => i < m ? fibonacci(m, ++i, `${s},${a[a.length - 1] + a[a.length - 2]}`) : a
+const fibonacci = (x = 10, a = [0, 1]) => {
+  console.log(x, a)
+  if (a.length >= x) return a
+  a.push((a.length - 1) + (a.length - 2))
+  console.log((a.length - 1) + (a.length - 2))
+  fibonacci(x, a)
+}
+
+const fibonacci_oneline = (m = 10, i = 1, s = '0,1', a = s.split(',').map(e => parseInt(e))) => i < m ? fibonacci_oneline (m, ++i, `${s},${a[a.length - 1] + a[a.length - 2]}`) : a
 
 console.log(fibonacci())
