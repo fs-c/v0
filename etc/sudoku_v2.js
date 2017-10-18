@@ -2,29 +2,20 @@ let raw = [ 0, 4, 0, 0, 8, 3, 0, 6, 0, 6, 0, 7, 0, 0, 0, 4, 0, 0, 3, 0, 0, 0, 6,
 
 class Sudoku {
   constructor (raw) {
-    this._raw = raw
-  }
-
-  get raw () { return this._raw }
-  get rows () { return this.getRows() }
-  get cols () { return this.getColumns() }
-  get cubes () { return this.getCubes() }
-
-  static rowsToRaw (rows) {
-    let a = [ ]
-    for (let row of this.rows) a = a.concat(row)
-    return a
+    this.raw = raw
   }
 
   getRows () {
+    let o = 0
     let a = [ ]
     let r = this.raw
 
     for (let i = 0; i < 9; i++) {
-      if (!a[i]) a[i] = []
+      a.push([  ])
 
-      let s = r.splice(0, 9)
-      for (let ii in s) a[i].push(s[ii])
+      this.raw.slice(o, o + 9).map(e => a[i].push(e))
+
+      o += 9
     }
 
     return a
@@ -35,9 +26,8 @@ class Sudoku {
 
     for (let i = 0; i < 9; ++i) {
       a.push([  ])
-      console.log(i)
       for (let ii = 0; ii < 9; ++ii) {
-        a[i].push(this.cols[ii][i])
+        a[i].push(this.getRows()[ii][i])
       }
     }
 
@@ -59,16 +49,8 @@ class Sudoku {
     }
     return a
   }
-
-  isSolved () {
-    for (let cube of this.cubes)
-      if (cube.reduce((a, c) => a + c) !== 9) return false
-
-    for (let row of this.rows)
-      if (row.reduce((a, c) => a + c) !== 9) return false
-  }
 }
 
-let sudoku = new Sudoku(raw)
+let s = new Sudoku(raw)
 
-console.log(sudoku.cols)
+console.log(s.getRows())
