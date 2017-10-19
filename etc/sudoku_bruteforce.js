@@ -4,7 +4,7 @@ class Sudoku {
   constructor (raw) {
     this.raw = raw
 
-    this._original = raw
+    this._original = raw.map((e, i) => !e ? i : undefined)
   }
 
   /**
@@ -34,6 +34,7 @@ class Sudoku {
 
     for (let i = 0; i < 9; ++i) {
       a.push([  ])
+
       for (let ii = 0; ii < 9; ++ii) {
         a[i].push(this.getRows()[ii][i])
       }
@@ -46,8 +47,8 @@ class Sudoku {
   * @return an array containing the contents of the nine 3x3 fields.
   */
   getCubes () {
-    let a = [  ]
     let o = 0
+    let a = [  ]
 
     for (let i = 0; i < 9; i++) {
       a.push([  ])
@@ -83,8 +84,11 @@ class Sudoku {
   * Randomly fill all fields that are set to 0.
   */
   fillRandomly () {
-    for (let i in this.original)
-      this.raw[i] = !this._original[i] ? Math.floor((Math.random() * 8) + 1) : this._original[i]
+    for (let i of this._original) {
+      if (i !== undefined) this.raw[i] = Math.ceil((Math.random() * 8) + 1)
+    }
+
+    return this // For convenience.
   }
 
   /**
@@ -113,10 +117,4 @@ class Sudoku {
 
 let s = new Sudoku(raw)
 
-console.log(s.getRows())
-
-s.fillRandomly()
-
-console.log(s.getRows())
-
-// console.log(s.solve().then(n => n.getRows()))
+s.solve().then(e => console.log(e))
