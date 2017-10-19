@@ -1,11 +1,15 @@
 let raw = [ 0, 4, 0, 0, 8, 3, 0, 6, 0, 6, 0, 7, 0, 0, 0, 4, 0, 0, 3, 0, 0, 0, 6, 0, 2, 9, 0, 0, 0, 4, 0, 1, 0, 9, 2, 6, 9, 0, 0, 0, 3, 0, 0, 0, 8, 8, 2, 6, 0, 7, 0, 5, 0, 0, 0, 7, 9, 0, 5, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 3, 0, 9, 0, 6, 0, 1, 9, 0, 0, 7, 0 ]
-let alt = [ 2, 9, 5, 7, 4, 3, 8, 6, 1, 4, 3, 1, 8, 6, 5, 9, 2, 7, 8, 7, 6, 1, 9, 2, 5, 4, 3, 3, 8, 7, 4, 5, 9, 2, 1, 6, 6, 1, 2, 3, 8, 7, 4, 9, 5, 5, 4, 9, 2, 1, 6, 7, 3, 8, 7, 6, 3, 5, 3, 4, 1, 8, 9, 9, 2, 8, 6, 7, 1, 3, 5, 4, 1, 5, 4, 9, 3, 8, 6, 7, 2 ]
 
 class Sudoku {
   constructor (raw) {
     this.raw = raw
+
+    this._original = raw
   }
 
+  /**
+  * @return an array of rows.
+  */
   getRows () {
     let o = 0
     let a = [ ]
@@ -22,6 +26,9 @@ class Sudoku {
     return a
   }
 
+  /**
+  * @return an array of columns.
+  */
   getColumns () {
     let a  = [  ]
 
@@ -35,6 +42,9 @@ class Sudoku {
     return a
   }
 
+  /**
+  * @return an array containing the contents of the nine 3x3 fields.
+  */
   getCubes () {
     let a = [  ]
     let o = 0
@@ -50,9 +60,12 @@ class Sudoku {
     }
     return a
   }
-  
+
+  /**
+  * @return an object with the status and reason (for error) properties.
+  */
   isSolved () {
-    if (this.raw.reduce((a, b) => a + b) !== 1215) return { status: false, reason: 'total' }
+    // if (this.raw.reduce((a, b) => a + b) !== 1215) return { status: false, reason: 'total' }
 
     for (let i in this.getRows())
       if (this.getRows()[i].reduce((a, b) => a + b) !== 45) return { status: false, reason: `row ${i} / ${this.getRows()[i]}` }
@@ -63,28 +76,47 @@ class Sudoku {
     for (let i in this.getCubes())
       if (this.getCubes()[i].reduce((a, b) => a+ b) !== 45) return { status: false, reason: `cube ${i} / ${this.getCubes()[i]}` }
 
-    return true
+    return { status: true, reason: '' }
   }
 
+  /**
+  * Randomly fill all fields that are set to 0.
+  */
   fillRandomly () {
-    let a = [  ]
-
-    for (let n of this.raw) a.push(!n ? Math.floor((Math.random() * 8) + 1) : n)
-
-    return new Sudoku(a)
+    for (let i in this.original)
+      this.raw[i] = !this._original[i] ? Math.floor((Math.random() * 8) + 1) : this._original[i]
   }
 
+  /**
+  * Keep creating new sudokus and randomly fill them until a valid one is found.
+  * @return a valid sudoku object.
+  */
   solve () {
-    let c = new Sudoku(this.raw)
+    return new Promise((resolve, reject) => {
+      let i = 0
+      let c = new Sudoku(this.raw)
 
-    while (!c.isSolved().status) {
-      c = new Sudoku(this.raw).fillRandomly()
-    }
+      while (!c.isSolved().status) {
+        i++
+        c.fillRandomly()
 
-    return c
+        if (process.env.NODE_ENV === 'dev') {
+          let s = c.isSolved()
+          console.log(`iteration ${i} = status: ${s.status} / res: ${s.reason}`)
+        }
+      }
+
+      resolve(c)
+    })
   }
 }
 
 let s = new Sudoku(raw)
 
-console.log(s.solve().getRows())
+console.log(s.getRows())
+
+s.fillRandomly()
+
+console.log(s.getRows())
+
+// console.log(s.solve().then(n => n.getRows()))
