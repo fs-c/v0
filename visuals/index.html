@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
+
+    <style>
+      body { margin: 0px }
+    </style>
+
+    <title>fun stuff.</title>
+  </head>
+  <body>
+    <script>
+
+      function setup () {
+        createCanvas(windowWidth, windowHeight)
+        stroke(255)
+        frameRate(15)
+      }
+
+      function draw () {
+        background(1)
+        for (let x = 0; x++ < width;) point(x, random(height), height / 2 - 10, height / 2 + 10)
+      }
+
+    </script>
+  </body>
+</html>
