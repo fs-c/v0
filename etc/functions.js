@@ -39,5 +39,3 @@ const fibonacci = (x = 10, a = [0, 1]) => {
 }
 
 const fibonacci_oneline = (m = 10, i = 1, s = '0,1', a = s.split(',').map(e => parseInt(e))) => i < m ? fibonacci_oneline (m, ++i, `${s},${a[a.length - 1] + a[a.length - 2]}`) : a
-
-console.log(fibonacci())
