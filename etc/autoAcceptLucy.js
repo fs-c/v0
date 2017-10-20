@@ -13,7 +13,7 @@ trader.on('managerError', err => log.error(`trade manager error: ${err.message |
 trader.on('newOffer', offer => {
   log.verbose(`new offer ${offer.id}.`)
 
-  // If offer partner is lucy.
+  // If offer partner is Ki.
   if (offer.partner.toString() === '76561198073021519') {
     if (offer.itemsToGive.length > 1) return
 
