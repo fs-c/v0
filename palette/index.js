@@ -1,0 +1,1 @@
+const quant = require('rgbquant')
