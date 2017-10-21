@@ -3,7 +3,8 @@ const comments = require('./comments')
 const rls = require('readline-sync')
 const moment = require('moment')
 
-let users = findUsers(rls.question(`User: `))
+const users = findUsers(rls.question(`User: `))
+
 let user = users[rls.keyInSelect(users, `Which user?`)]
 
 function findUsers (input) {
@@ -14,21 +15,21 @@ function findUsers (input) {
     let a = cmt.author
     if (
       a.name.toLowerCase().indexOf(input) !== -1 ||
-      (a.customURL && a.customURL.toLowerCase().indexOf(input) !== -1) ||
+      // (a.customURL && a.customURL.toLowerCase().indexOf(input) !== -1) ||
       (a.id && a.id.indexOf(input) !== -1)
     ) if (!p.includes(a.name)) p.push(a.name)
   }
   return p
 }
 
-let { total, length, time } = fetchData(user)
+user = fetchData(user)
 
 function fetchData (name) {
-  let first = Infinity
-  let total = 0
+  let oldest = Infinity
   let length = 0
+  let total = 0
   let time = {}
-  
+
   for (let cmt of comments) {
     if (cmt.author.name === name) {
       total++
@@ -36,16 +37,19 @@ function fetchData (name) {
 
       let date = new Date(cmt.date)
 
-      if (date > first) first = date
+      if (!oldest) oldest = date
+
+      if (date < oldest) oldest = date
+
       let hours = date.getHours()
       if (time[hours]) { time[hours]++ } else time[hours] = 1
     }
   }
 
-  return { total, length, time }
+  return { total, length, time, oldest }
 }
 
 console.log(``)
-console.log(`The user has posted a total of ${total} comments, with an average length of ${Math.round(length / total)} characters.`)
-console.log(`The first recorded comment of this user was ${moment(time).fromNow()}.`)
+console.log(`The user has posted a total of ${user.total} comments, with an average length of ${Math.round(user.length / user.total)} characters.`)
+console.log(`The first recorded comment of this user was ${moment(user.oldest).fromNow()}.`)
 console.log(``)
