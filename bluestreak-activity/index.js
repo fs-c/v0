@@ -5,10 +5,10 @@ const fs = require('fs')
 
 // BLS: 103582791437945007
 
-get('103582791437945007', '0', '100')
+get('103582791437945007', '0', '5000')
 .then(body => parse(body.comments_html))
 .then(comments => fs.writeFileSync('comments.json', JSON.stringify(comments)))
-.catch(err => console.error(`something went wrong: ${err}`)
+.catch(err => console.error(`something went wrong: ${err}`))
 
 // Gets `count` comments starting from `start` of the group `id`.
 function get (id, start, count) {
