@@ -1,14 +1,14 @@
 const cheerio = require('cheerio')
 const request = require('request')
 
-const log = require('../logger')
+const fs = require('fs')
 
 // BLS: 103582791437945007
 
-get('103582791437945007', '0', '2000')
-.then(body => parse(JSON.parse(body).comments_html))
-.then(comments => require('fs').writeFileSync('comments.json', JSON.stringify(comments)))
-.catch(err => log.error(`something went wrong: ${err}`))
+get('103582791437945007', '0', '100')
+.then(body => parse(body.comments_html))
+.then(comments => fs.writeFileSync('comments.json', JSON.stringify(comments)))
+.catch(err => console.error(`something went wrong: ${err}`)
 
 // Gets `count` comments starting from `start` of the group `id`.
 function get (id, start, count) {
@@ -20,10 +20,11 @@ function get (id, start, count) {
       if (err) reject(err)
       // Write res body to disk and get it again to take advantage of require()s parsing,
       // remove file after callback.
-      log.debug(`got response from steamcommunity.com (${res.statusCode})`)
-      require('fs').writeFileSync('body.json', body)
-      resolve(body)
-      // require('fs').unlinkSync('body.json') // Delete file after we read it.
+      console.log(`got response from steamcommunity.com (${res.statusCode})`)
+
+      fs.writeFileSync('body.json', body)
+      resolve(require('./body.json'))
+      fs.unlinkSync('body.json') // Delete file after we read it.
     })
   })
 }

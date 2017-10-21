@@ -28,6 +28,7 @@ function fetchData (name) {
   let total = 0
   let length = 0
   let time = {}
+  
   for (let cmt of comments) {
     if (cmt.author.name === name) {
       total++
