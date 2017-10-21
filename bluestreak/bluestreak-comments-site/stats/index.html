@@ -1,0 +1,182 @@
+<!-- Welcome, friend. >_ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+	<link rel='shortcut icon' type='image/x-icon' href='https://steamcommunity.com/favicon.ico'/>
+
+	<style>
+    #app {
+      margin-top: 1em;
+    }
+
+		#main {
+			margin-top: 3em;
+			margin-bottom: 3em;
+		}
+
+		#main .list-group {
+			margin-top: 1em;
+		}
+
+		#main .list-group a {
+			color: black !important;
+		}
+
+		#main .alert {
+			margin-top: 1em;
+		}
+
+		#infoblock { margin-top: 2em; }
+
+		.online { border-color: #53A4C4 !important }
+		.in-game { border-color: #90BA3C !important }
+		.offline { border-color: #898989 !important }
+
+		.avatar { margin-right: 1em; }
+	</style>
+
+	<title>comments-stats</title>
+</head>
+<body>
+  <div id="app" class="container">
+    <h3>
+      <a href="http://steamcommunity.com/groups/projectbluestreak">bluestreak</a> comment stats.
+      <small class="text-right">data last updated {{ fromNow }}.</small>
+    </h3>
+
+    <p>There have been a total of <strong>{{ commentsCount }} comments</strong>  from <strong>{{ users.length }} unique members</strong> since the server started logging {{ startFromNow }}.</p>
+
+		<div class="row" id="main">
+			<div class="col-8">
+				<div class="alert alert-primary" role="alert">
+				  I'm working on including more stats here, maybe even some filters, but nothing is beyond concept stage yet. <hr>
+					If you feel like you would have a use for such features please feel free to <a href="http://steamcommunity.com/profiles/76561198091491690" class="alert-link">contact me</a>, telling me so. I've reached
+					the goal I wanted to reach and I don't see a reason to go further without feedback.
+				</div>
+
+				<div class="row" id="infoblock">
+					<div class="col-8">
+						<p>
+							The API grabs fresh data from the <a href="steamcommunity.com/">steamcommunity</a> page
+							every 10 minutes, and the page will try and fetch new data in that same interval.
+							Client will always try to display avatar, online state and profile name, but in case they are
+							not available the Steam64 ID will be displayed. Note that this information might be inaccurate and incorrect. No warranty whatsoever.
+						</p>
+
+						<p>
+							Want the full list? <em>Press F12</em>. </br>
+							I keep a large JSON with more detailed data on the server, <em>contact me for API access</em> to that particular file.
+						</p>
+
+						<p><small>{{ (Math.random() === 0) ? 'Unknown.' : (Math.random() > 0.5 ? 'True.' : 'False.') }} @ CAex</small></p>
+					</div>
+
+					<p class="lead">
+						CSS by <a href="https://getbootstrap.com/">bootstrap</a>, </br>
+						data from <a href="http://steamcommunity.com/profiles/76561198091491690">steam</a> </br>
+						via the <a href="https://fsoc.space">fsoc.space</a> API
+					</p>
+				</div>
+			</div>
+			<div class="col-4">
+				<h4>Top 10 list:</h4>
+				<ul class="list-group" v-if="users.length > 0">
+					<a class="list-group-item list-group-item-action" v-for="(c, i) in users" v-if="i < 10" :href="'http://steamcommunity.com/profiles/' + c.id">
+						<img v-if="detailed_users[c.id]" :src="detailed_users[c.id].avatar" class="rounded avatar border" :class="[ detailed_users[c.id].state ]">
+						{{ detailed_users[c.id] && detailed_users[c.id].name || c.id | shorten }} <span class="float-right">{{ c.count }}</span>
+					</a>
+				</ul>
+
+				<div class="alert alert-danger" v-else>
+					<h4 class="alert-heading">Oh snap!</h4>
+					<p>It appears that there was an error loading the users. Press F12 if you want to know more.</p>
+					<hr>
+					<p>Sorry that it didn't work! If you want to help me out, <a href="http://steamcommunity.com/profiles/76561198091491690" class="alert-link">tell me about this error</a>!</p>
+				</div>
+			</div>
+		</div>
+  </div>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        res: {},
+				users: [],
+				detailed_users: {}
+      },
+			mounted () {
+        this.get()
+				setInterval(this.get, 10 * 60 * 1000)
+      },
+			methods: {
+				get () {
+					axios.get(`https://fsoc.space/api/group/comments/slim`)
+	          .then(response => {
+	            console.log(response.data)
+	            this.res = response.data
+
+							for (let [id, count] of Object.entries(this.res)) {
+								if (id.length === 17) {
+									this.users.push({ id, count })
+								}
+							}
+
+							for (let u of this.users) {
+								axios.get(`https://fsoc.space/api/user/${u.id}`)
+									.then(response => {
+										let user = response.data
+										Vue.set(this.detailed_users, u.id, {
+											name: user.name,
+											avatar: user.avatar,
+											url: user.customURL,
+											state: user.onlineState
+										})
+									})
+							}
+
+							this.users.sort((a, b) => a.count - b.count).reverse()
+	          })
+	          .catch(e => {
+	            console.error(e)
+	          })
+				}
+			},
+      computed: {
+        fromNow () {
+          let u = this.res.updated
+          return u ? moment(u).from(moment()) : `-∞ units of time ago`
+        },
+        commentsCount () {
+					let x = 0
+          for (let c of this.users) x += c.count
+          return x
+        },
+				startFromNow () {
+					let u = this.res.start
+					return u ? moment(u).from(moment()) : `2 Millennia ago.`
+				}
+      },
+			filters: {
+				shorten (s) {
+					if (s.length >= 25)
+						return `${s.slice(0, 25)}...`
+					else return s
+				}
+			}
+    })
+  </script>
+</body>
+</html>
