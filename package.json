@@ -1,0 +1,27 @@
+{
+  "name": "v0",
+  "version": "1.0.0",
+  "description": "A collection of projects that are either\r - being worked on, but don't have enough progress for an own repo / don't work yet\r - abandoned and unfinished",
+  "main": "logger.js",
+  "dependencies": {
+    "js-base64": "^2.3.2",
+    "moment": "^2.19.1",
+    "steam-user": "^3.23.2",
+    "winston": "^2.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lw2904/v0.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lw2904/v0/issues"
+  },
+  "homepage": "https://github.com/lw2904/v0#readme"
+}
