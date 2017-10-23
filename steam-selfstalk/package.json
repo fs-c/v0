@@ -1,0 +1,16 @@
+{
+  "name": "steam-selfstalk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "steam-totp": "^2.0.1",
+    "steam-user": "^3.23.2"
+  }
+}
