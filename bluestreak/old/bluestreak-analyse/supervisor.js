@@ -20,8 +20,10 @@ const getMembers = group => {
         let p = members.map(m => getUser(m))
 
         Promise.all(p)
-        .then(users => resolve(users))
-        .catch(err => reject(err))
+        .then(users => {
+          console.log(`got all user profiles.`)
+          resolve(users)
+        }).catch(err => reject(err))
       })
     })
   })
@@ -30,7 +32,6 @@ const getMembers = group => {
 const getUser = id => {
   return new Promise((resolve, reject) => {
     community.getSteamUser(id, (err, user) => {
-    log.debug(`got steam user.`)
       if (err) return reject(err)
 
       resolve(user)
@@ -51,11 +52,12 @@ const filter = (comments, max) => {
   return filtered
 }
 
-getMembers('projectbluestreak')
-.then(members => {
-  const active = [...new Set(filter(comments, INACTIVITY).map(e => e.author.name))]
+require('./get')().then(comments => {
+  getMembers('projectbluestreak').then(members => {
+    const active = [...new Set(filter(comments, INACTIVITY).map(e => e.author.name))]
 
-  for (let member of members) {
-    log.info(`${(member.name + ':').padEnd(40)} ${active.includes(member.name) ? 'active' : 'inactive'}`)
-  }
-}).catch(err => log.error(`something went wrong: ${err}`))
+    for (let member of members) {
+      log.info(`${(member.name + ':').padEnd(40)} ${active.includes(member.name) ? 'active' : 'inactive'}`)
+    }
+  }).catch(err => log.error(`something went wrong: ${err}`))
+})
