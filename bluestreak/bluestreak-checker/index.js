@@ -2,8 +2,8 @@ const SteamCommunity = require('steamcommunity')
 
 const GROUP = 'projectbluestreak'
 const TAGS = [
-	'[bluestreak]',
-	'[bls]'
+	'bluestreak',
+	'bls'
 ]
 const WHITELIST = [
 	'76561198024447973'
