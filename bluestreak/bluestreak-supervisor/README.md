@@ -7,8 +7,8 @@ Some scripts to make checking for (in-)activity easier, and to generate neat lit
 To run any JS file locally, using NodeJS, simply
 
 1.  Install [NodeJS](https://nodejs.org/en/) (anything above 8.0 is optimal)
-2.  `cd X:/your/working/directory`
-3.  If this is the first time starting this script, `npm i`, to download dependencies.
+2.  `cd X:/your/working/directory/`
+3.  If this is the first time starting this script, `npm i`, to download dependencies. This will only work if you also have a `package.json` file in your project dir.
 4.  `node <scriptname>`
 
 So, for example, if you were to want to run `activity.js`, you would simply `cd` into it's directory, and do `node activity`.
