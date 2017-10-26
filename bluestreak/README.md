@@ -6,4 +6,4 @@ Simple NodeJS script checking the usernames of all members of the group and retu
 
 #### bluestreak-supervisor
 
-Umbrella project for all kinds of scripts working with the raw comment data provided by the [/steam/comments](https://fsoc.space/api/steam/comments/103582791437945007) endpoint of the my API.
+Umbrella project for all kinds of scripts working with the raw comment data provided by the [/steam/comments](https://fsoc.space/api/steam/comments/103582791437945007) endpoint of my API.
