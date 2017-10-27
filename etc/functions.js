@@ -24,7 +24,7 @@ const fizzbuzz = (a = []) => {
 }
 
 // Returns the factorial of integer x.
-const factorial = x => x === 1 ? 1 : x * faculty(x - 1)
+const factorial = x => x === 1 ? 1 : x * factorial(x - 1)
 
 // Returns the greatest common factor of integers x and y.
 const gcf = (x, y) => !(x % y) ? y : gcf(y, x % y)
