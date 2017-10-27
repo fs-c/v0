@@ -1,8 +1,12 @@
 const DATA = require('../../steamdata.json').main
+const EVENTS = [
+  'playingState',
+  'friendRelationship',
+  'friendMessage'
+]
 
 const User = require('steam-user')
-
-let client = new User()
+const client = new User()
 
 client.setOption('promptSteamGuardCode', false)
 client.logOn(DATA)
@@ -12,13 +16,7 @@ client.on('steamGuard', (d, cb) => {
 
 let stash = []
 
-let events = [
-  'playingState',
-  'friendRelationship',
-  'friendMessage'
-]
-
-for (let event of events) {
+for (let event of EVENTS) {
   client.on(event, (...data) => {
     stash.push({
       timestamp: Date.now(),
@@ -35,8 +33,7 @@ function update () {
 
   if (stash.length === 0) return
 
-  let data = require('./data.json')
-
+  const data = require('./data.json')
   data.concat(stash)
   require('fs').writeFileSync('data.json', JSON.stringify(data))
 
