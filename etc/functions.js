@@ -16,6 +16,7 @@ const odd = x => x % 2 !== 0 // Could also do !!(x % 2)
 
 // Reverses the string a.
 const reverse = ([...a]) => a.map((e, i, o) => o[o.length - i - 1]).join('')
+const reverse_simple = ([...a]) => a.reverse().join('')
 
 // Outputs the solved fizzbuzz test.
 const fizzbuzz = (a = []) => {
