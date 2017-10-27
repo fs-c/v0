@@ -9,4 +9,4 @@ const get = () => {
   })
 }
 
-module.exports = get
+exports.comments = get

@@ -113,4 +113,4 @@ const valid = name => {
   return false
 }
 
-require('./get')().catch(err => { throw err }).then(parse)
+require('./get').comments().catch(err => { throw err }).then(parse)
