@@ -48,7 +48,7 @@ const filter = (comments, max) => {
   return filtered
 }
 
-require('./get')().then(comments => {
+require('./get').comments().then(comments => {
   getMembers('projectbluestreak').then(members => {
     const active = [...new Set(filter(comments, INACTIVITY).map(e => e.author.name))]
 

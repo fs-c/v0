@@ -1,6 +1,6 @@
 const request = require('request')
 
-const get = () => {
+const comments = () => {
   return new Promise((resolve, reject) => {
     request.get('https://fsoc.space/api/steam/comments/103582791437945007', (err, body, data) => {
       data = JSON.parse(data)
@@ -9,4 +9,4 @@ const get = () => {
   })
 }
 
-module.exports = get
+exports.comments = comments
