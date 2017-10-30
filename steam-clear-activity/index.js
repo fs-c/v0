@@ -32,7 +32,7 @@ function build (account) {
   let timer
   client.on('loggedOn', details => {
     hide(client)
-    timer = setInterval(hide, 2*60*1000, client)
+    timer = setInterval(hide, 60 * 60 * 1000, client)
   })
 
   client.on('error', err => {
