@@ -38,6 +38,8 @@ function build (account) {
   client.on('error', err => {
     clearInterval(timer)
 
+    console.error(err)
+
     if (err.message === 'LoggedInElsewhere') {
       setTimeout(
         function() { timer = setInterval(hide, 2*60*1000, client) },
@@ -51,4 +53,4 @@ function build (account) {
   })
 }
 
-for (let name in data) { build(data[name]) }
+for (let name in DATA) { build(DATA[name]) }
