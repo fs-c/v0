@@ -30,7 +30,6 @@ function build (account) {
 
   let timer
   client.on('loggedOn', details => {
-    log(`Logged on from ${details.public_ip}.`)
     hide(client)
     timer = setInterval(hide, 2*60*1000, client)
   })
