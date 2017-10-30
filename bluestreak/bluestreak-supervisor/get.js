@@ -1,4 +1,5 @@
 const request = require('request')
+const cheerio = require('cheerio')
 
 const comments = () => {
   return new Promise((resolve, reject) => {
@@ -10,3 +11,26 @@ const comments = () => {
 }
 
 exports.comments = comments
+
+const names = () => {
+  const name = id => {
+    return new Promise((resolve, reject) => {
+      request.get('https://steamcommunity.com/miniprofile/' + id, (err, body, data) => {
+        
+      })
+    })
+  }
+
+  return new Promise((resolve, reject) => {
+    request.get('https://steamcommunity.com/groups/projectbluestreak', (err, body, data) => {
+      const $ = cheerio.load(data)
+      let ids = [  ]
+
+      $('.membergrid .playerAvatar').each((i, e) => ids.push(name($(e).attr('data-miniprofile'))))
+
+      Promise.all(ids).then(resolve).catch(console.error)
+    })
+  })
+}
+
+names().then(console.log)
