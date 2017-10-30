@@ -5,6 +5,7 @@ const DATA = require('../../steamdata')
 
 function hide (client) {
   client.gamesPlayed([399220, 399080, 399480])
+  client.gamesPlayed([])
 }
 
 function login (client, account) {
