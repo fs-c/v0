@@ -1,39 +1,6 @@
-const Community = require('steamcommunity')
-const community = new Community()
+const get = require('./get')
 
 const INACTIVITY = 7 * 24 * 60 * 60 * 1000
-
-const getMembers = group => {
-  return new Promise((resolve, reject) => {
-    community.getSteamGroup(group, (err, group) => {
-      if (err) return reject(err)
-      console.log(`got steam group.`)
-
-      group.getMembers((err, members) => {
-        if (err) return reject(err)
-        console.log(`got group members.`)
-
-        let p = members.map(m => getUser(m))
-
-        Promise.all(p)
-        .then(users => {
-          console.log(`got all user profiles.`)
-          resolve(users)
-        }).catch(err => reject(err))
-      })
-    })
-  })
-}
-
-const getUser = id => {
-  return new Promise((resolve, reject) => {
-    community.getSteamUser(id, (err, user) => {
-      if (err) return reject(err)
-
-      resolve(user)
-    })
-  })
-}
 
 const filter = (comments, max) => {
   let filtered = []
@@ -48,8 +15,8 @@ const filter = (comments, max) => {
   return filtered
 }
 
-require('./get').comments().then(comments => {
-  getMembers('projectbluestreak').then(members => {
+get.comments().then(comments => {
+  get.members('projectbluestreak').then(members => {
     const active = [...new Set(filter(comments, INACTIVITY).map(e => e.author.name))]
 
     console.log(``)

@@ -1,5 +1,7 @@
+const Community = require('steamcommunity')
+const community = new Community()
+
 const request = require('request')
-const cheerio = require('cheerio')
 
 const comments = () => {
   return new Promise((resolve, reject) => {
@@ -12,11 +14,47 @@ const comments = () => {
 
 exports.comments = comments
 
+const members = group => {
+  return new Promise((resolve, reject) => {
+    community.getSteamGroup(group, (err, group) => {
+      if (err) return reject(err)
+      console.log(`got steam group.`)
+
+      group.getMembers((err, members) => {
+        if (err) return reject(err)
+        console.log(`got group members.`)
+
+        let p = members.map(m => user(m))
+
+        Promise.all(p)
+        .then(users => {
+          console.log(`got all user profiles.`)
+          resolve(users)
+        }).catch(err => reject(err))
+      })
+    })
+  })
+}
+
+exports.members = members
+
+const user = id => {
+  return new Promise((resolve, reject) => {
+    community.getSteamUser(id, (err, user) => {
+      if (err) return reject(err)
+
+      resolve(user)
+    })
+  })
+}
+
+exports.user = user
+
 const names = () => {
   const name = id => {
     return new Promise((resolve, reject) => {
       request.get('https://steamcommunity.com/miniprofile/' + id, (err, body, data) => {
-        
+
       })
     })
   }
@@ -32,5 +70,3 @@ const names = () => {
     })
   })
 }
-
-names().then(console.log)
