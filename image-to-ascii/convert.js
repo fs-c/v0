@@ -1,21 +1,25 @@
 const Jimp = require('jimp')
 const Colors = require('couleurs')
 
-const chars = '.,:;it1fLCG08@'
-const norm = (255 * 4 / chars.length)
+const CHARS = '.,:;it1fLCG08@'
+const NORM = (255 * 4 / CHARS.length)
 
 const intensity = pixel => pixel.r + pixel.g + pixel.a
 
-const convert_core = (img) => {
+const convert = (img, opts) => {
   let ascii = ''
+  img = img.resize(opts.height, opts.width)
+
+  console.log(img.bitmap.height, img.bitmap.width)
 
   for (let y = 0; y < img.bitmap.height; y++) {
     for (let x = 0; x < img.bitmap.width; x++) {
-      for (let c = 0; c < 2; c++) {
+      for (let c = 0; c < opts.cRatio; c++) {
         let pixel = Jimp.intToRGBA(img.getPixelColor(x, y))
-        let char = chars.charAt(Math.round(intensity(pixel)) / norm)
+        let char = opts.chars.charAt(Math.round(intensity(pixel)) / NORM)
 
-        char = Colors.fg(char, pixel.r, pixel.g, pixel.b)
+        if (opts.colors)
+          char = Colors.fg(char, pixel.r, pixel.g, pixel.b)
 
         ascii += char
       }
@@ -27,12 +31,18 @@ const convert_core = (img) => {
   return ascii
 }
 
-const convert = (path) => {
+module.exports = (path, options = {  }) => {
+  const opts = {
+    colors: options.colors || true,
+    chars: options.chars   || CHARS,
+    cRatio: options.cRatio || 2,
+    width: options.width   || options.height ? Jimp.AUTO : 50,
+    height: options.height || options.width  ? 50 : Jimp.AUTO
+  }
+
   return new Promise((resolve, reject) => {
     Jimp.read(path).then(image => {
-      resolve(convert_core(image.resize(Jimp.AUTO, 75)))
+      resolve(convert(image, opts))
     }).catch(reject)
   })
 }
-
-module.exports = convert
