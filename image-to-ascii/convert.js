@@ -10,8 +10,6 @@ const convert = (img, opts) => {
   let ascii = ''
   img = img.resize(opts.height, opts.width)
 
-  console.log(img.bitmap.height, img.bitmap.width)
-
   for (let y = 0; y < img.bitmap.height; y++) {
     for (let x = 0; x < img.bitmap.width; x++) {
       for (let c = 0; c < opts.cRatio; c++) {
