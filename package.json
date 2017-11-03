@@ -4,6 +4,8 @@
   "description": "A collection of projects that are either\r - being worked on, but don't have enough progress for an own repo / don't work yet\r - abandoned and unfinished",
   "main": "logger.js",
   "dependencies": {
+    "couleurs": "^6.0.9",
+    "jimp": "^0.2.28",
     "js-base64": "^2.3.2",
     "moment": "^2.19.1",
     "steam-user": "^3.23.2",

@@ -55,7 +55,8 @@ require('./get').comments().then(comments => {
     console.log(``)
 
     for (let member of members) {
-      console.log(`${(member.name + ':').padEnd(40)} ${active.includes(member.name) ? 'active' : 'inactive'}`)
+      if (!active.includes(member.name))
+        console.log(`${member.name} - steamcommunity.com/${member.customURL ? `id/${member.customURL}` : `profiles/${member.steamID}`}`)
     }
   }).catch(err => console.log(`something went wrong: ${err}`))
 })

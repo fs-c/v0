@@ -1,0 +1,16 @@
+{
+  "name": "image-to-ascii",
+  "version": "1.0.0",
+  "description": "Does not have any non-JS dependencies. No need to grapple with node-gyp errors,\r missing python or C dependencies, just do `npm i` and you're good to go.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "couleurs": "^6.0.9",
+    "jimp": "^0.2.28"
+  }
+}
