@@ -1,13 +1,17 @@
-const logger = require('winston')
 const moment = require('moment')
+const winston = require('winston')
 
-logger.remove(logger.transports.Console)
-logger.add(logger.transports.Console, {
-  level: 'silly',
-  colorize: true,
-  timestamp: function () {
-    return moment().format('YYYY-MM-DD hh:mm:SSA')
-  }
+const logger = new winston.Logger({
+  transports: [
+    new winston.transports.Console({
+      level: 'silly',
+      handleExceptions: true,
+      json: false,
+      colorize: true,
+      timestamp: () => moment().format('YYYY-MM-DD hh:mm:SSA')
+    })
+  ],
+  exitOnError: false
 })
 
 module.exports = logger
