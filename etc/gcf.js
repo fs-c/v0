@@ -12,6 +12,11 @@ const primeFactors = (n, res = [], r = Math.sqrt(n)) => {
   return (x === n) ? res : primeFactors(n / x, res)
 }
 
+/**
+* @param {integer} x - First greatest common factor component.
+* @param {integer} y - Second gcf component.
+* @return {integer} - The greatest common factor of x and y.
+*/
 const gcf = (x, y, a = primeFactors(x), b = primeFactors(y)) =>
   (a.length > b.length ? a : b).reverse().map((e, i, c) => (c === a ? b : a).includes(e) ? e : null)[0]
 
