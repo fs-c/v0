@@ -1,4 +1,22 @@
-// const dia = (w = 7, s = '') => for (let i = 0; i < w * 2; i++) s += i === w ? '\n' :
-const dia = (w = 7) => {for (let i = 1; i <= Math.pow(w, 2); i++) console.log(Math.ceil(i / w))}
+const dia = (w = 7, s = '') => {
+  for (let i = 0; i < Math.pow(w, 2) + w - 1; i++) {
+    let r = Math.ceil(i / w)
+    
+  }
 
-dia()
+  return s
+}
+
+console.log(dia())
+
+/*
+
+___#___
+__###__
+_#####_
+#######
+_#####_
+__###__
+___#___
+
+*/
