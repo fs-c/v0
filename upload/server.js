@@ -1,4 +1,3 @@
-const MAX_FILES = 100
 const PORT = process.env.PORT || 8083
 
 const log = require('../logger')

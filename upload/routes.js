@@ -1,3 +1,5 @@
+const MAX_FILES = 100
+
 const cleanup = (maxNum = MAX_FILES) => {
   const names = fs.readdirSync('./files')
     .map(n => parseInt(n.slice(0, n.lastIndexOf('.jpg')), 10))
