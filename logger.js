@@ -5,7 +5,7 @@ const logger = new winston.Logger({
   transports: [
     new winston.transports.Console({
       level: 'silly',
-      handleExceptions: true,
+      handleExceptions: false,
       json: false,
       colorize: true,
       timestamp: () => moment().format('YYYY-MM-DD hh:mm:SSA')
