@@ -25,18 +25,17 @@
       #center {
         display: flex;
         align-items: center;
+        justify-content: center;
       }
 
-      #error {
-        color: #F58A07;
-      }
+      #error { color: #F58A07; }
 
     </style>
   </head>
 
   <body>
     <div id="center">
-      <p><b id="error">Something went wrong. ¯\_(ツ)_/¯</b></br><% message %></p>
+      <p><b id="error">Something went wrong.</b> (<%= message %>)</p>
     </div>
   </body>
 </html>
