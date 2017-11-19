@@ -34,25 +34,26 @@ router.post('/upload', upload.single('file'), (req, res, next) => {
 
   log.debug(`file ${file.filename} uploaded.`)
 
-  res.status(200).render('success', { name: file.filename })
+  res.status(200).render('uploaded', { name: file.filename })
 
   Jimp.read(file.path).then(img => {
-    img.resize(Jimp.AUTO, 100)
-      .crop(0, 0, 100, 100)
-      .write('./thumbs/' + file.filename)
+    const w = img.bitmap.width, h = img.bitmap.height
+    const f = w < h ? w : h
+    img.crop((w / 2) - (f / 2), 0, f, f).scaleToFit(100, 100)
+       .write('./thumbs/' + file.filename)
   }).catch(log.error) // User doesn't need to know/care about this.
 })
 
-router.get('/delete', (req, res) => {
+router.get('/delete/:name', (req, res) => {
   const name = req.params.name
 
   if (req.params.name === 'all')
-    return cleanup(0)
+    cleanup(0)
 
   if (fs.existsSync(`./files/${name}`))
     fs.unlinkSync(`./files/${name}`)
   if (fs.existsSync(`./thumbs/${name}`))
     fs.unlinkSync(`./thumbs/${name}`)
 
-  return res.send(`Deleted file(s).`)
+  return res.render('success', { message: 'Deleted file(s).' })
 })
