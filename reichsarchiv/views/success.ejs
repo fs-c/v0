@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>reichsarchiv / success</title>
+
+    <style>
+
+      body, html {
+        font-family: 'Arial';
+        background: #0e0e0e;
+
+        height: 100%;
+        display: grid;
+
+        overflow: hidden;
+
+        color: #cccccc;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      #center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #success { color: #006600; }
+
+    </style>
+  </head>
+
+  <body>
+    <div id="center">
+      <p><b id="success">Uploaded file.</b> (<a href="../<%= name %>"><%= name %></a>)</p>
+    </div>
+  </body>
+</html>

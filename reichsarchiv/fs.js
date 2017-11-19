@@ -26,12 +26,15 @@ const upload = multer({
     cb(null, MIMETYPES.includes(file.mimetype))
 })
 
-router.post('/upload', upload.single('file'), (req, res) => {
+router.post('/upload', upload.single('file'), (req, res, next) => {
   const file = req.file
+
+  if (!file)
+    return next(new Error('Invalid file.'))
 
   log.debug(`file ${file.filename} uploaded.`)
 
-  res.status(200).send(`Uploaded file. /${file.filename}`)
+  res.status(200).render('success', { name: file.filename })
 
   Jimp.read(file.path).then(img => {
     img.resize(Jimp.AUTO, 100)
