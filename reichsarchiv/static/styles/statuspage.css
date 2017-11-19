@@ -1,0 +1,35 @@
+body, html {
+  font-family: 'Arial';
+  background: #0e0e0e;
+
+  height: 100%;
+  display: grid;
+
+  overflow: hidden;
+
+  color: #cccccc;
+}
+
+a {
+  color: inherit;
+}
+
+.container {
+  position: relative;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.muted {
+  color: #828282;
+  font-size: 12px;
+}
+
+.error { color: #F58A07; }
+
+.success { color: #006600; }
