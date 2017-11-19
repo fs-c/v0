@@ -6,36 +6,19 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    <link rel="stylesheet" href="/styles/statuspage.css">
+
     <title>reichsarchiv / error</title>
-
-    <style>
-
-      body, html {
-        font-family: 'Arial';
-        background: #0e0e0e;
-
-        height: 100%;
-        display: grid;
-
-        overflow: hidden;
-
-        color: #cccccc;
-      }
-
-      #center {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      #error { color: #F58A07; }
-
-    </style>
   </head>
 
   <body>
-    <div id="center">
-      <p><b id="error">Something went wrong.</b> (<%= message %>)</p>
+    <div class="container">
+      <div class="center">
+        <p>
+          <b class="error">Something went wrong.</b> (<%= message %>) </br>
+          <a href="/" class="muted">Back</a> <a href="https://steamcommunity.com/profiles/76561198091491690" class="muted">Cry about this issue.</a>
+        </p>
+      </div>
     </div>
   </body>
 </html>
