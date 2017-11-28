@@ -8,6 +8,7 @@
     "jimp": "^0.2.28",
     "js-base64": "^2.3.2",
     "moment": "^2.19.1",
+    "readline-sync": "^1.4.7",
     "steam-user": "^3.23.2",
     "winston": "^2.4.0"
   },
