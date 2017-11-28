@@ -4,8 +4,7 @@ const User = require('steam-user')
 const user = new User()
 
 const account = {
-  accountName: 'mrlaurinator',
-  password: '2904Lauri!'
+  accountName: 'mrlaurinator'
 }
 
 const parse = string => string.split('\n').map(e => e.replace('\r', ''))
