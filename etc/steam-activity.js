@@ -22,7 +22,7 @@ if (fs.existsSync(PATH)) {
 } else throw new Error('Steam account data file not found.')
 
 function hide (client) {
-  client.gamesPlayed([399220, 399080, 399480])
+  client.gamesPlayed([ 399220, 399080, 399480 ])
   console.log(`Attempted to hide recent games.`)
 }
 
