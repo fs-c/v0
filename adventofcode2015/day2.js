@@ -29,16 +29,20 @@ console.assert(getPaper([ 2, 3, 4 ]) === 58)
 
 const getTotalPaper = boxes => boxes.reduce((acc, c) => {
   let p = getPaper(c)
-  return acc + (p && p !== NaN) ? p : 0
+  return acc += (p && p !== NaN) ? p : 0
 }, 0)
 
-const getRibbon = d => {
-  
-}
+const getRibbon = d =>
+  (d.sort((a, b) => a - b).slice(0, 2).reduce((a, c) => a + c) * 2) + 
+  d.reduce((a, c) => a * c)
 
-const getTotalRibbon = boxes => boxes.reduce((arr, c) => {
+console.assert(getRibbon([ 2, 3, 4 ]) === 34)
+console.assert(getRibbon([ 1, 1, 10 ]) === 14)
+
+const getTotalRibbon = boxes => boxes.reduce((acc, c) => {
   let p = getRibbon(c)
-  return acc + (p && p !== NaN) ? p : 0
+  console.log(acc, p)
+  return acc += (p && p !== NaN) ? p : 0
 }, 0)
 
-console.log(getTotalPaper(dimensions))
+console.log(getTotalRibbon(dimensions))
