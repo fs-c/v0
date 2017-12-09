@@ -8,9 +8,8 @@ const redist = banks => {
   
   banks[hi] = 0
 
-  let i = hi + 1
   while (h > 0) {
-    banks[++i % banks.length]++
+    banks[++hi % banks.length]++
     h--
   }
 
@@ -25,8 +24,10 @@ while (true) {
   seen.push(banks.join()) // Gotta do join() because JS is fucking retarded.
 
   i++
-  if (seen.indexOf(banks.join()) !== seen.lastIndexOf(banks.join()))
+  if (seen.indexOf(banks.join()) !== seen.lastIndexOf(banks.join())) {
+    console.log('P2: ' + seen.lastIndexOf(banks.join()) - seen.indexOf(banks.join()))
     break
+  }
 }
 
-console.log(i)
+console.log('P1: ' + i)
