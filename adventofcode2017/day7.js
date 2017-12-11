@@ -19,4 +19,4 @@ const getBottom = raw => {
   for (const e of raw)
     if (e.carrying.includes(heaviest.name))
       return e
-} 
+}
