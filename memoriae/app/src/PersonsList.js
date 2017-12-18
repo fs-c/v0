@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 
+const format = items => Object.keys(items)
+  .map(key => ({ key, val: items[key] }))
+  .filter(t => Boolean(t.val) && t.key !== '_')
+
 class PersonCard extends Component {
   constructor(props) {
     super(props)
@@ -20,19 +24,13 @@ class PersonCard extends Component {
 }
 
 export default class PersonsList extends Component {
-  constructor({ gun }) {
+  constructor() {
     super()
-
-    this.gun = gun.get('persons')
 
     this.state = { persons: [] }
   }
 
   componentWillMount = () => {
-    this.gun.on(p => {
-      console.log(p)
-      this.setState({ persons: p })
-    })
   }
 
   render() {

@@ -1,14 +1,7 @@
-var port = process.env.PORT || 8080
+const express = require('express')
 
-var Gun = require('gun')
+const app = express()
 
-var server = require('http').createServer((req, res) => {
-	if (Gun.serve(req, res)) return
-})
+app.use('/api', require('./routes/api'))
 
-var gun = Gun({ 
-	file: 'data.json',
-	web: server
-})
-
-server.listen(port)
+app.listen(process.env.PORT || 8080)

@@ -12,6 +12,9 @@
   "dependencies": {
     "express": "^4.16.2",
     "express-http-proxy": "^1.1.0",
-    "gun": "^0.9.4"
+    "gun": "^0.9.4",
+    "gun-file": "^1.0.122",
+    "gun-server": "^1.0.0",
+    "mongoose": "^4.13.7"
   }
 }
