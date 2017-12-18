@@ -10,6 +10,7 @@
     "js-base64": "^2.3.2",
     "md5": "^2.2.1",
     "moment": "^2.19.1",
+    "react-bootstrap": "^0.31.5",
     "readline-sync": "^1.4.7",
     "steam-user": "^3.23.2",
     "winston": "^2.4.0"

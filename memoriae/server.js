@@ -1,11 +1,14 @@
-const express = require('express')
-const app = express()
+var port = process.env.PORT || 8080
 
-app.use(require('helmet')())
-app.use(require('morgan')('dev', {
-  stream: { write: msg => require('./logger').verbose(msg.trim()) }
-}))
+var Gun = require('gun')
 
-app.get('*', express.static('app/public'))
+var server = require('http').createServer((req, res) => {
+	if (Gun.serve(req, res)) return
+})
 
-app.listen(8080)
+var gun = Gun({ 
+	file: 'data.json',
+	web: server
+})
+
+server.listen(port)
