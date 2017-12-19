@@ -54,7 +54,7 @@ export default class AddForm extends Component {
 
   render() {
     return (
-      <form id="form-add-person" className="form" onSubmit={this.add}>
+      <form id="form-add-person" className="form">
         <TextInput 
           name="Name"
           handleChange={this.handleChange} />
@@ -77,7 +77,7 @@ export default class AddForm extends Component {
           type="textarea"
           handleChange={this.handleChange} />
 
-        <button type="submit" className="btn btn-primary btn-block">
+        <button type="submit" className="btn btn-primary btn-block" onClick={this.add}>
           Add
         </button>
       </form>

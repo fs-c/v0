@@ -1,4 +1,4 @@
-import axios from 'axios'
+import request from 'request-promise'
 
 import React, { Component } from 'react'
 import './App.css'
@@ -9,13 +9,34 @@ import PersonsList from './PersonsList.js'
 class App extends Component {
   constructor() {
     super()
+
+    this.state = { persons: [  ] }
+
+    this.updatePersons()
   }
 
   addPerson = p => {
-    console.log(p)
+    request({
+      method: 'POST',
+      uri: 'http://localhost:8080/api/persons',
+      body: p,
+      json: true
+    }).then(() => {
+      console.log('added person')
+      this.updatePersons()
+    }).catch(console.error)
+  }
 
-    axios.post('http://localhost:8080/api/persons', p)
-      .then(console.log)
+  getPersons = () => {
+    return request({
+      method: 'GET',
+      uri: 'http://localhost:8080/api/persons',
+      json: true
+    })
+  }
+
+  updatePersons = () => {
+    this.getPersons().then(persons => this.setState({ persons }))
       .catch(console.error)
   }
 
@@ -29,7 +50,7 @@ class App extends Component {
             </div>
           </div>
 
-          <PersonsList />
+          <PersonsList persons={this.state.persons} />
         </div>
       </div>
     )

@@ -1,22 +1,18 @@
 import React, { Component } from 'react'
 
-const format = items => Object.keys(items)
-  .map(key => ({ key, val: items[key] }))
-  .filter(t => Boolean(t.val) && t.key !== '_')
-
 class PersonCard extends Component {
   constructor(props) {
     super(props)
 
-    this.person = this.props.p
+    this.person = this.props.person
   }
 
   render() {
     return (
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">{this.person.name}</h4>
-          <p class="card-text">{this.person.notes}</p>
+      <div className="card">
+        <div className="card-body">
+          <h4 className="card-title">{this.person.name}</h4>
+          <p className="card-text">{this.person.notes}</p>
         </div>
       </div>
     )
@@ -24,18 +20,10 @@ class PersonCard extends Component {
 }
 
 export default class PersonsList extends Component {
-  constructor() {
-    super()
-
-    this.state = { persons: [] }
-  }
-
-  componentWillMount = () => {
-  }
-
   render() {
     return (
       <div>
+        {this.props.persons.map(p => <PersonCard person={p} key={p._id} /> )}
       </div>
     )
   }

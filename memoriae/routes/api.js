@@ -1,12 +1,13 @@
-const express = require('express')
+const router = require('express').Router()
 const mongoose = require('mongoose')
 
 const Person = require('../schemas/person')
 
-const router = express.Router()
-
 router.get('/persons', (req, res) => {
-  Person.find({  }).then(res.json)
+  Person.find({  }, (err, result) => {
+    if (err) return res.status(400).send()
+    res.json(result)
+  })
 })
 
 router.post('/persons', (req, res) => {
@@ -16,7 +17,7 @@ router.post('/persons', (req, res) => {
     email: req.body.email,
     birth: req.body.birth,
     notes: req.body.notes,
-  }).save((err, person) => console.log(err, person))
+  }).save(err => err && console.error(err))
 })
 
 module.exports = router
