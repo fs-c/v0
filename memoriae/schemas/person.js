@@ -1,13 +1,11 @@
 const mongoose = require('mongoose')
 
-const personSchema = new mongoose.SchemaType({
+const Person = mongoose.model('Person', mongoose.Schema({
   name: String,
   phone: String,
   email: String,
   birth: String,
   notes: String
-})
-
-const Person = mongoose.model('Person', personSchema)
+}))
 
 module.exports = Person

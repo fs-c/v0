@@ -1,7 +1,7 @@
+import axios from 'axios'
+
 import React, { Component } from 'react'
 import './App.css'
-
-import Gun from 'gun/gun'
 
 import AddForm from './AddForm.js'
 import PersonsList from './PersonsList.js'
@@ -9,12 +9,14 @@ import PersonsList from './PersonsList.js'
 class App extends Component {
   constructor() {
     super()
-
-    this.gun = Gun('http://localhost:8080/gun')
   }
 
   addPerson = p => {
-    this.gun.get('persons').set(p)
+    console.log(p)
+
+    axios.post('http://localhost:8080/api/persons', p)
+      .then(console.log)
+      .catch(console.error)
   }
 
   render() {
@@ -27,7 +29,7 @@ class App extends Component {
             </div>
           </div>
 
-          <PersonsList gun={this.gun}/>
+          <PersonsList />
         </div>
       </div>
     )
