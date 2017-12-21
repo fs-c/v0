@@ -20,4 +20,10 @@ router.post('/persons', (req, res) => {
   }).save(err => err && console.error(err))
 })
 
+router.get('/remove', (req, res) => {
+  Person.findOneAndRemove({ _id: req.body.id }, err => {
+    res.json({ success: Boolean(err) })
+  })
+})
+
 module.exports = router
