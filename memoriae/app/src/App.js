@@ -5,12 +5,13 @@ import './App.css'
 
 import AddForm from './AddForm.js'
 import PersonsList from './PersonsList.js'
+import PersonModal from './PersonModal.js'
 
 class App extends Component {
   constructor() {
     super()
 
-    this.state = { persons: [  ] }
+    this.state = { persons: [  ], open: null }
 
     this.updatePersons()
   }
@@ -27,16 +28,16 @@ class App extends Component {
     }).catch(console.error)
   }
 
-  getPersons = () => {
-    return request({
-      method: 'GET',
-      uri: 'http://localhost:8080/api/persons',
-      json: true
-    })
+  togglePerson = p => {
+    this.setState({ open: p._id })
   }
 
   updatePersons = () => {
-    this.getPersons().then(persons => this.setState({ persons }))
+    request({
+      method: 'GET',
+      uri: 'http://localhost:8080/api/persons',
+      json: true
+    }).then(persons => this.setState({ persons }))
       .catch(console.error)
   }
 
@@ -50,7 +51,12 @@ class App extends Component {
             </div>
           </div>
 
-          <PersonsList persons={this.state.persons} />
+          <PersonsList persons={this.state.persons} handleClick={this.togglePerson} />
+
+          {
+            this.state.persons.map(p => 
+              <PersonModal person={p} key={p._id} isOpen={this.state.open === p._id} />)
+          }
         </div>
       </div>
     )
