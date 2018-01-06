@@ -4,23 +4,23 @@ const log = require('./logger')
 
 module.exports = client => {
   client.on('loggedOn', details => 
-    log.event(`loggedOn event`, details))
+    log.debug(`loggedOn event (${details.ip_country_code}, ${details.vanity_url}, ${details.public_ip})`))
 
   client.on('steamGuard', email => 
-    log.event(`steamGuard event${email ? ' email code needed' : ''}`))
+    log.debug(`steamGuard event${email ? ' email code needed' : ''}`))
 
   client.on('error', err => 
-    log.warn(`error event (${Steam.EResult(err.eresult)})`))
+    log.warn(`error event (${Steam.EResult[err.eresult]})`))
 
   client.on('disconnected', (eresult, msg) =>
-    log.warn(`disconnected event (${Steam.EResult(eresult)}${msg ? ', ' + msg : ''})`))
+    log.warn(`disconnected event (${Steam.EResult[eresult]}${msg ? ', ' + msg : ''})`))
 
   client.on('webSession', () => 
-    log.event(`webSession event received`))
+    log.debug(`webSession event received`))
 
   client.on('friendMessage', () => 
-    log.event(`friendMessage event received`))
+    log.debug(`friendMessage event received`))
 
   client.on('friendTyping', () => 
-    log.event(`friendTyping event received`))
+    log.debug(`friendTyping event received`))
 }
