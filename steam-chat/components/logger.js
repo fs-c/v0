@@ -1,32 +1,29 @@
-const winston = require('winston')
-const moment = require('moment')
+const colors = require('colors')
+
+const time = () => require('moment')().format('hh:mm:SSA')
 
 const config = {
-  levels: {
-    error: 0,
-    warn: 1,
-    chat: 2,
-    event: 3,
-    verbose: 4,
-  },
-  colors: {
-    error: 'red',
-    warn: 'yellow',
-    chat: 'white',
-    event: 'grey',
-    verbose: 'cyan'
-  }
+  error: 'red',
+  debug: 'blue',
+  warn: 'yellow',
+  info: 'green',
+  chat: 'cyan',
+  verbose: 'grey'
 }
 
-const logger = module.exports = new winston.Logger({
-  levels: config.levels,
-  transports: [
-    new winston.transports.Console({
-      level: 'silly',
-      handleExceptions: false,
-      json: false,
-      colorize: true,
-      timestamp: () => moment().format('YYYY-MM-DD hh:mm:SSA')
-    })
-  ]
-})
+colors.setTheme(config)
+
+const log = Object.keys(config).reduce((acc, val, i, arr) => {
+  acc[val] = (msg, ...args) => {
+    if (val === 'debug' && process.env.NODE_ENV !== 'dev') return
+
+    console.log(`${time()} ${val[val]} - ${msg}`)
+    
+    if (process.env.NODE_ENV === 'dev')
+      args[0] && console.log(args)
+  }
+
+  return acc
+}, {  })
+
+module.exports = log
