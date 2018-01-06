@@ -12,9 +12,8 @@
   "dependencies": {
     "colors": "^1.1.2",
     "moment": "^2.20.1",
-    "readline-sync": "^1.4.7",
     "steam-totp": "^2.0.1",
     "steam-user": "^3.24.0",
-    "winston": "^2.4.0"
+    "steamcommunity": "^3.34.0"
   }
 }
