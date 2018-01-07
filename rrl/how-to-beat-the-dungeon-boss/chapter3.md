@@ -1,26 +1,28 @@
-When the dust finally settled, one hundred twenty-seven villages, including forty-eight mega towns, and three seventh class cities, were laid to absolute ruins after the wake of the first simultaneous monster wave attack to ever hit the Region of Dar'Anahcta. And although the enemy hordes were eventually subjugated, the cost of ‘victory’ was immense.
+Edited - drizz - 1/7/18
 
-The official numbers as of the last tabulated statistics regarding the casualties of war, released by the Imperial Disaster Coordinating Committee, verified, that the death toll reached an abysmal all-time high of 412,600 (more or less) body count.
+When the dust finally settled, one hundred twenty-seven villages, including forty-eight mega towns, and three seventh-class cities, were laid to absolute waste during the first simultaneous monster wave attack to ever hit the Region of Dar'Anahcta. And although the enemy hordes were eventually subjugated, the cost of the ‘victory’ was immense.
 
-Among the casualties---an eighth of which were adventurers, a twelfth were Imperial soldiers and the rest were civilians.
+The official numbers as of the last tabulated statistics regarding the casualties of war, released by the Imperial Disaster Coordinating Committee, verified, that the death toll reached an abysmal all-time high of (more or less) 412,600 bodies.
 
-Region-wise, the tabulation had yet to even account for the enormous damages to properties and industry alike. Not to mention the devastation caused to both livestock and agriculture, which made all the matter even worse.
+Of the casualties, an eighth were adventurers, a twelfth Imperial Soldiers, and the rest were civilians.
 
-It was indeed a feast for the crows. It was the day when the land of free men were drowned in blood. Lifeless grotesque bodies, both of humans and beasts alike, decorated the landscape in horrific fashion. No man, woman nor child were spared during that day.
+Region-wise, the tabulation had yet to even account for the enormous damages to private properties and industry alike. Not to mention the devastation caused to both livestock and agriculture, which made the matter even worse.
 
-Most of the ones who did survive and had lived to tell the tale today, either had fought hard enough to earn their second lives or had hidden masterfully enough to escape the clutches of death back then.
+It was indeed a feast for the crows, the day when the land of free men was drowned in blood. Lifeless, grotesque bodies, of humans and beasts alike, decorated the landscape in horrific fashion. No man, woman or child was spared during that day.
 
-Fight or flight. Those were the only two popular choices at that time. The rest that didn't choose from either option and were helplessly caught in the middle were the first people to perish. Their bodies were now serving as nutrients for the many different creatures and vegetation of earth to feed on.
+Most of the ones who did survive and lived to tell the tale either had fought hard enough to earn their continued life, or had hidden masterfully enough to escape the clutches of death.
+
+Fight or flight. Those were the only two viable choices the peoples had at that time. The rest, those that didn't choose from either option were the first to perish. Their bodies were now serving as nutrients for the many different creatures and plants of earth to feed on.
 
 Ashes to ashes, dust to dust.
 
-It had been almost three years since the Red Night happened. And to this day, citizens could still recall the images of terror in horrifying detail like it was yesterday. The majority of the people were still traumatized. More were still in mourning even now. They found it extremely difficult to move on. Who wouldn't? The tragedy was simply too great to just bury on a whim.
+It had been almost three years since the Red Night happened. And to this day, citizens could still recall the images of terror in horrifying detail like it had been yesterday. The majority of the people were still traumatized. Many were still in mourning even now, finding it extremely difficult to move on. Who wouldn't? The tragedy was simply too great to just bury on a whim.
 
-And so, in an effort to console the masses, the great Luc'Valaria Empire declared that each year, during every month of the dragon, on its twenty-second day, the empire would hold an Imperial Day of Healing.
+And so, in an effort to console the masses, the great Luc'Valaria Empire declared that each year, during every month of the dragon, on its twenty-second day, they would hold an Imperial Day of Healing.
 
-It was to showcase the empire's solidarity to the world. That although the Red Night only happened under the confines of Dar'Anahcta, as a collective, they will grieve as one and will also heal as one--- together as one united empire!
+It was to showcase the empire's solidarity with their populace to the world. That although the Red Night only happened under the confines of Dar'Anahcta, as a collective, they would grieve as one and would also heal as one -- together as one united empire!
 
-With the Day of Healing celebration fast approaching, the narrow streets of Ale'Xandria, crowned city and royal capital to the empire, were becoming more and more hectic. One enormous carriage after the next, it was easy to tell just by judging the number of tourists who're arriving by the dozens each day that the city was nearing population saturation. Every single one, wanting to be a part of the biggest memorial celebration in the history of the empire to date.
+With the Day of Healing celebration fast approaching, the narrow streets of Ale'Xandria, crowned city and royal capital to the empire, were becoming more and more hectic. One enormous carriage after the next, it was easy to tell just by judging the number of tourists who were arriving by the dozens each day that the city was nearing overpopulation. Every single one wanting to be a part of the biggest memorial celebration in the history of the empire to date.
 
 "I like what you did to this place. It's very you. The Spit Roast Café. It has a nice ring to it."
 
@@ -28,7 +30,7 @@ With the Day of Healing celebration fast approaching, the narrow streets of Ale'
 
 "They all sounded very interesting but no thank you. I'm okay with just the regular."
 
-Five minutes didn't seem to be long enough to make a coffee. It just went by too quickly in between conversation. The two didn't even noticed that the 'maid' was there already, serving them the beverage.
+Five minutes didn't seem to be long enough to make a coffee. It just went by too quickly in between conversation. The two hadn't even noticed that the 'maid' was there already, serving them the beverage.
 
 "I mean no offense but I see that you have recovered quite nicely after I've just clipped your wings most recently. You really are tenacious Arnaud. Most impressive as always." complimented the man dressed in an exquisite pair of sky blue Valarian tux-suit. A vibrant lily flower nested on his jacket's left breast pocket. His well kept, short but wavy platinum hair, complimented his entire ensemble to the tee. White leather shoes included. He was a vision all on his own.
 
@@ -38,15 +40,15 @@ Dropping two ivory toned sugar cubes into his cup, the gentleman in a tux, moved
 
 "Ohohoho. You? Clipped my wings? Really?! Very funny. Best joke I've heard all day and it's not even supper yet." chided Arnaud. His tone thick of sarcasm. "Is that why until now, you still have those protective barriers up on all of your territories?" Said the little boy in his pair of white pajamas. He was still wearing his sleepy morning face along with his jet black bed hair. The boy didn't even bother combing them.
 
-"Stop with the non-sense Eliaril. You knew full well that we've both suffered almost equally. Don't try to make it sound like it was your victory." the boy with his brilliant gray eyes was half-chuckling as he took a little bite off of the egg basket sandwich toast right in front of him.
+"Stop with the non-sense Eliaril. You know full well that we've both suffered almost equally. Don't try to make it sound like it was your victory." the boy with his brilliant gray eyes was half-chuckling as he took a little bite off of the egg basket sandwich toast right in front of him.
 
-"I'm pretty sure you didn't come here to gloat since, uh, you know.... you didn't... win." Arnaud purposely hung the delivery of the last word just so he could put more weight into it. "Now stop with the pretense and just tell me why you're here already. Unless you want me to show you the door forcefully. Would you prefer it like that...Dunphillon...Avatar of Slaughter?!"
+"I'm pretty sure you didn't come here to gloat since, uh, you know... you didn't... win." Arnaud purposely hung the delivery of the last word just so he could put more weight into it. "Now stop with the pretense and just tell me why you're here already. Unless you want me to show you the door forcefully. Would you prefer it like that...Dunphillon...Avatar of Slaughter?!"
 
-He knew his younger brother too well. Somewhere, buried deep behind that well-poised facade, was a temperamental, overly sensitive snowflake that gets easily upset over little trivial things. Things as trivial as a name.
+He knew his younger brother too well. Somewhere, buried deep behind that well-poised facade, was a temperamental, overly sensitive snowflake that got easily upset over little trivial things. Things as trivial as a name.
 
 "I told you not to ever call me by that name... EVER!"
 
-An aura of terrifying magnificent gold suddenly surged out of the man in a tux. Bursts of enormous pressure were being exerted inside the room too suddenly, it felt suffocating.
+An aura of terrifying but magnificent gold suddenly surged out of the man in the tux. Bursts of enormous pressure were being exerted inside the room too suddenly, it felt suffocating.
 
 Eliaril seemed enormously upset.
 
@@ -64,17 +66,17 @@ It was ironic to call Arnaud an old man while his form was that of a child's. Me
 
 "You were His son too back then. That was before He decided to smite you for being such a rebellious piece of tool!"
 
-"Bullcrap! He smited me you know why?.... Because he's full of shit!!!"
+"Bullcrap! He smited me you know why?... Because he's full of shit!!!"
 
-Suddenly, a wave of hot invisible energy rippled across the entire café. It shook the very foundation of the two-story building, shattering every stained glass window available in the place. The people outside, even as far as three blocks away felt it too.
+Suddenly, a wave of hot invisible energy rippled across the entire café. It shook the very foundation of the two-story building, shattering every stained glass window available in the place. The people outside, even as far as three blocks away, felt it too.
 
-Undeterred, the man in the suit just stared at him for a very long time.Those blue eyes could really kill if it wanted to.
+Undeterred, the man in the suit just stared at him for a very long time. Those blue eyes could really kill if they wanted to.
 
-"You've never changed at all Arnaud. You always allow your emotions to get the best of you." The man averted his eyes away to check for his watch. His golden aura slowly retracting. So was Arnaud's.
+"You never changed at all Arnaud. You always allow your emotions to get the best of you." The man averted his eyes away to check for his watch. His golden aura slowly retracting. So was Arnaud's.
 
-"Well then. Look at the hour. I didn't even notice that it was already time to leave. Thank you for the coffee. It was lovely. I'll see myself out." Eliaril straightened himself up, tidied his suit and fastened his jacket to a close.
+"Well then. Look at the hour. I didn't even notice that it was already time to leave. Thank you for the coffee. It was lovely. I'll see myself out." Eliaril straightened up, tidied his suit and fastened his jacket to a close.
 
-In just a few strides, the man already arrived next to the door. While twisting the knob, he looked over to his shoulder to give Arnaud one final look. "Stop resisting already, brother. You know you're going to fall eventually. I am our Father's sword now. So, please watch out and take care of yourself until then... our dear Gargamelo. The First Deceiver. The Devourer of Infinite Light!"
+In just a few strides, the man already arrived next to the door. While twisting the knob, he looked over his shoulder to give Arnaud one final look. "Stop resisting already, brother. You know you're going to fall eventually. I am our Fathers sword now. So, please watch out and take care of yourself until then... our dear Gargamelo. The First Deceiver. The Devourer of Infinite Light!"
 
 The door didn't have to open. There was no real need for it simply because the man in tux vanished already into thin air.
 
@@ -109,27 +111,27 @@ When the Red Night happened, I shamelessly took full advantage of it. The chaos 
 
 Now how did I achieve that?
 
-First, back then, I picked up a name that was something straight out of a children's book which was about a traveling joe who could multiply a single bread to a thousand more. He also did the same thing to the fried fish. He then distributeed the two and started feeding the homeless. Anyway, he seemed like a very upright person. So, I adopted his name but with a little twist. People called me Hezues now and they were very accepting of it.
+First, back then, I picked up a name that was something straight out of a children's book which was about a traveling joe who could multiply a single bread to a thousand more. He also did the same thing to fried fish. He then distributed the two and started feeding the homeless. Anyway, he seemed like a very upright person. So, I adopted his name but with a little twist. People called me Hezues now and they were very accepting of it.
 
-Second, I assumed a disguise. Of course I can't be walking around in broad daylight just as the way I was, can I? Good thing, after the aftermath of the Red Night, monster corpses dropped a multitude of items after they had decomposed. They were scattered all over the fields, so it was like a fiesta for me looting items here and there. Luckily enough, among the mountain of items lying around the battlefield back then, I found the item that I needed.
+Second, I assumed a disguise. Of course, I couldn't be walking around in broad daylight just as the way I was, can I? Good thing, in the aftermath of the Red Night, monster corpses dropped a multitude of items after they had decomposed. They were scattered all over the fields, so it was like a fiesta for me looting items here and there. Luckily enough, among the mountain of items lying around the battlefield back then, I found the item that I needed.
 
-The item was called Clay Play. It was perfect because the item would allow me to take the shape of a normal human. Except that, of course, I won't be having the exact skin of a human, nor the organs, nor the eyes for example. It was solely to put volume on my bones and nothing more.
+The item was called Clay Play. It was perfect because it would allow me to take the shape of a normal human. Except that, of course, I wouldn't be having the exact skin of a human, nor the organs, nor the eyes for example. It was solely to put volume on my bones and nothing more.
 
-To hide my face, I wore a white mask. I painted a black cross over it for some dramatics too. And to hide my clay body, I adapted the Oriental Style way of clothing. I think this was what they called a Ninja Suit.
+To hide my face, I wore a white mask. I painted a black cross over it for some dramatics too. And to hide my clay body, I adapted an Oriental Style of clothing. I think this was what they called a Ninja Suit.
 
-Third, I invented an excuse. I cant be talking to the locals with a voice like mine to be quite honest. People would simply go bullocks when they hear me speak. So, I made up an excuse that an Orc Shaman placed a curse on me during the Red Night and made irreparable damage to many different parts of my body, including my voice. Fortunately, they were easily swayed. Otherwise, I would still be hiding in the shadows until now.
+Third, I invented an excuse. I couldn't be talking to the locals with a voice like mine, to be honest. People would simply go bollocks if they heard me speak. So I made up an excuse that an Orc Shaman placed a curse on me during the Red Night and caused irreparable damage to many different parts of my body, including my voice. Fortunately, they were easily swayed. Otherwise, I would still be hiding in the shadows even now.
 
-With all my preparation completed, I slipped into their ranks without much of a problem. I pretended to help them rebuild their town and homes for free of course. I capitalized on the fact that I didn't tire out easily. And because of that, the townspeople used me for everything. Tasks like carpentry, wall repairs, plumbing, and even babysitting. You name it, I'd probably done it. I had no complaints either way since I needed to win their favor to begin with.
+With all my preparation completed, I slipped into their ranks without much of a problem. I pretended to help them rebuild their town and homes, for free of course. I capitalized on the fact that I didn't tire out easily. And because of that, the townspeople used me for everything. Tasks like carpentry, wall repairs, plumbing, and even babysitting. You name it, I probably did it. I had no complaints either way since I needed to win their favor, to begin with.
 
-So far, the town of Tir'ad Pass had been nothing but pleasant to me. And although my pleasantries were mostly on the surface, it helped me get by and not get murdered.
+So far, the residents of the town of Tir'ad Pass had been nothing but pleasant to me. And although my pleasantries were mostly on the surface, it helped me get by and not get murdered.
 
-Yesterday, just when I thought that I had somehow broken free from my Master's clutches, a strong energy surge confirmed his presence once again. It was very far but I somehow felt him like he was standing right next to me.
+Yesterday, just when I thought that I had somehow broken free of my Master's clutches, a strong energy surge confirmed his presence once again. It was very far but I somehow felt him like he was standing right next to me.
 
 I almost killed someone with a hatchet when the surge swept. Master's anger somehow affected me too. Good thing that I was able to swing the tool away from the human and bury it right next to a hunk of wood just in time. I ran away as far as possible until the manipulation wore off. I only came back when I knew it was safe already to return.
 
 Today, the town administrator received an urgent news from the capital and I couldn't be more than excited to hear about it.
 
-This was just in from the Adventurer's Guild office and they had confirmed that a mass testing for the Adventurers Licensure Exam was in progress. Registration was on-going and the exam will commence in seven days time from today. All examinees were to report and convene at the Ivory Tower near Ale'Xandria.
+It was just in from the Adventurer's Guild office and they confirmed that a mass testing for the Adventurers Licensure Exam was in progress. Registration was on-going and the exam would commence in seven days time from today. All examinees were to report and convene at the Ivory Tower near Ale'Xandria.
 
 Awesome news!
 
