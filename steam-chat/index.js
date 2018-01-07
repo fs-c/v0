@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 
 const User = require('steam-user')
-const SteamID = require('steamid')
 
 let dictionary = {  }
 
-const totp = require('steam-totp')
 const rl = require('readline').createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -18,6 +16,7 @@ const rl = require('readline').createInterface({
 })
 
 const log = require('./components/logger')
+const retry = (fn, ...args) => fn(...args).catch(err => retry(fn, args))
 
 let client = new User()
 let account = require('./scripts/getAccount')()
@@ -29,7 +28,7 @@ client.logOn(account)
 
 client.on('steamGuard', (email, callback) => {
   if (!email && account.shasec)
-    return callback(totp.getAuthCode(account.shasec))
+    return callback(require('steam-totp').getAuthCode(account.shasec))
 
   console.log(`${email ? 'Email' : 'Mobile'} code: `)
   rl.on('line', line => callback(line.trim()))
@@ -40,15 +39,16 @@ client.on('loggedOn', () => {
 
   log.info('ready')
 
-  require('./components/buildDictionary')(client.steamID.getSteamID64())
-    .then(d => {
-      log.debug(`dictionary ready`)
-      dictionary = d
-    }).catch(e => { throw log.error('failed to build dictionary', e) })
+  retry(require('./components/buildDictionary'), client.steamID.getSteamID64())
+    .then(dict => {
+      log.debug(`got dictionary`)
+    
+      dictionary = dict
+    }).catch(console.error)
 })
 
 client.on('friendMessage', (senderID, message) => {
-  log.chat(`${dictionary[senderID.toString()].name} >> ${message}`)
+  console.log(`${dictionary[senderID.toString()].name} >> ${message}`)
 })
 
 rl.on('line', input => {
