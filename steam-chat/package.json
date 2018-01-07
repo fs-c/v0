@@ -15,5 +15,8 @@
     "steam-totp": "^2.0.1",
     "steam-user": "^3.24.0",
     "steamcommunity": "^3.34.0"
+  },
+  "bin": {
+    "steam-chat": "index.js"
   }
 }

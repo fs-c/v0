@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const User = require('steam-user')
 const SteamID = require('steamid')
 
@@ -50,8 +52,6 @@ client.on('friendMessage', (senderID, message) => {
 })
 
 rl.on('line', input => {
-  log.verbose(`got new line "${input}"`)
-
   if (input.indexOf('<<') === -1) return
 
   let recipient = input.slice(0, input.indexOf('<<')).trim()
