@@ -1,3 +1,5 @@
+Edited - drizz - 9/6/18
+
 He had lost count.
 
 Time seemed to have looped eternally. 

@@ -1,3 +1,5 @@
+Edited - drizz - 9/6/18
+
 There were rumors going around town lately regarding a wandering deviant skeleton soldier loitering around Dungeon Anu'blahc. Witnesses swore to have sighted the peculiar undead scavenging through the remains of the deceased adventurers littered all across the different floors of the dungeon. Some had even insisted that they have sighted the thing salvage some swords and armors down on the fifth floor.
 
 It was beyond odd since all level one through three species grouped up exclusively within the confines of the first floor alone. And so, to witness one being on the fifth floor, or anywhere else on the dungeon, wandering around like a tourist, even gathering tools and weapons for god knows what reason, was beyond anyone’s comprehension.
