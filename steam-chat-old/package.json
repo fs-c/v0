@@ -1,0 +1,23 @@
+{
+  "name": "steam-chat",
+  "version": "1.0.0",
+  "description": "Steam chat in the terminal.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "moment": "^2.20.1",
+    "steam-totp": "^2.0.1",
+    "steam-user": "^3.24.0",
+    "steamcommunity": "^3.34.0"
+  },
+  "bin": {
+    "steam-chat": "index.js"
+  },
+  "devDependencies": {}
+}
