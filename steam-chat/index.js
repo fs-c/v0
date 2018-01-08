@@ -1,67 +1,61 @@
-#!/usr/bin/env node
-
-const User = require('steam-user')
-
-let dictionary = {  }
-
-const rl = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout,
-  completer: (line, callback) => {
-    const hits = Object.values(dictionary)
-      .map(e => e.name).filter(e => e.startsWith(line))
-        
-    callback(null, [ hits, line ])
-  }
-})
+const Chat = require('./Chat')
+const User = require('./User')
 
 const log = require('./components/logger')
-const retry = (fn, ...args) => fn(...args).catch(err => retry(fn, args))
 
-let client = new User()
-let account = require('./scripts/getAccount')()
+const readline = require('readline')
 
-client.setOption('promptSteamGuardCode', false)
-require('./components/logEvents')(client)
-
-client.logOn(account)
-
-client.on('steamGuard', (email, callback) => {
-  if (!email && account.shasec)
-    return callback(require('steam-totp').getAuthCode(account.shasec))
-
-  console.log(`${email ? 'Email' : 'Mobile'} code: `)
-  rl.on('line', line => callback(line.trim()))
+let rl = global.rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
 })
 
-client.on('loggedOn', () => {
-  client.setPersona(1)
+let chat = {  } // Stub until user ready.
+let user = new User(require('./scripts/getAccount')())
 
-  log.info('ready')
+// The last (newest) message message we received. 
+let lastReceived = {  }
 
-  retry(require('./components/buildDictionary'), client.steamID.getSteamID64())
-    .then(dict => {
-      log.debug(`got dictionary`)
-    
-      dictionary = dict
-    }).catch(console.error)
+// Log on to steam with given account and pass initialize chat on success.
+user.logOn()
+  .then(() => chat = new Chat(user.client))
+  // This only throws when a truly fatal error occurs, no point in continuing. 
+  .catch((err, ...info) => { throw log.error(err, ...info) })
+
+// Set up readline only when we have a list for the autocomplete function.
+chat.on('dictionary', dict => {
+  rl = global.rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    completer: (line, callback) => {
+      const hits = Object.values(chat.dictionary)
+        .map(e => e.name).filter(e => e.startsWith(line))
+  
+      callback(null, [ hits, line ])
+    }
+  })
 })
 
-client.on('friendMessage', (senderID, message) => {
-  console.log(`${dictionary[senderID.toString()].name} >> ${message}`)
+// Log incoming messages, and update last received message.
+chat.on('message', message => {
+  log.debug(message)
+
+  lastReceived = message
+
+  console.log(`[${message.formattedDate}] ${message.sender.name} > ${message}`)
 })
 
+// Handle and parse user input.
 rl.on('line', input => {
-  if (input.indexOf('<<') === -1) return
+  if (input.includes('/'))
+    return // handle command
 
-  let recipient = input.slice(0, input.indexOf('<<')).trim()
-  let message = input.slice(input.indexOf('<<') + 2).trim()
+  let message = input.slice(input.indexOf(input.includes('>') ? '>' : '^') + 1)
+  let recipient = input.includes('>')
+    ? chat.dictionary[input.slice(0, input.indexOf('>')).trim()]
+    : input.includes('^') 
+      ? lastReceived.author ? lastReceived.author.id : undefined
+      : undefined
 
-  let id = Object.values(dictionary)
-    .filter(e => e.customURL === recipient || e.name === recipient)[0]
-    .steamID
-
-  log.debug(`sending message ${message} to ${recipient} / ${id.toString()}`)
-
-  client.chatMessage(id, message)
+  return chat.send(recipient, message)
 })

@@ -1,21 +1,23 @@
 const colors = require('colors')
-
 const time = () => require('moment')().format('hh:mm:SSA')
 
 const config = {
   error: 'red',
-  debug: 'blue',
-  warn: 'yellow',
-  info: 'green',
-  chat: 'cyan',
-  verbose: 'grey'
+  debug: 'blue' 
 }
 
-colors.setTheme(config)
+colors.setTheme()
 
-const log = Object.keys(config).reduce((acc, val, i, arr) => {
+const log = module.exports = Object.keys(config).reduce((acc, val, i, arr) => {
   acc[val] = (msg, ...args) => {
     if (val === 'debug' && process.env.NODE_ENV !== 'dev') return
+    
+    if (typeof msg === 'object') {
+      console.log(`${time()}` + `${val} - object`[val])
+      console.log(msg)
+
+      return
+    }
 
     console.log(`${time()} ${val[val]} - ${msg}`)
     
@@ -25,5 +27,3 @@ const log = Object.keys(config).reduce((acc, val, i, arr) => {
 
   return acc
 }, {  })
-
-module.exports = log

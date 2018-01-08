@@ -1,19 +1,21 @@
-const parse = module.exports = () => {
-  const args = process.argv.slice(2)
-    .map((e, i) => !(i % 2) ? e.slice(e.lastIndexOf('-')) : e)
-    .reduce((acc, val, i, a) => {
-      if (!(i % 2)) acc[val] = a[i + 1]
-      return acc
-    }, {  })
+const HOME = require('os').homedir
+const ARGS = process.argv.slice(2)
 
-  if (args.user && args.pass) return {
-      accountName: args.user,
-      password: args.pass
-    }
+const fs = require('fs')
+const path = require('path')
 
-  if (args.account && require('fs').existsSync('../../steamdata.json'))
-    return require('../../../steamdata.json')[args.account]
+const get = module.exports = () => {
+  if (fs.existsSync(path.join(homedir, '.steam.json'))) {
+    let accounts = require(path.join(homedir, '.steam.json'))
+    
+    let account = 
+      accounts[ARGS[ARGS.indexOf('--account') + 1]] ||
+      accounts.default ||
+      (ARGS.includes('--user') && ARGS.includes('--pass')) ? {
+        accountName: ARGS[ARGS.indexOf('--user') + 1],
+        password: ARGS[ARGS.indexOf('--pass') + 1]
+      } : undefined
 
-  require('../components/logger').warn('no args provided, assuming defaults')
-  return require('../../../steamdata.json').main
+    return account
+  }
 }
