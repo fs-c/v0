@@ -3,8 +3,10 @@ const SteamUser = require('steam-user')
 
 const log = require('./logger')
 
+const fwd = require('fwd')
 const steamTotp = require('steam-totp')
 
+// steam-user wrapper.
 const User = module.exports = class extends EventEmitter {
   constructor(account) {
     super()
@@ -12,11 +14,20 @@ const User = module.exports = class extends EventEmitter {
     this.account = account
 
     this.client = new SteamUser()
+
+    // We'll do that ourselves.
     this.client.setOption('promptSteamGuardCode', false)
+
+    // Forward all client events to own emitter.
+    fwd(client, this)
   }
 
+  /// Statically export the enums we need.
+  static get EResult() { return SteamUser.EResult }
+  static get EPersonaState() { return SteamUser.EPersonaState }  
+
   logOn() {
-    log.debug(`logging on with account ${this.account.accountName}`)
+    log.debug(`logging on`)
 
     // Only errors relating to incorrect account data are considered fatal.
     const isFatal = err => {
@@ -38,22 +49,25 @@ const User = module.exports = class extends EventEmitter {
       console.log(`Enter ${email ? 'email' : 'mobile'} code: `)
       global.rl.on('line', input => {
         if (!global.rl.codeListen) return
-        callback(input.slice(5).trim())
+        callback(input.trim())
         global.rl.codeListen = false
       })
     })
 
     return new Promise((resolve, reject) => {
-      // Resolve once we get a session, not only on loggedIn.
+      // Unlike loggedOn, only emitted when we really are logged on.
       this.client.on('webSession', () => resolve())
 
       // Only reject on fatal error, retry otherwise.
       this.client.on('error', err => {
-        log.debug(`got error ${SteamUser.EResult[err.eresult]}`, err)
+        log.debug(`got error ${User.EResult[err.eresult]}`, err)
 
         if (isFatal(err))
           return reject(err)
 
+        client.logOff() // Just in case. 
+
+        // Retry if not fatal (e.g. because steam is being buggy)
         setTimeout(this.client.logOn, 30 * 1000, this.account)
       })
     })
