@@ -54,9 +54,9 @@ rl.on('line', input => {
   // Either:
   //  'recipient > message' or
   //  '^ message' where recipient is sender of last received message.
-  let message = input.slice(input.indexOf(input.includes('>') ? '>' : '^') + 1)
-  let recipient = input.includes('>')
-    ? chat.dictionary[input.slice(0, input.indexOf('>')).trim()]
+  let message = input.slice(input.indexOf(input.includes('<') ? '<' : '^') + 1)
+  let recipient = input.includes('<')
+    ? chat.dictionary[input.slice(0, input.indexOf('<')).trim()]
     : input.includes('^') 
       ? lastReceived.author ? lastReceived.author.id : undefined
       : undefined
