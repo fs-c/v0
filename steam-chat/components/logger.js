@@ -3,6 +3,7 @@ const time = () => require('moment')().format('hh:mm:SSA')
 
 const config = {
   error: 'red',
+  warn: 'yellow',
   debug: 'blue' 
 }
 
@@ -16,7 +17,7 @@ const log = module.exports = Object.keys(config).reduce((acc, val, i, arr) => {
     if (typeof msg === 'object') {
       console.log(`${time()}` + `${val} - object`[val])
       console.log(msg)
-      for (const arg of args) console.log(arg)
+      args.forEach(console.log)
 
       return
     }
