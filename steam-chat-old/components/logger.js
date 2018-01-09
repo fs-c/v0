@@ -19,7 +19,7 @@ const log = Object.keys(config).reduce((acc, val, i, arr) => {
 
     console.log(`${time()} ${val[val]} - ${msg}`)
     
-    if (process.env.NODE_ENV === 'dev')
+    if (process.env.NODE_ENV === 'dev' && process.argv.includes('--verbose'))
       args[0] && console.log(args)
   }
 
