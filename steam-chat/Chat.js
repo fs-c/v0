@@ -27,7 +27,7 @@ const Chat = module.exports = class extends User {
   }
 
   send(recipient, message) {
-    this.client.chatMessage(recipient, message)
+    this.client.chatMessage(recipient, message || '')
   }
 }
 
