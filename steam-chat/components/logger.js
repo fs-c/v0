@@ -6,22 +6,24 @@ const config = {
   debug: 'blue' 
 }
 
-colors.setTheme()
+colors.setTheme(config)
 
 const log = module.exports = Object.keys(config).reduce((acc, val, i, arr) => {
   acc[val] = (msg, ...args) => {
-    if (val === 'debug' && process.env.NODE_ENV !== 'dev') return
+    if (val === 'debug' && !global.DEV)
+      return
     
     if (typeof msg === 'object') {
       console.log(`${time()}` + `${val} - object`[val])
       console.log(msg)
+      for (const arg of args) console.log(arg)
 
       return
     }
 
     console.log(`${time()} ${val[val]} - ${msg}`)
     
-    if (process.env.NODE_ENV === 'dev')
+    if (global.DEV && process.argv.includes('--verbose'))
       args[0] && console.log(args)
   }
 
