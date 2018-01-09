@@ -4,15 +4,18 @@ const log = require('./components/logger')
 
 const readline = require('readline')
 
+// Prepare global object with config, this throws if it misses something that
+// can't be prompted..
 require('./scripts/getConfig')
 
 let chat = new Chat(global.ACCOUNT)
 
+// Setup global radline interface with autocompletion.
 global.rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
   completer: (line, callback) => {
-    if (!chat.dictionary)
+    if (!chat.dictionary) // Fallback to empty array if not yet initialised.
       return callback(null, [ [], line ])
 
     const hits = Object.values(chat.dictionary)
@@ -48,12 +51,18 @@ rl.on('line', input => {
   if (input.includes('/'))
     return // TODO: handle command
 
+  // Either:
+  //  'recipient > message' or
+  //  '^ message' where recipient is sender of last received message.
   let message = input.slice(input.indexOf(input.includes('>') ? '>' : '^') + 1)
   let recipient = input.includes('>')
     ? chat.dictionary[input.slice(0, input.indexOf('>')).trim()]
     : input.includes('^') 
       ? lastReceived.author ? lastReceived.author.id : undefined
       : undefined
+
+  if (recipient)
+    return log.warn(`invalid recipient`)
 
   return chat.send(recipient, message)
 })

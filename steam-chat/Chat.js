@@ -7,11 +7,14 @@ const Chat = module.exports = class extends User {
     super(account)
 
     this.logOn().then(() => {
-      return log.debug(`logged on`)
+      log.debug(`logged on`)
+
+      // Go online to receive messages.
+      client.setPersona(User.EPersonaState['Busy'])
     }).then(() => this.buildDictionary(this.client.steamID)).then(dict => {
       this.dictionary = dict
       this.emit('dictionary', this.dictionary)
-    }).catch(log.error)
+    }).catch(log.error) // This should never throw.
 
     this.client.on('friendMessage', (senderID, content) => {
       let message = {

@@ -36,6 +36,7 @@ const expand = friends => {
   })
 }
 
+// Build an object of friends of user with id, and populate it with their data.
 const build = module.exports = id => {
   return new Promise((resolve, reject) => {
     getFriends(id.toString())
