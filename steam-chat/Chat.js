@@ -23,8 +23,8 @@ const Chat = module.exports = class extends User {
         content,
         sender: this.dictionary
           .filter(e =>
-            e.steamID.toString() === senderID.toString())[0]
-            || { id: senderID },
+            e.steamID.toString() === senderID.toString())[0] ||
+            { id: senderID },
         formattedDate: moment().format('h:mm:ss a')
       }
 
