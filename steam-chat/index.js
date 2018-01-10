@@ -5,7 +5,7 @@ const log = require('./components/logger')
 const readline = require('readline')
 
 // Prepare global object with config, this throws if it misses something that
-// can't be prompted..
+// can't be prompted.
 require('./scripts/getConfig')
 
 let chat = new Chat(global.ACCOUNT)
