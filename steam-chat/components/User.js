@@ -19,10 +19,10 @@ const User = module.exports = class extends EventEmitter {
     this.client.setOption('promptSteamGuardCode', false)
 
     // Forward all client events to own emitter.
-    fwd(client, this)
+    fwd(this.client, this)
   }
 
-  /// Statically export the enums we need.
+  // Expose the enums we need.
   static get EResult() { return SteamUser.EResult }
   static get EPersonaState() { return SteamUser.EPersonaState }  
 
