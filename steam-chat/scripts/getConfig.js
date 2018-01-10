@@ -29,12 +29,12 @@ if (fs.existsSync(CONFIG) && validJSON(CONFIG)) {
   let accounts = require(CONFIG)
     
   if (ARGS.includes('--account'))
-    account = accounts[ARGS[ARGS.indexOf('--account')]]
+    account = accounts[ARGS[ARGS.indexOf('--account') + 1]]
   else 
     account = accounts.default
 
-  if (account.apikey)
-    global.API_KEY = account.apikey
+  if (account.apikey || accounts.default.apikey)
+    global.API_KEY = account.apikey || accounts.default.apikey
 
   if (account)
     return global.ACCOUNT = account
