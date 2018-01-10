@@ -9,6 +9,7 @@ const config = {
 
 colors.setTheme(config)
 
+// Build object of functions based on the config object.
 const log = module.exports = Object.keys(config).reduce((acc, val, i, arr) => {
   acc[val] = (msg, ...args) => {
     if (val === 'debug' && !global.DEV)
@@ -17,7 +18,7 @@ const log = module.exports = Object.keys(config).reduce((acc, val, i, arr) => {
     if (typeof msg === 'object') {
       console.log(`${time()}` + `${val} - object`[val])
       console.log(msg)
-      args.forEach(console.log)
+      args.forEach(e => console.log(e))
 
       return
     }
