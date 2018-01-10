@@ -38,7 +38,7 @@ chat.on('message', message => {
 
   lastReceived = message
 
-  console.log(`[${message.formattedDate}]`
+  console.log(`[${message.formattedDate}] `
     + `${message.sender.name || message.sender.id.toString()} > `
     + `${message.content}`)
 })
@@ -56,12 +56,13 @@ rl.on('line', input => {
   //  '^ message' where recipient is sender of last received message.
   let message = input.slice(input.indexOf(input.includes('<') ? '<' : '^') + 1)
   let recipient = input.includes('<')
-    ? chat.dictionary[input.slice(0, input.indexOf('<')).trim()]
+    ? chat.dictionary.filter(e => 
+        e.name === input.slice(0, input.indexOf('<')).trim())[0].steamID
     : input.includes('^') 
-      ? lastReceived.author ? lastReceived.author.id : undefined
+      ? lastReceived.sender ? lastReceived.sender.id : undefined
       : undefined
 
-  if (recipient)
+  if (!recipient)
     return log.warn(`invalid recipient`)
 
   return chat.send(recipient, message)
