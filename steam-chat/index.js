@@ -52,7 +52,7 @@ rl.on('line', input => {
     return // TODO: handle command
 
   // Either:
-  //  'recipient > message' or
+  //  'recipient < message' or
   //  '^ message' where recipient is sender of last received message.
   let message = input.slice(input.indexOf(input.includes('<') ? '<' : '^') + 1)
   let recipient = input.includes('<')
