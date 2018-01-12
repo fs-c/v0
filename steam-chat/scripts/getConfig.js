@@ -8,8 +8,8 @@ global.DEV = process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'develop
 
 // Get account in the following order:
 //  - process args --user & --pass
-//  - config file default
 //  - --account in config file
+//  - config file default
 
 const validJSON = path => {
   let failed = false
@@ -33,10 +33,10 @@ if (fs.existsSync(CONFIG) && validJSON(CONFIG)) {
   else 
     account = accounts.default
 
-  if (account.apikey || accounts.default.apikey)
-    global.API_KEY = account.apikey || accounts.default.apikey
+  if (!account)
+    throw new Error(`Couldn't get an account.`) 
 
-  if (account)
-    return global.ACCOUNT = account
-  else throw new Error(`Couldn't get an account.`)
+  global.API_KEY = account.apikey || accounts.default.apikey
+
+  return global.ACCOUNT = account
 }
