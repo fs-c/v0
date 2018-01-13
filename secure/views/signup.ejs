@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include('partials/head') %>
+    
+    <title>00 - signup</title>
+
+    <style>
+    </style>
+  </head>
+
+  <body>
+    <div class="container vertical-parent">
+      <div class="row">
+        <form action="/signup" method="post">
+          <label for="userInput">Username</label>
+          <input class="u-full-width" type="text" id="userInput" name="username">
+          <label for="passInput">Password</label>
+          <input class="u-full-width" type="password" id="passInput" name="password">
+  
+          <input class="button-primary" type="submit" value="Signup">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
