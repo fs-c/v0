@@ -13,10 +13,13 @@
 
   <body>
     <div class="container">
-      <% functions.forEach(func => { %>
-        <a href="/api<%= func.route %>"><%= func.route %></a> - 
-        <%= func.name %>() - 
-        <%= func.description %>
+      <b>access level - path - function - description</b> </br>
+
+      <% api.forEach(route => { %>
+        <%= route.level ? route.level < 0 ? 'root' : route.level : 0%> - 
+        <a href="/api<%= route.path %>"><%= route.path %></a> - 
+        <%= route.name %>() - 
+        <%= route.description %>
         </br>
       <% }) %>
     </div>
