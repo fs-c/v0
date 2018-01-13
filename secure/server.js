@@ -1,3 +1,5 @@
+global.DEV = process.env.NODE_ENV !== 'production'
+
 const MONGODB_STRING = `mongodb://root:${process.env.DB_PASS}`
   + `@ds247347.mlab.com:47347/fsoc-secure`
 
@@ -40,7 +42,7 @@ app.set('view engine', 'ejs')
 // Properly format json responses.
 app.set('json spaces', 2)
 
-// Ser up routes.
+// Set up routes.
 require('./routes/')(app, passport)
 
 // Serve CSS and such.
