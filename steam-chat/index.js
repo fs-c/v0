@@ -10,7 +10,7 @@ require('./scripts/getConfig')
 
 let chat = new Chat(global.ACCOUNT)
 
-// Setup global radline interface with autocompletion.
+// Setup global readline interface with autocompletion.
 global.rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
