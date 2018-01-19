@@ -1,0 +1,29 @@
+{
+  "name": "servierer",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "watch": "nodemon --watch 'src/**/*' -e ts,tsx --exec 'ts-node' ./src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/debug": "0.0.30",
+    "@types/dotenv": "^4.0.2",
+    "@types/koa": "^2.0.43",
+    "@types/koa-router": "^7.0.27",
+    "@types/koa-views": "^2.0.3",
+    "nodemon": "^1.14.11",
+    "supports-color": "^5.1.0",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.6.2"
+  },
+  "dependencies": {
+    "debug": "^3.1.0",
+    "dotenv": "^4.0.0",
+    "koa": "^2.4.1",
+    "koa-router": "^7.3.0",
+    "koa-views": "^6.1.3"
+  }
+}
