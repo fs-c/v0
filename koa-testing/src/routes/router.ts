@@ -31,8 +31,10 @@ export function redirectIfLoggedOn(
 
 router.get('/', async (ctx, next) => {
   if (ctx.isAuthenticated()) {
+    // Render index.ejs if authenticated.
     await ctx.render('index');
   } else {
+    // Send the index.html if not authenticated.
     ctx.status = 200;
     ctx.type = 'html';
     ctx.body = fs.createReadStream(
