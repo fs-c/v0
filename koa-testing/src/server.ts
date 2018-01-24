@@ -37,8 +37,13 @@ app.use(passport.session());
 // Render views from /views.
 import * as views from 'koa-views';
 app.use(views(
-  path.join(__dirname, '/views'),
-  { extension: 'ejs' }),
+  path.join(__dirname, '/views'), {
+    extension: 'ejs',
+    options: {
+      version: require('../package.json').version,
+      node: process.version,
+    },
+  }),
 );
 
 // 'Handle' errors.
