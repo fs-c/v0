@@ -21,3 +21,8 @@ div.center {
   border: 1px solid #33C3F0;
   border-radius: 3px;
   margin-bottom: 1em; }
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%; }

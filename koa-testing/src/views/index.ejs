@@ -6,15 +6,19 @@
     <title>fspace - index</title>
 
     <style>
+      .container {
+        margin-top: 1em; }
     </style>
   </head>
 
   <body>
     <div class="container">
       <p>
-        Hey there, <b><%= user.nickname %></b>, you have an access level of 
+        Welcome <b><%= user.nickname %></b>, you have an access level of 
         <b><%= user.accessLevel %></b>.
       </p>
+
+      <%- include('partials/footer') %>
     </div>
   </body>
 </html>
