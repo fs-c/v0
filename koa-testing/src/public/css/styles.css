@@ -1,0 +1,17 @@
+html, body {
+  height: 100%;
+  color: #222 }
+
+div.center {
+  position: absolute;
+  top: 47%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%) }
+
+.vertical-parent {
+  height: 100%;
+  display: flex;
+  align-items: center }
+.vertical-child {
+  margin: 0 }
