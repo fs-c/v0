@@ -4,8 +4,6 @@ dotenv.config();
 import * as Koa from 'koa';
 import * as log from 'debug';
 import * as path from 'path';
-import * as serve from 'koa-static';
-import * as mongoose from 'mongoose';
 
 const app = new Koa();
 const debug = log('app');
@@ -61,9 +59,27 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 
 // Serve static assets.
+import * as serve from 'koa-static';
 app.use(serve(path.join(__dirname, '/public')));
 
 // Start listening, export server for tests.
 const port = parseInt(process.env.PORT, 10) || 8080;
 export const server = app.listen(port);
 debug('listening on port %o', port);
+
+// Connect to database.
+import * as mongoose from 'mongoose';
+
+const dbURL = process.env.DB_URL;
+const dbPass = process.env.DB_PASS;
+const dbUser = process.env.DB_USER;
+
+if (dbURL && dbUser && dbPass) {
+  mongoose.connect(`mongodb://${dbUser}:${dbPass}@${dbURL}`);
+} else {
+  throw new Error('Missing database connection parameters.');
+}
+
+const db = mongoose.connection;
+db.on('error', (err) => debug(`database connection error: %O`, err));
+db.once('connected', () => debug(`connected to database`));
