@@ -19,4 +19,5 @@ div.center {
 .alert {
   padding: 1em;
   border: 1px solid #33C3F0;
-  border-radius: 3px; }
+  border-radius: 3px;
+  margin-bottom: 1em; }
