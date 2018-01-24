@@ -15,3 +15,8 @@ div.center {
   align-items: center }
 .vertical-child {
   margin: 0 }
+
+.alert {
+  padding: 1em;
+  border: 1px solid #33C3F0;
+  border-radius: 3px; }
