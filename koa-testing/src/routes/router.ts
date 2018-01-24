@@ -10,22 +10,22 @@ export default router;
 
 type INext = () => Promise<any>;
 
-export async function ifLoggedOn(ctx: Router.IRouterContext, next: INext) {
+export function ifLoggedOn(ctx: Router.IRouterContext, next: INext) {
   if (ctx.isAuthenticated()) {
-    await next();
+    return next();
   } else {
     ctx.redirect('/login');
   }
 }
 
-export async function redirectIfLoggedOn(
+export function redirectIfLoggedOn(
   ctx: Router.IRouterContext,
   next: INext,
 ) {
   if (ctx.isAuthenticated()) {
     ctx.redirect('/');
   } else {
-    await next();
+    return next();
   }
 }
 
@@ -36,7 +36,7 @@ router.get('/', async (ctx, next) => {
     ctx.status = 200;
     ctx.type = 'html';
     ctx.body = fs.createReadStream(
-      path.join(process.cwd(), 'src/public/index.html')
+      path.join(process.cwd(), 'src/public/index.html'),
     );
   }
 });
