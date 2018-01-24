@@ -1,0 +1,25 @@
+{
+  "name": "koa-testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "auth.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "ejs": "^2.5.7",
+    "koa": "^2.4.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-logger": "^3.1.0",
+    "koa-passport": "^4.0.1",
+    "koa-router": "^7.3.0",
+    "koa-session": "^5.8.1",
+    "koa-views": "^6.1.3",
+    "passport-local": "^1.0.0"
+  }
+}
