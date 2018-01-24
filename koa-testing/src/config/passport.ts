@@ -27,10 +27,10 @@ passport.use('local-signup', new LocalStrategy({
   const ctx: Koa.Context = req.ctx;
 
   process.nextTick(() => {
-    User.findOne({ name }, (dbErr, user) => {
+    User.findOne({ nickname: name }, (dbErr, user) => {
       if (dbErr) { return done(dbErr); }
       if (user) {
-        ctx.flash.set('A user with this name already exists!');
+        ctx.flash.set('A user with this name already exists.');
         return done(null, false);
       }
       if (ctx.request.body.second !== pass) {
@@ -59,6 +59,7 @@ passport.use('local-login', new LocalStrategy({
     User.findOne({ nickname: name }, (dbErr, user) => {
       if (dbErr) { return done(dbErr); }
       if (!user) {
+        ctx.flash.set('The given user was not found.');
         return done(null, false);
       }
 
@@ -66,7 +67,7 @@ passport.use('local-login', new LocalStrategy({
         if (valid) {
           done(null, user);
         } else {
-          ctx.flash.set('The given password is incorrect!');
+          ctx.flash.set('The given password is incorrect.');
           done(null, false);
         }
       });
