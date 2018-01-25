@@ -11,7 +11,7 @@ export interface IApiKeyDocument extends Document {
 const ApiKeySchema = new Schema({
   key: {
     type: String,
-    default: base64url(randomBytes(20)),
+    default: base64url(randomBytes(20)), // Generate random string.
   },
   level: {
     type: Number,
