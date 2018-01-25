@@ -42,9 +42,7 @@ functions.forEach((e) => {
     try {
       if (await isAuthenticated(ctx.state.user || ctx.query || {}, e.level)) {
         ctx.status = 200;
-        console.log('fick dich koa');
         const result = await e.function();
-        console.log(result);
         ctx.type = 'json';
         ctx.body = result;
       } else {
