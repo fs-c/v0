@@ -20,7 +20,7 @@ export default function urlparser() {
     if (url.includes('&')) {
       queries = querystring
         .split('&')
-        .reduce((acc: any, cur: string, i: number, arr: string[]) => {
+        .reduce((acc: any, cur, i, arr) => {
           const pair = cur.split('=');
 
           if (acc[pair[0]]) {
