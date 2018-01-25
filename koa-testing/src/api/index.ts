@@ -18,7 +18,7 @@ const names = [
   'getAccounts',
 ];
 
-const functions: any[] = names.map((e) => require('./' + e).default);
+const functions: IFunc[] = names.map((e) => require('./' + e).default);
 
 async function isAuthenticated(data: any, level: number) {
   // If data is an user object.
