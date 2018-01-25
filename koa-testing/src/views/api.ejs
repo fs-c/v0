@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include('partials/head') %>
+    
+    <title>fspace - api docs</title>
+
+    <style>
+      .container {
+        padding-top: 1em; }
+
+      .table-head {
+        font-weight: bold; }
+      .table-row {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        border-top: 1px solid #E1E1E1; }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="table-head twelve columns">
+          <div class="one column">level</div>
+          <div class="two columns">route</div>
+          <div class="nine columns">description</div>          
+        </div>
+
+        <% functions.forEach((func) => { %>
+
+          <div class="table-row twelve columns">
+            <div class="one column"><%= func.level %></div>
+            <div class="two columns">
+              <a href="/api/<%= func.name %>">/<%= func.name %></a>
+            </div>
+            <div class="nine columns"><%= func.description %></div>
+          </div>
+
+        <% }) %>
+
+        <% if (hidden) { %>
+          <div class="table-foot twelve columns">
+            <%= hidden %> function(s) hidden due to insufficient privileges.      
+          </div>
+        <% } %>
+      </div>
+
+      <%- include('partials/footer') %>
+    </div>
+  </body>
+</html>

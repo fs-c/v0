@@ -6,7 +6,6 @@ const router = new Router();
 export default router;
 
 type func = () => Promise<any>;
-
 interface IFunc {
   name: string;
   level: number;
@@ -52,5 +51,14 @@ functions.forEach((e) => {
     } catch (err) {
       ctx.throw(err);
     }
+  });
+});
+
+router.get('/', async (ctx) => {
+  const filtered = functions
+    .filter((e) => e.level <= (ctx.state.user || {}).accessLevel || 3);
+
+  await ctx.render('api', {
+    functions: filtered, hidden: functions.length - filtered.length,
   });
 });
