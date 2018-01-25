@@ -46,3 +46,7 @@ router.get('/', async (ctx, next) => {
 import userActions from './userActions';
 router.use(userActions.routes());
 router.use(userActions.allowedMethods());
+
+import api from '../api/';
+router.use('/api', api.routes());
+router.use('/api', api.allowedMethods());
