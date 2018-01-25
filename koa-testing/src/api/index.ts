@@ -5,11 +5,10 @@ import { ApiKey, IApiKeyDocument } from '../models/ApiKey';
 const router = new Router();
 export default router;
 
-type func = () => Promise<any>;
 interface IFunc {
   name: string;
   level: number;
-  function: func;
+  function: () => Promise<any>;
   description: string;
 }
 
@@ -61,4 +60,17 @@ router.get('/', async (ctx) => {
   await ctx.render('api', {
     functions: filtered, hidden: functions.length - filtered.length,
   });
+});
+
+router.get('/generateKey', async (ctx) => {
+  const user = ctx.state.user;
+
+  const apiKey = await new ApiKey({
+    owner: user.nickname,
+    level: user.accessLevel,
+  }).save();
+
+  ctx.status = 200;
+  ctx.type = 'json';
+  ctx.body = apiKey;
 });
