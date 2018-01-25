@@ -80,11 +80,9 @@ const dbPass = process.env.DB_PASS;
 const dbUser = process.env.DB_USER;
 
 if (dbURL && dbUser && dbPass) {
-  mongoose.connect(`mongodb://${dbUser}:${dbPass}@${dbURL}`);
+  mongoose.connect(`mongodb://${dbUser}:${dbPass}@${dbURL}`)
+    .then(() => debug('connected to database'))
+    .catch((err) => debug('database connection error: %O', err.message));
 } else {
   throw new Error('Missing database connection parameters.');
 }
-
-const db = mongoose.connection;
-db.on('error', (err) => debug(`database connection error: %O`, err));
-db.once('connected', () => debug(`connected to database`));
