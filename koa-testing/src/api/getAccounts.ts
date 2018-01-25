@@ -9,9 +9,11 @@ export default {
   description: 'Returns all accounts and their data.',
 };
 
-async function getAccounts() {
-  readFile(join(homedir(), '.steam.json'), 'utf8', (err, data) => {
-    if (err) { throw err; }
-    return data;
+function getAccounts() {
+  return new Promise((resolve, reject) => {
+    readFile(join(homedir(), '.steam.json'), 'utf8', (err, data) => {
+      if (err) { return reject(err); }
+      return resolve(data);
+    });
   });
 }
