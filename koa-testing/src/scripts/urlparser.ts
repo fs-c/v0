@@ -7,12 +7,11 @@ type INext = () => Promise<any>;
 
 export default function urlparser() {
   // TODO: Why does next: Promise<any> make tslint complain?
-  return async (ctx: Koa.Context, next: INext) => {
+  return (ctx: Koa.Context, next: INext) => {
     const url = ctx.url;
 
     if (!url.includes('?') || !url.includes('=')) {
-      await next();
-      return;
+      return next();
     }
 
     let queries: any = {};
@@ -41,7 +40,6 @@ export default function urlparser() {
     debug(queries);
 
     ctx.query = queries;
-    await next();
-    return;
+    return next();
   };
 }
