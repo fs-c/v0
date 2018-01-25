@@ -8,7 +8,7 @@ import * as path from 'path';
 const app = new Koa();
 const debug = log('app');
 
-// Set settings.
+// Config.
 app.proxy = true; // Trust first proxy.
 app.keys = [ process.env.SESSION_SECRET ];
 
