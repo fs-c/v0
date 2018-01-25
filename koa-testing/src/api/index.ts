@@ -10,12 +10,13 @@ type func = () => Promise<any>;
 interface IFunc {
   name: string;
   level: number;
-  description: string;
   function: func;
+  description: string;
 }
 
 const names = [
   'getAccounts',
+  'getCodes',
 ];
 
 const functions: IFunc[] = names.map((e) => require('./' + e).default);
@@ -40,8 +41,10 @@ functions.forEach((e) => {
   router.get('/' + e.name, async (ctx, name) => {
     try {
       if (await isAuthenticated(ctx.state.user || ctx.query || {}, e.level)) {
-        const result = await e.function();
         ctx.status = 200;
+        console.log('fick dich koa');
+        const result = await e.function();
+        console.log(result);
         ctx.type = 'json';
         ctx.body = result;
       } else {
