@@ -63,31 +63,5 @@ router.get('/', async (ctx) => {
   });
 });
 
-router.post('/generateKey', async (ctx) => {
-  const user = ctx.state.user;
-  const level = ctx.request.body.level;
-  const description = ctx.request.body.description || '';
-
-  if (!level || level < user.accessLevel) {
-    return await ctx.render('status', {
-      message: 'Invalid level.',
-    });
-  }
-
-  const apiKey = await new ApiKey({
-    level,
-    description,
-    owner: user.nickname,
-  }).save();
-
-  await ctx.render('status', {
-    status: 'success',
-    message: 'Created API key.',
-    data: {
-      Key: apiKey.key,
-      Level: apiKey.level,
-      Description: apiKey.description,
-      Owner: apiKey.owner,
-    },
-  });
-});
+import { generateKey } from './generateKey';
+router.post('/generateKey', generateKey);
