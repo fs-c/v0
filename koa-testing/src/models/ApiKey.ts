@@ -6,6 +6,7 @@ export interface IApiKeyDocument extends Document {
   key: string;
   level: number;
   owner: string;
+  description?: string;
 }
 
 const ApiKeySchema = new Schema({
@@ -21,6 +22,7 @@ const ApiKeySchema = new Schema({
     type: String,
     default: 'anon',
   },
+  description: String,
 });
 
 export const ApiKey: Model<IApiKeyDocument> = model<IApiKeyDocument>(
