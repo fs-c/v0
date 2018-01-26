@@ -55,12 +55,22 @@ functions.forEach((e) => {
 });
 
 router.get('/', async (ctx) => {
-  const filtered = functions
-    .filter((e) => e.level <= (ctx.state.user || {}).accessLevel || 3);
+  const user = ctx.state.user || {};
 
-  await ctx.render('api', {
-    functions: filtered, hidden: functions.length - filtered.length,
-  });
+  const filtered = functions.filter((e) => e.level <= user.accessLevel || 3);
+  const hidden = functions.length - filtered.length;
+
+  try {
+    const keys = await ApiKey.find({ owner: user.nickname });
+
+    await ctx.render('api', { functions: filtered, hidden, keys });
+  } catch (err) {
+    await ctx.render('api', {
+      hidden,
+      functions: filtered,
+      message: 'Failed to load keys.',
+    });
+  }
 });
 
 import { generateKey } from './generateKey';

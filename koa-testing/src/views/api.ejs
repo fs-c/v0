@@ -17,7 +17,7 @@
         border-top: 1px solid #E1E1E1; }
       
       .card {
-        padding: 1em;
+        padding: 1em 1em 0em 1em;
         margin-top: 2em;
         border: 1px solid #33C3F0;
         border-radius: 5px;
@@ -52,8 +52,8 @@
           </div>
         <% } %>
 
-        <div class="twelve columns">
-          <form class="card" method="POST" action="/api/generateKey">
+        <div class="twelve columns card">
+          <form method="POST" action="/api/generateKey">
             <% if (locals.message && message.length) { %>
               <label class="alert">
                 <%= message %>
@@ -74,6 +74,20 @@
             </div>
             <input type="submit" class="button-primary" value="Generate">
           </form> 
+        </div>
+
+        <div class="twelve columns card">
+          <p><b>Your API keys: </b></p>
+          <p>
+            <% if (locals.keys) {
+              keys.forEach((key) => { %>
+                Key: <b><%= key.key %></b> 
+                Level: <b><%= key.level %></b> 
+                Description: <b><%= key.description %></b>
+                </br>
+            <% })
+            } %>
+          </p>
         </div>
       </div>
 
