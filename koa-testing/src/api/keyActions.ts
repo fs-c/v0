@@ -47,5 +47,23 @@ function generateKey() {
 }
 
 function deleteKey() {
-  return async (ctx: Context) => {};
+  return async (ctx: Context) => {
+    const key = ctx.params.key;
+
+    try {
+      await ApiKey.remove({ key }).exec();
+
+      await ctx.render('status', {
+        status: 'success',
+        message: 'Removed API key.',
+      });
+    } catch (err) {
+      await ctx.render('status', {
+        message: 'Failed to remove API key.',
+        data: {
+          Message: err.message,
+        },
+      });
+    }
+  };
 }
