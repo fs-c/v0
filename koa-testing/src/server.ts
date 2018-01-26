@@ -54,7 +54,9 @@ app.use(async (ctx, next) => {
     app.emit('error', err); // Preserve default behavior.
 
     ctx.status = ctx.status || 500;
-    await ctx.render('error', { err });
+    await ctx.render('status', {
+      message: err.message,
+    });
   }
 });
 
