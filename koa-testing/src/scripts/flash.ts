@@ -1,4 +1,4 @@
-import * as Koa from 'koa'; // TODO: Importing just for declarations.
+import { Context } from 'koa';
 import * as logger from 'debug';
 
 const debug = logger('flash');
@@ -6,7 +6,7 @@ const debug = logger('flash');
 type INext = () => Promise<any>;
 
 export default function flash() {
-  return (ctx: Koa.Context, next: INext) => {
+  return (ctx: Context, next: INext) => {
     const prev = ctx.session.flash;
 
     if (prev) {

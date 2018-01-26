@@ -1,4 +1,4 @@
-import * as Koa from 'koa'; // TODO: Importing just for declarations.
+import { Context } from 'koa';
 import * as logger from 'debug';
 
 const debug = logger('urlparser');
@@ -7,7 +7,7 @@ type INext = () => Promise<any>;
 
 export default function urlparser() {
   // TODO: Why does next: Promise<any> make tslint complain?
-  return (ctx: Koa.Context, next: INext) => {
+  return (ctx: Context, next: INext) => {
     const url = ctx.url;
 
     if (!url.includes('?') || !url.includes('=')) {

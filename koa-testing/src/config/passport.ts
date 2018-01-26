@@ -1,5 +1,5 @@
-import * as Koa from 'koa'; // TODO: Importing Koa just for Koa.Context type?
 import * as log from 'debug';
+import { Context } from 'koa';
 import * as bcrypt from 'bcrypt-nodejs';
 import * as passport from 'koa-passport';
 import { User, IUserDocument } from '../models/User';
@@ -24,7 +24,7 @@ passport.use('local-signup', new LocalStrategy({
 }, (req: any, name, pass, done) => { // TODO: Dirty.
   debug(`signing up user %o`, name);
 
-  const ctx: Koa.Context = req.ctx;
+  const ctx: Context = req.ctx;
 
   process.nextTick(() => {
     User.findOne({ nickname: name }, (dbErr, user) => {
@@ -53,7 +53,7 @@ passport.use('local-login', new LocalStrategy({
 }, (req: any, name, pass, done) => { // TODO: Dirty.
   debug(`logging in user %o`, name);
 
-  const ctx: Koa.Context = req.ctx;
+  const ctx: Context = req.ctx;
 
   process.nextTick(() => {
     User.findOne({ nickname: name }, (dbErr, user) => {
