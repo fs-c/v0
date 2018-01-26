@@ -73,5 +73,6 @@ router.get('/', async (ctx) => {
   }
 });
 
-import { generateKey } from './generateKey';
-router.post('/generateKey', generateKey);
+import keyActions from './keyActions';
+router.use('/key', keyActions.routes());
+router.use('/key', keyActions.allowedMethods());
