@@ -17,7 +17,8 @@ const names = [
   'getCodes',
 ];
 
-const functions: IFunc[] = names.map((e) => require('./' + e).default);
+const functions: IFunc[] = names
+  .map((name) => require('./functions/' + name).default);
 
 async function isAuthenticated(data: any, level: number) {
   // If data is an user object.
@@ -68,7 +69,9 @@ router.post('/generateKey', async (ctx) => {
   const description = ctx.request.body.description || '';
 
   if (!level || level < user.accessLevel) {
-    return await ctx.render('error', { err: new Error('Invalid level.') });
+    return await ctx.render('status', {
+      message: 'Invalid level.',
+    });
   }
 
   const apiKey = await new ApiKey({
@@ -77,7 +80,14 @@ router.post('/generateKey', async (ctx) => {
     owner: user.nickname,
   }).save();
 
-  ctx.status = 200;
-  ctx.type = 'json';
-  ctx.body = apiKey;
+  await ctx.render('status', {
+    status: 'success',
+    message: 'Created API key.',
+    data: {
+      Key: apiKey.key,
+      Level: apiKey.level,
+      Description: apiKey.description,
+      Owner: apiKey.owner,
+    },
+  });
 });
