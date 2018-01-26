@@ -26,7 +26,13 @@
 
     <div class="container vertical-parent">
       <div class="row">
-        <p class="<%= message.length <= 50 ? 'bold' : '' %>"><%= message %></p>
+        <p class="<%= message.length <= 50 ? 'bold' : '' %>">
+          <%= message %>
+
+          <% if (locals.details) { %>
+            <br><span class="muted"><%= details %></span>
+          <% } %>
+        </p>
 
         <p>
           <% for (const name in data) { %>
