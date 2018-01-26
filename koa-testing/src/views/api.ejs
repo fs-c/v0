@@ -76,19 +76,19 @@
           </form> 
         </div>
 
-        <div class="twelve columns card">
-          <p><b>Your API keys: </b></p>
-          <p>
-            <% if (locals.keys) {
-              keys.forEach((key) => { %>
-                Key: <b><%= key.key %></b> 
-                Level: <b><%= key.level %></b> 
-                Description: <b><%= key.description %></b>
-                </br>
-            <% })
-            } %>
-          </p>
-        </div>
+        <% if (locals.keys && keys.length) { %>
+          <div class="twelve columns card">
+            <p><b>Your API keys: </b></p>
+            <p>
+              <% keys.forEach((key) => { %>
+                  Key: <b><%= key.key %></b> 
+                  Level: <b><%= key.level %></b> 
+                  Description: <b><%= key.description %></b>
+                  </br>
+              <% }) %>
+            </p>
+          </div>
+        <% } %>
       </div>
 
       <%- include('partials/footer') %>
