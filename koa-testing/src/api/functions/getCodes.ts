@@ -15,7 +15,7 @@ function getCodes() {
     readFile(join(homedir(), '.steam.json'), 'utf8', (err, data) => {
       if (err || !data) { return reject(err || new Error('No data.')); }
 
-      const codes = {};
+      const codes: any = {};
       const accounts = JSON.parse(data);
 
       for (const name of Object.keys(accounts)) {
