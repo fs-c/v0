@@ -49,9 +49,17 @@ function generateKey() {
 function deleteKey() {
   return async (ctx: Context) => {
     const key = ctx.params.key;
+    const user = ctx.state.user;
+    const isRoot = user.accessLevel === -1;
 
     try {
-      await ApiKey.remove({ key }).exec();
+      const apiKey = await ApiKey.findOne({ key });
+      await apiKey.remove();
+
+      if (!apiKey) { throw new Error('Invalid key provided.'); }
+      if (apiKey.owner !== user.nickname && !isRoot) {
+        throw new Error('You do not own this key.');
+      }
 
       await ctx.render('status', {
         status: 'success',
@@ -60,9 +68,7 @@ function deleteKey() {
     } catch (err) {
       await ctx.render('status', {
         message: 'Failed to remove API key.',
-        data: {
-          Message: err.message,
-        },
+        details: err.message,
       });
     }
   };
