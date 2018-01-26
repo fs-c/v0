@@ -53,7 +53,7 @@
         <% } %>
 
         <div class="twelve columns card">
-          <form method="POST" action="/api/generateKey">
+          <form method="POST" action="/api/key/generate">
             <% if (locals.message && message.length) { %>
               <label class="alert">
                 <%= message %>
