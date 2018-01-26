@@ -28,5 +28,5 @@ function getCodes() {
 
       return resolve(codes);
     });
-  })
+  });
 }
