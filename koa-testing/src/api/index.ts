@@ -62,12 +62,19 @@ router.get('/', async (ctx) => {
   });
 });
 
-router.get('/generateKey', async (ctx) => {
+router.post('/generateKey', async (ctx) => {
   const user = ctx.state.user;
+  const level = ctx.request.body.level;
+  const description = ctx.request.body.description || '';
+
+  if (!level || level < user.accessLevel) {
+    return await ctx.render('error', { err: new Error('Invalid level.') });
+  }
 
   const apiKey = await new ApiKey({
+    level,
+    description,
     owner: user.nickname,
-    level: user.accessLevel,
   }).save();
 
   ctx.status = 200;

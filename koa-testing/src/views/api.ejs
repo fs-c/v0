@@ -15,6 +15,13 @@
         padding-top: 0.5em;
         padding-bottom: 0.5em;
         border-top: 1px solid #E1E1E1; }
+      
+      .card {
+        padding: 1em;
+        margin-top: 2em;
+        border: 1px solid #33C3F0;
+        border-radius: 5px;
+      }
     </style>
   </head>
 
@@ -44,6 +51,30 @@
             <%= hidden %> function(s) hidden due to insufficient privileges.      
           </div>
         <% } %>
+
+        <div class="twelve columns">
+          <form class="card" method="POST" action="/api/generateKey">
+            <% if (locals.message && message.length) { %>
+              <label class="alert">
+                <%= message %>
+              </label>
+            <% } %>
+
+            <label class="muted">
+              Generate an API key for use of the API without having a logged in 
+              session.
+            </label>
+            <div class="row">
+              <label class="two columns" for="levelInput">Access Level: </label>
+              <label class="four columns" for="descriptionInput">Description: <small class="muted">(Optional)</small></label>            
+            </div>
+            <div class="row">
+              <input id="levelInput" class="two columns" type="text" name="level">
+              <input id ="descriptionInput" class="ten columns" type="text" name="description">
+            </div>
+            <input type="submit" class="button-primary" value="Generate">
+          </form> 
+        </div>
       </div>
 
       <%- include('partials/footer') %>
