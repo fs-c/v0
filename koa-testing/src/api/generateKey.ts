@@ -1,6 +1,7 @@
+import { Context } from 'koa';
 import { ApiKey, IApiKeyDocument } from '../models/ApiKey';
 
-export async function generateKey(ctx) {
+export async function generateKey(ctx: Context) {
   const user = ctx.state.user;
   const level = ctx.request.body.level;
   const description = ctx.request.body.description || '';
