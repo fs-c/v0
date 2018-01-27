@@ -1,5 +1,6 @@
 import { join } from 'path';
 import * as Router from 'koa-router';
+import { ifLoggedOn } from '../routes/router';
 import { ApiKey, IApiKeyDocument } from '../models/ApiKey';
 
 const router = new Router();
@@ -22,18 +23,17 @@ const functions: IFunc[] = names
 
 async function isAuthenticated(data: any, level: number) {
   // If data is an user object.
-  if (data.accessLevel && data.accessLevel <= level) {
+  if ((data.isAuthenticated && data.isAuthenticated()) &&
+    (data.accessLevel && data.accessLevel <= level)
+  ) {
     return true;
   }
 
-  // If data is a URL query object.
+  // If data is an URL query object.
   if (data.key) {
-    ApiKey.find({ key: data.key }, (err, apikey) => {
-      return !err && apikey;
-    });
-  }
-
-  return false;
+    const key = await ApiKey.findOne({ key: data.key }).exec();
+    return key !== null;
+  } else { return false; }
 }
 
 functions.forEach((e) => {
@@ -54,7 +54,7 @@ functions.forEach((e) => {
   });
 });
 
-router.get('/', async (ctx) => {
+router.get('/', ifLoggedOn, async (ctx) => {
   const user = ctx.state.user || {};
 
   const filtered = functions.filter((e) => e.level <= user.accessLevel || 3);
@@ -74,5 +74,6 @@ router.get('/', async (ctx) => {
 });
 
 import keyActions from './keyActions';
-router.use('/key', keyActions.routes());
-router.use('/key', keyActions.allowedMethods());
+router.use('/key',
+  ifLoggedOn, keyActions.routes(), keyActions.allowedMethods(),
+);
