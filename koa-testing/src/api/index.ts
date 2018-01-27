@@ -21,25 +21,35 @@ const names = [
 const functions: IFunc[] = names
   .map((name) => require('./functions/' + name).default);
 
-async function isAuthenticated(data: any, level: number) {
-  // If data is an user object.
-  if ((data.isAuthenticated && data.isAuthenticated()) &&
-    (data.accessLevel && data.accessLevel <= level)
+async function isAuthenticated(ctx: Router.IRouterContext, level: number) {
+  // One or both of these will be undefined.
+  const key = ctx.params.key;
+  const user = ctx.state.user;
+
+  // If the request comes from a logged in user.
+  if ((ctx.isAuthenticated && ctx.isAuthenticated()) &&
+    (user && user.accessLevel <= level)
   ) {
     return true;
   }
 
-  // If data is an URL query object.
-  if (data.key) {
-    const key = await ApiKey.findOne({ key: data.key }).exec();
-    return key !== null;
-  } else { return false; }
+  // If an API key was provided.
+  if (key) {
+    try {
+      const found = await ApiKey.findOne({ key: ctx.params.key }).exec();
+      return found !== null;
+    } catch (err) {
+      return false; // TODO: Communicate error to user.
+    }
+  }
+
+  return false;
 }
 
 functions.forEach((e) => {
   router.get('/' + e.name, async (ctx, name) => {
     try {
-      if (await isAuthenticated(ctx.state.user || ctx.query || {}, e.level)) {
+      if (await isAuthenticated(ctx, e.level)) {
         ctx.status = 200;
         const result = await e.function();
         ctx.type = 'json';
