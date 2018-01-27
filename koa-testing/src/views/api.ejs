@@ -84,6 +84,9 @@
                   Key: <b><%= key.key %></b> 
                   Level: <b><%= key.level %></b> 
                   Description: <b><%= key.description %></b>
+                  <span class="u-pull-right">
+                    <a href="/api/key/delete/<%= key.key %>">Delete</a>
+                  </span>
                   </br>
               <% }) %>
             </p>
