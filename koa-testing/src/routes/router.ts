@@ -48,4 +48,4 @@ router.use(userActions.routes());
 router.use(userActions.allowedMethods());
 
 import api from '../api/';
-router.use('/api', ifLoggedOn, api.routes(), api.allowedMethods());
+router.use('/api', api.routes(), api.allowedMethods());
