@@ -29,3 +29,7 @@ user.on('loggedOn', () => {
     })
   });
 });
+
+// Just report that something went wrong.
+// No need to throw, this might just be a one-off steam server issue. 
+user.on('error', (err) => console.log(err));
