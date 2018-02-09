@@ -18,7 +18,7 @@ user.on('loggedOn', () => {
     console.log('enabled two factor, response: ');
     console.log(response);
 
-    fs.writeFileSync('response.json', JSON.stringify(response), 'utf8');
+    fs.writeFileSync(`response-${Date.now()}.json`, JSON.stringify(response), 'utf8');
 
     const code = rls.question('SMS Code: ');
 
