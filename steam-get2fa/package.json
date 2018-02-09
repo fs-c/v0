@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "readline-sync": "^1.4.8",
-    "steam-user": "^3.25.0"
+    "steamcommunity": "^3.34.1"
   }
 }

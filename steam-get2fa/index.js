@@ -1,6 +1,6 @@
 const fs = require('fs');
-const Steam = require('steam-user');
 const rls = require('readline-sync');
+const Steam = require('steamcommunity');
 
 const account = {
   accountName: rls.question('Name: '),
@@ -9,13 +9,12 @@ const account = {
 
 const user = new Steam();
 
-user.logOn(account);
-
-user.on('loggedOn', () => {
+user.login(account, (err) => {
+  if (err) throw err;
   console.log('logged on');
 
-  user.enableTwoFactor((response) => {
-    console.log('enabled two factor, response: ');
+  user.enableTwoFactor((err, response) => {
+    if (err) throw err;    
     console.log(response);
 
     fs.writeFileSync(`response-${Date.now()}.json`, JSON.stringify(response), 'utf8');
@@ -29,7 +28,3 @@ user.on('loggedOn', () => {
     });
   });
 });
-
-// Just report that something went wrong.
-// No need to throw, this might just be a one-off steam server issue. 
-user.on('error', (err) => console.log(err));
