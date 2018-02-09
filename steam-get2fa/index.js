@@ -4,7 +4,7 @@ const rls = require('readline-sync');
 
 const account = {
   accountName: rls.question('Name: '),
-  accountName: rls.question('Pass: '),
+  password: rls.question('Pass: '),
 }
 
 const user = new Steam();
@@ -26,7 +26,7 @@ user.on('loggedOn', () => {
       if (err) throw err;
 
       console.log('finalized two factor');
-    })
+    });
   });
 });
 
