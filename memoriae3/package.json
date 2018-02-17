@@ -1,0 +1,28 @@
+{
+  "name": "memoriae",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "express-http-proxy": "^1.1.0",
+    "express-session": "^1.15.6",
+    "gun": "^0.9.4",
+    "gun-file": "^1.0.122",
+    "gun-server": "^1.0.0",
+    "moment": "^2.20.1",
+    "mongoose": "^4.13.7",
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "winston": "^2.4.0"
+  }
+}
