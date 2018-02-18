@@ -11,20 +11,6 @@
     href="https://www.scdn.co/i/_global/favicon.ico">
 
 	<style>
-    img {
-      width: 200px;
-      height: auto;
-    }
-
-    .track {
-      margin: 1em;
-    }
-
-    .center {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
   </style>
 
   <link rel="stylesheet" href="/css/normalize.css">  
@@ -42,17 +28,51 @@
           Logged in as {{ user.profile_name || user.id }}.
         </small>
 
-        <div class="center">
+        <div class="flex-center">
           <h2>
             Top Recent Music
           </h2>
         </div>
 
-        <div class="center">
-          <div class="two columns track" v-for="track in tracks.short_term.slice(0, 5)">
-            <img :src="track.album.images[1].url">
-            <span class="center">{{ track.name }}</span>
-            <span class="muted center">{{ track.artists[0].name }}</span>
+        <div class="flex-center">
+          <div class="nine columns flex-center">
+            <div class="two columns track" v-for="track in tracks.short_term.slice(0, 5)">
+              <img :src="track.album.images[1].url">
+              <span class="center">{{ track.name }}</span><br>
+              <span class="muted center">{{ track.artists[0].name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="twelve columns">
+        <div class="flex-center">
+          <div class="eight columns">
+            <div class="six columns tracklist">
+              <h3>Recent Tracks</h3>
+
+              <div
+                class="twelve columns tracklist-item"
+                v-for="(track, index) in tracks.short_term"
+              >
+                <span class="one column tracklist-index">{{ index + 1 }}.</span>
+                <span class="tracklist-name">{{ track.name }}</span>
+                <span class="tracklist-artist muted">{{ track.artists[0].name }}</span>
+              </div>
+            </div>
+
+            <div class="six columns tracklist">
+              <h3>The last 6 months</h3>              
+
+              <div
+                class="twelve columns tracklist-item"
+                v-for="(track, index) in tracks.medium_term"
+              >
+                <span class="one column tracklist-index">{{ index + 1 }}.</span>
+                <span class="tracklist-name">{{ track.name }}</span>
+                <span class="tracklist-artist muted">{{ track.artists[0].name }}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
