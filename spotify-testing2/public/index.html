@@ -6,13 +6,24 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
+  <link rel="icon" 
+    type="image/png" 
+    href="https://www.scdn.co/i/_global/favicon.ico">
+
 	<style>
-    .card {
-      padding: 1em;
-      border-top: 2px solid black;
-      border-bottom: 2px solid black;
-      margin-top: 0.5em;
-      margin-bottom: 0.5em;
+    img {
+      width: 200px;
+      height: auto;
+    }
+
+    .track {
+      margin: 1em;
+    }
+
+    .center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   </style>
 
@@ -20,82 +31,30 @@
   <link rel="stylesheet" href="/css/skeleton.css">
   <link rel="stylesheet" href="/css/styles.css">
 
-	<title>topify</title>
+	<title>Topify</title>
 </head>
 <body>
 
   <div id="app" class="container">
     <div class="row">
-      <div class="four columns">
-        <p><b>Short Term</b> <small>last 4 weeks</small></p>
+      <div class="twelve columns">
+        <small class="muted">
+          Logged in as {{ user.profile_name || user.id }}.
+        </small>
 
-        <ol>
-          <li v-for="item in shortTerm.slice(0, 5)">
-            {{ item.name }}
-          </li>
-        </ol>
-
-        <div class="card">
-          The artists have {{ avgFollowers(shortTerm) }} followers 
-          on average, with an average popularity of 
-          {{ avgPopularity(shortTerm) }}. 
-          {{ topGenres(shortTerm).join(', ') }} are the most popular 
-          genres.
+        <div class="center">
+          <h2>
+            Top Recent Music
+          </h2>
         </div>
 
-        <ol start="6">
-          <li v-for="item in shortTerm.slice(5)">
-            {{ item.name }}
-          </li>
-        </ol>
-      </div>
-
-      <div class="four columns">
-        <p><b>Medium Term</b> <small>last 6 months</small></p>
-          
-        <ol>
-          <li v-for="item in mediumTerm.slice(0, 10)">
-            {{ item.name }}
-          </li>
-        </ol>
-
-        <div class="card">
-          The artists have {{ avgFollowers(mediumTerm) }} followers 
-          on average, with an average popularity of 
-          {{ avgPopularity(mediumTerm) }}. 
-          {{ topGenres(mediumTerm).join(', ') }} are the most popular 
-          genres.
+        <div class="center">
+          <div class="two columns track" v-for="track in tracks.short_term.slice(0, 5)">
+            <img :src="track.album.images[1].url">
+            <span class="center">{{ track.name }}</span>
+            <span class="muted center">{{ track.artists[0].name }}</span>
+          </div>
         </div>
-
-        <ol start="11">
-          <li v-for="item in shortTerm.slice(10)">
-            {{ item.name }}
-          </li>
-        </ol>
-      </div>
-
-      <div class="four columns">
-        <p><b>Long Term</b> <small>several years</small></p>
-        
-        <ol>
-          <li v-for="item in longTerm.slice(0, 20)">
-            {{ item.name }}
-          </li>
-        </ol>
-
-        <div class="card">
-          The artists have {{ avgFollowers(longTerm) }} followers 
-          on average, with an average popularity of 
-          {{ avgPopularity(longTerm) }}. 
-          {{ topGenres(longTerm).join(', ') }} are the most popular 
-          genres.
-        </div>
-
-        <ol start="21">
-          <li v-for="item in shortTerm.slice(20)">
-            {{ item.name }}
-          </li>
-        </ol>
       </div>
     </div>
   </div>
