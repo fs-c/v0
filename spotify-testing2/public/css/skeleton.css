@@ -31,7 +31,7 @@
 .container {
   position: relative;
   width: 100%;
-  max-width: 960px;
+  max-width: 1366;
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box; }
@@ -52,9 +52,6 @@
 @media (min-width: 550px) {
   .container {
     width: 80%; }
-  .column,
-  .columns {
-    margin-left: 4%; }
   .column:first-child,
   .columns:first-child {
     margin-left: 0; }
