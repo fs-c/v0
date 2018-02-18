@@ -34,6 +34,40 @@ const app = new Vue({
     mediumTerm: [],
     longTerm: [],
   },
+  methods: {
+    avgFollowers(items) {
+      const total = items
+        .reduce((acc, cur) => acc + cur.followers.total, 0);
+
+      return total / items.length
+    },
+    avgPopularity(items) {
+      const total = items
+        .reduce((acc, cur) => acc + cur.popularity, 0);
+
+      return total / items.length
+    },
+    topGenres(items) {
+      let genres = {};
+      const all = items.map((e) => e.genres)
+        .reduce((acc, cur) => {
+          return acc.concat(cur);
+        }, []);
+
+      for (const genre of all) {
+        if (genres[genre]) {
+          genres[genre]++
+        } else genres[genre] = 1
+      }
+
+      genres = Object.keys(genres).map((e) => `${e} (${genres[e]})`);
+      
+      return genres.sort((a, b) => {
+          a.slice(a.lastIndexOf('('), a.lastIndexOf(')'))
+          - b.slice(b.lastIndexOf('('), b.lastIndexOf(')'))
+        }).slice(0, 5);
+    },
+  }
 });
 
 const params = getHashParams();

@@ -7,6 +7,13 @@
   <meta name="author" content="">
 
 	<style>
+    .card {
+      padding: 1em;
+      border-top: 2px solid black;
+      border-bottom: 2px solid black;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
   </style>
 
   <link rel="stylesheet" href="/css/normalize.css">  
@@ -23,7 +30,21 @@
         <p><b>Short Term</b> <small>last 4 weeks</small></p>
 
         <ol>
-          <li v-for="item in shortTerm">
+          <li v-for="item in shortTerm.slice(0, 5)">
+            {{ item.name }}
+          </li>
+        </ol>
+
+        <div class="card">
+          The artists have {{ avgFollowers(shortTerm) }} followers 
+          on average, with an average popularity of 
+          {{ avgPopularity(shortTerm) }}. 
+          {{ topGenres(shortTerm).join(', ') }} are the most popular 
+          genres.
+        </div>
+
+        <ol start="6">
+          <li v-for="item in shortTerm.slice(5)">
             {{ item.name }}
           </li>
         </ol>
@@ -33,7 +54,21 @@
         <p><b>Medium Term</b> <small>last 6 months</small></p>
           
         <ol>
-          <li v-for="item in mediumTerm">
+          <li v-for="item in mediumTerm.slice(0, 10)">
+            {{ item.name }}
+          </li>
+        </ol>
+
+        <div class="card">
+          The artists have {{ avgFollowers(mediumTerm) }} followers 
+          on average, with an average popularity of 
+          {{ avgPopularity(mediumTerm) }}. 
+          {{ topGenres(mediumTerm).join(', ') }} are the most popular 
+          genres.
+        </div>
+
+        <ol start="11">
+          <li v-for="item in shortTerm.slice(10)">
             {{ item.name }}
           </li>
         </ol>
@@ -43,7 +78,21 @@
         <p><b>Long Term</b> <small>several years</small></p>
         
         <ol>
-          <li v-for="item in longTerm">
+          <li v-for="item in longTerm.slice(0, 20)">
+            {{ item.name }}
+          </li>
+        </ol>
+
+        <div class="card">
+          The artists have {{ avgFollowers(longTerm) }} followers 
+          on average, with an average popularity of 
+          {{ avgPopularity(longTerm) }}. 
+          {{ topGenres(longTerm).join(', ') }} are the most popular 
+          genres.
+        </div>
+
+        <ol start="21">
+          <li v-for="item in shortTerm.slice(20)">
             {{ item.name }}
           </li>
         </ol>
