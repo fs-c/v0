@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const app = new (require('koa'))();
 
 app.use(require('koa-static')('public'));
