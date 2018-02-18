@@ -1,3 +1,27 @@
+@font-face {
+  font-family: circular;
+  src: url(./circular.woff);
+}
+
+body, html {
+  background-color:#1E1E1E;
+  font-family: 'circular', 'Helvetica Neue';
+  color: #fff;
+}
+
+h2 {
+  font-size: 36px;
+  font-weight: 1000;
+  letter-spacing: .005em;
+}
+
 .container {
   margin-top: 1em;
+}
+
+.muted {
+  color: #b3b3b3;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 19.2px;
 }
