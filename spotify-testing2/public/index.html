@@ -8,18 +8,51 @@
 
 	<style>
   </style>
-  
+
+  <link rel="stylesheet" href="/css/normalize.css">  
+  <link rel="stylesheet" href="/css/skeleton.css">
   <link rel="stylesheet" href="/css/styles.css">
 
 	<title>topify</title>
 </head>
 <body>
 
-  <div id ="app">
-    
+  <div id="app" class="container">
+    <div class="row">
+      <div class="four columns">
+        <p><b>Short Term</b> <small>last 4 weeks</small></p>
+
+        <ol>
+          <li v-for="item in shortTerm">
+            {{ item.name }}
+          </li>
+        </ol>
+      </div>
+
+      <div class="four columns">
+        <p><b>Medium Term</b> <small>last 6 months</small></p>
+          
+        <ol>
+          <li v-for="item in mediumTerm">
+            {{ item.name }}
+          </li>
+        </ol>
+      </div>
+
+      <div class="four columns">
+        <p><b>Long Term</b> <small>several years</small></p>
+        
+        <ol>
+          <li v-for="item in longTerm">
+            {{ item.name }}
+          </li>
+        </ol>
+      </div>
+    </div>
   </div>
 
-  <script src="https://unpkg.com/vue"></script>
+  <script src="/js/spotify.js"></script>  
+  <script src="/js/vue.js"></script>
   <script src="/app.js"></script>
 
 </body>
