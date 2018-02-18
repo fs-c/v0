@@ -22,11 +22,18 @@ function generateRandomString(length) {
   return text;
 }
 
+// The key in localStorage.
 const stateKey = 'spotify_auth_state'
+
+const spotify = new SpotifyWebApi();
 
 const app = new Vue({
   el: '#app',
-  data: {}
+  data: {
+    shortTerm: [],
+    mediumTerm: [],
+    longTerm: [],
+  },
 });
 
 const params = getHashParams();
@@ -37,29 +44,54 @@ const expires = params.expires_id;
 const storedState = localStorage.getItem(stateKey);
 
 if (!token && (!state || state !== storedState)) {
+  // We don't have a token, or there's a state mismatch.
+  // Try to get a token.
+  const scope = 'user-top-read';  
   const state = generateRandomString(8);
   const clientID = '2b6ec851a3484d53b10ff10a0ca3191d';
 
   localStorage.setItem(stateKey, state);
 
-  const scope = 'user-top-read';
-
   const url = 'https://accounts.spotify.com/authorize'
     + `?response_type=token`
     + `&client_id=${encodeURIComponent(clientID)}`
     + `&scope=${encodeURIComponent(scope)}`
-    + `&redirect_uri=${encodeURIComponent(window.location)}`
+    + `&redirect_uri=${encodeURIComponent(window.location.origin + '/')}`
     + `&state=${encodeURIComponent(state)}`
 
-  console.log(url);
-
+  // Redirect to spotify auth page.
   window.location = url;
 } else {
+  // State match, and we have a token.
+  // Get top artists and add them to the app.
   localStorage.removeItem(stateKey);
 
-  fetch('https://api.spotify.com/v1/me', {
-    headers: {
-      'Authentication': 'Bearer ' + token,
-    },
-  }).then((res) => res.json()).then(console.log)
+  spotify.setAccessToken(token);
+
+  spotify.getMyTopArtists({
+    limit: 50,
+    time_range: 'short_term'
+  }).then((data) => {
+    console.log('short term: ');
+    console.log(data);
+    app.shortTerm = data.items}
+  ).catch(console.error)
+
+  spotify.getMyTopArtists({
+    limit: 50,
+    time_range: 'medium_term'
+  }).then((data) => {
+    console.log('medium term: ');
+    console.log(data);
+    app.mediumTerm = data.items
+  }).catch(console.error)
+
+  spotify.getMyTopArtists({
+    limit: 50,
+    time_range: 'long_term'
+  }).then((data) => {
+    console.log('long term: ');
+    console.log(data);
+    app.longTerm = data.items
+  }).catch(console.error)
 }
