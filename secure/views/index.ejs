@@ -14,10 +14,13 @@
   <body>
     <div class="container">
       Welcome <b><%= user.username %></b>, 
-      your access level is <b><%= user.access %></b>.
-      </br>
-      Maybe you are looking for the <a href="/api">api</a>, or the 
-      <a href="/trader">trader</a>?
+      your access level is <b><%= user.access %></b>. 
+      <span class="u-pull-right"><a href="<%= root %>logout">logout</a></span><br>
+
+      <div>
+        <a href="<%= root %>api">/api</a><br>
+        <a href="<%= root %>idler">/idler</a>
+      </div>
     </div>
   </body>
 </html>

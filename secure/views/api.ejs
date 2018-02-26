@@ -7,21 +7,57 @@
 
     <style>
       .container {
-        margin-top: 1em }
+        padding-top: 1em; }
+
+      .table-head {
+        font-weight: bold; }
+      .table-row {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        border-top: 1px solid #E1E1E1; }
     </style>
   </head>
 
   <body>
     <div class="container">
-      <b>access level - path - function - description</b> </br>
+      <div class="row">
+        <div class="table-head twelve columns">
+          <div class="one column">level</div>
+          <div class="two columns">route</div>
+          <div class="two columns">function</div>
+          <div class="seven columns">description</div>          
+        </div>
 
-      <% api.forEach(route => { %>
-        <%= route.level ? route.level < 0 ? 'root' : route.level : 0%> - 
-        <a href="/api<%= route.path %>"><%= route.path %></a> - 
-        <%= route.name %>() - 
-        <%= route.description %>
-        </br>
-      <% }) %>
+        <% routes.forEach(route => { %>
+          <div class="table-row twelve columns">
+            <div class="one column">
+              <%= route.level ? route.level < 0 ? 'root' : route.level : 0 %>
+            </div>
+            <div class="two columns"><a href="<%= root %>api<%= route.path %>"><%= route.path %></a></div>
+            <div class="two columns"><%= route.name %>()</div>
+            <div class="seven columns">
+              <%= route.description %> </br>
+              <% if (route.params) {
+                route.params.forEach(param => {
+                  param.name = param.required ? param.name : '[' + param.name + ']'%>
+                  <small><b>:<%= param.name %></b> - <%= param.description %> </br></small>
+              <% })} %>
+
+              <% if (route.queries) {
+                route.queries.forEach(query => {
+                  query.name = query.required ? query.name : '[' + query.name + ']'%>
+                  <small><b>?<%= query.name %></b> - <%= query.description %> </br></small>
+              <% })} %>
+            </div>    
+          </div>
+        <% }) %>
+
+        <% if (hidden) { %>
+          <div class="table-foot twelve columns">
+            <%= hidden %> function(s) hidden due to insufficient privileges.      
+          </div>
+        <% } %>
+      </div>
     </div>
   </body>
 </html>
