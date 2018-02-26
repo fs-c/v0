@@ -1,0 +1,10 @@
+html, body {
+  height: 100%;
+  color: #222 }
+
+.vertical-parent {
+  height: 100%;
+  display: flex;
+  align-items: center }
+.vertical-child {
+  margin: 0 }

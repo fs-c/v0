@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include('partials/head') %>
+    
+    <title>00 - api docs</title>
+
+    <style>
+      .container {
+        margin-top: 1em }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <b>access level - path - function - description</b> </br>
+
+      <% api.forEach(route => { %>
+        <%= route.level ? route.level < 0 ? 'root' : route.level : 0%> - 
+        <a href="/api<%= route.path %>"><%= route.path %></a> - 
+        <%= route.name %>() - 
+        <%= route.description %>
+        </br>
+      <% }) %>
+    </div>
+  </body>
+</html>
