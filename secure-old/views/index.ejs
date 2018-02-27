@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include('partials/head') %>
+    
+    <title>00 - index</title>
+
+    <style>
+      .container {
+        margin-top: 1em }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      Welcome <b><%= user.username %></b>, 
+      your access level is <b><%= user.access %></b>.
+      </br>
+      Maybe you are looking for the <a href="/api">api</a>, or the 
+      <a href="/trader">trader</a>?
+    </div>
+  </body>
+</html>

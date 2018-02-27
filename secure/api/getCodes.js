@@ -1,6 +1,4 @@
-const accounts = require(require('path').join(
-  require('os').homedir(), '.steam.json')
-)
+const accounts = global.api.ACCOUNTS
 
 const getCode = module.exports = () => {
   let codes = {  }

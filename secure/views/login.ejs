@@ -12,13 +12,21 @@
   <body>
     <div class="container vertical-parent">
       <div class="row">
-        <form action="/login" method="post">
+        <form action="<%= root %>login" method="post">
+          <% if (locals.message && message.length) { %>
+            <label class="alert">
+              <%= message %>
+            </label>
+          <% } %>
+
           <label for="userInput">Username</label>
           <input class="u-full-width" type="text" id="userInput" name="username">
           <label for="passInput">Password</label>
           <input class="u-full-width" type="password" id="passInput" name="password">
 
           <input class="button-primary" type="submit" value="Login">
+
+          <p>Alternatively, <a href="<%= root %>signup">sign up</a>.</p>
         </form>
       </div>
     </div>

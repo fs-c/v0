@@ -2,26 +2,27 @@ const Strategy = require('passport-local').Strategy
 const User = require('../models/User')
 
 const bcrypt = require('bcrypt-nodejs')
-const log = require('../logger')
+const log = require(global.PATHS.logger)
 
 const configure = module.exports = passport => {
   passport.serializeUser((user, done) => {
-    log.debug(`serializing user ${user.id}`)
     done(null, user.id)
   })
 
   passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => {
-      log.debug(`deserializing user ${user.id}`)
       done(err, user)
     })
   })
 
-  passport.use('local-signup', new Strategy((name, pass, done) => {
+  passport.use('local-signup', new Strategy({
+    passReqToCallback : true 
+  }, (req, name, pass, done) => {
     process.nextTick(() => {
       User.findOne({ username: name }, (err, user) => {
         if (err) return done(err)
-        if (user) return done(new Error('User already exists.'))
+        if (user)
+          return done(null, false, req.flash('signup', 'User already exists.'))
 
         let newUser = new User({
           username: name,
@@ -33,15 +34,17 @@ const configure = module.exports = passport => {
     })
   }))
 
-  passport.use('local-login', new Strategy((user, pass, done) => {
+  passport.use('local-login', new Strategy({
+    passReqToCallback: true
+  }, (req, user, pass, done) => {
     process.nextTick(() => {
       User.findOne({ username: user }, (err, user) => {
         if (err) return done(err)
-        if (!user) return done(null, false)
+        if (!user) return done(null, false, req.flash('login', 'No user found.'))
         
         bcrypt.compare(pass, user.password, (err, res) => {
-          log.silly(res)
-          done(err, res ? user : false)
+          done(err, res ? user : false,
+            !res ? req.flash('login', 'Incorrect password.') : null)
         })
       })
     })

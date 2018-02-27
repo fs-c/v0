@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel='shortcut icon' type='image/x-icon' href='https://i.imgur.com/MMWZ4sA.png'/>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+	<style>
+
+    .head {
+      margin-top: 1em;
+      margin-bottom: 1em;
+    }
+
+		h5 { margin-top: 2em;}
+
+	</style>
+
+	<title>fsoc api</title>
+</head>
+<body>
+
+  <div class="container">
+    <h3 class="head">The fsoc API. <small class="text-muted">Sometimes it even works!</small></h3>
+
+		<div class="alert alert-warning" role="alert">
+			All enpoints are rate-limited, check the <code>X-RateLimit-Limit</code> and <code>X-RateLimit-Remaining</code> headers for exact individual limits.
+		</div>
+
+	   <h5>/mrrobot <a href="https://fsoc.space/api/mrrobot" class="badge badge-secondary">Example</a></h5>
+	   <p>
+	     Returns a random quote from the Series <a href="http://www.imdb.com/title/tt4158110/">Mr. Robot</a>.
+	     Note that the quote strings are formatted and contain <code>&lt;/br&gt;</code> tags. </br>
+	     Yes. This is edgy.
+	   </p>
+
+		 <h5>/steam/comments/:id <a href="https://fsoc.space/api/steam/comments/103582791437945007" class="badge badge-secondary">Example</a></h5>
+     <p>
+				Returns an array of comments, id should be either a group (clan) or profile ID.</br>
+				<i>Note that requests to this endpoint will most likely take a while to return, since data is only cached for 12 hours.</i>
+     </p>
+
+    <h5>/steam/id/:id <a href="https://fsoc.space/api/steam/id/76561198091491690" class="badge badge-secondary">Example</a></h5>
+    <p>
+      Pass a valid steam ID or vanity URL as :id parameter, returns a
+      <a href="https://github.com/DoctorMcKay/node-steamid/tree/v0.1.2">node-steamid</a> object and all variations of the ID.</br>
+			<i>Note that if you don't use a vanity URL, the vanity URL of the account will be returned additionally.</i>
+    </p>
+
+    <h5>/steam/user/:id <a href="https://fsoc.space/api/steam/user/fsok" class="badge badge-secondary">Example</a></h5>
+    <p>
+      Pass a valid steam ID or vanity URL as :id parameter, returns a
+      <a href="https://github.com/DoctorMcKay/node-steamcommunity">node-steamcommunity</a> CSteamUser object.</br>
+    </p>
+
+		<h5>/steam/user/:id/inventory <a href="https://fsoc.space/api/steam/user/76561198091491690/inventory?appid=730&context=2" class="badge badge-secondary">Example</a></h5>
+    <p>
+      Pass a valid steam ID string (one returned by /steam/id, for example) and an <code>appid</code> and <code>context</code> as queries.
+			Optionally, you can also pass a <code>tradable</code> query to also get non-tradable items.
+			Returns an array of <a href="https://github.com/DoctorMcKay/node-steamcommunity/wiki/CEconItem">CEconItems</a>.
+			Read more on context IDs <a href="https://dev.doctormckay.com/topic/332-identifying-steam-items/">here</a>.
+			<i>Note that this endpoint is heavily rate-limited, I strongly suggest you cache the data returned.</i>
+    </p>
+
+		<h5>/steam/user/:id/contexts <a href="https://fsoc.space/api/steam/user/76561198091491690/contexts" class="badge badge-secondary">Example</a></h5>
+    <p>
+      Pass a valid steam ID string, returns info about what inventories (from which appIDs) are available to a user, including context IDs.
+    </p>
+
+    <h5>/steam/group/:id <a href="https://fsoc.space/api/steam/group/projectbluestreak" class="badge badge-secondary">Example</a></h5>
+    <p>
+      Pass a valid group ID or custom group URL as :id parameter, returns a
+      <a href="https://github.com/DoctorMcKay/node-steamcommunity">node-steamcommunity</a> CSteamGroup object.</br>
+    </p>
+
+    <h5>/steam/market/item/:appid/:hash <a href="https://fsoc.space/api/steam/market/item/730/Spectrum%20Case" class="badge badge-secondary">Example</a></h5>
+    <p>
+      Pass an appID and market hash name, returns a <a href="https://github.com/DoctorMcKay/node-steamcommunity">node-steamcommunity</a>
+      CMarketItem object. This has been structured to allow direct pasting of a part of the item's market link for convenience.</br>
+      Example: http://steamcommunity.com/market/listings<b>/730/Spectrum%20Case</b> -> https://fsoc.space/api/market/item<b>/730/Spectrum%20Case</b>
+    </p>
+
+  </div>
+
+</body>
+
+</html>

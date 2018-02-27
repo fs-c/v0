@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include('../../views/partials/head') %>
+    
+    <title>00 - idler</title>
+
+    <style>
+      .container {
+        margin-bottom: 1em }
+
+      .add-account {
+        border: 1px solid #33C3F0; 
+        border-radius: 4px;
+        padding: 1em;
+        margin-top: 1em }
+
+      .account {
+        border: 1px solid #D1D1D1;
+        border-radius: 4px;
+        padding: 1.25em;
+        margin-top: 1em }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <% if (locals.message) { %>
+        <div class="alert"><%= message %></div>
+      <% } %>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="five columns add-account">
+          <form action="<%= idler %>add" method="POST">
+            <label for="userInput">Account Name</label>
+            <input class="u-full-width" type="text" id="userInput" name="name">
+            <label for="passInput">Password</label>
+            <input class="u-full-width" type="password" id="passInput" name="pass">
+            <label for="shasecInput">Shared Secret <small class="muted">Optional. <a href="https://www.reddit.com/r/SteamBot/comments/3xb1ft/finding_shared_secret_identity_secret_required/">What is this?</a></small></label>
+            <input class="u-full-width" type="text" id="shasecInput" name="shasec">
+            <label for="codeInput">
+              Steam Guard Code <small class="muted">Required if no shasec is provided, or the account does not use 2FA.</small>
+            </label>
+            <input class="u-full-width" type="text" id="codeInput" name="code">
+
+            <p><small class="muted">
+              Your data is encrypted with AES192 before being stored. 
+              I have the key though, and you can't trust me :3
+            </small></p>
+            <input class="button-primary" type="submit" value="Add Account">
+          </form>
+        </div>
+
+        <div class="seven columns">
+          <% accounts.forEach(account => { %>
+            <div class="twelve columns account">
+              <b><%= account.name %></b><%= account.shasec ? '' : ', no shared secret provided ' %>
+              <div class="u-pull-right"><a href="<%= idler %>edit/<%= account.id %>">edit</a> <a href="<%= idler %>delete/<%= account.id %>">delete</a></div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
