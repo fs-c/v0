@@ -6,7 +6,7 @@ const genresSet = new Set(
         .reduce((acc, cur) => acc.concat(cur), [])
 );
 
-// Object of genres, key is the name and value the number of occurences.
+// Object of genres; key is name, value is number of occurences.
 const genresObj = albums.reduce((acc, cur) => {
   cur.genres.forEach((genre) => 
     acc[genre] = acc[genre] ? acc[genre] + 1 : 1
