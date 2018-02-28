@@ -1,21 +1,58 @@
 require('dotenv').config();
 
 const debug = require('debug')('app');
-const Discord = require('discord.io');
+const { Client } = require('discord.js');
+const { createInterface } = require('readline');
 
-const client = new Discord.Client({
-  autorun: true,
-  token: process.env.TOKEN,
+const client = new Client();
+
+const token = process.env.TOKEN;
+client.login(token).catch(debug);
+
+let lastMessage = {};
+
+const readline = createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  completer: (line, callback) => {
+    const dictionary = (client.user.friends || [])
+      .map((friend) => friend.username);
+
+    const hits = dictionary.filter((name) => name.startsWith(line));
+
+    callback(null, [ hits, line ]);
+  },
 });
 
-client.on('ready', (event) => {
-  debug(event);
+readline.on('line', (line) => {
+  if (!client.user.friends) {
+    return;
+  }
 
-  client.on('presence', debug);
+  const message = input.slice(
+    input.indexOf(input.includes('<') ? '<' : '^') + 1
+  );
 
-  debug(client.users);
+  const recipient = input.includes('<')
+    ? friends.filterArray(
+        (name) => name === line.slice(0, line.indexOf('<')).trim()
+      )[0]
+    : line.includes('^')
+      ? lastMessage.author
+      : undefined
 
-  client.getAllUsers((err) => debug(err, client.users));
+  recipient.send(message);
 });
 
-client.on('disconnect', debug);
+client.on('ready', () => {
+  debug('%o ready', client.user.tag);
+});
+
+client.on('error', debug);
+
+client.on('message', (message) => {
+  lastMessage = message;
+
+  debug('%o > %c', message.author.username, message.content);
+});
+
