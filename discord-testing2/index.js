@@ -34,18 +34,12 @@ readline.on('line', (line) => {
   );
 
   const recipient = line.includes('<')
-    ? client.user.friends.filterArray(
-        (friend) => friend.username 
-          === line.slice(0, line.indexOf('<')).trim()
+    ? friends.filterArray(
+        (name) => name === line.slice(0, line.indexOf('<')).trim()
       )[0]
     : line.includes('^')
       ? lastMessage.author
       : undefined
-
-  if (!recipient) {
-    debug('invalid recipient');
-    return;
-  }
 
   recipient.send(message);
 });
@@ -57,13 +51,8 @@ client.on('ready', () => {
 client.on('error', debug);
 
 client.on('message', (message) => {
-  if (message.author.tag === client.user.tag) {
-    debug('sent message');
-    return;
-  }
-
   lastMessage = message;
 
-  debug('%o > %o', message.author.username, message.content);
+  debug('%o > %c', message.author.username, message.cleanContent);
 });
 
