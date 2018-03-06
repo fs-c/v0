@@ -1,3 +1,4 @@
+// JSON.stringify all objects because the WS expects strings or buffers.
 const payloads = exports.payloads = function() { return {
   heartbeat: JSON.stringify({
     op: 1,
@@ -10,8 +11,8 @@ const payloads = exports.payloads = function() { return {
       v: 6,
       properties: {
         $os: require('os').platform,
-        $browser: 'd3test',
-        $device: 'd3test',
+        $browser: '',
+        $device: '',
         $referrer: '',
         $referring_domain: '',   
       }
