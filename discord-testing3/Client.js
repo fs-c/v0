@@ -44,8 +44,6 @@ const Client = exports.Client = class extends EventEmitter {
     const message = JSON.parse(raw);
     const data = message.d;
 
-    debug(data);
-
     switch (message.op) {
       // Dispatch.
       case 0: this.sequence++;
@@ -68,12 +66,12 @@ const Client = exports.Client = class extends EventEmitter {
           debug('resuming');          
 
           // We were already connected before, resume connection.
-          this.socket.send(this.payloads.resume());
+          this.socket.send(this.payloads().resume);
         } else {
-          debug('identifying %o', this.payloads.identify());
+          debug('identifying %o', this.payloads().identify);
 
           // Initial connect, we have to identify ourselves.
-          this.socket.send(this.payloads.identify());
+          this.socket.send(this.payloads().identify);
         }
 
         if (this.heartbeat.timer) {
@@ -100,13 +98,14 @@ const Client = exports.Client = class extends EventEmitter {
             this.socket.close(4000, 'No heartbeat received.');
           }, this.heartbeat.maxDelay);
 
-          this.socket.send(this.payloads.heartbeat());
+          debug('sending heartbeat');
+          this.socket.send(this.payloads().heartbeat);
         }, this.heartbeat.interval)
 
         break;
       // Heartbeat acknowledgement.
       case 11:
-        clearInterval(this.socket.timeout); // Clear the failure catch.
+        clearInterval(this.socket.timeout); // Clear the timeout catch.
 
         // Calculate our ping.
         this.connection.ping = Date.now() - this.heartbeat.last;
@@ -127,31 +126,5 @@ const Client = exports.Client = class extends EventEmitter {
   }
 }
 
-Client.prototype.payloads = {
-  heartbeat: function() { JSON.stringify({
-    op: 1,
-    d: this.connection.sequence,
-  })},
-  identify: () => JSON.stringify({
-    op: 2,
-    d: {
-      token: this.token,
-      v: 6,
-      properties: {
-        $os: require('os').platform,
-        $browser: 'd3test',
-        $device: 'd3test',
-        $referrer: '',
-        $referring_domain: '',   
-      }
-    }
-  }),
-  resume: () => JSON.stringify({
-    op: 6,
-    d: {
-      seq: this.sequence,
-      token: this.token,
-      session_id: this.connection.sessionID,
-    }
-  }),
-}
+const { payloads } = require('./payloads');
+Client.prototype.payloads = payloads;
