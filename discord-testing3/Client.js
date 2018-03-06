@@ -110,7 +110,7 @@ const Client = exports.Client = class extends EventEmitter {
         // Calculate our ping.
         this.connection.ping = Date.now() - this.heartbeat.last;
 
-        debug('heartbeat acknowledged, ping %o', this.connection.ping);
+        debug('heartbeat acknowledged with %oms delay', this.connection.ping);
         break;
       default: debug('unknown opcode: %o', message.op);
     }
