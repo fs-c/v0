@@ -39,10 +39,10 @@ const Client = exports.Client = class extends EventEmitter {
   })}
 
   handleSocket(raw) {
-    debug('received message');
-
     const message = JSON.parse(raw);
     const data = message.d;
+
+    debug('received message (%o)', message.t || message.op);    
 
     switch (message.op) {
       // Dispatch.
@@ -68,7 +68,7 @@ const Client = exports.Client = class extends EventEmitter {
           // We were already connected before, resume connection.
           this.socket.send(this.payloads().resume);
         } else {
-          debug('identifying %o', this.payloads().identify);
+          debug('identifying');
 
           // Initial connect, we have to identify ourselves.
           this.socket.send(this.payloads().identify);
@@ -109,6 +109,8 @@ const Client = exports.Client = class extends EventEmitter {
 
         // Calculate our ping.
         this.connection.ping = Date.now() - this.heartbeat.last;
+
+        debug('heartbeat acknowledged, ping %o', this.connection.ping);
         break;
       default: debug('unknown opcode: %o', message.op);
     }
