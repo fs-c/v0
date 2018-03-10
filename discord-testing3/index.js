@@ -1,28 +1,10 @@
-const WS_URL = 'wss://gateway.discord.gg/?v=6&encoding=json';
+require('dotenv').config();
 
-const WebSocket = require('ws');
 const debug = require('debug')('app');
+const { Client } = require('./Client');
 
-const ws = new WebSocket(WS_URL);
+const client = new Client(process.env.TOKEN);
 
-let sessionID;
-let sequence = 0;
+client.connect().then(() => debug('connected')).catch(debug);
 
-ws.on('open', () => debug('opened'));
-ws.on('close', () => debug('disconnected'));
-
-ws.on('message', (data) => {
-  debug('received message');
-
-  const message = JSON.parse(data);
-
-  switch (message.op) {
-    case 0: sequence++;
-      break;
-    case 9:
-      debug('invalid session');
-      break;
-    case 10:
-
-  }
-});
+client.on('message', debug);
