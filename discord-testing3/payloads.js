@@ -1,4 +1,5 @@
 // JSON.stringify all objects because the WS expects strings or buffers.
+// Executed in the context of the Client class.
 const payloads = exports.payloads = function() { return {
   heartbeat: JSON.stringify({
     op: 1,
