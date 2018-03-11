@@ -1,8 +1,11 @@
-const WS_URL = 'wss://gateway.discord.gg/?v=6&encoding=json';
+const WS_VER = process.env.WS_VER || '6';
+const WS_URL = `wss://gateway.discord.gg/?v=${WS_VER}&encoding=json`;
 
 const WebSocket = require('ws');
 const EventEmitter = require('events');
 const debug = require('debug')('client');
+
+const { payloads } = require('./payloads');
 
 const Client = exports.Client = class extends EventEmitter {
   constructor(token) {
@@ -13,6 +16,8 @@ const Client = exports.Client = class extends EventEmitter {
 
     this.socket;
     this.token = token;
+
+    this.state = 'dormant';
 
     this.connection = {
       sequence: 0,
@@ -29,6 +34,10 @@ const Client = exports.Client = class extends EventEmitter {
     }
   }
 
+  get payloads() {
+    return payloads.bind(this)();
+  }
+
   connect() { return new Promise((resolve, reject) => {
     debug('connecting');
 
@@ -37,6 +46,20 @@ const Client = exports.Client = class extends EventEmitter {
     this.socket.on('ready', resolve);
     this.socket.on('message', (data) => this.handleSocket(data));
   })}
+
+  changeState(state) {
+    debug(`changing state from %o to %o`);
+
+    this.state = state;
+  }
+
+  send(data) {
+    if (!this.socket || this.socket.readyState !== 1) {
+      return;
+    }
+
+    this.socket.send(data);
+  }
 
   handleSocket(raw) {
     const message = JSON.parse(raw);
@@ -55,7 +78,7 @@ const Client = exports.Client = class extends EventEmitter {
         this.connect.sequence = 0;
         this.connection.sessionID = null;
 
-        this.socket.send(4000, 'Received an invalid session ID.')
+        send(4000, 'Received an invalid session ID.')
 
         break;
       // Hello.
@@ -66,12 +89,12 @@ const Client = exports.Client = class extends EventEmitter {
           debug('resuming');          
 
           // We were already connected before, resume connection.
-          this.socket.send(this.payloads().resume);
+          send(this.payloads().resume);
         } else {
           debug('identifying');
 
           // Initial connect, we have to identify ourselves.
-          this.socket.send(this.payloads().identify);
+          send(this.payloads().identify);
         }
 
         if (this.heartbeat.timer) {
@@ -99,13 +122,13 @@ const Client = exports.Client = class extends EventEmitter {
           }, this.heartbeat.maxDelay);
 
           debug('sending heartbeat');
-          this.socket.send(this.payloads().heartbeat);
+          send(this.payloads().heartbeat);
         }, this.heartbeat.interval)
 
         break;
       // Heartbeat acknowledgement.
       case 11:
-        clearInterval(this.socket.timeout); // Clear the timeout catch.
+        clearInterval(this.heartbeat.timeout); // Clear the timeout catch.
 
         // Calculate our ping.
         this.connection.ping = Date.now() - this.heartbeat.last;
@@ -127,6 +150,3 @@ const Client = exports.Client = class extends EventEmitter {
     }
   }
 }
-
-const { payloads } = require('./payloads');
-Client.prototype.payloads = payloads;
