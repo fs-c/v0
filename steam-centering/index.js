@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 const debug = require('debug')('center');
 const stringWidth = require('string-pixel-width');
@@ -6,8 +8,8 @@ const args = require('minimist')(process.argv.slice(2));
 // Ex.: '0041' -> 'A'
 const utfToChar = (code) => String.fromCharCode(parseInt(code, 16));
 // stringWidth wrapper with fitting default size.
-const getWidth = (string, size) => 
-  stringWidth(string, { size: size || args.fontSize || 13 });
+const getWidth = (string, size = args.fontSize || 13) => 
+  stringWidth(string, { size });
 
 // Steam info box and profile summary max widths.
 // 1920x1080 with default client font and font size.
@@ -61,6 +63,9 @@ const center = (line, options = args || {}) => {
     }
   }
 
+  debug('estimated inaccuracy: %o%%', 
+    (remaining / ((width / 2) - (length / 2))) * 100);
+
   return block + line + (options.d ? block : '');
 }
 
@@ -69,7 +74,7 @@ const finished = (result) => {
   if (!args.s) { console.log(`centered line: '${result}'`); }
   if (args.c) { require('copy-paste').copy(result); }
   if (args.out && args.out.length) {
-    require('fs').appendFileSync(args.out, result + '\n');
+    fs.appendFileSync(args.out, result + '\n');
   }
 }
 
@@ -77,6 +82,7 @@ if (args.line && args.line.length) {
   finished(center(args.line));
 } else if (args.file && args.file.length && fs.existsSync(args.file)) {
   const lines = fs.readFileSync(args.file, 'utf8');
+
   lines.split('\n').forEach((line) => finished(center(line.trim())));
 } else {
   const rl = require('readline').createInterface({
