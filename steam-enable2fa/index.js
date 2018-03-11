@@ -4,7 +4,7 @@ const Steam = require('steamcommunity');
 
 const account = {
   accountName: rls.question('Name: '),
-  password: rls.question('Pass: '),
+  password: rls.questionNewPassword('Pass: '),
 }
 
 const user = new Steam();
