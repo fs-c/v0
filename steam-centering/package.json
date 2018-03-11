@@ -16,5 +16,8 @@
   },
   "devDependencies": {
     "debug": "^3.1.0"
+  },
+  "bin": {
+    "steam-center": "./index.js"
   }
 }
