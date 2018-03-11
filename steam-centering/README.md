@@ -5,7 +5,15 @@ profile descriptions or custom info boxes.
 
 This is still somewhat inaccurate because space characters are weird.
 
-Options:
+### Installation
+
+```
+$ npm i -g steam-centering
+```
+
+You can now use the `steam-center` command globally.
+
+### Flags
 
 - `-d` 'double' - add padding on both sides of the raw line. Might cause issues 
 in some cases. Allows you to easily check the precision.
@@ -17,9 +25,17 @@ seperated by `\n`s. Note that lines are trimmed, so any spaces on the sides will
 be removed. To be used with `--out`.
 - `--out <path>` output - path to the file that any output should be written to.
  This will *add to* files, never overwrite. File will be created if it doesn't 
-exist. 
+exist.
+- `--line <string>` line - the text that you want to be centered. Not to be 
+combined with `--in`.
 
-Example:
+If neither `--in` nor `--line` are specified, lines will be read from the 
+terminal. Just start typing after running, press enter to submit.
+
+### Example
+
 ```
-node ./index.js -d -s --in in.txt --out out.txt
+steam-center -d -s --in in.txt --out out.txt
 ```
+For every line in in.txt (`--in`), adds a line in out.txt (`--out`) with 
+added padding to both sides (`-d`) without any logging (`-s`).
