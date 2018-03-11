@@ -1,9 +1,7 @@
+const fs = require('fs');
+const debug = require('debug')('center');
 const stringWidth = require('string-pixel-width');
 const args = require('minimist')(process.argv.slice(2));
-const rl = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
 
 // Ex.: '0041' -> 'A'
 const utfToChar = (code) => String.fromCharCode(parseInt(code, 16));
@@ -11,12 +9,12 @@ const utfToChar = (code) => String.fromCharCode(parseInt(code, 16));
 const getWidth = (string, size) => 
   stringWidth(string, { size: size || args.fontSize || 13 });
 
-const center = (line, options = {}) => {
-  // Steam info box and profile summary max widths.
-  // 1920x1080 with default client font and font size.
-  const infoWidth = options.infoWidth || 600;
-  const summaryWidth = options.summaryWidth || 454;
+// Steam info box and profile summary max widths.
+// 1920x1080 with default client font and font size.
+const infoWidth = args.infoWidth || 600;
+const summaryWidth = args.summaryWidth || 454;
 
+const center = (line, options = args || {}) => {
   const length = getWidth(line);
   // Default to infoWidth.
   const width = (options.target && options.target === 'summary')
@@ -24,20 +22,22 @@ const center = (line, options = {}) => {
     : infoWidth
 
   if (length >= width) {
-    console.log('line too wide')
+    console.log('line too wide');
     return;
   }
 
+  // TODO: Steam doesn't use default Arial sizes for these space characters, 
+  //       get more exact widths somehow.
   const spaces = (options.spaces || [{
-    width: 3.08,
+    width: 1,
     code: '200A',
   }, {
-    width: 4.92,
+    width: 2,
     code: '2009',
   }, {
-    width: 15,
+    width: 13,
     code: '2003',
-  }]).sort((a, b) => a.width - b.width); // Sort by width, descending.
+  }]).sort((a, b) => b.width - a.width); // Sort by width, descending.
 
   let remaining = (width / 2) - (length / 2);
 
@@ -49,7 +49,10 @@ const center = (line, options = {}) => {
     const space = spaces[i];
 
     const amount = Math.floor(remaining / space.width);
-    console.log(amount, remaining, space);
+
+    debug('space: %o (%o), amount: %o, remaining: %o',
+      space.code, space.width, amount, remaining);
+
     for (let i = 0; i <= amount; i++) {
       if ((remaining - space.width) < 0) { break; }
 
@@ -58,14 +61,30 @@ const center = (line, options = {}) => {
     }
   }
 
-  return block + line;
+  return block + line + (options.d ? block : '');
 }
 
-rl.on('line', (line) => {
-  console.log(`line width: ${getWidth(line)}`);
+// TODO: Naming.
+const finished = (result) => {
+  if (!args.s) { console.log(`centered line: '${result}'`); }
+  if (args.c) { require('copy-paste').copy(result); }
+  if (args.out && args.out.length) {
+    require('fs').appendFileSync(args.out, result + '\n');
+  }
+}
 
-  const result = center(line, args)
-  console.log(`centered line: '${result}'`);
+if (args.line && args.line.length) {
+  finished(center(args.line));
+} else if (args.file && args.file.length && fs.existsSync(args.file)) {
+  const lines = fs.readFileSync(args.file, 'utf8');
+  lines.split('\n').forEach((line) => finished(center(line.trim())));
+} else {
+  const rl = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
 
-  require('fs').appendFileSync('out.txt', result + '\n');
-});
+  rl.on('line', (line) => {
+    finished(center(line));
+  });
+}
