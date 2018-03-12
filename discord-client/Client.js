@@ -3,13 +3,17 @@ const WS_URL = `wss://gateway.discord.gg/?v=${WS_VER}&encoding=json`;
 
 const WebSocket = require('ws');
 const EventEmitter = require('events');
-const debug = require('debug')('client');
+const debug = require('debug')('discord');
 
 const { payloads } = require('./payloads');
 
 const Client = exports.Client = class extends EventEmitter {
   constructor(token) {
     super();
+
+    if (!token) {
+      throw new Error('No token!');
+    }
 
     // All values which default to undefined may be set in the process 
     // of connecting, do not count on them being set at any point in time.
@@ -78,7 +82,7 @@ const Client = exports.Client = class extends EventEmitter {
         this.connect.sequence = 0;
         this.connection.sessionID = null;
 
-        send(4000, 'Received an invalid session ID.')
+        this.send(4000, 'Received an invalid session ID.')
 
         break;
       // Hello.
@@ -89,12 +93,12 @@ const Client = exports.Client = class extends EventEmitter {
           debug('resuming');          
 
           // We were already connected before, resume connection.
-          send(this.payloads().resume);
+          this.send(this.payloads.resume);
         } else {
           debug('identifying');
 
           // Initial connect, we have to identify ourselves.
-          send(this.payloads().identify);
+          this.send(this.payloads.identify);
         }
 
         if (this.heartbeat.timer) {
@@ -122,7 +126,7 @@ const Client = exports.Client = class extends EventEmitter {
           }, this.heartbeat.maxDelay);
 
           debug('sending heartbeat');
-          send(this.payloads().heartbeat);
+          this.send(this.payloads.heartbeat);
         }, this.heartbeat.interval)
 
         break;
