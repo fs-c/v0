@@ -1,8 +1,5 @@
 # v0
 
-A collection of projects that are either
-- being worked on, but don't have enough progress for an own repo / don't work yet
-- abandoned and unfinished
+A collection of projects that I don't deem worthy to have their own repository, and a bunch of other random stuff.
 
-I regularly work on some of the stuff here, and as it grows I either move it to /v1
-or create a repo for it.
+This is like [v1](https://github.com/LW2904/v1), except that's only for projects that I feel like are completed. Which is pretty rare, since there's always something to do.
