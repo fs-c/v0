@@ -31,10 +31,15 @@ const Client = module.exports = class extends EventEmitter {
 
     this.heartbeat = {
       last: 0,
-      interval: 15000,
-      maxDelay: 15000,
+      timer: undefined,         // Periodic heartbeats.
+      timeout: undefined,       // Check for timeout.
+      interval: 15 * 1000,      // Most likely overwritten by server response.
+      maxDelay: 15 * 1000,      // Max delay for heartbeat response.
+    }
+
+    this.reconnect = {
       timer: undefined,
-      timeout: undefined,
+      delay: 1000 * 60,
     }
   }
 
@@ -42,19 +47,45 @@ const Client = module.exports = class extends EventEmitter {
     return payloads.bind(this)();
   }
 
+  set state(updated) {
+    debug(`changed state from %o to %o`, this.state, updated);    
+
+    this.state = updated;
+  }
+
   connect() { return new Promise((resolve, reject) => {
-    debug('connecting');
+    this.state = this.reconnect.timer ? 'reconnecting' : 'connecting';
+
+    if (this.reconnect.timer) {
+      this.reconnect.timer = undefined;
+    }
 
     this.socket = new WebSocket(WS_URL);
 
-    this.socket.on('ready', resolve);
     this.socket.on('message', (data) => this.handleSocket(data));
+
+    this.socket.on('open', () => {
+      resolve();
+
+      this.state = 'connected';
+    });
+
+    this.socket.on('close', (code, reason) => {
+      debug('connection closed: %o (%o)')
+
+      this.state = 'closed';
+
+      this.clearIntervals();
+
+      this.reconnect.timer = setTimeout()
+    });
   })}
 
-  changeState(state) {
-    debug(`changing state from %o to %o`);
+  clearIntervals() {
+    clearInterval(this.heartbeat.timer);
+    clearInterval(this.heartbeat.timeout);
 
-    this.state = state;
+    debug('cleared timers');
   }
 
   send(data) {
@@ -62,7 +93,9 @@ const Client = module.exports = class extends EventEmitter {
       return;
     }
 
-    this.socket.send(data);
+    this.socket.send(data, (err) => {
+      if (err)
+    });
   }
 
   handleSocket(raw) {
