@@ -22,6 +22,7 @@ client.connect()
   .then(() => console.log('connected'))
   .catch(console.error);
 
+// Logs a parsed discord message object to the console.
 const log = (message) => {
   console.log(
     `${moment(message.timestamp).format('HH:mm:ss')} `
