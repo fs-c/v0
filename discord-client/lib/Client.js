@@ -71,21 +71,37 @@ const Client = module.exports = class extends EventEmitter {
     });
 
     this.socket.on('close', (code, reason) => {
-      debug('connection closed: %o (%o)')
+      debug('connection closed: %o (%o)', code, reason)
 
-      this.state = 'closed';
+      this.kill();
 
-      this.clearIntervals();
+      debug('reconnecting in %o', this.reconnect.delay);
+      this.reconnect.timer = setTimeout(this.connect, this.reconnect.delay);
+    });
 
-      this.reconnect.timer = setTimeout()
+    this.socket.on('error', (err) => {
+      this.state = 'errored';
+
+      debug('encountered error %o', err.message);
     });
   })}
 
-  clearIntervals() {
+  // Clear any timers, reset defaults.
+  kill() {
     clearInterval(this.heartbeat.timer);
+    this.heartbeat.timer = undefined;
     clearInterval(this.heartbeat.timeout);
+    this.heartbeat.timeout = undefined;
+
+    clearInterval(this.reconnect.timer);
+    this.reconnect.timer = undefined;
 
     debug('cleared timers');
+
+    if (this.socket.readyState <= 1) {
+      this.socket.close();
+      this.state = 'closed';      
+    }
   }
 
   send(data) {
