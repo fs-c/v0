@@ -7,7 +7,7 @@ const debug = require('debug')('discord');
 
 const { payloads } = require('./payloads');
 
-const Client = exports.Client = class extends EventEmitter {
+const Client = module.exports = class extends EventEmitter {
   constructor(token) {
     super();
 
