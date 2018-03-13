@@ -1,1 +1,1 @@
-exports.Client = require('./Client');
+exports.Client = require('./lib/Client');
