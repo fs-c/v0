@@ -1,5 +1,5 @@
 {
-  "name": "@sturmwalzer/discord-stream",
+  "name": "@sturmwalzer/discord-send",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,11 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "minimist": "^1.2.0",
-    "moment": "^2.21.0"
-  },
   "bin": {
-    "discord-stream": "./index.js"
+    "discord-send": "./index.js"
   }
 }
