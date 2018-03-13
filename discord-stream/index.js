@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const moment = require('moment');
-const Discord = require('../discord-client/Client');
+const Discord = require('../discord-client/');
 const args = require('minimist')(process.argv.slice(2));
 
 const configPath = args.config 
