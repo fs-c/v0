@@ -13,6 +13,4 @@ const rl = readline.createInterface({
   }
 });
 
-rl.on('line', (line) => {
-  
-});
+rl.on('line', (line) => {});
