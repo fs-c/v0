@@ -5,7 +5,7 @@ const Discord = require('../discord-client/');
 const args = require('minimist')(process.argv.slice(2));
 
 const configPath = args.config 
-  || require('path').join(require('os').homedir, '.discord.json');
+  || require('path').join(require('os').homedir(), '.discord.json');
 
 const config = require('fs').existsSync(configPath) 
   ? require(configPath) : undefined;
