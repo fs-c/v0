@@ -18,9 +18,7 @@ if (!token) {
 
 const client = new Discord.Client(token);
 
-client.connect()
-  .then(() => console.log('connected'))
-  .catch(console.error);
+client.connect();
 
 // Logs a parsed discord message object to the console.
 const log = (message) => {
