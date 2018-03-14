@@ -23,8 +23,7 @@ const handle = module.exports = function(message) {
 
       debug('invalid session');
 
-      this.socket.close();
-      this.state = 'disconnected';
+      this.disconnect();
 
       this.emit('error', new Error('Invalid session.'));
       break;
@@ -62,8 +61,7 @@ const handle = module.exports = function(message) {
 
         this.heartbeat.timeoutTimer = setTimeout(() => {
           // If this gets called we have not received an heartbeat for too long.
-          this.socket.close();
-          this.state = 'disconnected';
+          this.disconnect();
         }, this.heartbeat.maxDelay);
 
         debug('sent heartbeat');
@@ -80,5 +78,12 @@ const handle = module.exports = function(message) {
 
       debug('heartbeat acknowledged with %oms delay', this.connection.ping);
       break;
+
+    switch (message.t) {
+      case 'READY':
+        this.connection.sessionID = data.session_id;
+        this.emit('ready');
+        break;
+    }
   }
 }
