@@ -84,6 +84,11 @@ const handle = module.exports = function(message) {
         this.connection.sessionID = data.session_id;
         this.emit('ready');
         break;
+
+      case 'MESSAGE_CREATE':
+        // Data should be a Discord message object.
+        this.emit('message', data);
+        break;
     }
   }
 }
