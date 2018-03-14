@@ -22,7 +22,7 @@ const payloads = exports.payloads = function() { return {
   resume: JSON.stringify({
     op: 6,
     d: {
-      seq: this.sequence,
+      seq: this.connection.sequence,
       token: this.token,
       session_id: this.connection.sessionID,
     }
