@@ -51,6 +51,7 @@ const Client = module.exports = class extends EventEmitter {
     this.readyState = state;
   }
 
+  // Connect to discord WS server and initialise keepalive process.
   connect() {
     if (this.state !== 'disconnected') {
       return new Error(`Invalid state (${this.state})!`);
@@ -74,6 +75,31 @@ const Client = module.exports = class extends EventEmitter {
     this.socket.on('error', (err) => this.send('error', err));
   }
 
+  // Restore Client to original 'disconnected' state.
+  disconnect() {
+    this.state = 'disconnecting';
+
+    if (this.socket.readyState <= 1) {
+      this.socket.close();
+    }
+
+    // Clear timers.
+    clearInterval(this.heartbeat.timer);
+    clearTimeout(this.heartbeat.timeoutTimer);
+
+    // Reset connection.
+    this.connection.sequence = 0;    
+    this.connection.sessionID = undefined;
+    
+    // Reset heartbeat vars.
+    this.heartbeat.lastSent = 0;
+    this.heartbeat.timer = undefined;
+    this.heartbeattimeoutTimer = undefined;
+
+    this.state = 'disconnected';
+  }
+
+  // Send data over the socket.
   send(data) {
     if (this.socket || this.socket.readyState !== 1) {
       return;
