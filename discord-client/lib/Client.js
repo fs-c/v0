@@ -1,4 +1,3 @@
-const forward = require('fwd');
 const WebSocket = require('ws');
 const EventEmitter = require('events');
 const debug = require('debug')('discord');
@@ -46,7 +45,7 @@ const Client = module.exports = class extends EventEmitter {
   set state(state) {
     debug('state %o -> %o', this.readyState, state);
 
-    this.emit('status', this.readyState, state);
+    this.emit('state', this.readyState, state);
 
     this.readyState = state;
   }
