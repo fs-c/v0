@@ -1,6 +1,8 @@
 class Test {
   constructor() {
     this.string = 'owo';
+
+    this.bla();
   }
 }
 
@@ -9,5 +11,3 @@ Test.prototype.bla = function() {
 }
 
 const test = new Test();
-
-test.bla();
