@@ -44,7 +44,6 @@ const center = (line, options = args || {}) => {
   let remaining = (width / 2) - (length / 2);
 
   let block = '';
-  let current = 0;
 
   // Don't use for..of because the order needs to be guaranteed.
   for (let i = 0; i < spaces.length; i++) {
