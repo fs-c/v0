@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const program = require('commander')
   .version(require('./package.json').version)
   .option('-I, --in <path>', 'file to read from (to be used with --out)')
