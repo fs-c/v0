@@ -28,7 +28,7 @@ const Client = module.exports = class extends EventEmitter {
       throw new Error('No token provided');
     }
 
-    this.options = Object.merge({
+    this.options = Object.assign({
       version: 6,
       interval: 15 * 1000,
       maxDelay: 15 * 1000,
@@ -69,8 +69,7 @@ const Client = module.exports = class extends EventEmitter {
   }
 
   /**
-   * Initializes a connection to the Discord WS servers and starts the 
-   * keep-alive process.
+   * Initializes a connection to the Discord WS servers.
    *
    * @public
    */
