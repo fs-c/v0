@@ -12,7 +12,7 @@ $ npm i -g steam-centering
 ```
 ...and a usage example: 
 ```
-steam-centering -ds -I in.txt -O out.txt --target summary
+steam-center -ds -I in.txt -O out.txt --target summary
 ```
 Will read all lines from in.txt (`-I`), add padding on both sides of every line (`-d`) to make it appear centered in steam profile summaries (`--target`). It will write the centered lines to out.txt (`-O`) and not output anything in the terminal (`-s`).
 
