@@ -1,41 +1,29 @@
 # steam-centering
 
-Input text, get back text with added spacing to make it appear centered in steam 
-profile descriptions or custom info boxes.
+Input text, get back text with added spacing to make it appear centered in steam profile descriptions or custom info boxes.
 
-This is still somewhat inaccurate because space characters are weird.
+This is still somewhat inaccurate because steam seems to do funny things with whitespace characters.
 
-### Installation
+## Usage
 
+Installation, 
 ```
 $ npm i -g steam-centering
 ```
-
-You can now use the `steam-center` command globally.
-
-### Flags
-
-- `-d` 'double' - add padding on both sides of the raw line. Might cause issues 
-in some cases. Allows you to easily check the precision.
-- `-s` silent - no console output.
-- `-c` copy - copy the line to clipboard, note that this will not work with multiple 
-lines (e.G. when using `--in`).
-- `--in <path>` input - readable, utf8 file with lines that should be centered, 
-seperated by `\n`s. Note that lines are trimmed, so any spaces on the sides will 
-be removed. To be used with `--out`.
-- `--out <path>` output - path to the file that any output should be written to.
- This will *add to* files, never overwrite. File will be created if it doesn't 
-exist.
-- `--line <string>` line - the text that you want to be centered. Not to be 
-combined with `--in`.
-
-If neither `--in` nor `--line` are specified, lines will be read from the 
-terminal. Just start typing after running, press enter to submit.
-
-### Example
-
+...and a usage example: 
 ```
-steam-center -d -s --in in.txt --out out.txt
+steam-centering -ds -I in.txt -O out.txt --target summary
 ```
-For every line in in.txt (`--in`), adds a line in out.txt (`--out`) with 
-added padding to both sides (`-d`) without any logging (`-s`).
+Will read all lines from in.txt (`-I`), add padding on both sides of every line (`-d`) to make it appear centered in steam profile summaries (`--target`). It will write the centered lines to out.txt (`-O`) and not output anything in the terminal (`-s`).
+
+## Options
+
+    -V, --version          output the version number
+    -I, --in <path>        file to read from (to be used with --out)
+    -O, --out <path>       file to write to (to be used with --in)
+    -L, --line <line>      string to center
+    -t, --target <target>  type of box to center for (default: infobox)
+    -d, --double           add padding on both sides
+    -c, --copy             add the centered string to clipboard
+    -s, --silent           be silent
+    -h, --help             output usage information
