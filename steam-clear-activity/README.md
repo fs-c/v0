@@ -1,4 +1,4 @@
-# steam-clear-activity
+# steam-clear
 
 Clear recent activity on a given steam account. [How it will look like.](https://i.imgur.com/YyDJzvA.png)
 
