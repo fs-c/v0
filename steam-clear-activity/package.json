@@ -1,5 +1,5 @@
 {
-  "name": "steam-clear-activity",
+  "name": "@sturmwalzer/steam-clear",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
