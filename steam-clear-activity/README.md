@@ -1,8 +1,18 @@
-![](https://i.imgur.com/mpQcvX8.png)
+# steam-clear-activity
 
 Clear recent activity on a given steam account. [How it will look like.](https://i.imgur.com/YyDJzvA.png)
 
-You may input the accounts through a file, either `~./steam.json` or the ACCOUNTS environment variable. 
-Dotenv support is provided, meaning you can simply create a `.env` file with `ACCOUNTS=/your/path` as the only content in the project root.
+Accounts are read from `~/.steam.json`, you may customise this by providing a path with the `-a` or `--accounts` options. Expected format is as follows:
+```
+{
+  "<alias>": {
+    "accountName": "<name>",
+    "password": "<password>"
+  }, { ... } ...
+}
+```
+You may also provide an array of account objects, where the alias will be set to the accountName.
 
-This will attempt to clear the activity every 15 minutes, with additional delays if the account is currently in-game or an error occurs. 
+Enable logging with the `-v`/`--verbose` option.
+
+By default, this will attempt to clear the activity every 15 minutes, with additional delays if the account is currently in-game or an error occurs. 
