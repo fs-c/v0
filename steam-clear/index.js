@@ -15,7 +15,7 @@ const intervals = {
 
 const { join } = require('path');
 const path = args.a || args.accounts 
-  || join(process.cwd(), '.steam.json')
+  || join(require('os').homedir(), '.steam.json')
 
 const { existsSync } = require('fs');
 let accounts = path ? (
@@ -47,14 +47,11 @@ const hide = (client) => {
 const login = (client, account) => {
   debug(`logging in`);
 
-  client.logOn({
-    accountName: account.name,
-    password: account.password
-  });
+  client.logOn(account);
 }
 
 const build = (account) => {
-  debug(`building ${account.name}`);
+  debug(`building ${account.accountName}`);
 
   const client = new SteamUser();
 
