@@ -1,6 +1,6 @@
 {
-  "name": "steam-centering",
-  "version": "2.0.2",
+  "name": "@sturmwalzer/fspace-cli",
+  "version": "1.1.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,10 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^2.15.0",
-    "copy-paste": "^1.3.0",
-    "string-pixel-width": "^1.5.0"
+    "node-fetch": "^2.1.1"
   },
   "bin": {
-    "steam-center": "./index.js"
+    "fspace": "./index.js"
   }
 }
