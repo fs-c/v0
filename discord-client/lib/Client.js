@@ -2,8 +2,6 @@ const WebSocket = require('ws');
 const EventEmitter = require('events');
 const debug = require('debug')('discord');
 
-const { payloads } = require('./payloads');
-
 require('debug').enable('discord');
 
 /**
@@ -40,15 +38,19 @@ const Client = module.exports = class extends EventEmitter {
     this.readyState = 'disconnected';
 
     this.gateway = {
-      version: options.version,
-      url: `wss://gateway.discord.gg/?v=${options.version}&encoding=json`,
-    }
+      encoding: 'json',
+      version: this.options.version,
+      baseURL: 'wss://gateway.discord.gg/',
+      get url() {
+        return `${this.baseURL}?v=${this.version}&encoding=${this.encoding}`;
+      },
+    };
 
     this.connection = {
       sequence: 0,                  // Allow for persistence across disconnects.
       ping: undefined,              // Ms delay between heartbeat and ACK.
       sessionID: undefined,
-    }
+    };
 
     this.heartbeat = {
       lastSent: 0,                  // Time when last heartbeat was sent.
@@ -56,10 +58,10 @@ const Client = module.exports = class extends EventEmitter {
       interval: options.interval,   // Should be overwritten by server response.
       maxDelay: options.maxDelay,
       timeoutTimer: undefined,      // Detect zombied connection.
-    }
+    };
   }
 
-  get state() { return this.readyState }
+  get state() { return this.readyState; }
   set state(state) {
     debug('state %o -> %o', this.readyState, state);
 
@@ -139,10 +141,12 @@ const Client = module.exports = class extends EventEmitter {
    * @public
    */
   send(data, cb) {
+    debug('attempting to send something');
+
     cb = typeof cb === 'function' ? cb : () => {};
 
     if (this.socket || this.socket.readyState !== 1) {
-      return callback(new Error('Socket not ready'));
+      return cb(new Error('Socket not ready'));
     }
 
     this.socket.send(data, (err) => {
@@ -151,11 +155,11 @@ const Client = module.exports = class extends EventEmitter {
 
         this.emit('error', err);
 
-        return callback(err);
-      } else { return callback() }
+        return cb(err);
+      } else { return cb(); }
     });
   }
-}
+};
 
 // Handle incoming websocket messages.
 Client.prototype.handle = require('./handle');
