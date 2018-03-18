@@ -15,11 +15,11 @@ const Client = module.exports = class extends EventEmitter {
   /**
    * Create a new `Client`.
    *
-   * @param {String} token The token to use when identifying
-   * @param {Object} options Connection options
-   * @param {Number} options.version The Discord Gateway Version to use
-   * @param {Number} options.interval The default heartbeat interval
-   * @param {Number} options.maxDelay The max delay between heartbeat and ACK
+   * @param {string} token - The token to use when identifying.
+   * @param {Object} options - Connection options.
+   * @param {number} options.version - The Discord Gateway Version to use.
+   * @param {number} options.interval - The default heartbeat interval.
+   * @param {number} options.maxDelay - The max delay between heartbeat and ACK.
    */
   constructor(token, options = {}) {
     super();
@@ -125,10 +125,17 @@ const Client = module.exports = class extends EventEmitter {
   }
 
   /**
-   * Send a message to the Discord WS.
+   * The callback for sending messages to Discord.
    * 
-   * @param {*} data The data to send
-   * @param {Function} cb Callback
+   * @callback sendCallback
+   * @param {(Error|undefined)} err - Defined if an error occured.
+   */
+
+  /**
+   * Send a message to the Discord WS server.
+   * 
+   * @param {*} data - The data to send.
+   * @param {sendCallback} [cb] - Callback once data is sent.
    * @public
    */
   send(data, cb) {
