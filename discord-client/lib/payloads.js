@@ -1,5 +1,10 @@
-// JSON.stringify all objects because the WS expects strings or buffers.
-// Executed in the context of the Client class.
+/**
+ * Payloads for messages to Discord, executed in the contect of the Client class.
+ * All objects are JSON.stringified because WS expects strings or buffers.
+ * 
+ * @returns {Object} An object with populated payload objects.
+ * @private
+ */
 const payloads = exports.payloads = function() { return {
   heartbeat: JSON.stringify({
     op: 1,
