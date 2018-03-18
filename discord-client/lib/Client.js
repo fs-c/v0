@@ -93,7 +93,7 @@ const Client = module.exports = class extends EventEmitter {
     });
 
     // Forward error, let user decide what to do with the information.
-    this.socket.on('error', (err) => this.send('error', err));
+    this.socket.on('error', (err) => this.emit('error', err));
   }
 
   /**
