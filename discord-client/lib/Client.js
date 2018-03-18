@@ -6,15 +6,33 @@ const { payloads } = require('./payloads');
 
 require('debug').enable('discord');
 
+/**
+ * Class representing a Discord Client.
+ *
+ * @extends EventEmitter
+ */
 const Client = module.exports = class extends EventEmitter {
+  /**
+   * Create a new `Client`.
+   *
+   * @param {string} token - The token to use when identifying.
+   * @param {Object} options - Connection options.
+   * @param {number} options.version - The Discord Gateway Version to use.
+   * @param {number} options.interval - The default heartbeat interval.
+   * @param {number} options.maxDelay - The max delay between heartbeat and ACK.
+   */
   constructor(token, options = {}) {
+    super();
+
     if (!token) {
-      throw new Error('No token provided.');
+      throw new Error('No token provided');
     }
 
-    options.version = options.version || 6;
-
-    super();
+    this.options = Object.assign({
+      version: 6,
+      interval: 15 * 1000,
+      maxDelay: 15 * 1000,
+    }, options);
 
     this.socket;
 
@@ -27,17 +45,17 @@ const Client = module.exports = class extends EventEmitter {
     }
 
     this.connection = {
-      sequence: 0,              // Allow for persistence across disconnects.
-      ping: undefined,          // Ms delay between heartbeat and ACK.
-      sessionID: undefined,     // Gotten from 'READY' event.
+      sequence: 0,                  // Allow for persistence across disconnects.
+      ping: undefined,              // Ms delay between heartbeat and ACK.
+      sessionID: undefined,
     }
 
     this.heartbeat = {
-      lastSent: 0,              // Last sent heartbeat, to calculate ping.
-      timer: undefined,         // The heartbeat timer.
-      interval: 15 * 1000,      // Heartbeat interval; this will be overwritten.
-      maxDelay: 15 * 1000,      // Max ms delay between heartbeat and ACK.
-      timeoutTimer: undefined,  // Detect dead or zombied connection.
+      lastSent: 0,                  // Time when last heartbeat was sent.
+      timer: undefined,
+      interval: options.interval,   // Should be overwritten by server response.
+      maxDelay: options.maxDelay,
+      timeoutTimer: undefined,      // Detect zombied connection.
     }
   }
 
@@ -50,7 +68,11 @@ const Client = module.exports = class extends EventEmitter {
     this.readyState = state;
   }
 
-  // Connect to discord WS server and initialise keepalive process.
+  /**
+   * Initializes a connection to the Discord WS servers.
+   *
+   * @public
+   */
   connect() {
     if (this.state !== 'disconnected') {
       return new Error(`Invalid state (${this.state})!`);
@@ -71,10 +93,14 @@ const Client = module.exports = class extends EventEmitter {
     });
 
     // Forward error, let user decide what to do with the information.
-    this.socket.on('error', (err) => this.send('error', err));
+    this.socket.on('error', (err) => this.emit('error', err));
   }
 
-  // Restore Client to original 'disconnected' state.
+  /**
+   * Close connection, restore Client to `disconnected` state.
+   *
+   * @public
+   */
   disconnect() {
     this.state = 'disconnecting';
 
@@ -98,16 +124,35 @@ const Client = module.exports = class extends EventEmitter {
     this.state = 'disconnected';
   }
 
-  // Send data over the socket.
-  send(data) {
+  /**
+   * The callback for sending messages to Discord.
+   * 
+   * @callback sendCallback
+   * @param {(Error|undefined)} err - Defined if an error occured.
+   */
+
+  /**
+   * Send a message to the Discord WS server.
+   * 
+   * @param {*} data - The data to send.
+   * @param {sendCallback} [cb] - Callback once data is sent.
+   * @public
+   */
+  send(data, cb) {
+    cb = typeof cb === 'function' ? cb : () => {};
+
     if (this.socket || this.socket.readyState !== 1) {
-      return;
+      return callback(new Error('Socket not ready'));
     }
 
     this.socket.send(data, (err) => {
-      debug('failed sending message (%o)', err.message);
+      if (err) {
+        debug('failed sending message (%o)', err.message);
 
-      this.emit('error', err)
+        this.emit('error', err);
+
+        return callback(err);
+      } else { return callback() }
     });
   }
 }

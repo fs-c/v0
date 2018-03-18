@@ -35,6 +35,12 @@ function get(func) { return new Promise((resolve, reject) => {
     .then((res) => resolve(res.json())).catch(reject)
 })}
 
+async function get(func) {
+  return await require('node-fetch')(
+    `https://fsoc.space/api/${func}?key=${key}`
+  ).json()
+}
+
 async function run(func) {
   try {
     const res = await get(func);

@@ -1,5 +1,11 @@
 const debug = require('debug')('discord');
 
+/**
+ * Handle incoming WS messages.
+ * 
+ * @param {(String|Buffer)} message The incoming data
+ * @private
+ */
 const handle = module.exports = function(message) {
   try {
     message = JSON.parse(message);
@@ -61,6 +67,7 @@ const handle = module.exports = function(message) {
 
         this.heartbeat.timeoutTimer = setTimeout(() => {
           // If this gets called we have not received an heartbeat for too long.
+          
           this.disconnect();
         }, this.heartbeat.maxDelay);
 
