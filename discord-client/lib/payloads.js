@@ -11,7 +11,7 @@ const payloads = exports.payloads = function() { return {
       token: this.token,
       v: 6,
       properties: {
-        $os: require('os').platform,
+        $os: require('os').platform(),
         $browser: '',
         $device: '',
         $referrer: '',
