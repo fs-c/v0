@@ -5,7 +5,7 @@
  * @returns {Object} An object with populated payload objects.
  * @private
  */
-const payloads = exports.payloads = function() { return {
+const payloads = function() { return {
   heartbeat: JSON.stringify({
     op: 1,
     d: this.connection.sequence,
@@ -32,4 +32,6 @@ const payloads = exports.payloads = function() { return {
       session_id: this.connection.sessionID,
     }
   }),
-}};
+};};
+
+exports = { payloads };

@@ -6,7 +6,7 @@ const debug = require('debug')('discord');
  * @param {(String|Buffer)} message The incoming data
  * @private
  */
-const handle = module.exports = function(message) {
+const handle = function(message) {
   try {
     message = JSON.parse(message);
   } catch(e) { // Really unlikely.
@@ -14,16 +14,19 @@ const handle = module.exports = function(message) {
     return;
   }
 
+  debug('received message (%o, %o)', typeof message, message.length);
+
   const data = message.d;
 
   switch (message.op) {
-    // Event dispatched.
-    case 0:
+    // Regular event.
+    case 0: {
       this.connection.sequence = message.s;
       break;
+    }
 
     // Invalid session.
-    case 9:
+    case 9: {
       this.connection.sequence = 0;
       this.connection.sessionID = undefined;
 
@@ -33,9 +36,10 @@ const handle = module.exports = function(message) {
 
       this.emit('error', new Error('Invalid session.'));
       break;
+    }
 
     // Socket hello.
-    case 10:
+    case 10: {
       if (this.connection.sequence && this.connection.sessionID) {
         // If we had a connection before, resume it.
         this.send(this.payloads.resume);
@@ -45,7 +49,7 @@ const handle = module.exports = function(message) {
       }
 
       // Clear heartbeat timer, if it exists.
-      const heartbeat = this.heartbeat.timer
+      const heartbeat = this.heartbeat.timer;
       if (heartbeat) {
         clearInterval(heartbeat);
       }
@@ -67,35 +71,40 @@ const handle = module.exports = function(message) {
 
         this.heartbeat.timeoutTimer = setTimeout(() => {
           // If this gets called we have not received an heartbeat for too long.
-          
+            
           this.disconnect();
         }, this.heartbeat.maxDelay);
 
         debug('sent heartbeat');
       }, this.heartbeat.interval);
       break;
-    
+    }
+      
     // Heartbeat acknowledgement.
-    case 11:
+    case 11: {
       // Clear the timeout catch.
       clearInterval(this.heartbeat.timeoutTimer);
-
       // Calculate our ping.
       this.connection.ping = Date.now() - this.heartbeat.lastSent;
 
       debug('heartbeat acknowledged with %oms delay', this.connection.ping);
       break;
-
-    switch (message.t) {
-      case 'READY':
-        this.connection.sessionID = data.session_id;
-        this.emit('ready');
-        break;
-
-      case 'MESSAGE_CREATE':
-        // Data should be a Discord message object.
-        this.emit('message', data);
-        break;
     }
   }
-}
+
+  switch (message.t) {
+    case 'READY': {
+      this.connection.sessionID = data.session_id;
+      this.emit('ready');
+      break;
+    }
+
+    case 'MESSAGE_CREATE': {
+      // Data should be a Discord message object.
+      this.emit('message', data);
+      break;
+    }
+  }
+};
+
+module.exports = handle;
