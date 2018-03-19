@@ -61,6 +61,6 @@ client.on('error', (err) => {
   if (relogTimer) { clearTimeout(relogTimer); }  
   
   relogTimer = setTimeout(() => {
-    client.logon(account);
+    client.logOn(account);
   }, 60 * 60 * 1000);
 });
