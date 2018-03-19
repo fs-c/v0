@@ -14,7 +14,7 @@ const account = require(
 
 const games = (
   args.games ? (
-    typeof args.games === 'string' ? args.games.split : args.games
+    typeof args.games === 'string' ? args.games.split(',') : args.games
   ) : args.config ? (
     require(join(homedir(), '.idler.json'))[alias].games
   ) : []
@@ -54,7 +54,7 @@ client.on('steamGuard', (domain, cb) => {
 let relogTimer;
 
 client.on('error', (err) => {
-  debug('error: %o', err.message);
+  debug('error: %o (%o)', err.message, err.enum);
 
   client.logOff();  
 
