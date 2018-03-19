@@ -3,7 +3,7 @@ const debug = require('debug')('discord');
 /**
  * Handle incoming WS messages.
  * 
- * @param {(String|Buffer)} message The incoming data
+ * @param {(string|buffer)} message The incoming data
  * @private
  */
 const handle = function(message) {
