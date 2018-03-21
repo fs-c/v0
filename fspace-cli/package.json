@@ -1,6 +1,6 @@
 {
   "name": "@sturmwalzer/fspace-cli",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "commander": "^2.15.0",
+    "commander": "^2.15.1",
     "node-fetch": "^2.1.1"
   },
   "bin": {
