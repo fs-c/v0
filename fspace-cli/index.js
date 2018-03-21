@@ -36,9 +36,9 @@ function get(func) { return new Promise((resolve, reject) => {
 })}
 
 async function get(func) {
-  return await require('node-fetch')(
+  return (await require('node-fetch')(
     `https://fsoc.space/api/${func}?key=${key}`
-  ).json()
+  )).json()
 }
 
 async function run(func) {
