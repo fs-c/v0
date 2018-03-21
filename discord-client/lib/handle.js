@@ -6,7 +6,7 @@ const debug = require('debug')('discord');
  * @param {(String|Buffer)} message The incoming data
  * @private
  */
-const handle = function(message) {
+const handle = (message) => {
   try {
     message = JSON.parse(message);
   } catch(e) { // Really unlikely.
@@ -14,7 +14,7 @@ const handle = function(message) {
     return;
   }
 
-  debug('received message (%o, %o)', typeof message, message.length);
+  debug('received message');
 
   const data = message.d;
 
