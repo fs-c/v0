@@ -40,7 +40,7 @@ if (args.v || args.verbose) {
 const hide = (client) => {
   debug(`hiding games`);
 
-  client.gamesPlayed([ 399220, 399080, 399480 ]);
+  client.gamesPlayed([ 413851, 413857, 413859, 413856 ]);
   client.gamesPlayed();
 }
 
