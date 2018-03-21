@@ -71,7 +71,8 @@ const Client = module.exports = class extends EventEmitter {
   }
 
   /**
-   * Initializes a connection to the Discord WS servers.
+   * Initializes a connection to the Discord WS servers and pass messages
+   * to handler.
    *
    * @public
    */
@@ -94,7 +95,7 @@ const Client = module.exports = class extends EventEmitter {
       this.state = 'disconnected';
     });
 
-    // Forward error, let user decide what to do with the information.
+    // Forward error, let user decide what to do with it.
     this.socket.on('error', (err) => this.emit('error', err));
   }
 
@@ -136,7 +137,7 @@ const Client = module.exports = class extends EventEmitter {
   /**
    * Send a message to the Discord WS server.
    * 
-   * @param {*} data - The data to send.
+   * @param {(string|buffer)} data - The data to send.
    * @param {sendCallback} [cb] - Callback once data is sent.
    * @public
    */
