@@ -14,7 +14,8 @@ const account = require(
 
 const games = (
   args.games ? (
-    typeof args.games === 'string' ? args.games.split(',') : args.games
+    typeof args.games === 'string'
+      ? args.games.split(',') : args.games
   ) : args.config ? (
     require(join(homedir(), '.idler.json'))[alias].games
   ) : []
