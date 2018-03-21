@@ -2,15 +2,22 @@
 
 const program = require('commander')
   .version(require('./package.json').version)
-  .option('-I, --in <path>', 'file to read from (to be used with --out)')
-  .option('-O, --out <path>', 'file to write to (to be used with --in)')
+  .option('-I, --in <path>', 'file to read from (to be used with --out)',
+    'in.txt')
+  .option('-O, --out <path>', 'file to write to (to be used with --in)',
+    'out.txt')
   .option('-L, --line <line>', 'string to center')
   .option('-t, --target <target>', 'type of box to center for',
     /^(summary|infobox)$/i, 'infobox')
   .option('-d, --double', 'add padding on both sides')
   .option('-c, --copy', 'add the centered string to clipboard')
-  .option('-s, --silent', 'be silent')  
+  .option('-s, --silent', 'be silent')
+  .option('-v, --verbose', 'enable debug logging')
   .parse(process.argv);
+
+const debug = require('debug')('center');
+
+if (program.verbose) { require('debug').enable('center'); }
 
 // Ex.: '0041' -> 'A'
 const utfToChar = (code) => String.fromCharCode(parseInt(code, 16));
@@ -23,8 +30,8 @@ const getLength = (string, size = 13) =>
 // Steam info box and profile summary max widths.
 // 1920x1080 with default client font and font size.
 const widths = {
-  infobox: 454,
-  summary: 600,
+  summary: 454,
+  infobox: 600,
 };
 
 // TODO: Steam doesn't use default Arial sizes for these space characters, 
@@ -41,6 +48,8 @@ const spaces = [{
 }].sort((a, b) => b.width - a.width);
 
 const center = (line, options) => {
+  debug('centering line %o, options: %O', line, options);
+
   const length = getLength(line);
 
   if (length > options.width) {
@@ -75,7 +84,10 @@ const lines = (program.in && existsSync(program.in)) ? (
 if (!lines[0]) { process.exit(1); }
 
 for (const line of lines) {
-  const centered = center(line, { width: widths[program.target] });
+  const centered = center(
+    line,
+    Object.assign({ width: widths[program.target] }, program)
+  );
 
   if (!program.silent) { console.log(centered); }  
   if (program.copy) { require('copy-paste').copy(centered); }
