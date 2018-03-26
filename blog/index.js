@@ -27,15 +27,23 @@ const init = async (cmd) => {
 };
 
 const start = (cmd) => {
-  const { server } = require('./src/server');
+  const { app } = require('./src/server');
+
+  app.listen(program.port || process.env.PORT || 8080);
 };
 
 program.command('init')
+  .option('--db-uri <uri>', 'The URI of the MongoDB database.')
+  .option('--db-user <name>', 'The name of the DB user.')
+  .option('--db-pass <pass>', 'The password of the DB user.')  
   .description('Initialise a new blog.')
   .action((cmd) => init(cmd).catch(console.error));
 
 program.command('start')
+  .option('-p, --port <p>', 'The port to start the server on.')
   .description('Start the server.')
   .action(start);
+
+program.version(require('./package.json').version);
 
 program.parse(process.argv);
