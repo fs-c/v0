@@ -1,0 +1,14 @@
+# screenshot hotkeys
+bindsym Ctrl+Shift+2 exec ~/etc/sharenix-window
+bindsym Ctrl+Shift+3 exec ~/etc/sharenix-section
+
+# control audio
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute
+
+# control screen brightness
+bindsym XF86MonBrightnessUp exec light -A 2 # increase
+bindsym XF86MonBrightnessDown exec light -U 2 # decrease
+bindsym XF86MonBrightnessUp+Shift exec light -A 5 # increase quicker
+bindsym XF86MonBrightnessDown+Shift exec light -U 5 # decrease quicker
