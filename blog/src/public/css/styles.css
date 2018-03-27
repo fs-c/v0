@@ -1,0 +1,5 @@
+div.center {
+  height: 10em;
+  display: flex;
+  align-items: center;
+}
