@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include('partials/head') %>
+    
+    <title>blog - <%= locals.status || 'error' %></title>
+
+    <style>
+      html, body { height: 100% }
+    </style>
+  </head>
+
+  <body>
+    <%
+      if (locals.err) {
+        locals.message = err.message;
+      }
+
+      if (!locals.message) {
+        locals.message = 'Something exploded.';
+      }
+    %>
+
+    <div class="container center">
+      <p>
+        <b><%= locals.message %></b>
+      </p>
+    </div>
+  </body>
+</html>

@@ -5,6 +5,7 @@ require('dotenv').config();
 const rls = require('readline-sync');
 const program = require('commander');
 const mongoose = require('mongoose');
+const { log } = require('./src/logger');
 
 // const { Entry } = require('./src/models/Entry');
 
@@ -18,9 +19,9 @@ const init = async (cmd) => {
   try {
     await mongoose.connect(`mongodb://${db.user}:${db.pass}@${db.uri}`);
 
-    const entries = await Entry.find({});
+    // const entries = await Entry.find({});
 
-    if (entries && entries[0]) { /***/ }
+    // if (entries && entries[0]) { /***/ }
   } catch(err) {
     console.error(`error: ${err.message || err}`);
   }
@@ -28,12 +29,15 @@ const init = async (cmd) => {
 
 const start = (cmd) => {
   const { app } = require('./src/server');
+  const port = program.port || process.env.PORT || 8080;
 
-  app.listen(program.port || process.env.PORT || 8080);
+  app.listen(port);
+
+  log.info(`server listening on port ${port}`);
 };
 
 program.command('init')
-  .option('--db-uri <uri>', 'The URI of the MongoDB database.')
+  .option('--db-uri <uri>', 'The URI of the MongoDB server.')
   .option('--db-user <name>', 'The name of the DB user.')
   .option('--db-pass <pass>', 'The password of the DB user.')  
   .description('Initialise a new blog.')
