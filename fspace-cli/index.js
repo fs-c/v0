@@ -20,11 +20,16 @@ program
 program
   .command('codes')
   .alias('c')
+  .option('-c, --copy',
+    'Copy the default (or first) accounts code into clipboard.')
   .action(() => {
     get('getCodes').then((codes) => {
       for (const alias in codes) {
         console.log((alias + ': ').padEnd(15) + codes[alias]);
       }
+
+      const { copy } = require('copy-paste');
+      copy(codes.default || codes[Object.keys(codes)[0]]);
     }).catch((err) => console.error(err));
   })
 
