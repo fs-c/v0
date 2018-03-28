@@ -1,6 +1,4 @@
-const {
-  createLogger, transports, format, addColors
-} = require('winston');
+const { createLogger, transports, format } = require('winston');
 
 const custom = format.printf((info) => {
   return `${info.timestamp} - [${info.level}]: ${info.message}`;
