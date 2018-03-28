@@ -6,10 +6,10 @@ program.version(require('./package.json').version);
 
 program
   .option('-k, --key <key>', 'set api key')
-  .option('-p, --path <path>', 
+  .option('--config <path>', 
     'set path to config file', '~/.fspace.json')
 
-const path = program.path.replace('~', require('os').homedir());
+const path = program.config.replace('~', require('os').homedir());
 const key = program.key 
   || require('fs').existsSync(path) ? require(path).key : undefined;
 
@@ -28,8 +28,10 @@ program
         console.log((alias + ': ').padEnd(15) + codes[alias]);
       }
 
-      const { copy } = require('copy-paste');
-      copy(codes.default || codes[Object.keys(codes)[0]]);
+      if (program.options.copy) {
+        const { copy } = require('copy-paste');        
+        copy(codes.default || codes[Object.keys(codes)[0]]);
+      }
     }).catch((err) => console.error(err));
   })
 
