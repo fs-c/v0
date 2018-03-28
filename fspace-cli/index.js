@@ -6,10 +6,10 @@ program.version(require('./package.json').version);
 
 program
   .option('-k, --key <key>', 'set api key')
-  .option('-c, --config <path>', 
+  .option('-p, --path <path>', 
     'set path to config file', '~/.fspace.json')
 
-const path = program.config.replace('~', require('os').homedir());
+const path = program.path.replace('~', require('os').homedir());
 const key = program.key 
   || require('fs').existsSync(path) ? require(path).key : undefined;
 
