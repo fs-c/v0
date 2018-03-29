@@ -15,6 +15,7 @@
   "dependencies": {
     "commander": "^2.15.1",
     "debug": "^3.1.0",
+    "fwd": "^0.2.2",
     "moment": "^2.21.0",
     "readline-sync": "^1.4.9",
     "steam-totp": "^2.0.1",
