@@ -22,6 +22,13 @@ if (!account) {
 
 const trader = new Trader(account);
 
+function logError(boom) {
+  console.log(`manager error: ${boom.message || boom.err.message}`);
+}
+
+trader.on('clientError', logError);
+trader.on('managerError', logError);
+
 async function listOffers() {
   await trader.initialise();
 
@@ -45,14 +52,14 @@ async function listOffers() {
   }
 }
 
-function offerChanged(offer, oldState) {
-  const olds = Trader.ETradeOfferState[oldState];
-  const news = Trader.ETradeOfferState[offer.state];
-
-  console.log(`offer ${offer.id} changed from ${olds} to ${news}`);
-}
-
 async function monitorEvents() {
+  function offerChanged(offer, oldState) {
+    const olds = Trader.ETradeOfferState[oldState];
+    const news = Trader.ETradeOfferState[offer.state];
+  
+    console.log(`offer ${offer.id} changed from ${olds} to ${news}`);
+  }
+
   await trader.initialise();
 
   trader.on('ready', () => console.log('ready'));
