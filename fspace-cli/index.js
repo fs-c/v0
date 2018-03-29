@@ -6,7 +6,7 @@ program.version(require('./package.json').version);
 
 program
   .option('-k, --key <key>', 'set api key')
-  .option('-c, --config <path>', 
+  .option('--config <path>', 
     'set path to config file', '~/.fspace.json')
 
 const path = program.config.replace('~', require('os').homedir());
@@ -20,10 +20,17 @@ program
 program
   .command('codes')
   .alias('c')
+  .option('-c, --copy',
+    'Copy the default (or first) accounts code into clipboard.')
   .action(() => {
     get('getCodes').then((codes) => {
       for (const alias in codes) {
         console.log((alias + ': ').padEnd(15) + codes[alias]);
+      }
+
+      if (program.options.copy) {
+        const { copy } = require('copy-paste');        
+        copy(codes.default || codes[Object.keys(codes)[0]]);
       }
     }).catch((err) => console.error(err));
   })
