@@ -57,9 +57,9 @@ const Trader = exports.Trader = class extends EventEmitter {
       writeFile('polldata.json', JSON.stringify(data));
     });
 
-    this.client.on('error', this.handleClientError);
-    this.client.on('steamGuard', this.handleSteamGuard);
-    this.client.on('webSession', this.handleWebSession);
+    this.client.on('error', this.handleClientError.bind(this));
+    this.client.on('steamGuard', this.handleSteamGuard.bind(this));
+    this.client.on('webSession', this.handleWebSession.bind(this));
 
     fwd(this.manager, this);
 
@@ -140,12 +140,13 @@ const Trader = exports.Trader = class extends EventEmitter {
     this.community.setCookies(cookies);
 
     if (this.account.idsec) {
+      const interval = this.options.confirmationInterval;
+
       this.community.startConfirmationChecker(
-        this.confirmationInterval, this.account.idsec
+        interval, this.account.idsec
       )
 
-      debug('set up confirmation checker at a %oms interval',
-        this.confirmationInterval);
+      debug('set up confirmation checker at a %oms interval', interval);
     }
   }
 
@@ -158,11 +159,11 @@ const Trader = exports.Trader = class extends EventEmitter {
    */
   initialise() {
     return new Promise((resolve, reject) => {
-      if (client.publicIP) {
+      if (this.client.publicIP) {
         resolve();
       }
 
-      this.client.logOn(account);
+      this.client.logOn(this.account);
 
       this.on('ready', resolve);
     });
