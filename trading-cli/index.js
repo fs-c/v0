@@ -10,19 +10,6 @@ program
     'The path to the accounts file.', '~/.steam.json')
   .option('-a, --account <alias>', 'The steam account to use.', 'default');
 
-program.command('list')
-  .alias('ls')
-  .description('List all active trade offers')
-  .action(listOffers);
-
-program.command('monitor')
-  .alias('monit')
-  .description('Watch for changes on any trades related to the account.')
-  .action(monitorEvents);
-
-program.version(require('./package.json').version);
-program.parse(process.argv);
-
 const path = program.config.replace('~', require('os').homedir());
 const account = require('fs').existsSync(path)
   ? require(path)[program.account]
@@ -88,3 +75,16 @@ async function monitorEvents() {
     console.log(`failed polling: ${err.message}`);
   });
 }
+
+program.command('list')
+  .alias('ls')
+  .description('List all active trade offers')
+  .action(listOffers);
+
+program.command('monitor')
+  .alias('monit')
+  .description('Watch for changes on any trades related to the account.')
+  .action(monitorEvents);
+
+program.version(require('./package.json').version);
+program.parse(process.argv);
