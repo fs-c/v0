@@ -21,6 +21,7 @@ const Trader = exports.Trader = class extends EventEmitter {
    * @param {string} [account.shasec] - The shared secret of the account.
    * @param {string} [account.idsec] - The identity secret of the account.
    * @param {object} [options] - An options object.
+   * @param {boolean} options.verbose - Enable debug logging.
    * @param {boolean} options.autostart=false - Start login upon construction.
    * @param {boolean} options.queryCode=false - Ask the user for their steam guard code.
    * @param {number} options.confirmationInterval=15000 - The interval at which trades should be confirmed.
@@ -31,10 +32,15 @@ const Trader = exports.Trader = class extends EventEmitter {
     this.account = account;
 
     this.options = Object.assign({
+      verbose: false,
       autostart: false,
       queryCode: false,
       confirmationInterval: 15000,
     }, options);
+
+    if (this.options.verbose) {
+      require('debug').enable('trader');
+    }
 
     this.client = new Steam();
     this.community = new Community();
@@ -149,20 +155,20 @@ const Trader = exports.Trader = class extends EventEmitter {
 
   /**
    * Log on to steam and kick off the initialisation, 
-   * resolves when the trader is ready.
+   * resolves when the connection is established.
    * 
-   * @returns {Promise}
+   * @returns {Promise} - Connection details.
    * @public
    */
   initialise() {
     return new Promise((resolve, reject) => {
       if (this.client.publicIP) {
-        resolve();
+        return resolve();
       }
 
       this.client.logOn(this.account);
 
-      this.on('ready', resolve);
+      this.client.on('loggedOn', resolve);
     });
   }
 
@@ -186,5 +192,39 @@ const Trader = exports.Trader = class extends EventEmitter {
         return resolve(sent.concat(received));
       });
     });
+  }
+
+  /**
+   * Return an offer given an ID or a fraction of one.
+   * 
+   * @param {string} partial - A potentially incomplete offer ID.
+   * @returns {object}
+   */
+  async getOffer(partial) {
+  // This whole thing is inefficient and it makes my skin crawl.
+  // TODO: Does the object structure provide any sort of performance boost?
+  //       Would a Set be worth it?
+    const offers = await this.getOffers().reduce((acc, cur) => {
+      acc[cur.id] = cur;
+
+      return acc;
+    }, {})
+
+    if (offers[partial]) {
+      return offers[partial];
+    }
+
+    // This is just stupid.
+    const offerID = Object.keys(offers).reduce((acc, id) => {
+      const dist = levenshtein.get(partial, id);
+
+      if (dist < acc.dist) {
+        acc = { dist, id };
+      }
+
+      return acc;
+    }, { dist: Infinity, id: null }).id;
+
+    return offers[offerID];
   }
 }
