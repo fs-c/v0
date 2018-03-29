@@ -20,9 +20,9 @@ const Trader = exports.Trader = class extends EventEmitter {
    * @param {string} [account.shasec] - The shared secret of the account.
    * @param {string} [account.idsec] - The identity secret of the account.
    * @param {object} [options] - An options object.
-   * @param {boolean} autostart=false - Start login upon construction.
-   * @param {boolean} queryCode=false - Ask the user for their steam guard code.
-   * @param {number} confirmationInterval=15000 - The interval at which trades should be confirmed.
+   * @param {boolean} options.autostart=false - Start login upon construction.
+   * @param {boolean} options.queryCode=false - Ask the user for their steam guard code.
+   * @param {number} options.confirmationInterval=15000 - The interval at which trades should be confirmed.
    */
   constructor(account, options = {}) {
     super();
