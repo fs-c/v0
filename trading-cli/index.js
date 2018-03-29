@@ -2,6 +2,7 @@
 
 const moment = require('moment');
 const program = require('commander');
+const levenshtein = require('fast-levenshtein');
 
 const { Trader } = require('./src/Trader');
 
@@ -29,7 +30,12 @@ const logError = (boom) => {
 trader.on('clientError', logError);
 trader.on('managerError', logError);
 
-const listOffers = async () => {
+program.command('list')
+  .alias('ls')
+  .description('List all active trade offers')
+  .action(listOffers);
+
+async function listOffers() {
   await trader.initialise();
 
   const offers = await trader.getOffers();
@@ -52,7 +58,12 @@ const listOffers = async () => {
   }
 }
 
-const monitorEvents = async () => {
+program.command('monitor')
+  .alias('monit')
+  .description('Watch for changes on any trades related to the account.')
+  .action(monitorEvents);
+
+async function monitorEvents() {
   const logChange = (offer, oldState) => {
     const olds = Trader.ETradeOfferState[oldState];
     const news = Trader.ETradeOfferState[offer.state];
@@ -83,15 +94,30 @@ const monitorEvents = async () => {
   });
 }
 
-program.command('list')
-  .alias('ls')
-  .description('List all active trade offers')
-  .action(listOffers);
+program.command('accept <offer>')
+  .description('Accepts the given offer. You may only provide a part of the ID'
+    + ', the closest match will be chosen.')
+  .action(acceptOffer);
 
-program.command('monitor')
-  .alias('monit')
-  .description('Watch for changes on any trades related to the account.')
-  .action(monitorEvents);
+async function acceptOffer(partial) {
+  await trader.initialise();
+
+  const offers = await trader.getOffers();
+  const offerIDs = offers.map((offer) => offer.id.slice(0, partial.length));
+
+  // This has got to be inefficient as all hell.
+  const offerID = offerIDs.reduce((acc, id) => {
+    const dist = levenshtein.get(partial, id);
+
+    if (dist < acc.dist) {
+      acc = { dist, id };
+    }
+
+    return acc;
+  }, { dist: Infinity, id: null }).id;
+
+  
+}
 
 program.version(require('./package.json').version);
 program.parse(process.argv);
