@@ -184,6 +184,8 @@ const Trader = exports.Trader = class extends EventEmitter {
           return reject(err);
         }
 
+        debug('got offers (%o)', sent.length + received.length);
+
         return resolve(sent.concat(received));
       });
     });
