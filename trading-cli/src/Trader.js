@@ -4,6 +4,7 @@ const Steam = require('steam-user');
 const Community = require('steamcommunity');
 const Manager = require('steam-tradeoffer-manager');
 
+const fwd = require('fwd');
 const { question } = require('readline-sync');
 const { generateAuthCode } = require('steam-totp');
 const { writeFile, existsSync, readFileSync } = require('fs');
@@ -60,9 +61,15 @@ const Trader = exports.Trader = class extends EventEmitter {
     this.client.on('steamGuard', this.handleSteamGuard);
     this.client.on('webSession', this.handleWebSession);
 
+    fwd(this.manager, this);
+
     if (this.options.autostart) {
       this.client.logOn(account);
     }
+  }
+
+  static get ETradeOfferState() {
+    return Manager.ETradeOfferState;
   }
 
   /**
