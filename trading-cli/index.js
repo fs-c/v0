@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const moment = require('moment');
 const program = require('commander');
 
 const { Trader } = require('./src/Trader');
@@ -11,8 +12,8 @@ program
 
 program.command('list')
   .alias('ls')
-  .description('List all incoming trade requests.')
-  .action(listTrades);
+  .description('List all active trade offers')
+  .action(listOffers);
 
 program.command('monitor')
   .alias('monit')
@@ -34,10 +35,26 @@ if (!account) {
 
 const trader = new Trader(account);
 
-async function listTrades() {
+async function listOffers() {
   await trader.initialise();
 
+  const offers = await trader.getOffers();
 
+  for (const offer of offers) {
+    const sender = offer.isOurOffer ? 'you' : offer.partner.toString();
+    const recipient = offer.isOurOffer ? offer.partner.toString() : 'you';
+
+    const toGive = offer.itemsToGive.length;
+    const toReceive = offer.itemsToReceive.length;
+
+    const created = moment(offer.created).fromNow();
+    const expires = moment(offer.expires).fromNow();
+
+    console.log(`Offer ${offer.id} by ${sender} for ${recipient}.`);
+    console.log(`   ${toGive} items to give, ${toReceive} items to receive.`);
+    console.log(`   It was created ${created} and expires ${expires}.`);
+    console.log('')
+  }
 }
 
 async function monitorEvents() {
