@@ -22,14 +22,14 @@ if (!account) {
 
 const trader = new Trader(account);
 
-function logError(boom) {
+const logError = (boom) => {
   console.log(`manager error: ${boom.message || boom.err.message}`);
 }
 
 trader.on('clientError', logError);
 trader.on('managerError', logError);
 
-async function listOffers() {
+const listOffers = async () => {
   await trader.initialise();
 
   const offers = await trader.getOffers();
@@ -52,8 +52,8 @@ async function listOffers() {
   }
 }
 
-async function monitorEvents() {
-  function offerChanged(offer, oldState) {
+const monitorEvents = async () => {
+  const logChange = (offer, oldState) => {
     const olds = Trader.ETradeOfferState[oldState];
     const news = Trader.ETradeOfferState[offer.state];
   
@@ -71,8 +71,8 @@ async function monitorEvents() {
     )
   });
 
-  trader.on('sentOfferChanged', offerChanged);
-  trader.on('receivedOfferChanged', offerChanged);
+  trader.on('sentOfferChanged', logChange);
+  trader.on('receivedOfferChanged', logChange);
 
   trader.on('sentOfferCanceled', (offer) => {
     console.log(`offer ${offer.id} has been canceled`)
