@@ -66,21 +66,18 @@ const Trader = exports.Trader = class extends EventEmitter {
   }
 
   /**
-   * Log on to steam and kick off the initialisation.
+   * Formats an error object to be returned by the emitter.
    * 
-   * @returns {Promise} - Resolved when the trader is ready.
-   * @public
+   * @static
+   * @param {Error} err
+   * @returns {object} - The formatted error.
+   * @private
    */
-  initialise() {
-    return new Promise((resolve, reject) => {
-      if (client.publicIP) {
-        resolve();
-      }
-
-      this.client.logOn(account);
-
-      this.on('ready', resolve);
-    });
+  static formatError(err) {
+    return {
+      err,
+      message: err.eresult ? Steam.EResult[err.eresult] : null,
+    }
   }
 
   /**
@@ -91,10 +88,7 @@ const Trader = exports.Trader = class extends EventEmitter {
   handleClientError(err) {
     debug('client error (%o / %o)', err.message, err.eresult);
 
-    this.emit('clientError', {
-      err,
-      message: err.eresult ? Steam.EResult[err.eresult] : null,
-    });
+    this.emit('clientError', Trader.formatError(err));
   }
 
   /** 
@@ -128,11 +122,10 @@ const Trader = exports.Trader = class extends EventEmitter {
 
     this.manager.setCookies(cookies, (err) => {
       if (err) {
-        return this.emit('managerError', {
-          err,
-          message: 'Failed to obtain API key.',
-        });
+        return this.emit('managerError', Trader.formatError(err));
       }
+
+      debug('ready');
 
       return this.emit('ready');
     });
@@ -147,5 +140,44 @@ const Trader = exports.Trader = class extends EventEmitter {
       debug('set up confirmation checker at a %oms interval',
         this.confirmationInterval);
     }
+  }
+
+  /**
+   * Log on to steam and kick off the initialisation, 
+   * resolves when the trader is ready.
+   * 
+   * @returns {Promise}
+   * @public
+   */
+  initialise() {
+    return new Promise((resolve, reject) => {
+      if (client.publicIP) {
+        resolve();
+      }
+
+      this.client.logOn(account);
+
+      this.on('ready', resolve);
+    });
+  }
+
+  /**
+   * Get all active (= outstanding) trade offers of our account.
+   * 
+   * @returns {Promise} - An array of offers.
+   * @public
+   */
+  getOffers() {
+    return new Promise((resolve, reject) => {
+      this.manager.getOffers(1, (err, sent, received) => {
+        if (err) {
+          this.emit('managerError', Trader.formatError(err));
+
+          return reject(err);
+        }
+
+        return resolve(sent.concat(received));
+      });
+    });
   }
 }
