@@ -73,9 +73,6 @@ const Trader = exports.Trader = class extends EventEmitter {
   }
 
   /**
-   * Formats an error object to be returned by the emitter.
-   * 
-   * @static
    * @param {Error} err
    * @returns {object} - The formatted error.
    * @private
