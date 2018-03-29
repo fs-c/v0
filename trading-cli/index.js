@@ -9,7 +9,8 @@ const { Trader } = require('./src/Trader');
 program
   .option('-c, --config <path>',
     'The path to the accounts file.', '~/.steam.json')
-  .option('-a, --account <alias>', 'The steam account to use.', 'default');
+  .option('-a, --account <alias>', 'The steam account to use.', 'default')
+  .option('-v, --verbose', 'Enable debug logging.');
 
 const path = program.config.replace('~', require('os').homedir());
 const account = require('fs').existsSync(path)
@@ -21,7 +22,7 @@ if (!account) {
   process.exit(1);
 }
 
-const trader = new Trader(account);
+const trader = new Trader(account, { verbose: program.verbose });
 
 const logError = (boom) => {
   console.log(`manager error: ${boom.message || boom.err.message}`);
@@ -102,21 +103,9 @@ program.command('accept <offer>')
 async function acceptOffer(partial) {
   await trader.initialise();
 
-  const offers = await trader.getOffers();
-  const offerIDs = offers.map((offer) => offer.id.slice(0, partial.length));
+  const offer = await trader.getOffer(partial);
 
-  // This has got to be inefficient as all hell.
-  const offerID = offerIDs.reduce((acc, id) => {
-    const dist = levenshtein.get(partial, id);
-
-    if (dist < acc.dist) {
-      acc = { dist, id };
-    }
-
-    return acc;
-  }, { dist: Infinity, id: null }).id;
-
-  
+  // Accept offer, now that we have it...
 }
 
 program.version(require('./package.json').version);
