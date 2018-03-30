@@ -81,6 +81,8 @@ const Trader = exports.Trader = class extends EventEmitter {
   static formatError(err) {
     return {
       err,
+      // Common fatal error reasons.
+      isFatal: [ 3, 5, 18, 84 ].includes(err.eresult),
       message: err.eresult ? Steam.EResult[err.eresult] : null,
     }
   }
