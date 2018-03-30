@@ -2,7 +2,6 @@
 
 const moment = require('moment');
 const program = require('commander');
-const levenshtein = require('fast-levenshtein');
 
 const { Trader } = require('./src/Trader');
 
