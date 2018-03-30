@@ -38,10 +38,6 @@ const Trader = exports.Trader = class extends EventEmitter {
       confirmationInterval: 15000,
     }, options);
 
-    if (this.options.verbose) {
-      require('debug').enable('trader');
-    }
-
     this.client = new Steam();
     this.community = new Community();
     this.manager = new Manager({
