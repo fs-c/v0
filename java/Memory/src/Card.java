@@ -23,8 +23,7 @@ class Card extends JButton
 
     public void flip()
     {
-        if (flipped)
-        {
+        if (flipped) {
             setIcon(ImageProvider.getBackside());
         } else setIcon(ImageProvider.getMotive(motive));
 

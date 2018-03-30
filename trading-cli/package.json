@@ -1,0 +1,27 @@
+{
+  "name": "trading-cli",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "strade": "./index.js"
+  },
+  "dependencies": {
+    "commander": "^2.15.1",
+    "debug": "^3.1.0",
+    "fast-levenshtein": "^2.0.6",
+    "fwd": "^0.2.2",
+    "moment": "^2.21.0",
+    "readline-sync": "^1.4.9",
+    "steam-totp": "^2.0.1",
+    "steam-tradeoffer-manager": "^2.9.3",
+    "steam-user": "^3.26.0",
+    "steamcommunity": "^3.34.1"
+  }
+}

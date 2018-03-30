@@ -19,8 +19,7 @@ public class GUIPanel extends JPanel implements ActionListener
 
         ImageProvider.load();
 
-        for (int i = 0; i < motives.length; i++)
-        {
+        for (int i = 0; i < motives.length; i++) {
             cards[i] = new Card(motives[i]);
 
             cards[i].addActionListener(this);
@@ -36,28 +35,23 @@ public class GUIPanel extends JPanel implements ActionListener
     {
         Card card = (Card) e.getSource();
 
-        if (card.locked) // Part of an already uncovered pair.
-        {
+        if (card.locked) { // Part of an already uncovered pair.
             return;
         }
 
         card.uncover();
 
-        if (active != null) // There's already a flipped card.
-        {
-            if (active == card) // Clicked the same card twice.
-            {
+        if (active != null) { // There's already a flipped card.
+            if (active == card) { // Clicked the same card twice.
                 active = null;
                 card.cover();
                 return;
             }
 
-            if (active.motive == card.motive) // Uncovered a pair.
-            {
+            if (active.motive == card.motive) { // Uncovered a pair.
                 card.lock();
                 active.lock();
-            } else
-            {
+            } else {
                 card.cover();
                 active.cover();
             }
