@@ -69,9 +69,8 @@ const Trader = exports.Trader = class extends EventEmitter {
     }
   }
 
-  static get ETradeOfferState() {
-    return Manager.ETradeOfferState;
-  }
+  static get EResult() { return Manager.EResult; }
+  static get ETradeOfferState() { return Manager.ETradeOfferState; }
 
   /**
    * @param {Error} err
