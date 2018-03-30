@@ -1,16 +1,29 @@
-import * as minimist from 'minimist';
+import * as debug from 'debug';
+import { readFileSync, writeFileSync } from 'fs';
 import { Pr0grammAPI, ItemFlags } from 'pr0gramm-api';
 
+debug.enable('scraper');
+const log = debug('scraper');
+
+const interval = 30 * 1000;
 const api = Pr0grammAPI.createWithCookies();
-const args = minimist(process.argv.slice(2));
 
-(async () => {
+const items = JSON.parse(readFileSync('data/items.json', 'utf8')).items;
 
-const items = await api.items.getItems({
-  promoted: true,
-  flags: ItemFlags.SFW,
-});
+log(`working through %o posts`, items.length);
 
-require('fs').writeFileSync('res.json', JSON.stringify(items));
+get(0);
 
-})();
+async function get(index: number) {
+  const bare = items[index];
+  const item = await api.items.getInfo(bare.id);
+
+  log('got item info for %o (%o)', bare.id, index);
+
+  const name = `data/${bare.id}.json`
+  writeFileSync(name, JSON.stringify(item));
+
+  log('wrote file %o', name);
+
+  setTimeout(get, interval, index + 1);
+}
