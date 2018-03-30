@@ -10,7 +10,6 @@ program
   .option('-c, --config <path>',
     'The path to the accounts file.', '~/.steam.json')
   .option('-a, --account <alias>', 'The steam account to use.', 'default')
-  .option('-v, --verbose', 'Enable debug logging.');
 
 const path = program.config.replace('~', require('os').homedir());
 const account = require('fs').existsSync(path)
@@ -22,10 +21,10 @@ if (!account) {
   process.exit(1);
 }
 
-const trader = new Trader(account, { verbose: program.verbose });
+const trader = new Trader(account);
 
 const logError = (boom) => {
-  console.log(`manager error: ${boom.message || boom.err.message}`);
+  console.log(`error: ${boom.message || boom.err.message}`);
 }
 
 trader.on('clientError', logError);
