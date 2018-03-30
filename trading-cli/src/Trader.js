@@ -21,10 +21,9 @@ const Trader = exports.Trader = class extends EventEmitter {
    * @param {string} [account.shasec] - The shared secret of the account.
    * @param {string} [account.idsec] - The identity secret of the account.
    * @param {object} [options] - An options object.
-   * @param {boolean} options.verbose - Enable debug logging.
-   * @param {boolean} options.autostart=false - Start login upon construction.
-   * @param {boolean} options.queryCode=false - Ask the user for their steam guard code.
-   * @param {number} options.confirmationInterval=15000 - The interval at which trades should be confirmed.
+   * @param {boolean} [options.autostart=false] - Start login upon construction.
+   * @param {boolean} [options.queryCode=false] - Ask the user for their steam guard code.
+   * @param {number} [options.confirmationInterval=15000] - The interval at which trades should be confirmed.
    */
   constructor(account, options = {}) {
     super();
@@ -190,6 +189,9 @@ const Trader = exports.Trader = class extends EventEmitter {
     });
   }
 
+  // This whole thing is inefficient and it makes my skin crawl.
+  // TODO: Does the object structure provide any sort of performance boost?
+  //       Would a Set be worth it?
   /**
    * Return an offer given an ID or a fraction of one.
    * 
@@ -197,14 +199,11 @@ const Trader = exports.Trader = class extends EventEmitter {
    * @returns {object}
    */
   async getOffer(partial) {
-  // This whole thing is inefficient and it makes my skin crawl.
-  // TODO: Does the object structure provide any sort of performance boost?
-  //       Would a Set be worth it?
     const offers = await this.getOffers().reduce((acc, cur) => {
       acc[cur.id] = cur;
 
       return acc;
-    }, {})
+    }, {});
 
     if (offers[partial]) {
       return offers[partial];
