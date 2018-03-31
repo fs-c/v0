@@ -18,25 +18,30 @@ const { items } = JSON.parse(
   readFileSync(join(path, 'items.json'), 'utf8')
 );
 
-log(`working through %o posts`, items.length);
+log('working through %o posts with an interval of %o',
+  items.length, interval);
 
 get(0);
 
 async function get(index: number) {
+  if (index >= items.length) {
+    return log('done');
+  }
+
   const bare = items[index];
-  const name = join(path, `${bare.id}.json`)
+  const name = join(path, 'item', `${bare.id}.json`)
 
-  if (existsSync(join(path, name))) {
+  if (existsSync(name)) {
     log(`already got item info for %o, (%o/%o)`,
-      bare.id, index, items.length);
+      bare.id, index + 1, items.length);
 
-    setTimeout(get, interval, index + 1);
+    get(index + 1);
     return;  
   }
 
   const item = await api.items.getInfo(bare.id);
 
-  log('got item info for %o (%o/%o)', bare.id, index, items.length);
+  log('got item info for %o (%o/%o)', bare.id, index + 1, items.length);
 
   writeFileSync(name, JSON.stringify(item));
 
