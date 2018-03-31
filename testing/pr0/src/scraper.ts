@@ -1,8 +1,12 @@
 import { join } from 'path';
 import * as debug from 'debug';
 import * as minimist from 'minimist';
-import { Pr0grammAPI, ItemFlags } from 'pr0gramm-api';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
+import {
+  Item,
+  ItemFlags,
+  Pr0grammAPI,
+} from 'pr0gramm-api';
 
 (async () => {
 
@@ -16,26 +20,51 @@ const interval = (args.i || 30) * 1000;
 const log = debug('scraper');
 const api = Pr0grammAPI.createWithCookies();
 
-const getItems = async () => {
-  if (existsSync(join(path, 'items.json')) && !args.r) {
+const getItems = async (): Promise<Item[]> => {
+  if (args.r) {
     log('reading items from disk');
 
-    return JSON.parse(readFileSync(join(path, 'items.json'), 'utf8'));
+    return JSON.parse(
+      readFileSync(join(path, 'items.json'), 'utf8')
+    );
   }
 
-  log('fetching items');
+  const fresh = args.newer ? (
+    await api.items.getItemsNewer({
+      promoted: true,
+      flags: ItemFlags.SFW,
+      newer: args.newer as number,
+    })
+  ) : (
+    await api.items.getItems({
+      promoted: true,
+      flags: ItemFlags.SFW,
+    })
+  );
 
-  const items = await api.items.getItems({
-    promoted: true,
-    flags: ItemFlags.SFW,
-  });
+  log('fetched new items');
+
+  if (args.w) {
+    const name = join(path, `items-${Date.now()}.json`)
+    writeFileSync(name, JSON.stringify(fresh));
+    log('wrote file %o', name);
+  }
+
+  if (args.n) {
+    return fresh.items;
+  }
+
+  const items = Array.from(new Set(
+    JSON.parse(readFileSync(join(path, 'items.json'), 'utf8'))
+      .concat(fresh.items) as Item[]
+  ));
 
   writeFileSync(join(path, 'items.json'), JSON.stringify(items));
 
   return items;
 }
 
-const { items } = await getItems();
+const items = await getItems();
 
 log('working through %o posts with an interval of %o',
   items.length, interval);
@@ -61,6 +90,11 @@ async function get(index: number) {
   const item = await api.items.getInfo(bare.id);
 
   log('got item info for %o (%o/%o)', bare.id, index + 1, items.length);
+  log(
+    '   item created %o by %o (%o tags, %o comments - +%o/-%o)',
+    bare.created, bare.user, item.tags.length, 
+    item.comments.length, bare.up, bare.down
+  );
 
   writeFileSync(name, JSON.stringify(item));
 
