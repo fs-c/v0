@@ -17,7 +17,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon -e ts,tsx --exec ts-node ./src/index.ts"
+    "watch": "nodemon -e ts,tsx --exec ts-node ./src/scraper.ts",
+    "start": "ts-node ./src/scraper.ts"
   },
   "keywords": [],
   "author": "",
