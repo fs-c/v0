@@ -1,0 +1,18 @@
+{
+  "name": "pr0_1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sturmwalzer/logger": "^1.0.0",
+    "minimist": "^1.2.0",
+    "pr0gramm-api": "^2.1.1"
+  },
+  "devDependencies": {},
+  "description": ""
+}
