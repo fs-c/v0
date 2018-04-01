@@ -17,15 +17,23 @@ const request = async (route, params = { promoted: 1, flags: 1 }) => {
 
 const api = exports.api = {
   items: {
-    newest: (opts) => request('items/get', opts),
+    get: (opts) => request('items/get', opts),
+
+    newest(opts) {
+      return this.get(opts);
+    },
     older(id, opts) {
-      return request('items/get', Object.merge({ older: id }, opts));
+      return this.get(Object.merge({ older: id }, opts));
     },
     newer(id, opts) {
-      return request('items/get', Object.merge({ newer: id }, opts));
+      return this.get(Object.merge({ newer: id }, opts));
     },
     around(id, opts) {
-      return request('items/get', Object.merge({ around: id }, opts));
+      return this.get(Object.merge({ around: id }, opts));
     },
+
+    info(id) {
+      return request('items/info', { itemId: id });
+    }
   }
 };
