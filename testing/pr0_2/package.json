@@ -12,6 +12,7 @@
   "dependencies": {
     "@sturmwalzer/logger": "^1.0.0",
     "debug": "^3.1.0",
-    "got": "^8.3.0"
+    "got": "^8.3.0",
+    "minimist": "^1.2.0"
   }
 }
