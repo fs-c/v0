@@ -5,16 +5,21 @@ const { URLSearchParams } = require('url');
 const base = 'http://pr0gramm.com/api/';
 
 /**
- * Send a request to the given route with the params 
+ * Send a request to the given route with the options 
  * parsed as queries.
  * @param {string} route 
- * @param {object} params 
+ * @param {object} options 
  * @returns {Promise}
  */
 const request = async (
   route,
-  params = { promoted: 1, flags: 1 }
+  options
 ) => {
+  const params = Object.assign({
+    flags: 1,
+    promoted: 1,
+  }, options);
+
   const url = base + route + '?'
     + new URLSearchParams(params).toString();
   
