@@ -41,7 +41,7 @@ const inspectArgs = {
 
 /**
  * Logs body to console and arguments to console.
- * If body is a string, formats it printf-like with the other arguments.
+ * If body is a string, formats it printf-like with the additional arguments.
  * @param {*} body
  * @param {...*} arguments
  */
