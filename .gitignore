@@ -92,3 +92,7 @@ upload/files/*
 */keys.txt
 
 testing/pr0/data
+testing/pr0data/*
+testing/pr0data/*/*
+
+pr0gramm-scraper/data
