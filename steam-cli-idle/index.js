@@ -6,7 +6,7 @@ const args = require('minimist')(process.argv.slice(2));
 
 const account = require(
   args.accounts || join(homedir(), '.steam.json')
-)[args.a || args.alias || 'default'];
+)[args.a || args.account || 'default'];
 
 const games = (
   args.games ? (
@@ -25,14 +25,15 @@ client.logOn(account);
 
 client.on('loggedOn', (details) => {
   log('logged on (%o)', details.eresult);
+
+  log('setting games played to %o', games);  
+
+  client.setPersona(1);
+  client.gamesPlayed(games);
 });
 
 client.on('webSession', () => {
   log('negotiated web session');
-  log('setting games played to %o', games);
-
-  client.setPersona(1);
-  client.gamesPlayed(games);
 });
 
 client.on('steamGuard', (domain, cb) => {
