@@ -11,11 +11,9 @@ const interval = args.interval || 30 * 1000;
 
 async function main() {
   const initial = (
-    await api.items.newest({ promoted: 0 })
+    await api.items.get({ promoted: 0 })
   ).items;
 
   const upper = initial[0].id;
   log('getting posts beween %o (hi) and %o (lo)', upper, lower);
-
-  processBatch((await api.items.older(upper)).items)
 }
