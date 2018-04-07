@@ -1,5 +1,4 @@
 import { get } from 'got';
-import * as date from 'date.js'; // TODO: DANGEROUS, needs declaration.
 import * as cheerio from 'cheerio';
 import { getBaseAddress } from '../constants';
 
