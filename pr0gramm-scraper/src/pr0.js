@@ -31,7 +31,7 @@ const request = async (
 
   debug('%o/%o', res.statusCode, res.statusMessage);
 
-  return res.body;
+  return res.body.items || res.body;
 };
 
 const api = exports.api = {
