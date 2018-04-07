@@ -35,14 +35,14 @@ interface PopularBlurb extends FictionBlurb {
 interface BestBlurb extends PopularBlurb {}
 
 export class RoyalRoadAPI {
-  public readonly fictions: FictionService;
+  public readonly fictions: FictionsService;
 
   constructor() {
-    this.fictions = new FictionService();
+    this.fictions = new FictionsService();
   }
 }
 
-class FictionService {
+class FictionsService {
   public async getLatest(page: number = 1): Promise<LatestBlurb[]> {
     const params = new URLSearchParams({ page: page.toString() });
     const url = `${BASE_ADDRESS}/fictions/latest-updates?${params}`;
