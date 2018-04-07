@@ -32,9 +32,17 @@ interface PopularBlurb extends FictionBlurb {
   },
 }
 
-export class RoyalRoadAPI {
-  constructor() {}
+interface BestBlurb extends PopularBlurb {}
 
+export class RoyalRoadAPI {
+  public readonly fictions: FictionService;
+
+  constructor() {
+    this.fictions = new FictionService();
+  }
+}
+
+class FictionService {
   public async getLatest(page: number = 1): Promise<LatestBlurb[]> {
     const params = new URLSearchParams({ page: page.toString() });
     const url = `${BASE_ADDRESS}/fictions/latest-updates?${params}`;
@@ -51,6 +59,15 @@ export class RoyalRoadAPI {
     const response = await get(url);
 
     return Parser.parsePopular(response.body);
+  }
+
+  public async getBest(page: number = 1): Promise<BestBlurb[]> {
+    const params = new URLSearchParams({ page: page.toString() });
+    const url = `${BASE_ADDRESS}/fictions/best-rated?${params}`;
+
+    const response = await get(url);
+
+    return Parser.parsePopular(response.body) as BestBlurb[];
   }
 }
 
