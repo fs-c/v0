@@ -62,6 +62,8 @@ class FictionParser {
       parseInt(raw.replace(/,/ig, ''), 10);
     const parseRating = (raw: string) =>
       parseFloat(raw.split('/')[0].trim());
+    const getContent = (el: Cheerio) =>
+      el.find('span').data('content'); 
 
     const stats: FictionStats = {
       followers: parseNumber($(statsList).eq(5).text()),
@@ -73,11 +75,11 @@ class FictionParser {
         average: parseNumber($(statsList).eq(3).text()),
       },
       score: {
-        style: parseRating($(ratingList).eq(3).find('span').data('content')),
-        story: parseRating($(ratingList).eq(5).find('span').data('content')),
-        grammar: parseRating($(ratingList).eq(9).find('span').data('content')),
-        overall: parseRating($(ratingList).eq(1).find('span').data('content')),
-        character: parseRating($(ratingList).eq(7).find('span').data('content')),        
+        style: parseRating(getContent($(ratingList).eq(3))),
+        story: parseRating(getContent($(ratingList).eq(5))),
+        grammar: parseRating(getContent($(ratingList).eq(9))),
+        overall: parseRating(getContent($(ratingList).eq(1))),
+        character: parseRating(getContent($(ratingList).eq(7))),        
       }
     }
 
