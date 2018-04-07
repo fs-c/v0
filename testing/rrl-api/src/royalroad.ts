@@ -21,7 +21,7 @@ interface LatestBlurb extends FictionBlurb {
   }[],
 }
 
-interface ActiveRankingBlurb extends FictionBlurb {
+interface PopularBlurb extends FictionBlurb {
   description: string,
   stats: {
     pages: number,
@@ -42,6 +42,15 @@ export class RoyalRoadAPI {
     const response = await get(url);
 
     return Parser.parseLatest(response.body);
+  }
+
+  public async getPopular(page: number = 1): Promise<PopularBlurb[]> {
+    const params = new URLSearchParams({ page: page.toString() });
+    const url = `${BASE_ADDRESS}/fictions/active-popular?${params}`;
+
+    const response = await get(url);
+
+    return Parser.parsePopular(response.body);
   }
 }
 
@@ -84,10 +93,51 @@ class Parser {
         });
       });
 
-      fictions.push(
-        Object.assign(Parser.parseBlurb($, el),
-        { latest })
-      );
+      fictions.push(Object.assign(
+        Parser.parseBlurb($, el),
+        { latest }
+      ));
+    });
+
+    return fictions;
+  }
+
+  static parsePopular(html: string): PopularBlurb[] {
+    const $ = cheerio.load(html);
+
+    let fictions: PopularBlurb[] = [];
+
+    // Using .each instead of the more concise .map because the typings are 
+    // suboptimal. (TODO, maybe)
+    $('.fiction-list-item').each((i, el) => {
+      let description = '';
+
+      // Sigh...
+      $(el).find('.margin-top-10.col-xs-12').find('p').each((i, el) => {
+        description += $(el).text() + '\n';
+      });
+
+      // DANGEROUS. But due to RRL site design there's few ways around this.
+      let stats: any = {};
+
+      stats.latest = date($(el).find('time').attr('datetime')).getTime();
+      stats.rating = parseFloat($(el).find('.star').attr('title'));
+
+      $(el).find('span').each((i, el) => {
+        const text = $(el).text().toLowerCase();
+        const key = text.split(' ')[1];
+        const value = parseInt(text.split(' ')[0].replace(/,/gi, ''), 10);
+
+        if (!key || !value) { return; }
+
+        stats[key] = value;
+      });
+
+      fictions.push(Object.assign(
+        Parser.parseBlurb($, el),
+        { description },
+        { stats }
+      ));
     });
 
     return fictions;
