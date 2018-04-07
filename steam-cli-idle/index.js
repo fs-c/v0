@@ -1,16 +1,12 @@
-const debug = require('debug')('idler');
-const args = require('minimist')(process.argv.slice(2));
-
-if (!args.silent) { require('debug').enable('idler'); }
-
 const { join } = require('path');
 const { homedir } = require('os');
+const { log } = require('@sturmwalzer/logger');
 
-const alias = args.a || args.account || 'default';
+const args = require('minimist')(process.argv.slice(2));
 
 const account = require(
   args.accounts || join(homedir(), '.steam.json')
-)[alias];
+)[args.a || args.account || 'default'];
 
 const games = (
   args.games ? (
@@ -21,9 +17,6 @@ const games = (
   ) : []
 );
 
-// .map((e) => (typeof e !== 'string' || typeof e !== 'number') ? false : e)
-// .filter((e) => e !== false);
-
 const client = new (require('steam-user'))();
 
 client.setOption('promptSteamGuardCode', false);
@@ -31,19 +24,20 @@ client.setOption('promptSteamGuardCode', false);
 client.logOn(account);
 
 client.on('loggedOn', (details) => {
-  debug('logged on (%o)', details.eresult);
-});
+  log('logged on (%o)', details.eresult);
 
-client.on('webSession', () => {
-  debug('negotiated web session');
-  debug('setting games played to %o', games);
+  log('setting games played to %o', games);  
 
   client.setPersona(1);
   client.gamesPlayed(games);
 });
 
+client.on('webSession', () => {
+  log('negotiated web session');
+});
+
 client.on('steamGuard', (domain, cb) => {
-  debug('steam guard required');
+  log('steam guard required');
 
   if (domain || !account.shasec) {
     throw new Error('Steam Guard error');
@@ -55,13 +49,13 @@ client.on('steamGuard', (domain, cb) => {
 let relogTimer;
 
 client.on('error', (err) => {
-  debug('error: %o (%o)', err.message, err.enum);
+  log('error: %o (%o)', err.message, err.enum);
 
   client.logOff();  
 
   if (relogTimer) { clearTimeout(relogTimer); }  
-  
-  relogTimer = setTimeout(() => {
-    client.logOn(account);
-  }, 60 * 60 * 1000);
+
+  relogTimer = setTimeout(
+    client.logOn, 60 * 60 * 1000, account
+  );
 });
