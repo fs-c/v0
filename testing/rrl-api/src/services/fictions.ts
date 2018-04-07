@@ -17,9 +17,9 @@ export class FictionsService {
     const params = new URLSearchParams({ page: page.toString() });
     const url = `${getBaseAddress()}/fictions/latest-updates?${params}`;
 
-    const response = await get(url);
+    const { body } = await get(url);
 
-    return FictionsParser.parseLatest(response.body);
+    return FictionsParser.parseLatest(body);
   }
 
   public async getPopular(page: number = 1): Promise<PopularBlurb[]> {
