@@ -34,6 +34,15 @@ interface PopularBlurb extends FictionBlurb {
 
 interface BestBlurb extends PopularBlurb {}
 
+interface SearchBlurb {
+  id: number,
+  pages: number,
+  title: string,
+  image: string,
+  author: string,
+  description: string,
+}
+
 export class RoyalRoadAPI {
   public readonly fictions: FictionsService;
 
@@ -56,18 +65,27 @@ class FictionsService {
     const params = new URLSearchParams({ page: page.toString() });
     const url = `${BASE_ADDRESS}/fictions/active-popular?${params}`;
 
-    const response = await get(url);
+    const { body } = await get(url);
 
-    return Parser.parsePopular(response.body);
+    return Parser.parsePopular(body);
   }
 
   public async getBest(page: number = 1): Promise<BestBlurb[]> {
     const params = new URLSearchParams({ page: page.toString() });
     const url = `${BASE_ADDRESS}/fictions/best-rated?${params}`;
 
-    const response = await get(url);
+    const { body } = await get(url);
 
-    return Parser.parsePopular(response.body) as BestBlurb[];
+    return Parser.parsePopular(body) as BestBlurb[];
+  }
+
+  public async search(keyword: string): Promise<SearchBlurb[]> {
+    const params = new URLSearchParams({ keyword });
+    const url = `${BASE_ADDRESS}/fictions/search?${params}`;
+
+    const { body } = await get(url);
+
+    return Parser.parseSearch(body);
   }
 }
 
@@ -155,6 +173,34 @@ class Parser {
         { description },
         { stats }
       ));
+    });
+
+    return fictions;
+  }
+
+  static parseSearch(html: string): SearchBlurb[] {
+    const $ = cheerio.load(html);
+
+    let fictions: SearchBlurb[] = [];
+
+    $('.search-item').each((i, el) => {
+      const image = $(el).find('img').attr('src');
+
+      const titleEl = $(el).find('h2.margin-bottom-10').children('a')
+
+      const title = $(titleEl).text();
+      const id = parseInt($(titleEl).attr('href').split('/')[2], 10);
+
+      const pages = parseInt($(el).find('span.page-count').text(), 10);
+      const author = $(el).find('span.author').text()
+        .replace('by', '').trim();
+
+      let description = '';
+      $(el).find('div.fiction-description').find('p').each((i, el) => {
+        description += $(el).text() + '\n';
+      });
+
+      fictions.push({ id, title, pages, author, image, description });
     });
 
     return fictions;
