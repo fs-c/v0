@@ -35,3 +35,29 @@ export interface SearchBlurb {
   author: string,
   description: string,
 }
+
+export interface Fiction {
+  type: string,  
+  title: string,
+  image: string,
+  status: string,
+  tags: string[],
+  warnings: string[],
+  description: string,
+  author: FictionAuthor,
+}
+
+export interface FictionAuthor {
+  id: number,
+  name: string,
+  title: string,
+  avatar: string,
+}
+
+/*
+export interface FictionPageChapter {
+  id: number,
+  name: string,
+  created: number,
+}
+*/
