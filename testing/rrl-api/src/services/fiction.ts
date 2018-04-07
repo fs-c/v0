@@ -3,7 +3,7 @@ import * as date from 'date.js'; // TODO: DANGEROUS, needs declaration.
 import * as cheerio from 'cheerio';
 import { getBaseAddress } from '../constants';
 
-import { Fiction } from '../common-types';
+import { Fiction, FictionAuthor, FictionStats } from '../common-types';
 
 export class FictionService {
   public async getFiction(id: number): Promise<Fiction> {
@@ -25,14 +25,14 @@ export class FictionService {
 
 class FictionParser {
   public static parseFiction(html: string): Fiction {
-    const $ = cheerio.load('html');
+    const $ = cheerio.load(html);
 
-    const title = $('div.fic-title').find('h1').text();
-    const type = $('span.bg-blue-hoki').eq(1).text();
-    const status = $('span.bg-blue-hoki').eq(2).text();
+    const title = $('div.fic-title').children('h1').text();
+    const type = $('span.bg-blue-hoki').eq(0).text();
+    const status = $('span.bg-blue-hoki').eq(1).text();
     const image = $('cover-' + title).attr('src');
 
-    const tags = $('span.tags').find('label')
+    const tags = $('span.tags').find('span.label')
       .map((i, el) => $(el).text()).get();
 
     const warnings = $('ul.list-inline').find('li')
@@ -41,16 +41,47 @@ class FictionParser {
     const description = $('div.hidden-content').find('p')
       .map((i, el) => $(el).text()).get().join('');
     
-    const authorEl = $('.portlet.light').eq(0);
+    const authorEl = $('.portlet-body').eq(0);  
 
-    const author = {
+    const author: FictionAuthor = {
       name: $(authorEl).find('.mt-card-name').find('a').text(),
       title: $(authorEl).find('.mt-card-desc').text(),
       avatar: $(authorEl).find('.mt-card-avatar').find('img').attr('src'),
-      id: 2
+      id: parseInt(
+        $(authorEl).find('.mt-card-name').find('a').attr('href')
+          .split('/')[2]
+        , 10
+      ),
     };
 
-    return { type, tags, title, image, status, 
+    const statsEl = $('div.stats-content');
+    const statsList = $(statsEl).find('.list-unstyled').eq(1).find('li');
+    const ratingList = $(statsEl).find('.list-unstyled').eq(0).find('li');
+
+    const parseNumber = (raw: string) =>
+      parseInt(raw.replace(/,/ig, ''), 10);
+    const parseRating = (raw: string) =>
+      parseFloat(raw.split('/')[0].trim());
+
+    const stats: FictionStats = {
+      followers: parseNumber($(statsList).eq(5).text()),
+      favorites: parseNumber($(statsList).eq(7).text()),
+      ratings: parseNumber($(statsList).eq(9).text()),
+      pages: parseNumber($(statsList).eq(11).text()),
+      views: {
+        total: parseNumber($(statsList).eq(1).text()),
+        average: parseNumber($(statsList).eq(3).text()),
+      },
+      score: {
+        style: parseRating($(ratingList).eq(3).find('span').data('content')),
+        story: parseRating($(ratingList).eq(5).find('span').data('content')),
+        grammar: parseRating($(ratingList).eq(9).find('span').data('content')),
+        overall: parseRating($(ratingList).eq(1).find('span').data('content')),
+        character: parseRating($(ratingList).eq(7).find('span').data('content')),        
+      }
+    }
+
+    return { type, tags, stats, title, image, status, 
       author, warnings, description };
   }
 }

@@ -44,7 +44,26 @@ export interface Fiction {
   tags: string[],
   warnings: string[],
   description: string,
+  stats: FictionStats,
   author: FictionAuthor,
+}
+
+export interface FictionStats {
+  pages: number,
+  ratings: number,
+  favorites: number,
+  followers: number,
+  views: {
+    total: number,
+    average: number,
+  },
+  score: {
+    style: number,
+    story: number,
+    grammar: number,
+    overall: number,
+    character: number,
+  },
 }
 
 export interface FictionAuthor {
@@ -55,6 +74,7 @@ export interface FictionAuthor {
 }
 
 /*
+TODO: Figure out the chapter list loading.
 export interface FictionPageChapter {
   id: number,
   name: string,
