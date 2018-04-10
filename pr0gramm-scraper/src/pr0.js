@@ -11,7 +11,10 @@ const base = 'http://pr0gramm.com/api/';
  * @param {object} options 
  * @returns {Promise}
  */
-const request = async (route, options) => {
+const request = async (
+  route,
+  options
+) => {
   const params = Object.assign({
     flags: 1,
     promoted: 1,
@@ -20,18 +23,36 @@ const request = async (route, options) => {
   const url = base + route + '?'
     + new URLSearchParams(params).toString();
   
+  debug('GET: %o', url);
+
   const res = await get(url, {
     json: true,
   });
 
-  debug('GET: %o - %o/%o'
-    , url, res.statusCode, res.statusMessage);
+  debug('%o/%o', res.statusCode, res.statusMessage);
 
-  return res.body;
+  return res.body.items || res.body;
 };
 
 const api = exports.api = {
   items: {
-    get: (opts) => request('items/get', opts),
-  },
+    _get: (opts) => request('items/get', opts),
+
+    newest(opts) {
+      return this._get(opts);
+    },
+    older(id, opts) {
+      return this._get(Object.assign({ older: id }, opts));
+    },
+    newer(id, opts) {
+      return this._get(Object.assign({ newer: id }, opts));
+    },
+    around(id, opts) {
+      return this._get(Object.assign({ around: id }, opts));
+    },
+
+    info(id) {
+      return request('items/info', { itemId: id });
+    }
+  }
 };
