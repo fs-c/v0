@@ -4,9 +4,9 @@ const marked = require('marked');
 const { join } = require('path');
 const { cwd } = require('process');
 const program = require('commander');
-const { question } = require('readline-sync');
 const { RoyalRoadAPI } = require('@l1lly/royalroadl-api');
 const { existsSync, readFile, writeFile } = require('fs');
+const { question, password, keyInSelect } = require('readline-sync');
 
 const api = new RoyalRoadAPI();
 
@@ -30,21 +30,26 @@ program.command('parse <file>', 'Parse a markdown file into RRL readable HTML.')
   });
 
 program.command('publish [file]')
-  .option('-a, --ask', 'Prompt for required information. You should use this for your password.')
+  .option('-a, --ask', 'Prompt for required information.')
   .action(async (file, opts) => {
-    const content = await getFile(file);
+    const content = parseMarkdown(await getFile(file));
 
     let title, fiction, username, password;
 
     if (opts.ask) {
       title = title || question('Chapter title: ');
-      fiction = fiction || question('Fiction ID: ');
       username = username || question('Username: ');
-      password = password || question('Password: ');
+      password = password || password('Password: ');
     }
 
     try {
       await api.user.login(username, password);
+      
+      const myFictions = await api.user.myFictions();
+      const fiction = myFictions[
+        keyInSelect(myFictions.map((fic) => fic.title))
+      ].id;
+
       const res = await api.fiction.publishChapter(fiction, {
         title,
         content,
