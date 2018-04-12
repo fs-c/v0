@@ -43,7 +43,7 @@ async function parseFile(file, opts) {
   process.stdout.write(html);
   process.stdout.end();
 
-  // TODO: Why won't it exit by itself witout this?
+  // TODO: Why won't it exit by itself without this?
   process.exit(1);
 }
 
@@ -89,6 +89,7 @@ async function publishChapter(file, opts) {
 /**
  * Parses markdown into HTML that is readable by RRL.
  * TODO: Implement custom header handling logic.
+ * TODO: Implement custom parser with more minimal features.
  * 
  * @param {string} md 
  */
