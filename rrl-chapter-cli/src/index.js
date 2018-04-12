@@ -43,6 +43,7 @@ async function parseFile(file, opts) {
   process.stdout.write(html);
   process.stdout.end();
 
+  // TODO: Why won't it exit by itself witout this?
   process.exit(1);
 }
 
