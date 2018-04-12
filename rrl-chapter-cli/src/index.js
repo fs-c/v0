@@ -21,6 +21,14 @@ program.command('publish [file]')
 program.version(require('../package.json').version);
 program.parse(process.argv);
 
+/**
+ * Parse a markdown file into HTML and pipe it to stdout, optionally 
+ * write it to opts.out.
+ * 
+ * @param {string} file - Path to markdown file. 
+ * @param {object} opts - Commander arguments.
+ * @param {string} opts.out - Optional file output file.
+ */
 async function parseFile(file, opts) {
   const html = parseMarkdown(await getFile(file));
 
@@ -38,6 +46,13 @@ async function parseFile(file, opts) {
   process.exit(1);
 }
 
+/**
+ * Publish a chapter to RRL, logging on in the process.
+ * 
+ * @param {string} file - Path to markdown file.
+ * @param {object} opts - Commander arguments.
+ * @param {boolean} opts.ask - Query missing information on stdin.
+ */
 async function publishChapter(file, opts) {
   const content = parseMarkdown(await getFile(file));
 
