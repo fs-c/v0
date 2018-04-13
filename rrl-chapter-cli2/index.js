@@ -5,8 +5,7 @@ const { homedir } = require('os');
 const process = require('process');
 const marked = require('marked');
 const { existsSync, writeFileSync } = require('fs');
-// const { RoyalRoadAPI } = require('@l1lly/royalroadl-api');
-const { RoyalRoadAPI } = require('../../royalroadl-api/dist/lib');
+const { RoyalRoadAPI } = require('@l1lly/royalroadl-api');
 
 const api = new RoyalRoadAPI();
 
