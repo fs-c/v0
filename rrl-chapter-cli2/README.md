@@ -1,3 +1,9 @@
+```
+$ npm i -g rrl-chapter-cli
+$ rrl-chapter < chapter1.md
+Posted chapter.
+```
+
 __Simple CLI tool for the [royalroadl.com](https://royalroadl.com) website__, to publish chapters formatted in markdown.
 
 This expects a config file to be located either in `./.rrl.json` or `~/.rrl.json`, with the following format: 
