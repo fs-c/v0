@@ -62,8 +62,6 @@ const chapter = {
   postNote: marked(meta.postNote || '').trim(),
 }
 
-console.log(chapter);
-
 try {
   const res = await api.fiction.publishChapter(meta.fictionID, chapter);
 } catch(e) {
