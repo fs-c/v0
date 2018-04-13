@@ -24,4 +24,4 @@ $>
 Your chapter content, you may use _markdown_ here.
 ```
 
-The fiction ID can for example be found in its URL `https://royalroadl.com/fiction/<ID>/...`.
+The `fictionID` can for example be found in the fiction URL `https://royalroadl.com/fiction/<ID>/...`. Note that you may also use markdown in `preNote` and `postNote`.
