@@ -67,14 +67,10 @@ console.log(chapter);
 
 try {
   const res = await api.fiction.publishChapter(meta.fictionID, chapter);
-  require('fs').writeFileSync('res.html', res);
 } catch(e) {
   console.error('Failed posting chapter, exiting. (%o)', e.message);
   process.exit(1);
 }
-
-// process.stdout.write(content);
-// process.stdout.end();
 
 console.log('Posted chapter.');
 
