@@ -63,7 +63,7 @@ const chapter = {
 }
 
 try {
-  const res = await api.fiction.publishChapter(meta.fictionID, chapter);
+  await api.fiction.publishChapter(meta.fictionID, chapter);
 } catch(e) {
   console.error('Failed posting chapter, exiting. (%o)', e.message);
   process.exit(1);
