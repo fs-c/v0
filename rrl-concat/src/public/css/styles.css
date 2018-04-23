@@ -1,0 +1,9 @@
+.container {
+  margin-top: 1em;
+}
+
+input {
+  border: 0px solid white;
+  border-bottom: 1px solid grey;
+  margin-bottom: 0.5em;
+}
