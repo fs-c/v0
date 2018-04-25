@@ -80,7 +80,6 @@ app.use(route.get('/', async (ctx, next) => {
   const { fiction, chapter, size = 5, page = 0 } = ctx.query;
   if (fiction) {
     const meta = (await rrl.fiction.getFiction(fiction)).data
-      // Slice into chunks of the given size, at the given chunk index ('page').
     debug('got metadata for fiction %o', fiction);
 
     const index = chapter ? (
@@ -89,6 +88,7 @@ app.use(route.get('/', async (ctx, next) => {
       )
     ) : 0;
 
+    // Slice into chunks of the given size, at the given chunk index.    
     const chunk = !chapter ? (
       meta.chapters.slice(page * size, (page * size) + parseInt(size, 10))
     ) : (
