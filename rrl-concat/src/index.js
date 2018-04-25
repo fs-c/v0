@@ -77,12 +77,23 @@ app.use(route.get('/', async (ctx, next) => {
     });
   }
 
-  const { fiction, size = 5, page = 0 } = ctx.query;
+  const { fiction, chapter, size = 5, page = 0 } = ctx.query;
   if (fiction) {
     const meta = (await rrl.fiction.getFiction(fiction)).data
       // Slice into chunks of the given size, at the given chunk index ('page').
-      .chapters.slice(page * size, (page * size) + parseInt(size, 10));
     debug('got metadata for fiction %o', fiction);
+
+    const index = chapter ? (
+      meta.chapters.indexOf(
+        meta.chapters.filter((chap) => chap.id === chapter)
+      )
+    ) : 0;
+
+    const chunk = !chapter ? (
+      meta.chapters.slice(page * size, (page * size) + parseInt(size, 10))
+    ) : (
+      meta.chapters.slice(index + (page * size), index + (page * size) + size)
+    );
 
     // Get all chapters at once, to minimise load times.
     const content = (await Promise.all(
