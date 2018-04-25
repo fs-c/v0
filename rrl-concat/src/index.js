@@ -7,7 +7,7 @@ const route = require('koa-route');
 const debug = require('debug')('rrl-concat');
 const { RoyalRoadAPI } = require('@l1lly/royalroadl-api');
 
-const app = new (require('koa'))();
+const app = exports.app = new (require('koa'))();
 
 // Global RRL API class, not to be used for logins.
 const rrl = new RoyalRoadAPI();
@@ -150,4 +150,6 @@ app.use(route.post('/authenticate', async (ctx, next) => {
   ctx.redirect('/');  
 }));
 
-app.listen(process.env.PORT || 8080);
+if (require.main === module) {
+  app.listen(process.env.PORT || 8080);
+} else { /* We were require()d, don't start the server. */ }
