@@ -2,12 +2,13 @@ require('dotenv').config();
 
 const inDev = process.env.NODE_ENV === 'dev';
 
+const Koa = require('koa');
 const { join } = require('path');
 const route = require('koa-route');
 const debug = require('debug')('rrl-concat');
-const { RoyalRoadAPI } = require('@l1lly/royalroadl-api');
+const { RoyalRoadAPI, RoyalError } = require('@l1lly/royalroadl-api');
 
-const app = exports.app = new (require('koa'))();
+const app = exports.app = new Koa();
 
 // Global RRL API class, not to be used for logins.
 const rrl = new RoyalRoadAPI();
@@ -57,7 +58,8 @@ app.use(async (ctx, next) => {
   } catch (err) {
     debug(err);
 
-    return ctx.render('status', { err })
+    const royal = err instanceof RoyalError ? err : undefined;
+    return ctx.render('status', { err, royal })
   }
 });
 
@@ -79,7 +81,7 @@ app.use(route.get('/', async (ctx, next) => {
   if (fiction) {
     const meta = (await rrl.fiction.getFiction(fiction)).data
       // Slice into chunks of the given size, at the given chunk index ('page').
-      .chapters.slice(page * size, (page * size) + size);
+      .chapters.slice(page * size, (page * size) + parseInt(size, 10));
     debug('got metadata for fiction %o', fiction);
 
     // Get all chapters at once, to minimise load times.
