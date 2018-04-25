@@ -44,16 +44,13 @@ app.use(async (ctx, next) => {
   await next();
 });
 
-app.use(async (ctx) => {
-  const chapters = require('../chapters');
-  await ctx.render('fiction', { chapters });
-});
-
 app.use(async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    ctx.flash = err.data ? err.data.message : err.message;
+    debug(err);
+
+    return ctx.render('status', { err })
   }
 });
 
@@ -66,23 +63,16 @@ app.use(route.get('/', async (ctx, next) => {
 
   const { fiction, page = 0 } = ctx.query;
   if (fiction) {
-    const chapsMeta = (await rrl.fiction.getFiction(fiction)).data
-      .chapters.slice(page * 10, page * 10 + 10)
+    const meta = (await rrl.fiction.getFiction(fiction)).data
+      .chapters.slice(page * 5, (page * 5) + 10);
+    debug('got metadata for fiction %o', fiction);
 
-    debug('got chapter metadata for %o', fiction);
+    const content = (await Promise.all(
+      meta.map((chap) => rrl.chapter.getChapter(chap.id)),
+    )).map((res) => res.data);
+    debug('got content for %o chapters', content.length);
 
-    let chapters = [];
-    for (const chap of chapsMeta) {
-      // Keep metadata on new chapter opject.
-      chapters.push(Object.assign(
-        (await rrl.chapter.getChapter(chap.id)).data),
-        chap,
-      );
-
-      debug('got chapter info for %o', chap.id);
-    }
-
-    debug('got %o chapter(s)', chapters.length);
+    const chapters = content.map((e, i) => Object.assign(e, meta[i]));
 
     return ctx.render('fiction', { chapters });
   }
@@ -90,7 +80,7 @@ app.use(route.get('/', async (ctx, next) => {
   return ctx.render('select');
 }));
 
-app.use(route.post('/', async (ctx, next) => {
+app.use(route.post('/authenticate', async (ctx, next) => {
   const { username, password } = ctx.request.body;
 
   if (!username || !password) {
