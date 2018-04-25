@@ -61,10 +61,10 @@ app.use(route.get('/', async (ctx, next) => {
     });
   }
 
-  const { fiction, page = 0 } = ctx.query;
+  const { fiction, size = 5, page = 0 } = ctx.query;
   if (fiction) {
     const meta = (await rrl.fiction.getFiction(fiction)).data
-      .chapters.slice(page * 5, (page * 5) + 10);
+      .chapters.slice(page * size, (page * size) + 10);
     debug('got metadata for fiction %o', fiction);
 
     const content = (await Promise.all(
