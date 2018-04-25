@@ -3,10 +3,11 @@ require('dotenv').config();
 const inDev = process.env.NODE_ENV === 'dev';
 
 const { join } = require('path');
-const app = new (require('koa'))();
 const route = require('koa-route');
 const debug = require('debug')('rrl-concat');
 const { RoyalRoadAPI } = require('@l1lly/royalroadl-api');
+
+const app = new (require('koa'))();
 
 // Global RRL API class, not to be used for logins.
 const rrl = new RoyalRoadAPI();
@@ -30,6 +31,9 @@ if (inDev || process.env.DEBUG === 'rrl-concat') {
   app.use(require('koa-logger')());  
 }
 
+/**
+ * Really simple flash middleware for passing status messages down to views.
+ */
 app.use(async (ctx, next) => {
   const { flash } = ctx.session;
 
@@ -44,6 +48,9 @@ app.use(async (ctx, next) => {
   await next();
 });
 
+/**
+ * Render all errors in the status view, it'll know what to do.
+ */
 app.use(async (ctx, next) => {
   try {
     await next();
@@ -54,6 +61,13 @@ app.use(async (ctx, next) => {
   }
 });
 
+/**
+ * If not authenticated, render authentication view - else render selection
+ * view.
+ * 
+ * If a fiction query is passed, get fiction and chapter data, and render the 
+ * fiction view with the relevant chapters.
+ */
 app.use(route.get('/', async (ctx, next) => {
   if (!ctx.session.authenticated) {
     return ctx.render('authenticate', {
@@ -64,9 +78,11 @@ app.use(route.get('/', async (ctx, next) => {
   const { fiction, size = 5, page = 0 } = ctx.query;
   if (fiction) {
     const meta = (await rrl.fiction.getFiction(fiction)).data
-      .chapters.slice(page * size, (page * size) + 10);
+      // Slice into chunks of the given size, at the given chunk index ('page').
+      .chapters.slice(page * size, (page * size) + size);
     debug('got metadata for fiction %o', fiction);
 
+    // Get all chapters at once, to minimise load times.
     const content = (await Promise.all(
       meta.map((chap) => rrl.chapter.getChapter(chap.id)),
     )).map((res) => res.data);
@@ -80,6 +96,14 @@ app.use(route.get('/', async (ctx, next) => {
   return ctx.render('select');
 }));
 
+/**
+ * Authenticate a user by checking if they are a RRL premium subscriber.
+ * 
+ * Do this by:
+ *    - logging on to RRL with the data provided
+ *    - posting a comment as the user
+ *    - reading comment data, revealing if the account has a premium badge
+ */
 app.use(route.post('/authenticate', async (ctx, next) => {
   const { username, password } = ctx.request.body;
 
@@ -88,19 +112,27 @@ app.use(route.post('/authenticate', async (ctx, next) => {
     return ctx.redirect('/');
   }
 
+  // Create a new instance for every request, since we want to discard the 
+  // internal requester.
   const api = new RoyalRoadAPI();
 
   try {
     await api.user.login(username, password);
     debug('%o logged in to RRL', username);
 
-    await api.chapter.postComment(208170, String(Date.now()));
+    const verification = String(Date.now());
+
+    await api.chapter.postComment(208170, verification);
     debug('posted comment');
   
     const comments = (await api.chapter.getComments(208170, 'last')).data;
     debug('got comments');
 
-    const premium = comments[comments.length - 1].author.premium;
+    // The last comment should be the one we just posted.
+    const premium = comments.filter((cmt) =>
+      cmt.content.includes(verification)
+    )[0].author.premium;
+
     debug('%o: %o', username, premium);
 
     ctx.session.authenticated = premium;
@@ -114,6 +146,7 @@ app.use(route.post('/authenticate', async (ctx, next) => {
     ctx.flash = err.data.message;
   }
 
+  // Redirect whether the user has premium or not.
   ctx.redirect('/');  
 }));
 
