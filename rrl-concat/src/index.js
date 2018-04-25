@@ -92,7 +92,7 @@ app.use(route.get('/', async (ctx, next) => {
 
     const chapters = content.map((e, i) => Object.assign(e, meta[i]));
 
-    return ctx.render('fiction', { chapters });
+    return ctx.render('fiction', { chapters, fiction, size, page });
   }
 
   return ctx.render('select');

@@ -38,6 +38,10 @@ input {
   }
 }
 
+div.next {
+  margin: 1em 0;
+}
+
 .chapter h3 {
   text-align: center;
 }
