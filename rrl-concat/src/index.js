@@ -28,9 +28,15 @@ require('koa-ejs')(app, {
   root: join(__dirname, 'views'),
 });
 
-if (inDev || process.env.DEBUG === 'rrl-concat') {
-  app.use(require('koa-logger')());  
-}
+app.use(async (ctx, next) => {
+  if (inDev) {
+    ctx.session.authenticated = true;
+
+    app.use(require('koa-logger')());
+  }
+
+  await next();
+});
 
 /**
  * Really simple flash middleware for passing status messages down to views.
@@ -97,11 +103,11 @@ app.use(route.get('/', async (ctx, next) => {
 
     // Get all chapters at once, to minimise load times.
     const content = (await Promise.all(
-      meta.map((chap) => rrl.chapter.getChapter(chap.id)),
+      chunk.map((chap) => rrl.chapter.getChapter(chap.id)),
     )).map((res) => res.data);
     debug('got content for %o chapters', content.length);
 
-    const chapters = content.map((e, i) => Object.assign(e, meta[i]));
+    const chapters = content.map((e, i) => Object.assign(e, chunk[i]));
 
     return ctx.render('fiction', { chapters, fiction, size, page });
   }
