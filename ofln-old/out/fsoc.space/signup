@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+  
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/skeleton.css">
+  
+<link rel="stylesheet" href="/css/styles.css">
+  
+<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+    
+    <title>fspace - signup</title>
+
+    <style>
+    </style>
+  </head>
+
+  <body>
+    <div class="container vertical-parent">
+      <div class="row">
+        <form action="/signup" method="post">
+          
+
+          <label for="userInput">Username</label>
+          <input class="u-full-width" type="text" id="userInput" name="username">
+          <label for="passInput">Password</label>
+          <input class="u-full-width" type="password" id="passInput" name="password">
+          <label for="passInput">Repeat Password</label>
+          <input class="u-full-width" type="password" id="passInput" name="second">
+    
+          <input class="button-primary" type="submit" value="Signup">
+          <p>Already have an account? <a href="/login"> Log in.</a>.</p>
+        </form>        
+      </div>
+
+      <div class="footer">
+  <p><small>
+    v0.3.11 running NodeJS version v8.4.0.
+  </small></p>
+</div>
+    </div>
+  </body>
+</html>

@@ -1,5 +1,7 @@
 const { inspect } = require('util');
 
+const active = process.env.LEVEL || 'info';
+
 const write = (level, string) => {
   process.stdout.write(`${level}: ${string}\n`);
 };
@@ -28,6 +30,10 @@ const log = (level, body, ...args) => {
 exports.default = exports.log = log;
 
 const levels = [ 'warn', 'info', 'debug' ];
-for (const level of levels) {
-  exports[level] = (...args) => log(level, ...args);
+for (const index in levels) {
+  const level = levels[index];
+
+  if (levels.indexOf(active) <= index) {
+    exports[level] = (...args) => log(level, ...args);
+  }
 }
