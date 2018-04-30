@@ -15,7 +15,7 @@ const getNodes = (parent, name, max) => {
         if (!name || (name && child.nodeName === name)) {
           debug('found node %o', child.nodeName);
 
-          nodes.push(child);
+          nodes.push(parsify(child));
         }
 
         if (!max || (max && max > nodes.length)) {
@@ -29,6 +29,14 @@ const getNodes = (parent, name, max) => {
 
   return nodes;
 };
-exports.parse = parse;
+
+function parsify(node) {
+  node.getNode = (...args) => getNode(node, ...args);
+  node.getNodes = (...args) => getNodes(node, ...args);
+
+  return node;
+}
+
 exports.getNode = getNode;
 exports.default = exports.getNodes = getNodes;
+exports.parse = (...args) => parsify(parse(...args));
