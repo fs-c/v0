@@ -1,3 +1,4 @@
+const { debug } = require('./log');
 const { parse } = require('parse5');
 
 const getNode = (parent, name) => getNodes(parent, name, 1)[0];
@@ -28,6 +29,6 @@ const getNodes = (parent, name, max) => {
 
   return nodes;
 };
-
+exports.parse = parse;
 exports.getNode = getNode;
 exports.default = exports.getNodes = getNodes;
