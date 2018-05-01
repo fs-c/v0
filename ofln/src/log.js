@@ -34,5 +34,5 @@ for (const index in levels) {
   const level = levels[index];
   const enabled = levels.indexOf(active) >= index;
 
-  exports[level] = (...args) => enabled ? log(level, ...args) : null;
+  exports[level] = enabled ? (...args) => log(level, ...args) : () => {};
 }
