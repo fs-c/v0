@@ -31,6 +31,13 @@ const getNodes = (parent, name, max) => {
 };
 
 function parsify(node) {
+  if (node.attrs) {
+    node.attrs = node.attrs.reduce((acc, cur, i, arr) => {
+      acc[cur.name] = cur.value;
+      return acc;
+    }, {  });
+  }
+
   node.getNode = (...args) => getNode(node, ...args);
   node.getNodes = (...args) => getNodes(node, ...args);
 
