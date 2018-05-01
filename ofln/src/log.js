@@ -1,9 +1,12 @@
 const { inspect } = require('util');
 
-const active = process.env.LOG_LEVEL || 'info';
+const active = {
+  level: process.env.LOG_LEVEL || 'info',
+  modules: process.env.LOG_MODULES || '',
+}
 
 const write = (level, string) => {
-  process.stdout.write(`${level}: ${string}\n`);
+  process.stdout.write(`${level} - ${string}\n`);
 };
 
 const inspectArgs = {
@@ -27,12 +30,18 @@ const log = (level, body, ...args) => {
   write(level, string);
 };
 
-exports.default = exports.log = log;
-
 const levels = [ 'error', 'warn', 'info', 'debug' ];
-for (const index in levels) {
-  const level = levels[index];
-  const enabled = levels.indexOf(active) >= index;
 
-  exports[level] = enabled ? (...args) => log(level, ...args) : () => {};
+module.exports = (sub = false) => {
+  const logger = {};
+
+  for (const level of levels) {
+    const enabled = levels.indexOf(active.level) >= levels.indexOf(level)
+      && sub ? active.modules.split().includes(sub) : true;
+
+    logger[level] = enabled
+      ? (...args) => log(`${level}${sub ? `:${sub}` : ''}`, ...args) : () => {};
+  }
+
+  return logger;
 }
