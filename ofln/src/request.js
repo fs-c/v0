@@ -4,7 +4,8 @@ const { debug } = require('./log');
 
 const get = (url, options) => new Promise((resolve, reject) => {
   const opts = Object.assign({
-    type: false,
+    type: false,    // Reject if content type mismatch.
+    stream: false,  // Resolve with a readable stream.
   }, options);
 
   const requester = url.protocol === 'https:' ? https : http;
@@ -31,6 +32,10 @@ const get = (url, options) => new Promise((resolve, reject) => {
     if (error) {
       res.resume(); // Free up memory.
       reject(error);
+    }
+
+    if (opts.stream) {
+      return resolve(res);
     }
 
     res.setEncoding('utf8');
