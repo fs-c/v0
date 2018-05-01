@@ -1,9 +1,9 @@
+const fs = require('fs');
+const path = require('path');
 const { URL } = require('url');
 const { get } = require('./request');
 const { parse } = require('./parse');
-const { join, resolve, relative } = require('path');
-const { error, warn, debug } = require('./log');
-const { createWriteStream, existsSync, mkdirSync } = require('fs');
+const { error, warn, debug } = require('./log')();
 
 const args = process.argv.splice(2).reduce((acc, cur, i, arr) => {
   cur.includes('-') ? acc[cur] = true
@@ -11,45 +11,60 @@ const args = process.argv.splice(2).reduce((acc, cur, i, arr) => {
   return acc;
 }, {  });
 
-const out = resolve(args['--out']);
+// The absolute path to the output directory.
+const out = path.resolve(args['--out']);
+// A URL object of the page to save.
 const target = new URL(args['--target']);
 
-const execute = async (promises) => {
+/**
+ * Execute all Promises in an array concurrently and return the number of
+ * successes and failures
+ */
+const executeAll = (promises) => new Promise((resolve, reject) => {
+  let errors = [];
   let resolved = 0;
-  let rejected = 0;
 
-  promises.forEach((prms) => prms.then(() => resolved++).catch(rejected++));
+  function cb(err) {
+    if (err) { errors.push(err) } else resolved++;
 
-  return [ resolved, rejected ];
-}
-
-const buildDir = (path) => {
-  const subDirs = path.split('/')
-    .map((el, i, arr) => join(...arr.slice(0, arr.length - i)))
-    .reverse();
-
-  debug(subDirs);
-
-  for (const sub of subDirs) {
-    if (!existsSync(sub)) {
-      mkdirSync(sub);
+    if ((resolved + errors.length) === promises.length) {
+      resolve({ resolved, errors });
     }
   }
+
+  for (const promise of promises) {
+    promise.then(cb).catch(cb);
+  }
+});
+
+/**
+ * Pipe an origin stream into an internally created read stream pointed at
+ * the given absolute path. Missing path segments will be created.
+ */
+const pipeToFile = (origin, destination) => {
+  path.parse(destination).dir.split(path.sep)
+    .map((e, i, a) => path.join(path.sep, ...a.slice(0, a.length - i)))
+    .reverse().forEach((sub) => !fs.existsSync(sub) && fs.mkdirSync(sub));
+
+  origin.pipe(fs.createWriteStream(destination));
 }
 
 const processLink = async (node) => {
   const { attrs } = node;
-  const url = attrs.href ? new URL(attrs.href, target) : undefined;
-  const path = join(out, url.hostname, url.pathname);  
 
-  if (
-    (attrs.rel.includes('icon') || attrs.rel.includes('stylesheet'))
-      && attrs.href
-  ) {
-    buildDir(out, path);
-    (await get(url, { stream: true })).pipe(createWriteStream(path));
+  if (!attrs.href) { return; }
+  
+  const url = new URL(attrs.href, target);
 
-    debug('wrote %o to %o', url.href, path);
+  debug('processing link node %o', url.href);
+
+  if (attrs.rel.includes('icon') || attrs.rel.includes('stylesheet')) {
+    const dest = path.join(out, url.pathname);
+
+    debug('piping from %o to %o',
+      url.hostname + url.pathname, path.relative(__dirname, dest));
+
+    pipeToFile(await get(url, { stream: true }), dest);
   }
 }
 
@@ -61,22 +76,22 @@ const processPage = async (html) => {
   for (const link of document.getNode('head').getNodes('link')) {
     delete link.parentNode;
     delete link.namespaceURI;
-    
-    debug('found link');
 
     links.push(processLink(link));
   }
 
-  const [ succeeded, failed ] = await execute(links);
+  const { resolved, errors } = await executeAll(links);
 
   debug('successfully processed %o links, failed to process %o links',
-    succeeded, failed);
+    resolved, errors.length);
 
-  if (failed) {
-    warn('failed to process %o links', failed);
+  if (errors.length) {
+    warn('failed to process %o links', errors.length);
+
+    errors.forEach(debug);
   }
 };
 
 (async () => {
-  processPage(await get(target));
+  await processPage(await get(target));
 })().catch(error);
