@@ -1,5 +1,5 @@
-const { debug } = require('./log');
 const { parse } = require('parse5');
+const { debug } = require('./log')('parse');
 
 const getNode = (parent, name) => getNodes(parent, name, 1)[0];
 const getNodes = (parent, name, max) => {

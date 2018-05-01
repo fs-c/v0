@@ -1,6 +1,6 @@
 const http = require('http');
 const https = require('https');
-const { debug } = require('./log');
+const { debug } = require('./log')('request');
 
 const get = (url, options) => new Promise((resolve, reject) => {
   const opts = Object.assign({
