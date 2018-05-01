@@ -22,18 +22,18 @@ const target = new URL(args['--target']);
  */
 const executeAll = (promises) => new Promise((resolve, reject) => {
   let errors = [];
-  let resolved = 0;
+  let resolved = [];
 
-  function cb(err) {
-    if (err) { errors.push(err) } else resolved++;
+  function cb(err, data = true) {
+    if (err) { errors.push(err) } else resolved.push(data);
 
-    if ((resolved + errors.length) === promises.length) {
+    if ((resolved.length + errors.length) === promises.length) {
       resolve({ resolved, errors });
     }
   }
 
   for (const promise of promises) {
-    promise.then(cb).catch(cb);
+    promise.then((data) => cb(null, data)).catch(cb);
   }
 });
 
@@ -65,6 +65,8 @@ const processLink = async (node) => {
       url.hostname + url.pathname, path.relative(__dirname, dest));
 
     pipeToFile(await get(url, { stream: true }), dest);
+
+    return { dest, href: attrs.href };      
   }
 }
 
@@ -83,13 +85,24 @@ const processPage = async (html) => {
   const { resolved, errors } = await executeAll(links);
 
   debug('successfully processed %o links, failed to process %o links',
-    resolved, errors.length);
+    resolved.length, errors.length);
 
   if (errors.length) {
     warn('failed to process %o links', errors.length);
 
     errors.forEach(debug);
   }
+
+  for (const link of resolved) {
+    if (link.dest && link.href) {
+      const rel = path.relative(out, link.dest);
+
+      html.replace(link.href, rel);
+      debug('replaced %o with %o', link.href, rel);      
+    }
+  }
+
+  fs.writeFileSync(path.join(out, 'index.html'), html);
 };
 
 (async () => {
