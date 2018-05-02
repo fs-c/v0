@@ -17,8 +17,8 @@ const out = path.resolve(args['--out']);
 const target = new URL(args['--target']);
 
 /**
- * Execute all Promises in an array concurrently and return the number of
- * successes and failures
+ * Execute all Promises in an array concurrently and resolve with the data
+ * and errors.
  */
 const executeAll = (promises) => new Promise((resolve, reject) => {
   let errors = [];
@@ -49,6 +49,9 @@ const pipeToFile = (origin, destination) => {
   origin.pipe(fs.createWriteStream(destination));
 }
 
+/**
+ * Process a link node, saving it to disk if it's a resource we want.
+ */
 const processLink = async (node) => {
   const { attrs } = node;
 
@@ -70,6 +73,9 @@ const processLink = async (node) => {
   }
 }
 
+/**
+ * Process a page and its relevant nodes.
+ */
 const processPage = async (html) => {
   const document = parse(html);
 
