@@ -9,22 +9,22 @@ const write = (level, string) => {
   process.stdout.write(`${level} - ${string}\n`);
 };
 
-const inspectArgs = {
-  depth: null,
-  colors: true,
-  compact: true,
-};
-
 const log = (level, body, ...args) => {
   if (typeof body !== 'string') {
-    return write(level, inspect(body));
+    write(level, inspect(body));
+
+    return (args || []).forEach((e) => write(level, inspect(e)));
   }
 
   let index = -1;
   const string = body.replace(/%o/g, () => {
     index++;
 
-    return inspect(args[index], inspectArgs);
+    return inspect(args[index], {
+      depth: null,
+      colors: true,
+      compact: true,
+    });
   });
 
   write(level, string);
@@ -33,15 +33,14 @@ const log = (level, body, ...args) => {
 const levels = [ 'error', 'warn', 'info', 'debug' ];
 
 module.exports = (sub = false) => {
-  const logger = {};
-
-  for (const level of levels) {
+  const logger = levels.reduce((acc, cur, i, arr) => {
     const enabled = levels.indexOf(active.level) >= levels.indexOf(level)
       && sub ? active.modules.split().includes(sub) : true;
 
-    logger[level] = enabled
-      ? (...args) => log(`${level}${sub ? `:${sub}` : ''}`, ...args) : () => {};
-  }
+    acc[level] = enabled
+      ? (...args) => log(`${level}${sub ? `:${sub}` : ''}`, ...args)
+      : () => {};
+  }, {});
 
   return logger;
 }
