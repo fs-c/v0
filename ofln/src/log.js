@@ -34,12 +34,14 @@ const levels = [ 'error', 'warn', 'info', 'debug' ];
 
 module.exports = (sub = false) => {
   const logger = levels.reduce((acc, cur, i, arr) => {
-    const enabled = levels.indexOf(active.level) >= levels.indexOf(level)
+    const enabled = levels.indexOf(active.level) >= levels.indexOf(cur)
       && sub ? active.modules.split().includes(sub) : true;
 
-    acc[level] = enabled
+    acc[cur] = enabled
       ? (...args) => log(`${level}${sub ? `:${sub}` : ''}`, ...args)
       : () => {};
+    
+    return acc;
   }, {});
 
   return logger;
