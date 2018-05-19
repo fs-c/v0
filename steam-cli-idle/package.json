@@ -1,6 +1,6 @@
 {
-  "name": "steam-idle",
-  "version": "1.0.0",
+  "name": "@sturmwalzer/steam-idle",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
