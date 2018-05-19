@@ -3,10 +3,11 @@ const { homedir } = require('os');
 const { log } = require('@sturmwalzer/logger');
 
 const args = require('minimist')(process.argv.slice(2));
+const alias = args.a || args.account || 'default';
 
 const account = require(
   args.accounts || join(homedir(), '.steam.json')
-)[args.a || args.account || 'default'];
+)[alias];
 
 const games = (
   args.games ? (
