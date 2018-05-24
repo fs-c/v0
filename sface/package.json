@@ -1,0 +1,19 @@
+{
+  "name": "sface",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node src/server.js | pino",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.5.1",
+    "koa-route": "^3.2.0",
+    "pino": "^4.16.1",
+    "steam-totp": "^2.1.0",
+    "steam-user": "^3.27.1"
+  }
+}
