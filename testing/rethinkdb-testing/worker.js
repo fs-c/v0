@@ -18,7 +18,7 @@ const Worker = exports.Worker = class {
   }
 
   async work() {
-    const active = await this.pool.filter({ processed: false }).limit(1);
+    const active = await this.pool.filter({ open: true }).limit(1);
 
     if (!active && this.state !== 'fetching') {
       return await this.fetchIDs(DEFAULT_ID);
@@ -28,24 +28,7 @@ const Worker = exports.Worker = class {
   }
 
   async fetchIDs(base) {
-
+    // Insert a bunch of IDs to the database.
   }
-}
-
-const worker = exports.worker = (r) => {
-  const pool = r.db('steam').table('id_pool');
-
-  setInterval(work, 10 * 1000, pool);
-};
-
-const work = async (pool) => {
-  const active = await pool.filter({ processed: false }).limit(1)
-    || 76561198091491690;
-  
-  if (!active) {
-    return await 
-  }
-
-  console.log(active);
 }
 
