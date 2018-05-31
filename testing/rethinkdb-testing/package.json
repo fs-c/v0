@@ -11,6 +11,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "rethinkdb": "^2.3.3"
+    "rethinkdbdash": "^2.3.31"
   }
 }
