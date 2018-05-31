@@ -1,0 +1,15 @@
+2018-05-31T18:31:08.584781430 0.011251s notice: Recursively removing directory /home/lw/proj/v0/steam-countries/rethinkdb_data/tmp
+2018-05-31T18:31:08.590826208 0.017299s notice: Initializing directory /home/lw/proj/v0/steam-countries/rethinkdb_data
+2018-05-31T18:31:08.590994289 0.017463s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/home/lw/proj/v0/steam-countries/rethinkdb_data' did not already exist or is empty.)
+2018-05-31T18:31:08.591894325 0.018363s notice: Running rethinkdb 2.3.6.srh.1~0bionic (CLANG 6.0.0 (tags/RELEASE_600/final))...
+2018-05-31T18:31:08.595510979 0.021983s notice: Running on Linux 4.15.0-22-generic x86_64
+2018-05-31T18:31:08.595626349 0.022094s notice: Loading data from directory /home/lw/proj/v0/steam-countries/rethinkdb_data
+2018-05-31T18:31:08.657102802 0.083573s info: Automatically using cache size of 2487 MB
+2018-05-31T18:31:08.661734143 0.088202s notice: Listening for intracluster connections on port 29015
+2018-05-31T18:31:08.665535962 0.092004s notice: Listening for client driver connections on port 28015
+2018-05-31T18:31:08.665726853 0.092195s notice: Listening for administrative HTTP connections on port 8080
+2018-05-31T18:31:08.665730250 0.092198s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2018-05-31T18:31:08.665735101 0.092203s notice: Listening on driver addresses: 127.0.0.1, ::1
+2018-05-31T18:31:08.665737806 0.092206s notice: Listening on http addresses: 127.0.0.1, ::1
+2018-05-31T18:31:08.665742098 0.092210s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2018-05-31T18:31:08.665746900 0.092215s notice: Server ready, "x1_40p" 3ee42d97-bf5c-4342-acfe-c09555b36902
