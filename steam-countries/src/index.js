@@ -78,7 +78,7 @@ const tick = async () => {
 
     log.debug(active, 'processing id');
 
-    const country = await getCountry(active.id);
+    const country = (await getCountry(active.id)) || 'zz';
     const exists = (await countries.get(country)) !== null;
 
     let cUpd;
