@@ -21,7 +21,7 @@ const endTick = (msg, obj = {}) => {
     log.info(obj);
 
     lastFinished = true;
-}
+};
 
 const tick = async () => {
     tn++;
@@ -101,7 +101,7 @@ const tick = async () => {
     log.trace(pUpd, 'closed id in pool');
 
     return endTick('updated country', cUpd);
-}
+};
 
 /**
  * Build the given database structure.
@@ -112,30 +112,30 @@ const setup = async (structure) => {
     for (const db of Object.keys(structure)) {
         log.trace('creating %s', db);
 
-        try { await r.dbCreate(db) } catch (err) {
+        try { await r.dbCreate(db); } catch (err) {
             log.trace(err.msg || err.message);            
         }
 
         for (const table of structure[db]) {
-            log.trace('creating %s.%s', db, table)
+            log.trace('creating %s.%s', db, table);
 
-            try { await r.db(db).tableCreate(table) } catch (err) {
+            try { await r.db(db).tableCreate(table); } catch (err) {
                 log.trace(err.msg || err.message);
             }
         }
     }
-}
+};
 
 (async () => {
 
-await setup({
-    steam: [ 'id_pool', 'countries' ],
-});
+    await setup({
+        steam: [ 'id_pool', 'countries' ],
+    });
 
-const interval = process.env.INTERVAL || 60 * 1000;
-tick().catch((err) => log.warn(err));
-setInterval(() => {
+    const interval = process.env.INTERVAL || 60 * 1000;
     tick().catch((err) => log.warn(err));
-}, interval);
+    setInterval(() => {
+        tick().catch((err) => log.warn(err));
+    }, interval);
 
 })().catch((err) => log.fatal(err));
