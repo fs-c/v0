@@ -65,10 +65,10 @@ const processID = async (active) => {
     const countries = r.db('steam').table('countries');    
 
     const country = (await getCountry(active.id)) || 'zz';
-    const exists = (await countries.get(country)) !== null;
+    const entry = await countries.get(country);
 
     let cUpd;
-    if (!exists) {
+    if (entry !== null) {
         log.trace('found country entry, incrementing');
         cUpd = await countries.get(country).update({
             occ: r.row('occ').add(1).default(1),
