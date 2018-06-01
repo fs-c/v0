@@ -1,54 +1,9 @@
 require('dotenv').config();
 
-const got = require('got');
-const cheerio = require('cheerio');
 const r = require('rethinkdbdash')();
-const { URLSearchParams } = require('url');
-const log = require('pino')({
-    base: null,
-    name: 'sct',
-    level: 'trace',
-});
+const log = require('./logger')('index');
 
-const fetchIDs = async (base) => {
-    const path = 'http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?';
-    const params = new URLSearchParams({
-        steamid: base,
-        relationship: 'all',
-        key: process.env.STEAM_API_KEY,
-    });
-
-    log.trace({ from: base }, 'getting friend list')
-
-    const { body } = await got(path + params.toString(), { json: true });
-
-    const friends = body.friendslist.friends;
-
-    log.trace({ friends: friends.length, from: base }, 'got friend list');
-
-    return friends.map((e) => e.steamid);
-}
-
-const fetchCountry = async (id) => {
-    const uri = 'https://steamcommunity.com/profiles/' + id;
-    const { body } = await got(uri);
-    const $ = cheerio.load(body);
-    const flag = $('img.profile_flag');
-
-    log.trace({ id }, 'got profile');
-
-    if (flag && flag.attr('src')) {
-        const code = flag.attr('src').split('/').reverse()[0].split('.')[0];
-
-        log.trace({ code }, 'parsed flag');
-
-        return code;
-    } else {
-        log.trace('no country set');
-
-        return 'zz';
-    }
-};
+const { getFriends, getCountry } = require('./steam');
 
 let tn = 0;
 let lastFinished = true;
@@ -98,7 +53,7 @@ const tick = async () => {
 
         let ids;
         try {
-            ids = (await fetchIDs(base))
+            ids = (await getFriends(base))
                 .map((id) => ({ id, ts: Date.now(), open: true }));
         } catch (err) {
             // Will retry on next tick.
@@ -106,7 +61,7 @@ const tick = async () => {
         }
 
         // The ID is already in the database, leave unchanged.
-        const conflict = (id, od, nd) => {
+        const conflict = (id, od) => {
             log.trace('id insertion conflict');
             return od;
         };
@@ -123,18 +78,18 @@ const tick = async () => {
 
     log.debug(active, 'processing id');
 
-    const country = await fetchCountry(active.id);
+    const country = await getCountry(active.id);
     const exists = (await countries.get(country)) !== null;
 
     let cUpd;
     if (!exists) {
         log.trace('found country entry, incrementing');
-        cUpt = await countries.get(country).update({
+        cUpd = await countries.get(country).update({
             occ: r.row('occ').add(1).default(1),
         });
     } else {
         log.trace('no country entry found, inserting');
-        cUpt = await countries.insert({ id: country, occ: 1 });
+        cUpd = await countries.insert({ id: country, occ: 1 });
     }
 
     // Close the id and update the timestamp.
