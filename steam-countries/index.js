@@ -50,6 +50,12 @@ const fetchCountry = async (id) => {
     }
 };
 
+let tn = 0;
+let lastFinished = true;
+
+/**
+ * End tick, logging a final status and setting it to finished.
+ */
 const endTick = (msg, obj = {}) => {
     if (typeof msg === 'string') {
         obj.msg = msg;
@@ -62,8 +68,6 @@ const endTick = (msg, obj = {}) => {
     lastFinished = true;
 }
 
-let tn = 0;
-let lastFinished = true;
 const tick = async () => {
     tn++;
 
@@ -83,25 +87,25 @@ const tick = async () => {
 
     log.trace('fetched subpool');
 
+    // No open ID found, refill pool.
     if (!active) {
+        // Fetch a random ID to use as base.
         const sample = (await pool.sample(1))[0];
-
-        if (sample) {
-            log.debug({ sample }, 'rebuilding pool with sample');
-        } else {
-            log.debug('pool empty, building with fallback')
-        }
-
+        // If pool is empty use fallback ID.
         const base = sample ? sample.id : process.env.FALLBACK_ID;
+
+        log.debug({ base }, 'rebuilding pool');
 
         let ids;
         try {
             ids = (await fetchIDs(base))
-                .map((id) => ({ id, ts: 0, open: true }));
+                .map((id) => ({ id, ts: Date.now(), open: true }));
         } catch (err) {
+            // Will retry on next tick.
             return endTick('failed fetching ids', err);
         }
 
+        // The ID is already in the database, leave unchanged.
         const conflict = (id, od, nd) => {
             log.trace('id insertion conflict');
             return od;
@@ -120,26 +124,35 @@ const tick = async () => {
     log.debug(active, 'processing id');
 
     const country = await fetchCountry(active.id);
+    const exists = (await countries.get(country)) !== null;
 
-    const ins = await countries.insert({ id: country, occ: 1 }, {
-        conflict: (id, od, nd) => {
-            log.trace('country insertion conflict');
+    let cUpd;
+    if (!exists) {
+        log.trace('found country entry, incrementing');
+        cUpt = await countries.get(country).update({
+            occ: r.row('occ').add(1).default(1),
+        });
+    } else {
+        log.trace('no country entry found, inserting');
+        cUpt = await countries.insert({ id: country, occ: 1 });
+    }
 
-            od.occ++;
-            return od;
-        },
-    });
-
-    const upd = await pool.get(active.id).update({
+    // Close the id and update the timestamp.
+    const pUpd = await pool.get(active.id).update({
         open: false,
         ts: Date.now(),
     });
 
-    log.trace(upd, 'set id to closed');
+    log.trace(pUpd, 'closed id in pool');
 
-    return endTick('updated country', ins);
+    return endTick('updated country', cUpd);
 }
 
+/**
+ * Build the given database structure.
+ * 
+ * Structure example: { db1: [ table1, table2 ], db2: [ table3 ] }
+ */
 const setup = async (structure) => {
     for (const db of Object.keys(structure)) {
         log.trace('creating %s', db);
@@ -165,9 +178,9 @@ await setup({
 });
 
 const interval = process.env.INTERVAL || 60 * 1000;
-tick().then().catch(log.warn);
+tick().catch((err) => log.warn(err));
 setInterval(() => {
-    tick().then().catch((err) => log.warn(err));
+    tick().catch((err) => log.warn(err));
 }, interval);
 
-})().catch(log.fatal);
+})().catch((err) => log.fatal(err));
