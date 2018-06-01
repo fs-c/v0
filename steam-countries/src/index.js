@@ -9,6 +9,15 @@ let tn = 0;
 let lastFinished = true;
 
 /**
+ * - Make tables globals.
+ * - Add some performance measuring.
+ * - Centralise logging.
+ * - Deal with Steam ratelimiting.
+ *      * Appropiately slow down/cancel queries.
+ *      * Implement proxying (aka get some IPs to use).
+ */
+
+/**
  * End tick, logging a final status and setting it to finished.
  */
 const endTick = (msg, obj = {}) => {
@@ -23,6 +32,9 @@ const endTick = (msg, obj = {}) => {
     lastFinished = true;
 };
 
+/**
+ * Fetch fresh IDs and insert them to the pool.
+ */
 const refillPool = async () => {
     const pool = r.db('steam').table('id_pool');
 
@@ -58,6 +70,11 @@ const refillPool = async () => {
     return endTick('inserted new ids', res);
 };
 
+/**
+ * Process a given ID object, fetching the country, and closing it on success.
+ * 
+ * @param {object} active - An id_pool entry.
+ */
 const processID = async (active) => {
     log.debug(active, 'processing id');
 
@@ -89,6 +106,9 @@ const processID = async (active) => {
     return endTick('updated country', cUpd);
 };
 
+/**
+ * To be executed at a set interval, the main work loop.
+ */
 const tick = async () => {
     tn++;    
     
@@ -96,6 +116,7 @@ const tick = async () => {
 
     log.trace({ tick: tn }, 'starting tick');
 
+    // Let the previous tick finish.
     if (!lastFinished) {
         return endTick('last unfinished, skipping');
     }
