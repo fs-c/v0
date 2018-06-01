@@ -130,7 +130,10 @@ const tick = async () => {
         },
     });
 
-    const upd = await pool.get(active.id).update({ open: false });
+    const upd = await pool.get(active.id).update({
+        open: false,
+        ts: Date.now(),
+    });
 
     log.trace(upd, 'set id to closed');
 
