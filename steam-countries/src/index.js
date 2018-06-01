@@ -23,60 +23,46 @@ const endTick = (msg, obj = {}) => {
     lastFinished = true;
 };
 
-const tick = async () => {
-    tn++;
-
-    log.trace({ tick: tn }, 'starting tick');
-
+const refillPool = async () => {
     const pool = r.db('steam').table('id_pool');
-    const countries = r.db('steam').table('countries');
 
-    if (!lastFinished) {
-        return endTick('last unfinished, skipping');
+    // Fetch a random ID to use as base.
+    const sample = (await pool.sample(1))[0];
+    // If pool is empty use fallback ID.
+    const base = sample ? sample.id : process.env.FALLBACK_ID;
+
+    log.debug({ base }, 'rebuilding pool');
+
+    let ids;
+    try {
+        ids = (await getFriends(base))
+            .map((id) => ({ id, ts: Date.now(), open: true }));
+    } catch (err) {
+        // Will retry on next tick.
+        return endTick('failed fetching ids', err);
     }
 
-    lastFinished = false;
+    // The ID is already in the database, leave unchanged.
+    const conflict = (id, od) => {
+        log.trace('id insertion conflict');
+        return od;
+    };
 
-    const subpool = await pool.filter({ open: true }).limit(1);
-    const active = subpool[0];
-
-    log.trace('fetched subpool');
-
-    // No open ID found, refill pool.
-    if (!active) {
-        // Fetch a random ID to use as base.
-        const sample = (await pool.sample(1))[0];
-        // If pool is empty use fallback ID.
-        const base = sample ? sample.id : process.env.FALLBACK_ID;
-
-        log.debug({ base }, 'rebuilding pool');
-
-        let ids;
-        try {
-            ids = (await getFriends(base))
-                .map((id) => ({ id, ts: Date.now(), open: true }));
-        } catch (err) {
-            // Will retry on next tick.
-            return endTick('failed fetching ids', err);
-        }
-
-        // The ID is already in the database, leave unchanged.
-        const conflict = (id, od) => {
-            log.trace('id insertion conflict');
-            return od;
-        };
-
-        let res;
-        try {
-            res = await pool.insert(ids, { conflict });
-        } catch (err) {
-            return endTick('failed inserting ids', err);
-        }
-
-        return endTick('inserted new ids', res);
+    let res;
+    try {
+        res = await pool.insert(ids, { conflict });
+    } catch (err) {
+        return endTick('failed inserting ids', err);
     }
 
+    return endTick('inserted new ids', res);
+};
+
+const processID = async (active) => {
     log.debug(active, 'processing id');
+
+    const pool = r.db('steam').table('id_pool');    
+    const countries = r.db('steam').table('countries');    
 
     const country = (await getCountry(active.id)) || 'zz';
     const exists = (await countries.get(country)) !== null;
@@ -101,6 +87,32 @@ const tick = async () => {
     log.trace(pUpd, 'closed id in pool');
 
     return endTick('updated country', cUpd);
+};
+
+const tick = async () => {
+    tn++;    
+    
+    const pool = r.db('steam').table('id_pool');
+
+    log.trace({ tick: tn }, 'starting tick');
+
+    if (!lastFinished) {
+        return endTick('last unfinished, skipping');
+    }
+
+    lastFinished = false;
+
+    const subpool = await pool.filter({ open: true }).limit(1);
+    const active = subpool[0];
+
+    log.trace('fetched subpool');
+
+    // No open ID found, refill pool.
+    if (!active) {
+        return await refillPool();
+    }
+
+    return await processID(active);
 };
 
 /**
