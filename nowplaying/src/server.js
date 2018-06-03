@@ -6,7 +6,7 @@ const _ = require('koa-route');
 const app = new (require('koa'))();
 const { URLSearchParams } = require('url');
 // TODO: Replace this bloated mess.
-const { post } = require('request-promise-native');
+const { get, post } = require('request-promise-native');
 
 let debug = () => {};
 if (inDev) {
@@ -19,9 +19,14 @@ if (inDev) {
 
 const temp = {};
 
-const client_id = process.env.CLIENT_ID;
-const redirect_uri = process.env.REDIRECT_URI;
-const client_secret = process.env.CLIENT_SECRET;
+const redirectURI = process.env.REDIRECT_URI;
+const client = {
+    id: process.env.CLIENT_ID,
+    secret: process.env.CLIENT_SECRET,
+}
+
+const auth = new Buffer(client.id + ':' + client.secret)
+    .toString('base64');
 
 const generateString = (length) => {
     let text = '';
@@ -33,6 +38,26 @@ const generateString = (length) => {
     }
 
     return text;
+}
+
+const updateToken = async (id, auth, code, redirect, refresh) => {
+    debug('updating token for %o', id);
+
+    const res = await post('https://accounts.spotify.com/api/token', {
+        json: true,
+        headers: {
+            'Authorization': 'Basic ' + auth,
+        },
+        form: {
+            redirect_uri: redirect,
+            [refresh ? 'refresh_token' : 'code']: code,
+            grant_type: refresh ? 'refresh_token' : 'authorization_code',
+        },
+    });
+
+    res.updated = Date.now();
+
+    return temp[id] = res;
 }
 
 app.use(require('@koa/cors')());
@@ -47,10 +72,30 @@ app.use(async (ctx, next) => {
 });
 
 app.use(_.get('/from/:id', async (ctx, id, next) => {
-    const data = temp[id];
+    let data = temp[id];
+
+    if (!data) {
+        ctx.status = 404;
+        return ctx.body = 'ERROR: Invalid id.'
+    }
+
+    if (data.updated + (data.expires_in * 1000) < Date.now()) {
+        data = await updateToken(id, auth, data.refresh_token, null, true);
+    }
+
+    const playback = await get('https://api.spotify.com/v1/me/player', {
+        json: true,
+        headers: {
+            'Authorization': 'Bearer ' + data.access_token,
+        },
+    });
+
+    const item = playback.item;
+    const { album } = item;
+    const artist = item.artists[0];
 
     ctx.type = 'application/json';
-    ctx.body = data;
+    ctx.body = `Listening to ${artist.name} - ${item.name}.`;
 
     return;
 }));
@@ -65,10 +110,10 @@ app.use(_.get('/add', async (ctx, next) => {
         new URLSearchParams({
             scope,
             state,
-            client_id,
-            redirect_uri,
-            client_secret,
             response_type: 'code',
+            redirect_uri: redirectURI,
+            client_id: client.id,
+            client_secret: client.secret,
         }).toString()
     );
 }));
@@ -81,22 +126,7 @@ app.use(_.get('/callback', async (ctx, next) => {
         return ctx.body = 'ERROR: State mismatch.';
     }
 
-    const auth = new Buffer(client_id + ':' + client_secret)
-        .toString('base64');
-
-    const res = await post('https://accounts.spotify.com/api/token', {
-        json: true,
-        headers: {
-            'Authorization': 'Basic ' + auth,
-        },
-        form: {
-            code,
-            redirect_uri,
-            grant_type: 'authorization_code',
-        },
-    });
-
-    temp[state] = res;
+    await updateToken(state, auth, code, redirectURI);
 
     ctx.redirect('/from/' + state);
 }));
