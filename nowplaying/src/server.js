@@ -23,16 +23,17 @@ const redirectURI = process.env.REDIRECT_URI;
 const client = {
     id: process.env.CLIENT_ID,
     secret: process.env.CLIENT_SECRET,
-}
-
-const auth = new Buffer(client.id + ':' + client.secret)
-    .toString('base64');
+    get encoded() {
+        return new Buffer(this.id + ':' + this.secret)
+            .toString('base64');
+    },
+};
 
 const generateString = (length) => {
-    let text = '';
-    let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         + 'abcdefghijklmnopqrstuvwxyz0123456789';
     
+    let text = '';        
     for (let i = 0; i < length; i++) {
         text += alphabet[Math.floor(Math.random() * alphabet.length)];
     }
@@ -43,15 +44,20 @@ const generateString = (length) => {
 const updateToken = async (id, auth, code, redirect, refresh) => {
     debug('updating token for %o', id);
 
+    const form = refresh ? {
+        refresh_token: code,
+        grant_type: 'refresh_token',
+    } : {
+        code,
+        redirect_uri: redirect,
+        grant_type: 'authorization_code',
+    }
+
     const res = await post('https://accounts.spotify.com/api/token', {
+        form,
         json: true,
         headers: {
             'Authorization': 'Basic ' + auth,
-        },
-        form: {
-            redirect_uri: redirect,
-            [refresh ? 'refresh_token' : 'code']: code,
-            grant_type: refresh ? 'refresh_token' : 'authorization_code',
         },
     });
 
@@ -80,7 +86,8 @@ app.use(_.get('/from/:id', async (ctx, id, next) => {
     }
 
     if (data.updated + (data.expires_in * 1000) < Date.now()) {
-        data = await updateToken(id, auth, data.refresh_token, null, true);
+        data = await updateToken(id, client.encoded, data.refresh_token,
+            null, true);
     }
 
     const playback = await get('https://api.spotify.com/v1/me/player', {
@@ -126,7 +133,7 @@ app.use(_.get('/callback', async (ctx, next) => {
         return ctx.body = 'ERROR: State mismatch.';
     }
 
-    await updateToken(state, auth, code, redirectURI);
+    await updateToken(state, client.encoded, code, redirectURI);
 
     ctx.redirect('/from/' + state);
 }));
