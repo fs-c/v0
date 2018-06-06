@@ -1,6 +1,6 @@
 const { getChar, putChar } = require('./io');
 
-const instr = '+ + + + +';
+const instr = ', + + + + + .';
 
 // Position in the instructions.
 let i = 0;
@@ -10,7 +10,12 @@ let ptr = 0;
 // Cells.
 const cls = [];
 
-// TODO: Make this less ugly (lighter use of ternary op, clearer code).
+/**
+ * Searches for either a matching closing or opening brace in the source string,
+ * starting at from. Returns the index or -1 if none was found.
+ * 
+ * TODO: Make this less ugly. (lighter use of tern op, clearer for)
+ */
 const findBrace = (source, from, closing) => {
     const sub = source.slice(...(closing ? [ from ] : [ 0, from ]));
 
@@ -21,6 +26,8 @@ const findBrace = (source, from, closing) => {
         else if (c === closing ? ']' : '[')
             if (--ign < 0) return i + closing ? -1 : 1;
     }
+
+    return -1;
 };
 
 const exec = async (op) => {
@@ -39,13 +46,35 @@ const exec = async (op) => {
             ptr++;
         }
         break;
+    case '+':
+        !isNaN(cls[ptr]) ? cls[ptr]++ : cls[ptr] = 1;
+        break;
+    case '-':
+        !isNaN(cls[ptr]) ? cls[ptr]-- : cls[ptr] = -1;
+        break;
+    case '>':
+        ptr++;
+        break;
+    case '<':
+        ptr -= ptr <= 0 ? 0 : 1;
+        break;
+    case ',':
+        cls[ptr] = (await getChar()).charCodeAt(0);
+        break;
+    case '.':
+        putChar(String.fromCharCode(cls[ptr]));
+        break;
+    default:
+        break;
     }
 };
 
 (async () => {
 
-while (i++ < instr.length) {
-    await exec(instr[i]);
+while (i < instr.length) {
+    await exec(instr[i++]);
+
+    console.log(i, ptr, cls);
 }
 
 })().catch(console.error);
