@@ -10,17 +10,18 @@ let ptr = 0;
 // Cells.
 const cls = [];
 
-const findBrace = (source, from) => {
-    const sub = source.slice(from);
-    
-    let i = 0, ign = 0, c
-    for (; i <= sub.length; c = sub[i++]) {
-        if (c === '[')
+// TODO: Make this less ugly (lighter use of ternary op, clearer code).
+const findBrace = (source, from, closing) => {
+    const sub = source.slice(...(closing ? [ from ] : [ 0, from ]));
+
+    let i = closing ? 0 : source.length - 1, ign = 0, c;
+    for (; closing ? i <= sub.length : i >= 0; c = sub[closing ? i++ : i--]) {
+        if (c === closing ? '[' : ']')
             ign++;
-        else if (c === ']')
-            if (--ign < 0) return i - 1;
+        else if (c === closing ? ']' : '[')
+            if (--ign < 0) return i + closing ? -1 : 1;
     }
-}
+};
 
 const exec = async (op) => {
     switch (op) {
@@ -28,18 +29,18 @@ const exec = async (op) => {
         if (cls[ptr]) {
             ptr++;
         } else {
-
+            i = findBrace(instr, i, true);
         }
         break;
     case ']':
         if (cls[ptr]) {
-            
+            i = findBrace(instr, i, false);
         } else {
             ptr++;
         }
         break;
     }
-}
+};
 
 (async () => {
 
