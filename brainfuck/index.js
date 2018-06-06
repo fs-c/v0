@@ -1,76 +1,50 @@
-const { stdin, stdout } = require('process');
+const { getChar, putChar } = require('./io');
 
-stdin.setEncoding('utf8');
-stdout.setEncoding('utf8');
+const instr = '+ + + + +';
 
-const putChar = (c, e = 'utf8') => stdout.write(c.toString().trim() + '\n', e);
-
-let instack = [];
-const getChar = () => new Promise((resolve) => {
-    if (instack.length > 0) {
-        resolve(instack.pop());
-    }
-
-    stdin.once('data', (chunk) => {
-        instack.push(...chunk.trim().split(''));
-    
-        resolve(instack.pop());
-    });
-});
-
-let brainfuck = ', + .';
-
+// Position in the instructions.
 let i = 0;
+
+// "Pointer" to current active cell.
 let ptr = 0;
-let skipign = 0;
-let skip = false;
+// Cells.
+const cls = [];
 
-const loops = [];
-const register = [];
+const findBrace = (source, from) => {
+    const sub = source.slice(from);
+    
+    let i = 0, ign = 0, c
+    for (; i <= sub.length; c = sub[i++]) {
+        if (c === '[')
+            ign++;
+        else if (c === ']')
+            if (--ign < 0) return i - 1;
+    }
+}
 
-const perform = async (op) => {
+const exec = async (op) => {
     switch (op) {
-    case '>':
-        !skip ? ptr++ : 0;
-        break;
-    case '<':
-        !skip ? ptr -= ptr <= 0 ? 0 : 1 : 0;
-        break;
-    case '+':
-        !skip ? register[ptr] = register[ptr] ? register[ptr] + 1 : 1 : 0;
-        break;
-    case '-':
-        !skip ? register[ptr] -= register[ptr] <= 0 ? 0 : 1 : 0;
-        break;
-    case ',':
-        !skip ? register[ptr] = (await getChar()).charCodeAt(0) : 0;
-        break;
-    case '.':
-        !skip ? putChar(String.fromCharCode(register[ptr])) : 0;
-        break;
     case '[':
-        skip ? skipign++ : ptr ? loops.push({ i, ptr }) : skip = true;
+        if (cls[ptr]) {
+            ptr++;
+        } else {
+
+        }
         break;
     case ']':
-        if (skip && --skipign <= 0) {
-            skip = false, skipign = 0;
+        if (cls[ptr]) {
+            
         } else {
-            i = loops.pop().i;
+            ptr++;
         }
-
-        break;
-    default:
-        // ???
         break;
     }
 }
 
 (async () => {
 
-while (i <= brainfuck.length) {
-    await perform(brainfuck[i++]);
+while (i++ < instr.length) {
+    await exec(instr[i]);
 }
-
-console.log(register);
 
 })().catch(console.error);
