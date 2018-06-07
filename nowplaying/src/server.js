@@ -66,6 +66,11 @@ const updateToken = async (id, auth, code, redirect, refresh) => {
     return temp[id] = res;
 }
 
+require('koa-ejs')(app, {
+    viewExt: 'ejs',
+    root: require('path').join(__dirname, 'views'),
+});
+
 app.use(require('@koa/cors')());
 app.use(require('koa-static')('public', { maxage: inDev ? 0 : 60 * 1000 }));
 
