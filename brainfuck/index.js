@@ -11,43 +11,45 @@ let ptr = 0;
 const cls = [];
 
 /**
- * Searches for either a matching closing or opening brace in the source string,
- * starting at from. Returns the index or -1 if none was found.
- * 
- * TODO: Make this less ugly. (lighter use of tern op, clearer for)
+ * Find the index of the closing sequence for a matching opening sequence in a
+ * source.
  */
-const findBrace = (source, from, closing) => {
-    const sub = source.slice(...(closing ? [ from ] : [ 0, from ]));
+const find = (source, opening, closing, backwards = false) => {
+    let igc = 0;
 
-    let i = closing ? 0 : sub.length - 1, ign = 0, c;
-    for (; closing ? i <= sub.length : i >= 0; c = sub[closing ? i++ : i--]) {
-        if (c === closing ? '[' : ']')
-            ign++;
-        else if (c === closing ? ']' : '[')
-            if (--ign < 0) return i + closing ? -1 : 1;
+    source = backwards ? source.split('').reverse().join('') : source;
+
+    for (let i = 0; i < source.length; i++) {
+        const c = source[i];
+
+        if (c === opening) {
+            igc++;
+        } else if (c === closing) {
+            if (--igc <= 0) {
+                return backwards ? (source.length - 1) - i : i;
+            }
+        }
     }
 
     return -1;
-};
+}
 
 const exec = async (op) => {
-    console.log(`exc: '${op}' - ${i} - ${cls} - ${ptr}`);
+    console.log(i, op, ptr, cls);
 
     switch (op) {
     case '[':
         if (cls[ptr]) {
-            ptr++;
+            // ptr++; TODO: Is this supposed to advance the pointer?
         } else {
-            const ind = findBrace(instr, i, true);
-            console.log('closing', ind);
+            const ind = find(instr.slice(i), '[', ']', false);
             i = ind;
             return;
         }
         break;
     case ']':
         if (cls[ptr]) {
-            const ind = findBrace(instr, i, false);
-            console.log('opening: ', ind);
+            const ind = find(instr.slice(0, i + 1), ']', '[', true);
             i = ind;
             return;
         } else {
