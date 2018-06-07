@@ -1,6 +1,6 @@
 const { getChar, putChar } = require('./io');
 
-const instr = ', + + + + + .';
+const instr = ', [ ->+< ] .';
 
 // Position in the instructions.
 let i = 0;
@@ -19,7 +19,7 @@ const cls = [];
 const findBrace = (source, from, closing) => {
     const sub = source.slice(...(closing ? [ from ] : [ 0, from ]));
 
-    let i = closing ? 0 : source.length - 1, ign = 0, c;
+    let i = closing ? 0 : sub.length - 1, ign = 0, c;
     for (; closing ? i <= sub.length : i >= 0; c = sub[closing ? i++ : i--]) {
         if (c === closing ? '[' : ']')
             ign++;
@@ -31,17 +31,25 @@ const findBrace = (source, from, closing) => {
 };
 
 const exec = async (op) => {
+    console.log(`exc: '${op}' - ${i} - ${cls} - ${ptr}`);
+
     switch (op) {
     case '[':
         if (cls[ptr]) {
             ptr++;
         } else {
-            i = findBrace(instr, i, true);
+            const ind = findBrace(instr, i, true);
+            console.log('closing', ind);
+            i = ind;
+            return;
         }
         break;
     case ']':
         if (cls[ptr]) {
-            i = findBrace(instr, i, false);
+            const ind = findBrace(instr, i, false);
+            console.log('opening: ', ind);
+            i = ind;
+            return;
         } else {
             ptr++;
         }
@@ -67,14 +75,14 @@ const exec = async (op) => {
     default:
         break;
     }
+
+    i++;
 };
 
 (async () => {
 
 while (i < instr.length) {
-    await exec(instr[i++]);
-
-    console.log(i, ptr, cls);
+    await exec(instr[i]);
 }
 
 })().catch(console.error);
