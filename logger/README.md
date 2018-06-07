@@ -1,9 +1,12 @@
-### logger
+## @sturmwalzer/logger
 
-Super simple ultra-slim logger for small personal projects.
+Super simple ultra-slim logger for small personal projects with zero dependencies, and less than 50 LOC.
 
-No external dependencies, and less than 50 LOC.
+```
+npm i -s @sturmwalzer/logger
+```
 
+### API
 ```
 const { log } = require('@sturmwalzer/logger');
 

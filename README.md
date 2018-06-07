@@ -1,5 +1,5 @@
 # v0
 
-A collection of projects that I don't deem worthy to have their own repository, and a bunch of other random stuff.
+A collection of miscellaneous projects.
 
-This is like [v1](https://github.com/LW2904/v1), except that's only for projects that I feel like are completed. Which is pretty rare, since there's always something to do.
+Most of the stuff in here is __unfinished__ and will be moved into its own respective repository once it has matured somewhat. This repo is used to test and try out things, and used as a space to keep little one-off projects in.
