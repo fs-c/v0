@@ -39,19 +39,13 @@ const exec = async (op) => {
 
     switch (op) {
     case '[':
-        if (cls[ptr]) {
-            // ptr++; TODO: Is this supposed to advance the pointer?
-        } else {
-            const ind = find(instr.slice(i), '[', ']', false);
-            i = ind;
-            return;
+        if (!cls[ptr]) {
+            return i = find(instr.slice(i), '[', ']', false);
         }
         break;
     case ']':
         if (cls[ptr]) {
-            const ind = find(instr.slice(0, i + 1), ']', '[', true);
-            i = ind;
-            return;
+            return i = find(instr.slice(0, i + 1), ']', '[', true);
         } else {
             ptr++;
         }
