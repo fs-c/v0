@@ -1,7 +1,5 @@
 const { getChar, putChar } = require('./io');
 
-const instr = ', [ ->+< ] .';
-
 // Position in the instructions.
 let i = 0;
 
@@ -75,10 +73,22 @@ const exec = async (op) => {
     i++;
 };
 
-(async () => {
+const bf = exports.bf = exports.default = (instr) => {
+    let i = 0;
 
-while (i < instr.length) {
-    await exec(instr[i]);
-}
+    if (typeof instr === 'string') {        
+        brainfuck(instr);
+    } else if (typeof instr === 'object' && typeof instr.on === 'function') {
+        instr.on('data', (chunk) => {
+            brainfuck(chunk.trim());
+        });
+    }
 
-})().catch(console.error);
+    const brainfuck = (instr) => {
+        let i = 0;
+
+        while (i < instr.length) {
+            exec(instr[i]).catch(console.error);
+        }
+    }
+};
