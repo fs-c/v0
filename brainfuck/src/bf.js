@@ -30,7 +30,7 @@ const find = (source, opening, closing, backwards = false) => {
     }
 
     return -1;
-}
+};
 
 const exec = async (op) => {
     console.log(i, op, ptr, cls);
@@ -73,9 +73,7 @@ const exec = async (op) => {
     i++;
 };
 
-const bf = exports.bf = exports.default = (instr) => {
-    let i = 0;
-
+const bf = exports.bf = (instr) => {
     if (typeof instr === 'string') {        
         brainfuck(instr);
     } else if (typeof instr === 'object' && typeof instr.on === 'function') {
@@ -85,7 +83,7 @@ const bf = exports.bf = exports.default = (instr) => {
     }
 
     const brainfuck = (instr) => {
-        let i = 0;
+        i = 0;
 
         while (i < instr.length) {
             exec(instr[i]).catch(console.error);
