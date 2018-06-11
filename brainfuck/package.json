@@ -1,8 +1,8 @@
 {
-  "name": "brainfuck",
-  "version": "0.1.0",
+  "name": "@sturmwalzer/brainfuck",
+  "version": "0.1.1",
   "description": "A [brainfuck](http://www.muppetlabs.com/~breadbox/bf/) interpreter written in JS. Ironic, really.",
-  "main": "./src/bf.js",
+  "main": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
