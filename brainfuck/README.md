@@ -15,8 +15,8 @@ Implementation-defined details:
 ```javascript
 const { bf } = require('@sturmwalzer/brainfuck');
 
-// Move value of current cell (which is read from stdin) to the next cell.
-bf(', [ -> + < ] .');
+// Move value of cell zero (which is read from stdin) to the next cell.
+bf(', [ - >+< ] .');
 ```
 
 ```
