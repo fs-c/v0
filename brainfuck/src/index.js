@@ -1,1 +1,1 @@
-exports.bf = exports.default = require('./bf').bf;
+exports.bf = exports.default = require('./bf');
