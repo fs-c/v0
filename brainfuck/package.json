@@ -1,12 +1,12 @@
 {
   "name": "@sturmwalzer/brainfuck",
-  "version": "0.1.1",
-  "description": "A [brainfuck](http://www.muppetlabs.com/~breadbox/bf/) interpreter written in JS. Ironic, really.",
+  "version": "0.2.0",
+  "description": "A brainfuck interpreter written in JS. Ironic, really.",
   "main": "./src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./tests.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [ "brainfuck", "interpreter" ],
+  "author": "sturmwalzer",
   "license": "ISC"
 }
