@@ -16,9 +16,15 @@ Implementation-defined details:
 const { bf } = require('@sturmwalzer/brainfuck');
 
 // Move value of cell zero (which is read from stdin) to the next cell.
-bf(', [ - >+< ] .');
+bf(', [ -> +< ] .');
 ```
 
+Optionally a function can be passed as the second argument to act as a callback, which will receive the following object as its only argument:
+
 ```typescript
-function bf(instr: string | NodeJS.ReadableStream): void;
+{
+    index: number,
+    cells: number[],
+    pointer: number,
+}
 ```
