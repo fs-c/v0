@@ -1,10 +1,5 @@
 const { getChar, putChar } = require('./io');
 
-// "Pointer" to current active cell.
-let ptr = 0;
-// Cells.
-const cls = [];
-
 /**
  * Find the index of the closing sequence for a matching opening sequence in a
  * source.
@@ -29,20 +24,24 @@ const find = (source, opening, closing, backwards = false) => {
     return -1;
 };
 
-const exec = async (instr, i) => {
+const exec = async (instr, i, ptr, cls) => {
     const op = instr[i];
 
     switch (op) {
     case '[':
         if (!cls[ptr]) {
             // Jump forwards to the matching closing bracket.
-            return i = find(instr.slice(i), '[', ']', false);
+            const closing = find(instr.slice(i), '[', ']', false);
+
+            return { i: closing, ptr, cls };
         } // Don't increment pointer if the check fails, this is disputed.
         break;
     case ']':
         if (cls[ptr]) {
             // Jump backwards to the matching opening bracked.
-            return i = find(instr.slice(0, i + 1), ']', '[', true);
+            const opening = find(instr.slice(0, i + 1), ']', '[', true);
+
+            return { i: opening, ptr, cls };
         } else {
             ptr++;
         }
@@ -74,15 +73,20 @@ const exec = async (instr, i) => {
         break;
     }
 
-    return ++i;
+    return { i: ++i, ptr, cls };
 };
 
 const bf = module.exports = (instr) => {
     const brainfuck = async (instr) => {
+        // Current index in the instructions.
         let i = 0;
+        // "Pointer" to (index of) the active cell.
+        let ptr = 0;
+        // Array of cells.
+        const cls = [];
 
-        while ((i = await exec(instr, i)) < instr.length)
-            ;
+        while (({ i, ptr, cells } = await exec(instr, i, ptr, cls)).i
+            < instr.length);
     };
 
     if (typeof instr === 'string') {        
