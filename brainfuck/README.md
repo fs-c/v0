@@ -1,8 +1,8 @@
 ## brainfuck
 
-A [brainfuck](http://www.muppetlabs.com/~breadbox/bf/) interpreter written in JS. Ironic, really.
+A [brainfuck](http://www.muppetlabs.com/~breadbox/bf/) interpreter written in JS. Ironic, really. At least it doesn't depend on anything.
 
-Following the inofficial [Portable Brainfuck](http://www.muppetlabs.com/~breadbox/bf/standards.html) implementation standard as authored by Brian Reiter.
+Following the inofficial [Portable Brainfuck](http://www.muppetlabs.com/~breadbox/bf/standards.html) implementation standard as written by Brian Reiter.
 
 Implementation-defined details:
 - All cells hold 64 bit floating point integers (largest: 2^53 - 1) which may be negative.
@@ -19,6 +19,6 @@ const { bf } = require('@sturmwalzer/brainfuck');
 bf(', [ - >+< ] .');
 ```
 
-```
-bf(instr: string): void;
+```typescript
+function bf(instr: string | NodeJS.ReadableStream): void;
 ```
