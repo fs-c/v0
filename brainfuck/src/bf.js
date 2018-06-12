@@ -38,7 +38,7 @@ const exec = async (instr, i, ptr, cls) => {
         break;
     case ']':
         if (cls[ptr]) {
-            // Jump backwards to the matching opening bracked.
+            // Jump backwards to the matching opening bracket.
             const opening = find(instr.slice(0, i + 1), ']', '[', true);
 
             return { i: opening, ptr, cls };
@@ -47,7 +47,8 @@ const exec = async (instr, i, ptr, cls) => {
         }
         break;
     case '+':
-        // Cells are initialized to `undefined`, set to one if unitialized.
+        // Cells are initialized to `undefined`, start at one if it's not been
+        // touched before.
         !isNaN(cls[ptr]) ? cls[ptr]++ : cls[ptr] = 1;
         break;
     case '-':
@@ -76,27 +77,29 @@ const exec = async (instr, i, ptr, cls) => {
     return { i: ++i, ptr, cls };
 };
 
-const bf = module.exports = (instr) => {
+const bf = module.exports = (instr, cb = () => {}) => {
     const brainfuck = async (instr) => {
         // Current index in the instructions.
         let i = 0;
-        // "Pointer" to (index of) the active cell.
+        // "Pointer" to (aka index of) the active cell.
         let ptr = 0;
         // Array of cells.
         const cls = [];
 
         while (({ i, ptr, cells } = await exec(instr, i, ptr, cls)).i
             < instr.length);
+        
+        cb({ index: i, pointer: ptr, cells: cls });
     };
 
     if (typeof instr === 'string') {        
         brainfuck(instr);
     } else if (typeof instr === 'object' && typeof instr.on === 'function') {
-        let instrstack = '';
+        let stack = '';
         
-        instr.on('data', (chunk) => instrstack += chunk);
+        instr.on('data', (chunk) => stack += chunk);
         instr.on('end', () => {
-            brainfuck(instrstack);
+            brainfuck(stack);
         });
     }
 };
