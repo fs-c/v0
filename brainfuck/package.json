@@ -1,0 +1,12 @@
+{
+  "name": "@sturmwalzer/brainfuck",
+  "version": "0.2.0",
+  "description": "A brainfuck interpreter written in JS. Ironic, really.",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "node ./tests.js"
+  },
+  "keywords": [ "brainfuck", "interpreter" ],
+  "author": "sturmwalzer",
+  "license": "ISC"
+}
