@@ -1,8 +1,5 @@
 const { getChar, putChar } = require('./io');
 
-// Position in the instructions.
-let i = 0;
-
 // "Pointer" to current active cell.
 let ptr = 0;
 // Cells.
@@ -35,60 +32,67 @@ const find = (source, opening, closing, backwards = false) => {
 const exec = async (instr, i) => {
     const op = instr[i];
 
-    console.log(i, op, ptr, cls);
-
     switch (op) {
     case '[':
         if (!cls[ptr]) {
+            // Jump forwards to the matching closing bracket.
             return i = find(instr.slice(i), '[', ']', false);
-        }
+        } // Don't increment pointer if the check fails, this is disputed.
         break;
     case ']':
         if (cls[ptr]) {
+            // Jump backwards to the matching opening bracked.
             return i = find(instr.slice(0, i + 1), ']', '[', true);
         } else {
             ptr++;
         }
         break;
     case '+':
+        // Cells are initialized to `undefined`, set to one if unitialized.
         !isNaN(cls[ptr]) ? cls[ptr]++ : cls[ptr] = 1;
         break;
     case '-':
+        // See above.
         !isNaN(cls[ptr]) ? cls[ptr]-- : cls[ptr] = -1;
         break;
     case '>':
         ptr++;
         break;
     case '<':
+        // Don't decrement beyond zero.
         ptr -= ptr <= 0 ? 0 : 1;
         break;
     case ',':
+        // Block until a char is retrieved from stdin.
         cls[ptr] = (await getChar()).charCodeAt(0);
         break;
     case '.':
+        // Output the corresponding character, not the number.
         putChar(String.fromCharCode(cls[ptr]));
         break;
     default:
         break;
     }
 
-    i++;
+    return ++i;
 };
 
-const bf = exports.bf = (instr) => {
+const bf = module.exports = (instr) => {
     const brainfuck = async (instr) => {
-        i = 0;
+        let i = 0;
 
-        while (i < instr.length) {
-            await exec(instr, i++).catch(console.error);
-        }
+        while ((i = await exec(instr, i)) < instr.length)
+            ;
     };
 
     if (typeof instr === 'string') {        
         brainfuck(instr);
     } else if (typeof instr === 'object' && typeof instr.on === 'function') {
-        instr.on('data', (chunk) => {
-            brainfuck(chunk.trim());
+        let instrstack = '';
+        
+        instr.on('data', (chunk) => instrstack += chunk);
+        instr.on('end', () => {
+            brainfuck(instrstack);
         });
     }
 };
