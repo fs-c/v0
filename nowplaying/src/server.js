@@ -39,7 +39,7 @@ const generateString = (length) => {
     }
 
     return text;
-}
+};
 
 const updateToken = async (id, auth, code, redirect, refresh) => {
     debug('updating token for %o', id);
@@ -64,7 +64,7 @@ const updateToken = async (id, auth, code, redirect, refresh) => {
     res.updated = Date.now();
 
     return temp[id] = res;
-}
+};
 
 require('koa-ejs')(app, {
     viewExt: 'ejs',
@@ -102,14 +102,7 @@ app.use(_.get('/from/:id', async (ctx, id, next) => {
         },
     });
 
-    const item = playback.item;
-    const { album } = item;
-    const artist = item.artists[0];
-
-    ctx.type = 'application/json';
-    ctx.body = `Listening to ${artist.name} - ${item.name}.`;
-
-    return;
+    ctx.render('listening', { playback });
 }));
 
 app.use(_.get('/add', async (ctx, next) => {
