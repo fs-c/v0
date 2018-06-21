@@ -48,22 +48,21 @@ const play = (points) => {
         if (!point.type)
             continue;
 
-        point.time = point.time - 5;
-        
         const key = keyMap[point.column];
     
         setTimeout(() => {
             robot.keyToggle(key, 'down');
     
             console.log('%d/%d - down %s', Date.now(), point.time, key);
-        }, point.time * multi);
-    
-        const end = point.end || point.time + 3;    
+        }, point.time);
+
+        const end = point.end || point.time + 5;
+
         setTimeout(() => {
             robot.keyToggle(key, 'up');
     
             console.log('%d/%d - up %s', Date.now(), end, key);
-        }, end * multi);
+        }, end);
     }
 }
 
