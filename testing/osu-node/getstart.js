@@ -2,15 +2,23 @@ const chalk = require('chalk');
 const robot = require('robotjs');
 const iohook = require('iohook');
 
-const point = { x: 200, y: 950 };
+const points = [
+    { x: 200, y: 950, cur: 0, las: 0, },
+    { x: 230, y: 950, cur: 0, las: 0, },
+    { x: 260, y: 950, cur: 0, las: 0, },
+    { x: 290, y: 950, cur: 0, las: 0, },
+]
 
-let last;
+let i = 0;
 setInterval(() => {
-    const px = robot.getPixelColor(point.x, point.y);
+    console.time(i);
+    for (let i = 0; i < points.length; i++) {
+        const hx = robot.getPixelColor(points[i].x, points[i].y);
 
-    if (px !== last) {
-        console.log(`new: ${chalk.hex('#' + px).bold('#######')} (${px})`);
+        const dif = hx - points[i].las;
+        if (dif) console.log(points[i].x, hx, di);
+
+        points[i].las = hx;
     }
-
-    last = px;
+    console.timeEnd(i++ - 1);    
 }, 1);
