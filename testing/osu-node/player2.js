@@ -22,19 +22,7 @@ const keyMap = {
 
 const tryParse = (num) => !isNaN(num) ? parseInt(num, 10) : num;
 
-// const songsPath = (args.songs || '~/osufolder/Songs/')
-//     .replace('~', require('os').homedir());
-// const songs = readdirSync(songsPath);
-
-// const songPath = join(songsPath, songs[rls.keyInSelect(songs)]);
-// const beatmaps = readdirSync(songPath)
-//     .filter((e) => e.slice(e.length - 4) === '.osu');
-
-// const mapPath = join(songPath, beatmaps[rls.keyInSelect(beatmaps)]);
-
-const mapPath = args.m;
-
-const rawmap = readFileSync(mapPath, 'utf8').split('\r\n');
+const rawmap = readFileSync(args.m, 'utf8').split('\r\n');
 
 const hitpoints = rawmap.slice(rawmap.indexOf('[HitObjects]') + 1)
     .map((e) => {
