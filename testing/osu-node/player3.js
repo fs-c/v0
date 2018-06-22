@@ -19,6 +19,4 @@ if (!beatmaps.length) {
     return 0;
 }
 
-const beatmap = parseMap(readFileSync(beatmaps[0], 'utf8'));
-
-console.log(beatmap);
+const hitpoints = parseMap(readFileSync(beatmaps[0], 'utf8'));
