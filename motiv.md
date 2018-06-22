@@ -18,7 +18,7 @@ Inspiration und technisches Know-How finde ich im CoderDojo Linz, welches ich se
 
 Über das CoderDojo Linz steht mir ein Microsoft Azure Server zur Verfügung, auf dem einige meiner Projekte gehostet werden. Durch die Arbeit mit dieser Plattform wurde meine Faszination für Linux geweckt, welches mittlerweile auf meinem Notebook zum Einsatz kommt. Das Dojo. aber vielmehr auch die intensive Beschäftigung mit Linux begründeten meine große Wertschätzung der Open-Source Community, insbesondere der Free Software Foundation (FSF).
 
-Ich sehe die Headstart-Initiaitive als Chance, meine bisherigen, autodidakt erworbenen Kenntnisse im strukturierten Rahmen der Universität auszubauen und ein Fundament für das spätere Studium der Informatik zu schaffen.
+Ich sehe die Headstart-Initiaitive als Chance, meine bisherigen, autodidaktisch erworbenen Kenntnisse im Rahmen der Universität zu vertiefen und ein Fundament für das spätere Studium der Informatik zu schaffen.
 
 ---
 
