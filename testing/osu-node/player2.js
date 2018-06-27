@@ -22,10 +22,15 @@ const keyMap = {
 
 const tryParse = (num) => !isNaN(num) ? parseInt(num, 10) : num;
 
-const rawmap = readFileSync(args.m, 'utf8').split('\r\n');
+const path = (require('path')).resolve(args.m);
 
+console.log(path);
+
+const rawmap = readFileSync(path, 'utf8').split('\r\n');
+
+let first = 0;
 const hitpoints = rawmap.slice(rawmap.indexOf('[HitObjects]') + 1)
-    .map((e) => {
+    .map((e, i) => {
         const a = e.split(',').map(tryParse);
         const extra = typeof a[5] === 'string' ?
             a[5].split(':').map(tryParse) : [];
@@ -34,7 +39,12 @@ const hitpoints = rawmap.slice(rawmap.indexOf('[HitObjects]') + 1)
             'circle' : (a[3] & typeBMP.hold) ? 'hold' : 0;
         const column = Math.floor(a[0] / width);
 
-        return { type, column, time: a[2], end: extra[0] };
+        if (i === 0 && args.s)
+            first = a[2];
+
+        const offset = first + args.o;
+
+        return { type, column, time: a[2] - offset, end: extra[0] - offset };
     });
 
 const play = (points) => {
@@ -62,6 +72,9 @@ const play = (points) => {
         }, end);
     }
 };
+
+if (args.i)
+    return play(hitpoints);
 
 const hook = require('iohook');
 
