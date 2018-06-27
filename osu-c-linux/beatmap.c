@@ -2,19 +2,12 @@
 
 #include "osu.h";
 
-struct hitpoint {
-	int type;
-	int stime;
-	int etime;
-	int column;
-};
-
 int parse_hitpoints(char *path, hitpoint **points)
 {
 	FILE *stream;
 
 	int pread;
-	ssize_t nread;
+	size_t nread;
 	size_t len = 0;
 	char *line = 0;
 
