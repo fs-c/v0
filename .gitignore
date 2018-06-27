@@ -97,3 +97,5 @@ pr0/data/
 pr0gramm-scraper/data
 
 rethinkdb_data/
+
+*.out
