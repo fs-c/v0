@@ -1,3 +1,4 @@
+#include <time.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -19,17 +20,10 @@ struct hitpoint {
 
 typedef struct hitpoint hitpoint;
 
-static short get_maptime(pid_t pid);
+static int32_t get_maptime(pid_t pid);
 
 int parse_hitpoint(char *line, hitpoint *point);
 int parse_hitpoints(char *path, hitpoint **points);
-
-ssize_t process_vm_readv(pid_t pid,
-                         const struct iovec *local_iov,
-                         unsigned long liovcnt,
-                         const struct iovec *remote_iov,
-                         unsigned long riovcnt,
-                         unsigned long flags);
 
 int opterr;
 char *optarg = 0;
@@ -66,11 +60,15 @@ int main(int argc, char **argv)
 		printf("pid %d does not exist\n", pid);
 		return EXIT_FAILURE;
 	}
+
+	while (1) {
+		
+	}
 }
 
-static inline short get_maptime(pid_t pid)
+static inline int32_t get_maptime(pid_t pid)
 {
-	short buf[1];
+	int32_t buf[1];
 	ssize_t nread;
 	struct iovec local[1];
 	struct iovec remote[1];
