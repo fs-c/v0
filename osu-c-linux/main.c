@@ -2,9 +2,13 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
+#include <sys/uio.h>
 
 #define NUM_KEYS 4
 #define COL_WIDTH (512 / NUM_KEYS)
+
+#define MAPTIME_ADDR 0x36e59ec
 
 struct hitpoint {
 	int type;
@@ -15,8 +19,17 @@ struct hitpoint {
 
 typedef struct hitpoint hitpoint;
 
+short get_maptime(pid_t pid);
+
 int parse_hitpoint(char *line, hitpoint *point);
 int parse_hitpoints(char *path, hitpoint **points);
+
+ssize_t process_vm_readv(pid_t pid,
+                         const struct iovec *local_iov,
+                         unsigned long liovcnt,
+                         const struct iovec *remote_iov,
+                         unsigned long riovcnt,
+                         unsigned long flags);
 
 int opterr;
 char *optarg = 0;
@@ -28,26 +41,51 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
+	pid_t pid;
 	char *map, c;
 
-	while ((c = getopt(argc, argv, "m:")) != -1) {
+	while ((c = getopt(argc, argv, "m:p:")) != -1) {
 		switch (c) {
-		case 'm':
-			map = optarg;
+		case 'm': map = optarg;
+			break;
+		case 'p': pid = strtol(optarg, NULL, 10);
 			break;
 		}
 	}
 
+	int read;
 	hitpoint *points;
 
-	int read = parse_hitpoints(map, &points);
-
-	printf("%d hitpoints read\n", read);
-
-	for (int i = 0; i < read; i++) {
-		hitpoint p = points[i];
-		printf("stime: %d, etime: %d, type: %d, col: %d\n", p.stime, p.etime, p.type, p.column);
+	if ((read = parse_hitpoints(map, &points)) < 0) {
+		printf("something went wrong while parsing hitpoints from %s",
+			map);
+		return EXIT_FAILURE;
 	}
+
+	if (kill(pid, 0) < 0) {
+		printf("pid %d does not exist", pid);
+		return EXIT_FAILURE;
+	}
+
+	
+}
+
+static inline short get_maptime(pid_t pid)
+{
+	short buf[1];
+	ssize_t nread;
+	struct iovec local[1];
+	struct iovec remote[1];
+
+	local[0].iov_base = buf;
+	local[0].iov_len = sizeof(short);
+
+	remote[0].iov_base = (void *)MAPTIME_ADDR;
+	remote[0].iov_len = sizeof(short);
+
+	nread = process_vm_readv(pid, local, 1, remote, 1, 0);
+	
+	return *buf;
 }
 
 int parse_hitpoint(char *line, hitpoint *point)
@@ -73,6 +111,9 @@ int parse_hitpoint(char *line, hitpoint *point)
 
 		i++;
 	}
+
+	free(ln);
+	// TODO: Why can't I free `eln`? (Do I even have to?)
 
 	return i;
 }
