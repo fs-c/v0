@@ -19,7 +19,7 @@ struct hitpoint {
 
 typedef struct hitpoint hitpoint;
 
-short get_maptime(pid_t pid);
+static short get_maptime(pid_t pid);
 
 int parse_hitpoint(char *line, hitpoint *point);
 int parse_hitpoints(char *path, hitpoint **points);
@@ -57,17 +57,15 @@ int main(int argc, char **argv)
 	hitpoint *points;
 
 	if ((read = parse_hitpoints(map, &points)) < 0) {
-		printf("something went wrong while parsing hitpoints from %s",
+		printf("something went wrong while parsing hitpoints from %s\n",
 			map);
 		return EXIT_FAILURE;
 	}
 
 	if (kill(pid, 0) < 0) {
-		printf("pid %d does not exist", pid);
+		printf("pid %d does not exist\n", pid);
 		return EXIT_FAILURE;
 	}
-
-	
 }
 
 static inline short get_maptime(pid_t pid)
