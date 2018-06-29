@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 	int read;
 	hitpoint *points;
 
-	if ((read = parse_hitpoints(map, &points)) < 0) {
+	if (!(read = parse_hitpoints(map, &points))) {
 		printf("something went wrong while parsing hitpoints from %s\n",
 			map);
 		return EXIT_FAILURE;
@@ -109,7 +109,7 @@ int parse_hitpoint(char *line, hitpoint *point)
 	}
 
 	free(ln);
-	// TODO: Why can't I free `eln`? (Do I even have to?)
+	// TODO: Why can't I free(eln) here? (Do I even have to?)
 
 	return i;
 }
