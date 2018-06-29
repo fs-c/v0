@@ -17,6 +17,7 @@
 struct action {
 	int time;
 	int type;
+	int code;
 };
 
 struct hitpoint {
@@ -196,6 +197,13 @@ int hitpoints_to_actions(int count, hitpoint **points, action **actions)
 
 		keydw->type = 2;
 		keydw->time = curp->etime;
+
+		int col = curp->column;
+		char code = col == 0 ? 'd' : col == 1 ? 'f' : col == 2 ? 'j'
+			: col == 3 ? 'k' : 'i';
+
+		keyup->code = code;
+		keydw->code = code;
 	}
 
 	return j;
