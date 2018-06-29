@@ -9,8 +9,15 @@
 #define NUM_KEYS 4
 #define COL_WIDTH (512 / NUM_KEYS)
 
+#define TAPTIME_MS 3
+
 // 0x36e59ec (I64, I32) and 0x36e5c1c (I32) are both maptime.
 #define MAPTIME_ADDR 0x36e5c1c
+
+struct action {
+	int time;
+	int type;
+};
 
 struct hitpoint {
 	int type;
@@ -19,6 +26,7 @@ struct hitpoint {
 	int column;
 };
 
+typedef struct action action;
 typedef struct hitpoint hitpoint;
 
 static inline ssize_t get_maptime(pid_t pid, int32_t *val);
@@ -61,14 +69,6 @@ int main(int argc, char **argv)
 		printf("pid %d does not exist\n", pid);
 		return EXIT_FAILURE;
 	}
-
-	while (1) {
-		int32_t t;
-
-		get_maptime(pid, &t);
-
-		printf("%d\n", t);
-	}
 }
 
 /**
@@ -79,15 +79,16 @@ int main(int argc, char **argv)
 static inline ssize_t get_maptime(pid_t pid, int32_t *val)
 {
 	ssize_t nread;
+	size_t size = sizeof(int32_t);
 
 	struct iovec local[1];
 	struct iovec remote[1];
 
+	local[0].iov_len = size;
 	local[0].iov_base = val;
-	local[0].iov_len = sizeof(int32_t);
 
+	remote[0].iov_len = size;
 	remote[0].iov_base = (void *)MAPTIME_ADDR;
-	remote[0].iov_len = sizeof(int32_t);
 
 	nread = process_vm_readv(pid, local, 1, remote, 1, 0);
 	
@@ -158,7 +159,9 @@ int parse_hitpoint(char *line, hitpoint *point)
 		case 5: // Extra string, first token is end time.
 			eln = strdup(token);
 
-			point->etime = strtol(strsep(&eln, ":"), NULL, 10);
+			int etime = strtol(strsep(&eln, ":"), NULL, 10);
+			point->etime = etime ? etime
+				: point->stime + TAPTIME_MS;
 			break;
 		}
 
@@ -170,3 +173,4 @@ int parse_hitpoint(char *line, hitpoint *point)
 
 	return i;
 }
+
