@@ -9,7 +9,8 @@
 #define NUM_KEYS 4
 #define COL_WIDTH (512 / NUM_KEYS)
 
-#define MAPTIME_ADDR 0x36e59ec
+// 0x36e59ec (I64, I32) and 0x36e5c1c (I32) are both maptime.
+#define MAPTIME_ADDR 0x36e5c1c
 
 struct hitpoint {
 	int type;
@@ -20,7 +21,7 @@ struct hitpoint {
 
 typedef struct hitpoint hitpoint;
 
-static int32_t get_maptime(pid_t pid);
+static inline ssize_t get_maptime(pid_t pid, int32_t *val);
 
 int parse_hitpoint(char *line, hitpoint *point);
 int parse_hitpoints(char *path, hitpoint **points);
@@ -31,7 +32,7 @@ char *optarg = 0;
 int main(int argc, char **argv)
 {
 	if (argc < 2) {
-		printf("usage: <executable> -m <path to beatmap>\n");
+		printf("usage: <executable> -m <map path> -p <osu! pid>\n");
 		return 1;
 	}
 
@@ -62,58 +63,42 @@ int main(int argc, char **argv)
 	}
 
 	while (1) {
-		
+		int32_t t;
+
+		get_maptime(pid, &t);
+
+		printf("%d\n", t);
 	}
 }
 
-static inline int32_t get_maptime(pid_t pid)
+/**
+ * Gets and stores the runtime of the currently playing song, internally
+ * referred to as `maptime` in *val.
+ * Returns the number of bytes read.
+ */
+static inline ssize_t get_maptime(pid_t pid, int32_t *val)
 {
-	int32_t buf[1];
 	ssize_t nread;
+
 	struct iovec local[1];
 	struct iovec remote[1];
 
-	local[0].iov_base = buf;
-	local[0].iov_len = sizeof(short);
+	local[0].iov_base = val;
+	local[0].iov_len = sizeof(int32_t);
 
 	remote[0].iov_base = (void *)MAPTIME_ADDR;
-	remote[0].iov_len = sizeof(short);
+	remote[0].iov_len = sizeof(int32_t);
 
 	nread = process_vm_readv(pid, local, 1, remote, 1, 0);
 	
-	return *buf;
+	return nread;
 }
 
-int parse_hitpoint(char *line, hitpoint *point)
-{
-	char *ln = strdup(line), i = 0, *token, *eln;
-
-	while (token = strsep(&ln, ",")) {
-		int tval = strtol(token, NULL, 10);
-
-		switch (i) {
-		case 0: point->column = tval / COL_WIDTH;	// X
-			break;
-		case 2: point->stime = tval;			// Time
-			break;
-		case 3: point->type = tval;			// Type mask
-			break;
-		case 5: // Extra string, first token is end time.
-			eln = strdup(token);
-
-			point->etime = strtol(strsep(&eln, ":"), NULL, 10);
-			break;
-		}
-
-		i++;
-	}
-
-	free(ln);
-	// TODO: Why can't I free(eln) here? (Do I even have to?)
-
-	return i;
-}
-
+/**
+ * Parses the hitpoints from a given beatmap (*.osu) file and loads them into
+ * an empty array of hitpoints pointed at by **points.
+ * Returns the number of parsed points.
+ */
 int parse_hitpoints(char *path, hitpoint **points)
 {
 	FILE *stream;
@@ -148,4 +133,40 @@ int parse_hitpoints(char *path, hitpoint **points)
 	fclose(stream);
 
 	return pparsed;
+}
+
+/**
+ * Parse a raw hitpoint line from a beatmap file into a hitpoint struct pointed
+ * to by *point.
+ * Returns the number of tokens which were read, which doesn't always equal the
+ * number of actual values loaded into the struct!
+ */
+int parse_hitpoint(char *line, hitpoint *point)
+{
+	char *ln = strdup(line), i = 0, *token, *eln;
+
+	while (token = strsep(&ln, ",")) {
+		int tval = strtol(token, NULL, 10);
+
+		switch (i) {
+		case 0: point->column = tval / COL_WIDTH;	// X
+			break;
+		case 2: point->stime = tval;			// Time
+			break;
+		case 3: point->type = tval;			// Type mask
+			break;
+		case 5: // Extra string, first token is end time.
+			eln = strdup(token);
+
+			point->etime = strtol(strsep(&eln, ":"), NULL, 10);
+			break;
+		}
+
+		i++;
+	}
+
+	free(ln);
+	// TODO: Why can't I free(eln) here? (Do I even have to?)
+
+	return i;
 }
