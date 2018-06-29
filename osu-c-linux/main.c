@@ -174,3 +174,29 @@ int parse_hitpoint(char *line, hitpoint *point)
 	return i;
 }
 
+int hitpoints_to_actions(int count, hitpoint **points, action **actions)
+{
+	hitpoint *curp;
+
+	*actions = malloc(sizeof(action));
+
+	int i = 0;
+	int j = 0;
+
+	while (i++ < count) {
+		curp = (*points) + i;
+		
+		*actions = realloc(*actions, (j += 2) * sizeof(action));
+
+		action *keyup = (*actions) + (j - 2);
+		action *keydw = (*actions) + (j - 1);
+
+		keyup->type = 1;
+		keyup->time = curp->stime;
+
+		keydw->type = 2;
+		keydw->time = curp->etime;
+	}
+
+	return j;
+}
