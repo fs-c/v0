@@ -140,6 +140,9 @@ static inline ssize_t get_maptime(pid_t pid, int32_t *val)
 	return nread;
 }
 
+/**
+ * Send a keyup or keydown event to X11.
+ */
 static inline void send_keypress(char code, int down)
 {
 	if (down) {
@@ -191,7 +194,7 @@ int parse_hitpoints(char *path, hitpoint **points)
 }
 
 /**
- * Parse a raw hitpoint line from a beatmap file into a hitpoint struct pointed
+ * Parses a raw hitpoint line from a beatmap file into a hitpoint struct pointed
  * to by *point.
  * Returns the number of tokens which were read, which doesn't always equal the
  * number of actual values loaded into the struct!
@@ -229,9 +232,9 @@ int parse_hitpoint(char *line, hitpoint *point)
 }
 
 /**
- * Convert an array of hitpoint structs (pointed at by **points) into an array
- * of array of action structs (pointed at by **actions, to be empty).
- * Every hitpoint is converted into two actions, for keyup and keydown
+ * Converts an array of hitpoint structs (pointed at by **points) into an array
+ * of action structs (pointed to by **actions, to be empty).
+ * Every hitpoint is converted into two actions for keyup and keydown
  * respectively. Note that actions are not sorted.
  * Returns the number of actions written.
  */
