@@ -5,6 +5,7 @@
 #include <string.h>
 #include <signal.h>
 #include <sys/uio.h>
+#include <xdotool/xdo.h>
 
 #define NUM_KEYS 4
 #define COL_WIDTH (512 / NUM_KEYS)
@@ -30,7 +31,10 @@ struct hitpoint {
 typedef struct action action;
 typedef struct hitpoint hitpoint;
 
+static inline void send_keypress(char code, int down);
+
 static inline ssize_t get_maptime(pid_t pid, int32_t *val);
+
 // TODO: Where the hell is this thing defined?
 ssize_t process_vm_readv(pid_t pid,
                          const struct iovec *local_iov,
@@ -47,6 +51,8 @@ int hitpoints_to_actions(int count, hitpoint **points, action **actions);
 
 int sort_actions(int size, action **actions);
 
+xdo_t *window;
+
 int opterr;
 char *optarg = 0;
 
@@ -59,6 +65,8 @@ int main(int argc, char **argv)
 
 	pid_t pid;
 	char *map, c;
+
+	window = xdo_new(":0.0");
 
 	while ((c = getopt(argc, argv, "m:p:")) != -1) {
 		switch (c) {
@@ -90,6 +98,22 @@ int main(int argc, char **argv)
 
 	free(points);	
 	sort_actions(acread, &actions);
+
+	int cur = 0;
+
+	while (1) {
+		action ca;
+		int32_t time;
+		get_maptime(pid, &time);
+
+		while ((ca = *(actions + cur)).time <= time) {
+			cur++;
+
+			puts("performing action");
+
+			send_keypress(ca.code, ca.type);
+		}
+	}
 }
 
 /**
@@ -114,6 +138,15 @@ static inline ssize_t get_maptime(pid_t pid, int32_t *val)
 	nread = process_vm_readv(pid, local, 1, remote, 1, 0);
 	
 	return nread;
+}
+
+static inline void send_keypress(char code, int down)
+{
+	if (down) {
+		xdo_send_keysequence_window_down(window, CURRENTWINDOW, code, 0);
+	} else {
+		xdo_send_keysequence_window_up(window, CURRENTWINDOW, code, 0);
+	}
 }
 
 /**
@@ -230,7 +263,7 @@ int hitpoint_to_actions(hitpoint *point, action *ac1, action *ac2)
 	ac1->type = 1; // Keydown.
 	ac1->time = point->stime;
 
-	ac2->type = 2; // Keyup.
+	ac2->type = 0; // Keyup.
 	ac2->time = point->etime;
 
 	int col = point->column;
