@@ -1,35 +1,12 @@
 #include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
 #include <signal.h>
-#include <sys/uio.h>
+#include <xdotool/xdo.h>
 
-#define NUM_KEYS 4
-#define COL_WIDTH (512 / NUM_KEYS)
+#include "osu.h"
 
-#define MAPTIME_ADDR 0x36e59ec
+static inline void send_keypress(char code, int down);
 
-struct hitpoint {
-	int type;
-	int stime;
-	int etime;
-	int column;
-};
-
-typedef struct hitpoint hitpoint;
-
-static short get_maptime(pid_t pid);
-
-int parse_hitpoint(char *line, hitpoint *point);
-int parse_hitpoints(char *path, hitpoint **points);
-
-ssize_t process_vm_readv(pid_t pid,
-                         const struct iovec *local_iov,
-                         unsigned long liovcnt,
-                         const struct iovec *remote_iov,
-                         unsigned long riovcnt,
-                         unsigned long flags);
+xdo_t *window;
 
 int opterr;
 char *optarg = 0;
@@ -37,12 +14,14 @@ char *optarg = 0;
 int main(int argc, char **argv)
 {
 	if (argc < 2) {
-		printf("usage: <executable> -m <path to beatmap>\n");
+		printf("usage: <executable> -m <map path> -p <osu! pid>\n");
 		return 1;
 	}
 
 	pid_t pid;
 	char *map, c;
+
+	window = xdo_new(":0.0");
 
 	while ((c = getopt(argc, argv, "m:p:")) != -1) {
 		switch (c) {
@@ -53,101 +32,53 @@ int main(int argc, char **argv)
 		}
 	}
 
-	int read;
-	hitpoint *points;
-
-	if ((read = parse_hitpoints(map, &points)) < 0) {
-		printf("something went wrong while parsing hitpoints from %s\n",
-			map);
-		return EXIT_FAILURE;
-	}
-
 	if (kill(pid, 0) < 0) {
 		printf("pid %d does not exist\n", pid);
 		return EXIT_FAILURE;
 	}
-}
 
-static inline short get_maptime(pid_t pid)
-{
-	short buf[1];
-	ssize_t nread;
-	struct iovec local[1];
-	struct iovec remote[1];
+	int hpread;
+	hitpoint *points;
+	if (!(hpread = parse_hitpoints(map, &points))) {
+		printf("failed parsing hitpoints from %s\n", map);
+		return EXIT_FAILURE;
+	}	
 
-	local[0].iov_base = buf;
-	local[0].iov_len = sizeof(short);
+	int acread;
+	action *actions;
+	if (!(acread = hitpoints_to_actions(hpread, &points, &actions))) {
+		printf("failed converting hitpoints to actions\n");
+		return EXIT_FAILURE;
+	}
 
-	remote[0].iov_base = (void *)MAPTIME_ADDR;
-	remote[0].iov_len = sizeof(short);
+	free(points);	
+	sort_actions(acread, &actions);
 
-	nread = process_vm_readv(pid, local, 1, remote, 1, 0);
-	
-	return *buf;
-}
+	int cur = 0;
 
-int parse_hitpoint(char *line, hitpoint *point)
-{
-	char *ln = strdup(line), i = 0, *token, *eln;
+	while (1) {
+		action ca;
+		int32_t time;
+		get_maptime(pid, &time);
 
-	while (token = strsep(&ln, ",")) {
-		int tval = strtol(token, NULL, 10);
+		while ((ca = *(actions + cur)).time <= time) {
+			cur++;
 
-		switch (i) {
-		case 0: point->column = tval / COL_WIDTH;	// X
-			break;
-		case 2: point->stime = tval;			// Time
-			break;
-		case 3: point->type = tval;			// Type mask
-			break;
-		case 5: // Extra string, first token is end time.
-			eln = strdup(token);
+			puts("performing action");
 
-			point->etime = strtol(strsep(&eln, ":"), NULL, 10);
-			break;
+			send_keypress(ca.code, ca.type);
 		}
-
-		i++;
 	}
-
-	free(ln);
-	// TODO: Why can't I free `eln`? (Do I even have to?)
-
-	return i;
 }
 
-int parse_hitpoints(char *path, hitpoint **points)
+/**
+ * Send a keyup or keydown event to X11.
+ */
+static inline void send_keypress(char code, int down)
 {
-	FILE *stream;
-
-	if ((stream = fopen(path, "r")) == 0) {
-		return -1;
+	if (down) {
+		xdo_send_keysequence_window_down(window, CURRENTWINDOW, &code, 0);
+	} else {
+		xdo_send_keysequence_window_up(window, CURRENTWINDOW, &code, 0);
 	}
-
-	int pparsed = 0;	// Number of hitpoints parsed/read.
-
-	size_t nread;		// Local to loop, number of characters read.
-	size_t len = 0;
-	char *line = 0;
-	char insct = 0;		// Currently in the HitObjects section?
-	while ((nread = getline(&line, &len, stream)) != -1) {
-		if (!insct && (strstr(line, "[HitObjects]") != 0)) {
-			insct = 1;
-
-			*points = malloc(sizeof(hitpoint));
-
-			continue;
-		} else if (!insct) continue;
-
-		hitpoint point;
-		parse_hitpoint(line, &point);
-
-		*points = realloc(*points, ++pparsed * sizeof(hitpoint));
-		(*points)[pparsed - 1] = point;
-	}
-
-	free(line);
-	fclose(stream);
-
-	return pparsed;
 }

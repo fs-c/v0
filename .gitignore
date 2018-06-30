@@ -101,3 +101,5 @@ rethinkdb_data/
 *.out
 
 *.osu
+
+.vscode
