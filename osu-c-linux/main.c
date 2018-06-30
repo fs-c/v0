@@ -31,9 +31,21 @@ typedef struct action action;
 typedef struct hitpoint hitpoint;
 
 static inline ssize_t get_maptime(pid_t pid, int32_t *val);
+// TODO: Where the hell is this thing defined?
+ssize_t process_vm_readv(pid_t pid,
+                         const struct iovec *local_iov,
+                         unsigned long liovcnt,
+                         const struct iovec *remote_iov,
+                         unsigned long riovcnt,
+                         unsigned long flags);
 
 int parse_hitpoint(char *line, hitpoint *point);
 int parse_hitpoints(char *path, hitpoint **points);
+
+int hitpoint_to_actions(hitpoint *point, action *ac1, action *ac2);
+int hitpoints_to_actions(int count, hitpoint **points, action **actions);
+
+int sort_actions(int size, action **actions);
 
 int opterr;
 char *optarg = 0;
@@ -57,19 +69,27 @@ int main(int argc, char **argv)
 		}
 	}
 
-	int read;
-	hitpoint *points;
-
-	if (!(read = parse_hitpoints(map, &points))) {
-		printf("something went wrong while parsing hitpoints from %s\n",
-			map);
-		return EXIT_FAILURE;
-	}
-
 	if (kill(pid, 0) < 0) {
 		printf("pid %d does not exist\n", pid);
 		return EXIT_FAILURE;
 	}
+
+	int hpread;
+	hitpoint *points;
+	if (!(hpread = parse_hitpoints(map, &points))) {
+		printf("failed parsing hitpoints from %s\n", map);
+		return EXIT_FAILURE;
+	}	
+
+	int acread;
+	action *actions;
+	if (!(acread = hitpoints_to_actions(hpread, &points, &actions))) {
+		printf("failed converting hitpoints to actions\n");
+		return EXIT_FAILURE;
+	}
+
+	free(points);	
+	sort_actions(acread, &actions);
 }
 
 /**
@@ -175,36 +195,73 @@ int parse_hitpoint(char *line, hitpoint *point)
 	return i;
 }
 
+/**
+ * Convert an array of hitpoint structs (pointed at by **points) into an array
+ * of array of action structs (pointed at by **actions, to be empty).
+ * Every hitpoint is converted into two actions, for keyup and keydown
+ * respectively. Note that actions are not sorted.
+ * Returns the number of actions written.
+ */
 int hitpoints_to_actions(int count, hitpoint **points, action **actions)
 {
 	hitpoint *curp;
 
-	*actions = malloc(sizeof(action));
+	*actions = malloc(2 * sizeof(action));
 
 	int i = 0;
 	int j = 0;
 
-	while (i++ < count) {
-		curp = (*points) + i;
+	while (i < count) {
+		curp = (*points) + i++;
 		
 		*actions = realloc(*actions, (j += 2) * sizeof(action));
 
-		action *keyup = (*actions) + (j - 2);
-		action *keydw = (*actions) + (j - 1);
+		action *keydw = (*actions) + (j - 2);
+		action *keyup = (*actions) + (j - 1);
 
-		keyup->type = 1;
-		keyup->time = curp->stime;
-
-		keydw->type = 2;
-		keydw->time = curp->etime;
-
-		int col = curp->column;
-		char code = col == 0 ? 'd' : col == 1 ? 'f' : col == 2 ? 'j'
-			: col == 3 ? 'k' : 'i';
-
-		keyup->code = code;
-		keydw->code = code;
+		hitpoint_to_actions(curp, keydw, keyup);
 	}
 
 	return j;
+}
+
+int hitpoint_to_actions(hitpoint *point, action *ac1, action *ac2)
+{
+	ac1->type = 1; // Keydown.
+	ac1->time = point->stime;
+
+	ac2->type = 2; // Keyup.
+	ac2->time = point->etime;
+
+	int col = point->column;
+	// Get the character code corresponding to the column number.
+	// TODO: Ugly.
+	char code = col == 0 ? 'd' : col == 1 ? 'f' : col == 2 ? 'j'
+		: col == 3 ? 'k' : 'i';
+
+	ac1->code = code;
+	ac2->code = code;
+}
+
+/**
+ * Selection sort (by time) on the array of actions pointed at by **actions.
+ * Returns nonzero value on failure.
+ */
+int sort_actions(int size, action **actions)
+{
+	int i, j, min;
+	action *act = *actions, tmp;
+
+	for (i = 0; i < (size - 1); i++) {
+		min = i;
+		for (j = i + 1; j < size; j++)
+			if ((act + j)->time < (act + min)->time) min = j;
+
+		tmp = *(act + min);
+
+		*(act + min) = *(act + j);
+		*(act + j) = tmp;
+	}
+
+	return (i + 2) - size;
 }
