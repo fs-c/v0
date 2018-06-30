@@ -1,6 +1,8 @@
-## Motivationsschreiben, JKU Headstart
+## Motivationsschreiben
 
-Mit diesem Schrieben möchte ich mich vorstellen und im Zuge dessen meine Bewerbung für die Headstart-Initiative einreichen. Zurzeit besuche ich die sechste Klasse des Informatikzweiges am BORG Linz.
+*Linz, 22/06/2018, Laurenz Weixlbaumer*
+
+Mit diesem Schreiben möchte ich mich vorstellen und im Zuge dessen meine Bewerbung für die Headstart-Initiative einreichen. Zurzeit besuche ich die sechste Klasse des Informatikzweiges am BORG Linz.
 
 Auch außerschulisch beschäftige ich mich gerne und regelmäßig mit Programmieren, Systemadministration und diversen anderen Bereichen der IT. Dabei kommt mir meine Fähigkeit, autonom Informationen zu recherchieren und aufzunehmen, und meine Freude an der Lösung von Aufgaben- und Problemstellungen zugute.
 
@@ -8,7 +10,7 @@ Erfahren habe ich von der Headstart-Initiative durch Mag. Reichholf, meinem Prof
 
 Das Studium der Informatik ist mir seit Jahren ein klares Ziel, naturgemäß auch die JKU eine für mich attraktive Universität, insbesondere in diesem Fachbereich. Mein Interesse für die Headstart-Initiative im Besonderen gilt vor allem der exakten und theoretischen Beleuchtung einiger Grundlagen der Informatik und der Programmierung, insbesondere im Kontext und in der Form von Vorlesungen.
 
-Ich beschäftige mich seit etwa zwei Jahren mit einer Auswahl an Programmiersprachen, Best-Practices und Programmierparadigmen. Im Zuge dessen pflege ich Repositories auf GitHub unter dem Username “lw2904”. Ein Projekt, das ich aufgrund meines Interesses für Compilerbau begonnen habe, ist beispielsweise ein Interpreter für die Programmiersprache “brainfuck”, implementiert sowohl in JavaScript als auch in C ([github.com/lw2904/brainfuck](https://github.com/LW2904/brainfuck)). Ein Artikel dazu ist auch in meinem kürzlich gestarteten Blog zu finden ([lw2904.github.io/posts/building-a-brainfuck-interpreter](https://lw2904.github.io/posts/building-a-brainfuck-interpreter/)).
+Ich beschäftige mich seit etwa zwei Jahren mit einer Auswahl an Programmiersprachen, Best-Practices und Programmierparadigmen. Im Zuge dessen pflege ich Repositories auf GitHub unter dem Username “lw2904”. Ein Projekt, das ich aufgrund meines Interesses für Compilerbau begonnen habe, ist beispielsweise ein Interpreter für die Programmiersprache “brainfuck”, implementiert sowohl in JavaScript als auch in C ([github.com/lw2904/brainfuck](https://github.com/LW2904/brainfuck)). Ein Artikel dazu ist in meinem kürzlich gestarteten Blog zu finden<br>([lw2904.github.io/posts/building-a-brainfuck-interpreter](https://lw2904.github.io/posts/building-a-brainfuck-interpreter/)).
 
 TypeScript habe ich durch meine Arbeit an der “twofac” Webapp kennengelernt (Quellcode unter [github.com/LW2904/twofac](https://github.com/LW2904/twofac)), auszuprobieren unter [twof.ac](https://twof.ac). Technisch basiert sie auf dem Web-Framework [KoaJS](https://koajs.com/) und der NoSQL Datenbank [MongoDB](https://www.mongodb.com/).
 
@@ -16,15 +18,6 @@ Erfahrungen mit der Entwicklung größerer APIs, insbesondere mit der logischen 
 
 Inspiration und technisches Know-How finde ich im CoderDojo Linz, welches ich seit etwa zwei Jahren regelmäßig besuche. Neben Gedankenaustausch mit erfahreneren Entwicklern und der Arbeit in einer angenehmen und offenen Umgebung kann ich dort auch anderen Besuchern Hilfestellung bieten.
 
-Über das CoderDojo Linz steht mir ein Microsoft Azure Server zur Verfügung, auf dem einige meiner Projekte gehostet werden. Durch die Arbeit mit dieser Plattform wurde meine Faszination für Linux geweckt, welches mittlerweile auf meinem Notebook zum Einsatz kommt. Das Dojo. aber vielmehr auch die intensive Beschäftigung mit Linux begründeten meine große Wertschätzung der Open-Source Community, insbesondere der Free Software Foundation (FSF).
+Über das CoderDojo Linz steht mir ein Microsoft Azure Server zur Verfügung, auf dem einige meiner Projekte gehostet werden. Durch die Arbeit mit dieser Plattform wurde meine Faszination für Linux geweckt, welches mittlerweile auf meinem Notebook zum Einsatz kommt. Das Dojo, vielmehr aber auch die intensive Beschäftigung mit Linux begründeten meine große Wertschätzung der Open-Source Community, insbesondere der Free Software Foundation (FSF).
 
 Ich sehe die Headstart-Initiaitive als Chance, meine bisherigen, autodidaktisch erworbenen Kenntnisse im Rahmen der Universität zu vertiefen und ein Fundament für das spätere Studium der Informatik zu schaffen.
-
----
-
-Das Motivationsschreiben sollte 1-2 Seiten umfassen und möglichst klar ersichtlich machen, warum Sie am Programm [HeadStart@Informatics](http://informatik.jku.at/headstart/) teilnehmen wollen. Hier sind einige Tipps für den Inhalt:
-
-- Kurze Beschreibung Ihrer Person: Was qualifiziert Sie für die Teilnahme am Programm (z.B. Kreativität, schnelle Auffassungsgabe, hohe Eigenständigkeit etc.)?
-- Wie haben Sie von dem Programm erfahren? 
-- Warum möchten Sie am Programm teilnehmen? Möchten Sie später Informatik an der JKU studieren? Was interessiert Sie besonders an diesem Studium? 
-- Falls Sie bereits gewisse Informatik-Vorkenntnisse haben, welche sind das? Wo haben Sie diese erworben?
