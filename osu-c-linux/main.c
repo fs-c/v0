@@ -6,8 +6,6 @@
 
 static inline void send_keypress(char code, int down);
 
-int sort_actions(int size, action **actions);
-
 xdo_t *window;
 
 int opterr;
