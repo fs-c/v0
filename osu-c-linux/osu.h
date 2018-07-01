@@ -1,7 +1,6 @@
 #ifndef _OSU_H_
 #define _OSU_H_
 
-#include <stdlib.h>
 #include <sys/types.h>
 
 #define NUM_KEYS 4
