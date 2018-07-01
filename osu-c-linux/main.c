@@ -1,15 +1,19 @@
 #include <stdio.h>
 #include <signal.h>
-#include <xdotool/xdo.h>
+#include <unistd.h>
+
+#include <X11/Xlib.h>
+#include <X11/keysym.h>
+#include <X11/extensions/XTest.h>
 
 #include "osu.h"
 
 static inline void send_keypress(char code, int down);
 
-xdo_t *window;
-
 int opterr;
 char *optarg = 0;
+
+Display *display;
 
 int main(int argc, char **argv)
 {
@@ -21,8 +25,6 @@ int main(int argc, char **argv)
 	pid_t pid;
 	char *map, c;
 
-	window = xdo_new(":0.0");
-
 	while ((c = getopt(argc, argv, "m:p:")) != -1) {
 		switch (c) {
 		case 'm': map = optarg;
@@ -30,6 +32,13 @@ int main(int argc, char **argv)
 		case 'p': pid = strtol(optarg, NULL, 10);
 			break;
 		}
+	}
+
+	display = XOpenDisplay(NULL);
+
+	if (display == NULL) {
+		printf("failed to open X display\n");
+		return EXIT_FAILURE;
 	}
 
 	if (kill(pid, 0) < 0) {
@@ -72,13 +81,9 @@ int main(int argc, char **argv)
 }
 
 /**
- * Send a keyup or keydown event to X11.
+ * Simulate a keypress.
  */
 static inline void send_keypress(char code, int down)
 {
-	if (down) {
-		xdo_send_keysequence_window_down(window, CURRENTWINDOW, &code, 0);
-	} else {
-		xdo_send_keysequence_window_up(window, CURRENTWINDOW, &code, 0);
-	}
+	XTestFakeKeyEvent(display, code, down, CurrentTime);
 }
