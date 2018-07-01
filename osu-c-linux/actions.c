@@ -9,6 +9,9 @@
  */
 int hitpoints_to_actions(int count, hitpoint **points, action **actions)
 {
+	// TODO: Couldn't we just malloc(count * sizeof(action)) and be done
+	// 	 with it?
+
 	hitpoint *curp;
 
 	*actions = malloc(2 * sizeof(action));
