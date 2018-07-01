@@ -1,3 +1,5 @@
+#include <stdlib.h> // malloc(), realloc()
+
 #include "osu.h"
 
 /**

@@ -1,10 +1,11 @@
-#include <stdio.h>
-#include <signal.h>
-#include <unistd.h>
+#include <time.h> // nanosleep()
+#include <stdio.h> // printf()
+#include <signal.h> // kill()
+#include <unistd.h> // getopt()
+#include <stdlib.h> // strotol(), free()
 
-#include <X11/Xlib.h>
-#include <X11/keysym.h>
-#include <X11/extensions/XTest.h>
+#include <X11/Xlib.h> // XOpenDisplay()
+#include <X11/extensions/XTest.h> // XTestFakeKeyEvent()
 
 #include "osu.h"
 
@@ -77,6 +78,8 @@ int main(int argc, char **argv)
 
 			send_keypress(ca.code, ca.type);
 		}
+
+		nanosleep((const struct timespec[]){{0, 1000000L}}, NULL);
 	}
 }
 

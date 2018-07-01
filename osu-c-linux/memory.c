@@ -1,4 +1,4 @@
-#include <sys/uio.h>
+#include <sys/uio.h> // process_vm_readv()
 
 #include "osu.h"
 
