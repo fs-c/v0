@@ -68,14 +68,14 @@ int sort_actions(int size, action **actions)
 
 	for (i = 0; i < (size - 1); i++) {
 		min = i;
+
 		for (j = i + 1; j < size; j++)
 			if ((act + j)->time < (act + min)->time) min = j;
 
-		tmp = *(act + min);
-
-		*(act + min) = *(act + j);
-		*(act + j) = tmp;
+		tmp = *(act + i);
+		*(act + i) = *(act + min);
+		*(act + min) = tmp;
 	}
 
-	return (i + 2) - size;
+	return (i + 1) - size;
 }
