@@ -64,17 +64,20 @@ int main(int argc, char **argv)
 
 	// TODO: Can this even (reasonably) fail?
 	if (sort_actions(acread, &actions)) {
-		printf("failed to sort the actions array");
+		printf("failed to sort the actions array\n");
 		return EXIT_FAILURE;
 	}
 
 	int curi = 0;
 	action *cura;
 	int32_t time;
+	register ssize_t nread;
 
 	while (curi < acread) {
-		// TODO: Would an error check here impact performance?
-		get_maptime(pid, &time);
+		if ((nread = get_maptime(pid, &time)) != sizeof(int32_t)) {
+			printf("failed reading maptime\n");
+			continue;
+		}
 
 		printf("%d\n", time);
 
@@ -85,7 +88,7 @@ int main(int argc, char **argv)
 			send_keypress(cura->code, cura->type);
 		}
 
-		nanosleep((const struct timespec[]){{0, 1000000L}}, NULL);
+		nanosleep((struct timespec[]){{0, 1000000L}}, NULL);
 	}
 }
 
@@ -95,6 +98,8 @@ int main(int argc, char **argv)
 static inline void send_keypress(int code, int down)
 {
 	bool dwn = down ? true : false; // TODO: Is this necessary?
+
+	printf("%d / %d\n", code, down);
 
 	XTestFakeKeyEvent(display, code, dwn, CurrentTime);
 	XFlush(display);
