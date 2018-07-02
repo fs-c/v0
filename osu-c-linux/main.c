@@ -97,10 +97,6 @@ int main(int argc, char **argv)
  */
 static inline void send_keypress(int code, int down)
 {
-	bool dwn = down ? true : false; // TODO: Is this necessary?
-
-	printf("%d / %d\n", code, down);
-
-	XTestFakeKeyEvent(display, code, dwn, CurrentTime);
+	XTestFakeKeyEvent(display, code, down, CurrentTime);
 	XFlush(display);
 }
