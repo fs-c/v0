@@ -71,10 +71,9 @@ int main(int argc, char **argv)
 	int curi = 0;
 	action *cura;
 	int32_t time;
-	register ssize_t nread;
 
 	while (curi < acread) {
-		if ((nread = get_maptime(pid, &time)) != sizeof(int32_t)) {
+		if (get_maptime(pid, &time) != sizeof(int32_t)) {
 			printf("failed reading maptime\n");
 			continue;
 		}
