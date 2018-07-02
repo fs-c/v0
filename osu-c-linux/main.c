@@ -3,13 +3,14 @@
 #include <signal.h> // kill()
 #include <unistd.h> // getopt()
 #include <stdlib.h> // strotol(), free()
+#include <stdbool.h>
 
 #include <X11/Xlib.h> // XOpenDisplay()
 #include <X11/extensions/XTest.h> // XTestFakeKeyEvent()
 
 #include "osu.h"
 
-static inline void send_keypress(char code, int down);
+static inline void send_keypress(int code, int down);
 
 int opterr;
 char *optarg = 0;
@@ -26,7 +27,7 @@ int main(int argc, char **argv)
 	pid_t pid;
 	char *map, c;
 
-	while ((c = getopt(argc, argv, "m:p:")) != -1) {
+	while ((c = getopt(argc, argv, "m:p:d:")) != -1) {
 		switch (c) {
 		case 'm': map = optarg;
 			break;
@@ -35,9 +36,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	display = XOpenDisplay(NULL);
-
-	if (display == NULL) {
+	if ((display = XOpenDisplay(NULL)) == NULL) {
 		printf("failed to open X display\n");
 		return EXIT_FAILURE;
 	}
@@ -52,7 +51,7 @@ int main(int argc, char **argv)
 	if (!(hpread = parse_hitpoints(map, &points))) {
 		printf("failed parsing hitpoints from %s\n", map);
 		return EXIT_FAILURE;
-	}	
+	}
 
 	int acread;
 	action *actions;
@@ -61,22 +60,29 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	free(points);	
-	sort_actions(acread, &actions);
+	free(points);
 
-	int cur = 0;
+	// TODO: Can this even (reasonably) fail?
+	if (sort_actions(acread, &actions)) {
+		printf("failed to sort the actions array");
+		return EXIT_FAILURE;
+	}
 
-	while (1) {
-		action ca;
-		int32_t time;
+	int curi = 0;
+	action *cura;
+	int32_t time;
+
+	while (curi < acread) {
+		// TODO: Would an error check here impact performance?
 		get_maptime(pid, &time);
 
-		while ((ca = *(actions + cur)).time <= time) {
-			cur++;
+		printf("%d\n", time);
 
-			puts("performing action");
+		// For each action that is (over)due.
+		while ((cura = actions + curi)->time >= time) {
+			curi++;
 
-			send_keypress(ca.code, ca.type);
+			send_keypress(cura->code, cura->type);
 		}
 
 		nanosleep((const struct timespec[]){{0, 1000000L}}, NULL);
@@ -86,7 +92,10 @@ int main(int argc, char **argv)
 /**
  * Simulate a keypress.
  */
-static inline void send_keypress(char code, int down)
+static inline void send_keypress(int code, int down)
 {
-	XTestFakeKeyEvent(display, code, down, CurrentTime);
+	bool dwn = down ? true : false; // TODO: Is this necessary?
+
+	XTestFakeKeyEvent(display, code, dwn, CurrentTime);
+	XFlush(display);
 }
