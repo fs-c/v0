@@ -1,5 +1,6 @@
-#include <stdio.h>
-#include <string.h>
+#include <stdio.h> // fopen(), getline()
+#include <stdlib.h> // malloc(), realloc(), free()
+#include <string.h> // strstr(), strsep(), strdup()
 
 #include "osu.h"
 

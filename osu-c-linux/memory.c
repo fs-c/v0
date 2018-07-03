@@ -1,8 +1,8 @@
-#include <sys/uio.h>
+#include <sys/uio.h> // process_vm_readv()
 
 #include "osu.h"
 
-// TODO: Where the hell is this thing defined normally?
+// TODO: Where the hell is this thing defined usually?
 ssize_t process_vm_readv(pid_t pid,
                          const struct iovec *local_iov,
                          unsigned long liovcnt,

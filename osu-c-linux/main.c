@@ -1,15 +1,21 @@
-#include <stdio.h>
-#include <signal.h>
-#include <xdotool/xdo.h>
+#include <time.h> // nanosleep()
+#include <stdio.h> // printf()
+#include <signal.h> // kill()
+#include <unistd.h> // getopt()
+#include <stdlib.h> // strotol(), free()
+#include <stdbool.h>
+
+#include <X11/Xlib.h> // XOpenDisplay()
+#include <X11/extensions/XTest.h> // XTestFakeKeyEvent()
 
 #include "osu.h"
 
-static inline void send_keypress(char code, int down);
-
-xdo_t *window;
+static inline void send_keypress(int code, int down);
 
 int opterr;
 char *optarg = 0;
+
+Display *display;
 
 int main(int argc, char **argv)
 {
@@ -21,15 +27,18 @@ int main(int argc, char **argv)
 	pid_t pid;
 	char *map, c;
 
-	window = xdo_new(":0.0");
-
-	while ((c = getopt(argc, argv, "m:p:")) != -1) {
+	while ((c = getopt(argc, argv, "m:p:d:")) != -1) {
 		switch (c) {
 		case 'm': map = optarg;
 			break;
 		case 'p': pid = strtol(optarg, NULL, 10);
 			break;
 		}
+	}
+
+	if ((display = XOpenDisplay(NULL)) == NULL) {
+		printf("failed to open X display\n");
+		return EXIT_FAILURE;
 	}
 
 	if (kill(pid, 0) < 0) {
@@ -42,7 +51,7 @@ int main(int argc, char **argv)
 	if (!(hpread = parse_hitpoints(map, &points))) {
 		printf("failed parsing hitpoints from %s\n", map);
 		return EXIT_FAILURE;
-	}	
+	}
 
 	int acread;
 	action *actions;
@@ -51,34 +60,42 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	free(points);	
-	sort_actions(acread, &actions);
+	free(points);
 
-	int cur = 0;
+	// TODO: Can this even (reasonably) fail?
+	if (sort_actions(acread, &actions)) {
+		printf("failed to sort the actions array\n");
+		return EXIT_FAILURE;
+	}
 
-	while (1) {
-		action ca;
-		int32_t time;
-		get_maptime(pid, &time);
+	int curi = 0;
+	action *cura;
+	int32_t time;
 
-		while ((ca = *(actions + cur)).time <= time) {
-			cur++;
-
-			puts("performing action");
-
-			send_keypress(ca.code, ca.type);
+	while (curi < acread) {
+		if (get_maptime(pid, &time) != sizeof(int32_t)) {
+			printf("failed reading maptime\n");
+			continue;
 		}
+
+		printf("%d\n", time);
+
+		// For each action that is (over)due.
+		while ((cura = actions + curi)->time >= time) {
+			curi++;
+
+			send_keypress(cura->code, cura->type);
+		}
+
+		nanosleep((struct timespec[]){{0, 1000000L}}, NULL);
 	}
 }
 
 /**
- * Send a keyup or keydown event to X11.
+ * Simulate a keypress.
  */
-static inline void send_keypress(char code, int down)
+static inline void send_keypress(int code, int down)
 {
-	if (down) {
-		xdo_send_keysequence_window_down(window, CURRENTWINDOW, &code, 0);
-	} else {
-		xdo_send_keysequence_window_up(window, CURRENTWINDOW, &code, 0);
-	}
+	XTestFakeKeyEvent(display, code, down, CurrentTime);
+	XFlush(display);
 }

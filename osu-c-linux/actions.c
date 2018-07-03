@@ -1,4 +1,8 @@
+#include <stdlib.h> // malloc(), realloc()
+
 #include "osu.h"
+
+static inline int columnToModcode(int col);
 
 /**
  * Converts an array of hitpoint structs (pointed at by **points) into an array
@@ -11,23 +15,29 @@ int hitpoints_to_actions(int count, hitpoint **points, action **actions)
 {
 	hitpoint *curp;
 
-	*actions = malloc(2 * sizeof(action));
+	*actions = malloc((2 * count) * sizeof(action));
 
 	int i = 0;
 	int j = 0;
 
 	while (i < count) {
 		curp = (*points) + i++;
-		
-		*actions = realloc(*actions, (j += 2) * sizeof(action));
 
-		action *keydw = (*actions) + (j - 2);
-		action *keyup = (*actions) + (j - 1);
+		action *keydw = (*actions) + j++;
+		action *keyup = (*actions) + j++;
 
 		hitpoint_to_action(curp, keydw, keyup);
 	}
 
+	// TODO: Check if all of the memory originally allocated for *actions
+	// 	 is actually in use. (Don't use realloc because of performance)
+
 	return j;
+}
+
+// TODO: Ugly and too specific; make a charcode to modcode function.
+static inline int columnToModcode(int col) {
+	return col == 0 ? 40 : col == 1 ? 41 : col == 2 ? 44 : col == 3 ? 45 : 0;
 }
 
 /**
@@ -41,11 +51,7 @@ void hitpoint_to_action(hitpoint *point, action *ac1, action *ac2)
 	ac2->type = 0; // Keyup.
 	ac2->time = point->etime;
 
-	int col = point->column;
-	// Get the character code corresponding to the column number.
-	// TODO: Ugly.
-	char code = col == 0 ? 'd' : col == 1 ? 'f' : col == 2 ? 'j'
-		: col == 3 ? 'k' : 'i';
+	int code = columnToModcode(point->column);
 
 	ac1->code = code;
 	ac2->code = code;
@@ -62,14 +68,14 @@ int sort_actions(int size, action **actions)
 
 	for (i = 0; i < (size - 1); i++) {
 		min = i;
+
 		for (j = i + 1; j < size; j++)
 			if ((act + j)->time < (act + min)->time) min = j;
 
-		tmp = *(act + min);
-
-		*(act + min) = *(act + j);
-		*(act + j) = tmp;
+		tmp = *(act + i);
+		*(act + i) = *(act + min);
+		*(act + min) = tmp;
 	}
 
-	return (i + 2) - size;
+	return (i + 1) - size;
 }
