@@ -1,6 +1,7 @@
 #ifndef _OSU_H_
 #define _OSU_H_
 
+#include <errno.h>
 #include <sys/types.h>
 
 #define NUM_KEYS 4
@@ -9,7 +10,7 @@
 #define TAPTIME_MS 3
 
 // 0x36e59ec (I64, I32) and 0x36e5c1c (I32) are both maptime.
-#define MAPTIME_ADDR 0x36e5c1c
+#define MAPTIME_ADDR 0x36e59ec
 
 struct action {
 	int time;
