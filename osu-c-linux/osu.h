@@ -1,13 +1,16 @@
 #ifndef _OSU_H_
 #define _OSU_H_
 
+// Enable GNU extensions (process_vm_readv(), ...).
+#define _GNU_SOURCE
+
 #include <errno.h>
 #include <sys/types.h>
 
 #define NUM_KEYS 4
 #define COL_WIDTH (512 / NUM_KEYS)
 
-#define TAPTIME_MS 3
+#define TAPTIME_MS 4
 
 // 0x36e59ec (I64, I32) and 0x36e5c1c (I32) are both maptime.
 #define MAPTIME_ADDR 0x36e59ec
