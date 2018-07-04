@@ -10,6 +10,7 @@
 
 #include "osu.h"
 
+static void print_usage();
 static inline void send_keypress(int code, int down);
 
 int opterr;
@@ -98,7 +99,7 @@ int main(int argc, char **argv)
 	}
 }
 
-void print_usage()
+static void print_usage()
 {
 	printf("usage: <executable> -m <map path> -p <osu! process id>\n");
 }
