@@ -20,12 +20,12 @@ Display *display;
 int main(int argc, char **argv)
 {
 	if (argc < 2) {
-		printf("usage: <executable> -m <map path> -p <osu! pid>\n");
-		return 1;
+		print_usage();
+		return EXIT_FAILURE;
 	}
 
-	pid_t pid;
-	char *map, c;
+	pid_t pid = 0;
+	char *map = NULL, c;
 
 	while ((c = getopt(argc, argv, "m:p:d:")) != -1) {
 		switch (c) {
@@ -34,6 +34,11 @@ int main(int argc, char **argv)
 		case 'p': pid = strtol(optarg, NULL, 10);
 			break;
 		}
+	}
+
+	if (!map || !pid) {
+		print_usage();
+		return EXIT_FAILURE;
 	}
 
 	if ((display = XOpenDisplay(NULL)) == NULL) {
@@ -47,15 +52,17 @@ int main(int argc, char **argv)
 	}
 
 	int hpread;
-	hitpoint *points;
-	if (!(hpread = parse_hitpoints(map, &points))) {
+	hitpoint *points = NULL;
+	if (!(hpread = parse_hitpoints(map, &points)) || !points) {
 		printf("failed parsing hitpoints from %s\n", map);
 		return EXIT_FAILURE;
 	}
 
 	int acread;
-	action *actions;
-	if (!(acread = hitpoints_to_actions(hpread, &points, &actions))) {
+	action *actions = NULL;
+	if (!(acread = hitpoints_to_actions(hpread, &points, &actions))
+		|| !actions)
+	{
 		printf("failed converting hitpoints to actions\n");
 		return EXIT_FAILURE;
 	}
@@ -69,8 +76,8 @@ int main(int argc, char **argv)
 	}
 
 	int curi = 0;
-	action *cura;
 	int32_t time;
+	action *cura = NULL;
 
 	while (curi < acread) {
 		if (get_maptime(pid, &time) != sizeof(int32_t)) {
@@ -81,7 +88,7 @@ int main(int argc, char **argv)
 		printf("%d\n", time);
 
 		// For each action that is (over)due.
-		while ((cura = actions + curi)->time >= time) {
+		while ((cura = actions + curi)->time >= time && cura) {
 			curi++;
 
 			send_keypress(cura->code, cura->type);
@@ -89,6 +96,11 @@ int main(int argc, char **argv)
 
 		nanosleep((struct timespec[]){{0, 1000000L}}, NULL);
 	}
+}
+
+void print_usage()
+{
+	printf("usage: <executable> -m <map path> -p <osu! process id>\n");
 }
 
 /**
