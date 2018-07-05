@@ -1,9 +1,6 @@
 #ifndef _OSU_H_
 #define _OSU_H_
 
-// Enable GNU extensions (process_vm_readv(), ...).
-#define _GNU_SOURCE
-
 #include <errno.h>
 #include <sys/types.h>
 
