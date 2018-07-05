@@ -99,6 +99,7 @@ int main(int argc, char **argv)
 			printf("%d\n", cura->time - time);
 		}
 
+		// 10^6 ns = 1 ms.
 		nanosleep((struct timespec[]){{0, 1000000L}}, NULL);
 	}
 }
@@ -117,5 +118,5 @@ static inline void send_keypress(int code, int down)
 		printf("failed sending keyevent\n");
 	}
 
-	XFlush(display);	
+	XSync(display, false);
 }
