@@ -59,6 +59,8 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
+	printf("read %d hitpoints\n", hpread);
+
 	int acread;
 	action *actions = NULL;
 	if (!(acread = hitpoints_to_actions(hpread, &points, &actions))
@@ -67,6 +69,8 @@ int main(int argc, char **argv)
 		printf("failed converting hitpoints to actions\n");
 		return EXIT_FAILURE;
 	}
+
+	printf("converted %d hitpoints to %d actions\n", hpread, acread);
 
 	free(points);
 
@@ -86,13 +90,13 @@ int main(int argc, char **argv)
 			continue;
 		}
 
-		printf("%d\n", time);
-
 		// For each action that is (over)due.
-		while ((cura = actions + curi)->time >= time && cura) {
+		while ((cura = actions + curi)->time < time && cura) {
 			curi++;
 
 			send_keypress(cura->code, cura->type);
+
+			printf("%d\n", cura->time - time);
 		}
 
 		nanosleep((struct timespec[]){{0, 1000000L}}, NULL);
@@ -109,6 +113,9 @@ static void print_usage()
  */
 static inline void send_keypress(int code, int down)
 {
-	XTestFakeKeyEvent(display, code, down, CurrentTime);
-	XFlush(display);
+	if (!XTestFakeKeyEvent(display, code, down, CurrentTime)) {
+		printf("failed sending keyevent\n");
+	}
+
+	XFlush(display);	
 }
