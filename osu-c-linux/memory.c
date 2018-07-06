@@ -1,14 +1,9 @@
+// Enable GNU extensions (process_vm_readv).
+#define _GNU_SOURCE
+
 #include <sys/uio.h> // process_vm_readv()
 
 #include "osu.h"
-
-// TODO: Where the hell is this thing defined usually?
-ssize_t process_vm_readv(pid_t pid,
-                         const struct iovec *local_iov,
-                         unsigned long liovcnt,
-                         const struct iovec *remote_iov,
-                         unsigned long riovcnt,
-                         unsigned long flags);
 
 /**
  * Gets and stores the runtime of the currently playing song, internally
