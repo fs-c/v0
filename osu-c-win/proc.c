@@ -18,7 +18,7 @@ DWORD get_process_id(char *name)
 	}
 
 	while (Process32Next(proc_list, &entry)) {
-		if (_stricmp((char *)entry.szExeFile, name) == 0) {
+		if (strcmp((char *)entry.szExeFile, name) == 0) {
 			proc_id = entry.th32ProcessID;
 		}
 	}
