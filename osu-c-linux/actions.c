@@ -2,7 +2,7 @@
 
 #include "osu.h"
 
-static inline int columnToModcode(int col);
+static inline int col_to_modcode(int col);
 
 /**
  * Converts an array of hitpoint structs (pointed at by **points) into an array
@@ -36,7 +36,8 @@ int hitpoints_to_actions(int count, hitpoint **points, action **actions)
 }
 
 // TODO: Ugly and too specific; make a charcode to modcode function.
-static inline int columnToModcode(int col) {
+static inline int col_to_modcode(int col)
+{
 	return col == 0 ? 40 : col == 1 ? 41 : col == 2 ? 44 : col == 3 ? 45 : 0;
 }
 
@@ -51,7 +52,7 @@ void hitpoint_to_action(hitpoint *point, action *ac1, action *ac2)
 	ac2->type = 0; // Keyup.
 	ac2->time = point->etime;
 
-	int code = columnToModcode(point->column);
+	int code = col_to_modcode(point->column);
 
 	ac1->code = code;
 	ac2->code = code;
