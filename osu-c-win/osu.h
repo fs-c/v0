@@ -1,4 +1,9 @@
+#ifndef OSU_H
+#define OSU_H
+
 #include <windows.h>
+
+#include "beatmap.h"
 
 #define TIME_ADDRESS 0x052F59EC
 
@@ -17,3 +22,5 @@ INT32 get_gametime();
  * process was not found or fetching the processes failed. Case sensitive.
  */
 DWORD get_process_id(char *name);
+
+#endif /* OSU_H */

@@ -1,10 +1,11 @@
+#ifndef BEATMAP_H
+#define BEATMAP_H
+
 #define TAPTIME_MS 2
 #define MAX_LENGTH 1024
 
 #define NUM_COLS 4
 #define COL_WIDTH 512
-
-const char KEYS[] = { 'd', 'f', 'j', 'k' };
 
 struct hitpoint {
 	int column;
@@ -51,3 +52,5 @@ void hitpoint_to_action(hitpoint *point, action *start, action *end);
  * Returns nonzero on failure.
  */
 int sort_actions(int count, action **actions);
+
+#endif /* BEATMAP_H */
