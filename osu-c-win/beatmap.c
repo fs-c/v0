@@ -1,5 +1,4 @@
 #include "osu.h"
-#include "beatmap.h"
 
 #include <stdio.h>
 
@@ -85,6 +84,10 @@ int parse_hitpoints(int count, hitpoint **points, action **actions)
 	return num_actions;
 }
 
+// TODO: This really shouldn't be here but it was causing weird errors. Fuck
+// 	 you, compiler, outplayed ya!
+const char COL_KEYS[] = { 'd', 'f', 'j', 'k' };
+
 void hitpoint_to_action(hitpoint *point, action *start, action *end)
 {
 	end->time = point->end_time;
@@ -93,7 +96,7 @@ void hitpoint_to_action(hitpoint *point, action *start, action *end)
 	end->down = 0;		// Keyup.
 	start->down = 1;	// Keydown.
 
-	const char key = KEYS[point->column];
+	const char key = COL_KEYS[point->column];
 
 	end->key = key;
 	start->key = key;
