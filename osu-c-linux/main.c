@@ -20,11 +20,6 @@ Display *display;
 
 int main(int argc, char **argv)
 {
-	if (argc < 2) {
-		print_usage();
-		return EXIT_FAILURE;
-	}
-
 	pid_t pid = 0;
 	char *map = NULL, c;
 
