@@ -10,12 +10,6 @@ int parse_beatmap(char *file, hitpoint **points)
 	FILE *stream;
 	char line[MAX_LENGTH];
 
-	/*
-	if ((stream = fopen(file, "r")) == NULL) {
-		return 0;
-	}
-	*/
-
 	int read_err;
 	if ((read_err = fopen_s(&stream, file, "r")) != 0) {
 		printf("debug: fopen errno %d", read_err);
