@@ -4,6 +4,9 @@
 
 HANDLE game_proc = NULL;
 
+void dbg_print_actions(int count, action** actions);
+void dbg_print_hitpoints(int count, hitpoint **points);
+
 int main(int argc, char **argv)
 {
 	char *map = argv[1];
@@ -16,6 +19,8 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
+	printf("parsed %d hitpoints\n", num_points);
+
 	action *actions;
 	int num_actions = 0;
 
@@ -25,17 +30,31 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
+	printf("parsed %d actions\n", num_actions);
+
+	free(points);
+
 	if (sort_actions(num_actions, &actions) != 0) {
 		printf("failed sorting actions\n");
 		return EXIT_FAILURE;
 	}
 
-	free(points);
-
-	for (int i = 0; i < 50; i++) {
-		action *a = actions + i;
-		printf("%d / %d (%c) / %d", a->time, a->key, a->key, a->down);
-	}
-
 	return 0;
+}
+
+void dbg_print_actions(int count, action **actions)
+{
+	for (int i = 0; i < count; i++) {
+		action *a = *actions + i;
+		printf("%d / %d (%c) / %d\n", a->time, a->key, a->key, a->down);
+	}
+}
+
+void dbg_print_hitpoints(int count, hitpoint **points)
+{
+	for (int i = 0; i < count; i++)
+	{
+		hitpoint *p = *points + i;
+		printf("%d - %d / %d\n", p->start_time, p->end_time, p->column);
+	}
 }
