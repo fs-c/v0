@@ -141,6 +141,5 @@ int sort_actions(int total, action **actions)
 		act[min] = tmp;
 	}
 
-	return 0;
-	// return i - total + 1;
+	return i - total + 1;
 }
