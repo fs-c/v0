@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 
+size_t time_address;
 HANDLE game_proc = NULL;
 
 void dbg_print_actions(int count, action** actions);
@@ -37,6 +38,36 @@ int main(int argc, char **argv)
 	if (sort_actions(num_actions, &actions) != 0) {
 		printf("failed sorting actions\n");
 		return EXIT_FAILURE;
+	}
+
+	DWORD game_proc_id = get_process_id("osu!.exe");
+
+	if (!game_proc_id) {
+		printf("couldn't find game process");
+		return EXIT_FAILURE;
+	}
+
+	game_proc = OpenProcess(PROCESS_VM_READ, 0, game_proc_id);
+
+	if (!game_proc) {
+		printf("failed to get handle to game process\n");
+		return EXIT_FAILURE;
+	}
+
+	printf("got handle to osu! process\n");
+
+	time_address = find_pattern(game_proc, TIME_SIGNATURE);
+
+	if (!time_address) {
+		printf("failed to find address of the gametime\n");
+		return EXIT_FAILURE;
+	}
+
+	printf("%d", time_address);
+
+	while (1) {
+		INT32 time = get_gametime();
+		printf("%d\n", time);
 	}
 
 	return 0;
