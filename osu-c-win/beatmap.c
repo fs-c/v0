@@ -104,11 +104,11 @@ void hitpoint_to_action(hitpoint *point, action *start, action *end)
 
 int sort_actions(int count, action **actions)
 {
-	int i, j, min;
+	int min, i, j;
 	action *act = *actions, tmp;
 
 	// For every element.
-	for (i = 0; i < (count - 1); i++) {
+	for (i = 0; i < count; i++) {
 		min = i;
 
 		// For the subarray starting at a[j].
