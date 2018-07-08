@@ -5,23 +5,32 @@
 
 #include "beatmap.h"
 
-#define TIME_ADDRESS 0x017159E0
+#define TIME_SIGNATURE "\xDB\x5D\xE8\x8B\x45\xE8\xA3"
 
 extern HANDLE game_proc;
+extern size_t time_address;
 
 /**
- * proc.c
+ * process.c
  * Returns the length the current maps song has been running for (aka the
  * gametime) from the game process.
  */
 INT32 get_gametime();
 
 /**
- * proc.c
+ * process.c
  * Returns the ID of the process with the given name. Returns zero if the
  * process was not found or fetching the processes failed. Case sensitive.
  */
 DWORD get_process_id(char *name);
+
+/**
+ * process.c
+ * Returns the address of the first occurence of the given pattern in the given
+ * processes memory.
+ * Returns zero if the pattern was not found.
+ */
+DWORD find_pattern(HANDLE process, char *pattern);
 
 /**
  * action.c
