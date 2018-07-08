@@ -29,6 +29,8 @@ int parse_beatmap(char *file, hitpoint **points)
 		*points = realloc(*points, ++parsed * sizeof(hitpoint));
 		(*points)[parsed - 1] = point;
 	}
+
+	return parsed;
 }
 
 int parse_beatmap_line(char *line, hitpoint *point)
