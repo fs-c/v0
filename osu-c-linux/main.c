@@ -2,6 +2,7 @@
 
 #include <time.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <signal.h> 
 
 #include <X11/Xlib.h>
@@ -12,14 +13,29 @@ void dbg_print_hitpoints(int count, hitpoint **points);
 
 static inline void send_keypress(int code, int down);
 
-static inline int char_to_modcode(char c);
+int opterr;
+char *optarg = 0;
 
 Display *display;
 
 int main(int argc, char **argv)
 {
-	char *map = argv[1];
-        int pid = strtol(argv[2], NULL, 10);
+        pid_t pid;
+	char *map, c;
+
+	while ((c = getopt(argc, argv, "m:p:")) != -1) {
+		switch (c) {
+		case 'm': map = optarg;
+			break;
+		case 'p': pid = strtol(optarg, NULL, 10);
+			break;
+		}
+	}
+
+	if (!pid || !map) {
+		printf("usage: <executable> -p <pid of osu! process> ");
+		printf("-m <path to beatmap.osu>\n");
+	}
 
 	if (!(display = XOpenDisplay(NULL))) {
 		printf("failed to open X display\n");
@@ -54,7 +70,7 @@ int main(int argc, char **argv)
 
 	int32_t time;
 	int cur_i = 0;
-	action *cur_a = actions;
+	action *cur_a;
 
 	while (cur_i < num_actions) {
 		time = get_maptime(pid);
@@ -62,7 +78,7 @@ int main(int argc, char **argv)
 		while ((cur_a = actions + cur_i)->time <= time) {
 			cur_i++;
 					
-			send_keypress(cur_a->key, cur_a->down);		
+			send_keypress(cur_a->code, cur_a->down);		
 		}
 
 		nanosleep((struct timespec[]){{0, 1000000L}}, NULL);
@@ -89,12 +105,7 @@ void dbg_print_hitpoints(int count, hitpoint **points)
 
 static inline void send_keypress(int code, int down)
 {
-	XTestFakeKeyEvent(display, char_to_modcode(code), down, CurrentTime);
+	XTestFakeKeyEvent(display, code, down, CurrentTime);
 
 	XFlush(display);
-}
-
-static inline int char_to_modcode(char c)
-{
-	return c == 'd' ? 40 : c == 'f' ? 41 : c == 'j' ? 44 : c == 'k' ? 45 : 0;
 }
