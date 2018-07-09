@@ -27,38 +27,38 @@ DWORD get_process_id(char *name)
 
 	return proc_id;
 }
-
 // TODO: This function looks horrible, do something about it.
-DWORD find_pattern(HANDLE process, char *pattern)
+//	 It's also really inefficient, maybe implement Boyer-Moore's algo?
+void *find_pattern(HANDLE process, char *pattern)
 {
-	int hit = 0;
-	int read_size = 4096;
-	int sig_size = sizeof(pattern);
+	bool hit = false;
+	size_t chk_s = 4096;
+	size_t sig_s = sizeof(pattern);
 
-	char *chunk = malloc(read_size);
+	unsigned char *chk;
 
-	// Move through process memory and get chunks.
-	for (size_t i = 0; i < INT_MAX; i += read_size - sig_size) {
-		ReadProcessMemory(process, (LPCVOID)i, &chunk, read_size, NULL);
+	// Move through process memory in chunks.
+	for (size_t chk_i = 0; chk_i < INT_MAX; chk_i += chk_s) {
+		ReadProcessMemory(process, (void *)chk_i, &chk, chk_s, NULL);
 
 		// For every piece of the chunk...
-		for (int j = 0; j < read_size; j++) {
-			hit = 1;
-			
-			// ...check if it matches the pattern/signature.
-			for (int k = 0 ; k < sig_size && hit; k++) {
-				if (chunk[j + k] != pattern[k]) {
-					hit = 0;
+		for (size_t pc_i = 0; pc_i < chk_s; pc_i++) {
+			hit = true;
+
+			// ...check if it matches the pattern.
+			for (size_t sig_i = 0; sig_i < sig_s; sig_i++) {
+				if (chk[pc_i + sig_i] != pattern[sig_i]) {
+					hit = false;
 				}
 			}
 
 			if (hit) {
-				return i + j;
+				return (void *)(chk_i + pc_i);
 			}
 		}
 	}
 
-	return 0;
+	return NULL;
 }
 
 INT32 get_gametime()
