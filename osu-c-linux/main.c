@@ -1,117 +1,100 @@
-#include <time.h> // nanosleep()
-#include <stdio.h> // printf()
-#include <signal.h> // kill()
-#include <unistd.h> // getopt()
-#include <stdlib.h> // strotol(), free()
-#include <stdbool.h>
-
-#include <X11/Xlib.h> // XOpenDisplay()
-#include <X11/extensions/XTest.h> // XTestFakeKeyEvent()
-
 #include "osu.h"
 
-static void print_usage();
+#include <time.h>
+#include <stdio.h>
+#include <signal.h> 
+
+#include <X11/Xlib.h>
+#include <X11/extensions/XTest.h>
+
+void dbg_print_actions(int count, action** actions);
+void dbg_print_hitpoints(int count, hitpoint **points);
+
 static inline void send_keypress(int code, int down);
 
-int opterr;
-char *optarg = 0;
+static inline int char_to_modcode(char c);
 
 Display *display;
 
 int main(int argc, char **argv)
 {
-	pid_t pid = 0;
-	char *map = NULL, c;
+	char *map = argv[1];
+        int pid = strtol(argv[2], NULL, 10);
 
-	while ((c = getopt(argc, argv, "m:p:d:")) != -1) {
-		switch (c) {
-		case 'm': map = optarg;
-			break;
-		case 'p': pid = strtol(optarg, NULL, 10);
-			break;
-		}
-	}
-
-	if (!map || !pid) {
-		print_usage();
-		return EXIT_FAILURE;
-	}
-
-	if ((display = XOpenDisplay(NULL)) == NULL) {
+	if (!(display = XOpenDisplay(NULL))) {
 		printf("failed to open X display\n");
 		return EXIT_FAILURE;
 	}
 
-	if (kill(pid, 0) < 0) {
-		printf("pid %d does not exist\n", pid);
+	hitpoint *points;
+	int num_points = 0;
+	if ((num_points = parse_beatmap(map, &points)) == 0 || !points) {
+		printf("failed to parse beatmap (%s)\n", map);
 		return EXIT_FAILURE;
 	}
 
-	int hpread;
-	hitpoint *points = NULL;
-	if (!(hpread = parse_hitpoints(map, &points)) || !points) {
-		printf("failed parsing hitpoints from %s\n", map);
+	printf("parsed %d hitpoints\n", num_points);
+
+	action *actions;
+	int num_actions = 0;
+	if ((num_actions = parse_hitpoints(num_points, &points, &actions)) == 0
+		|| !actions) {
+		printf("failed to parse hitpoints\n");
 		return EXIT_FAILURE;
 	}
 
-	printf("read %d hitpoints\n", hpread);
-
-	int acread;
-	action *actions = NULL;
-	if (!(acread = hitpoints_to_actions(hpread, &points, &actions))
-		|| !actions)
-	{
-		printf("failed converting hitpoints to actions\n");
-		return EXIT_FAILURE;
-	}
-
-	printf("converted %d hitpoints to %d actions\n", hpread, acread);
+	printf("parsed %d actions\n", num_actions);
 
 	free(points);
 
-	// TODO: Can this even (reasonably) fail?
-	if (sort_actions(acread, &actions)) {
-		printf("failed to sort the actions array\n");
+	if (sort_actions(num_actions, &actions) != 0) {
+		printf("failed sorting actions\n");
 		return EXIT_FAILURE;
 	}
 
-	int curi = 0;
 	int32_t time;
-	action *cura = NULL;
+	int cur_i = 0;
+	action *cur_a = actions;
 
-	while (curi < acread) {
-		if (get_maptime(pid, &time) != sizeof(int32_t)) {
-			printf("failed reading maptime\n");
-			continue;
+	while (cur_i < num_actions) {
+		time = get_maptime(pid);
+
+		while ((cur_a = actions + cur_i)->time <= time) {
+			cur_i++;
+					
+			send_keypress(cur_a->key, cur_a->down);		
 		}
 
-		// For each action that is (over)due.
-		while ((cura = actions + curi)->time < time && cura) {
-			curi++;
-
-			send_keypress(cura->code, cura->type);
-
-			printf("%d\n", cura->time - time);
-		}
-
-		// 10^6 ns = 1 ms.
 		nanosleep((struct timespec[]){{0, 1000000L}}, NULL);
 	}
+
+	return 0;
 }
 
-static void print_usage()
+void dbg_print_actions(int count, action **actions)
 {
-	printf("usage: <executable> -m <map path> -p <osu! process id>\n");
+	for (int i = 0; i < count; i++) {
+		action *a = *actions + i;
+		printf("%d / %d (%c) / %d\n", a->time, a->key, a->key, a->down);
+	}
 }
 
-/**
- * Simulate a keypress.
- */
+void dbg_print_hitpoints(int count, hitpoint **points)
+{
+	for (int i = 0; i < count; i++) {
+		hitpoint *p = *points + i;
+		printf("%d - %d / %d\n", p->start_time, p->end_time, p->column);
+	}
+}
+
 static inline void send_keypress(int code, int down)
 {
-	if (!XTestFakeKeyEvent(display, code, down, CurrentTime)) {
-		printf("failed sending keyevent\n");
-	}
+	XTestFakeKeyEvent(display, char_to_modcode(code), down, CurrentTime);
 
-	XSync(display, false);
+	XFlush(display);
+}
+
+static inline int char_to_modcode(char c)
+{
+	return c == 'd' ? 40 : c == 'f' ? 41 : c == 'j' ? 44 : c == 'k' ? 45 : 0;
 }

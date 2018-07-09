@@ -1,73 +1,69 @@
-#ifndef _OSU_H_
-#define _OSU_H_
+#ifndef OSU_H
+#define OSU_H 
 
-#include <errno.h>
-#include <sys/types.h>
+#define NUM_COLS 4
+#define COL_WIDTH 512
 
-#define NUM_KEYS 4
-#define COL_WIDTH (512 / NUM_KEYS)
+#define MAX_LINE_LENGTH 1024
 
-#define TAPTIME_MS 4
+#define TAPTIME_MS 10
 
 // 0x36e59ec (I64, I32) and 0x36e5c1c (I32) are both maptime.
-#define MAPTIME_ADDR 0x36e59ec
+#define TIME_ADDRESS 0x36e59ec
+
+#include <stdlib.h>
+#include <sys/types.h>
+
+struct hitpoint {
+	int column;
+	int end_time;
+	int start_time;
+};
+
+typedef struct hitpoint hitpoint;
 
 struct action {
 	int time;
-	int type;
-	int code;
-};
-
-struct hitpoint {
-	int type;
-	int stime;
-	int etime;
-	int column;
+	int down;
+	char key;
 };
 
 typedef struct action action;
-typedef struct hitpoint hitpoint;
 
 /**
- * Parses the hitpoints from a given beatmap (*.osu) file and loads them into
- * an empty array of hitpoints pointed at by **points.
- * Returns the number of parsed points.
+ * Parse a beatmap file (*.osu) into an array of hitpoint structs pointed to by 
+ * **points.
+ * Returns the number of points parsed and stored.
  */
-int parse_hitpoints(char *path, hitpoint **points);
+int parse_beatmap(char *file, hitpoint **points);
 
 /**
- * Parses a raw hitpoint line from a beatmap file into a hitpoint struct pointed
- * to by *point.
- * Returns the number of tokens which were read, which doesn't always equal the
- * number of actual values loaded into the struct!
+ * Parses a raw beatmap line into a hitpoint struct pointed to by *point.
+ * Returns the number of tokens read.
  */
-int parse_hitpoint(char *line, hitpoint *point);
+int parse_beatmap_line(char *line, hitpoint *point);
 
 /**
- * Converts an array of hitpoint structs (pointed at by **points) into an array
- * of action structs (pointed to by **actions, to be empty).
- * Every hitpoint is converted into two actions for keyup and keydown
- * respectively. Note that actions are not sorted.
- * Returns the number of actions written.
+ * Parses a total of count hitmapts from **points into **actions.
+ * Returns the number of actions parsed and stored, which should be count * 2.
  */
-int hitpoints_to_actions(int count, hitpoint **points, action **actions);
+int parse_hitpoints(int count, hitpoint **points, action **actions);
 
 /**
- * Populates *ac1 and *ac2 with data from hitpoint *point.
+ * Populates *start and *end with data from hitpoint *point.
  */
-void hitpoint_to_action(hitpoint *point, action *ac1, action *ac2);
+void hitpoint_to_action(hitpoint *point, action *start, action *end);
 
 /**
- * Selection sort (by time) on the array of actions pointed at by **actions.
- * Returns nonzero value on failure.
+ * Sort the array of actions given through **actions by time.
+ * Returns nonzero on failure.
  */
-int sort_actions(int size, action **actions);
+int sort_actions(int count, action **actions);
 
 /**
- * Gets and stores the runtime of the currently playing song, internally
- * referred to as `maptime` in *val.
- * Returns the number of bytes read.
+ * Gets and returns the runtime of the currently playing song, internally
+ * referred to as `maptime`.
  */
-ssize_t get_maptime(pid_t pid, int32_t *val);
+int32_t get_maptime(pid_t pid);
 
-#endif
+#endif /* OSU_H */
