@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
+static inline int col_to_modcode(int col);
+
 int parse_beatmap(char *file, hitpoint **points)
 {
 	FILE *stream;
@@ -74,7 +76,7 @@ int parse_beatmap_line(char *line, hitpoint *point)
 
 int parse_hitpoints(int count, hitpoint **points, action **actions)
 {
-	// Allocate enough memory for all actions.
+	// Allocate enough memory for all actions at once.
 	*actions = malloc((2 * count) * sizeof(action));
 
 	hitpoint *cur_point;
@@ -89,6 +91,8 @@ int parse_hitpoints(int count, hitpoint **points, action **actions)
 
 		hitpoint_to_action(cur_point, start, end);
 	}
+
+	// TODO: Check if all memory was used and free() if applicable.
 
 	return num_actions;
 }
@@ -105,9 +109,19 @@ void hitpoint_to_action(hitpoint *point, action *start, action *end)
 	start->down = 1;	// Keydown.
 
 	const char key = COL_KEYS[point->column];
+	const int code = col_to_modcode(point->column);
 
 	end->key = key;
 	start->key = key;
+
+	end->code = code;
+	start->code = code;
+}
+
+// TODO: Ugly and too specific; make a charcode to modcode function.
+static inline int col_to_modcode(int col)
+{
+	return col == 0 ? 40 : col == 1 ? 41 : col == 2 ? 44 : col == 3 ? 45 : 0;
 }
 
 int sort_actions(int total, action **actions)
@@ -119,9 +133,9 @@ int sort_actions(int total, action **actions)
 	for (i = 0; i < (total - 1); i++) {
 		min = i;
 
-		// For the subarray starting at a[j].
+		// In the subarray starting at a[j]...
 		for (j = i; j < total; j++)
-			// Find the smallest element.
+			// ...find the smallest element.
 			if ((act + j)->time < (act + min)->time) min = j;
 
 		// Swap current element with the smallest element of subarray.

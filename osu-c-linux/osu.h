@@ -6,9 +6,8 @@
 
 #define MAX_LINE_LENGTH 1024
 
-#define TAPTIME_MS 10
+#define TAPTIME_MS 12
 
-// 0x36e59ec (I64, I32) and 0x36e5c1c (I32) are both maptime.
 #define TIME_ADDRESS 0x36e59ec
 
 #include <stdlib.h>
@@ -25,6 +24,7 @@ typedef struct hitpoint hitpoint;
 struct action {
 	int time;
 	int down;
+	int code;
 	char key;
 };
 
