@@ -40,25 +40,20 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	DWORD game_proc_id = get_process_id("osu!.exe");
-
-	if (!game_proc_id) {
+	DWORD game_proc_id;
+	if (!(game_proc_id = get_process_id("osu!.exe"))) {
 		printf("couldn't find game process");
 		return EXIT_FAILURE;
 	}
 
-	game_proc = OpenProcess(PROCESS_VM_READ, 0, game_proc_id);
-
-	if (!game_proc) {
+	if (!(game_proc = OpenProcess(PROCESS_VM_READ, 0, game_proc_id))) {
 		printf("failed to get handle to game process\n");
 		return EXIT_FAILURE;
 	}
 
 	printf("got handle to osu! process\n");
 
-	time_address = find_pattern(game_proc, TIME_SIGNATURE);
-
-	if (!time_address) {
+	if (!(time_address = find_pattern(game_proc, TIME_SIGNATURE))) {
 		printf("failed to find address of the gametime\n");
 		return EXIT_FAILURE;
 	}
@@ -83,8 +78,7 @@ void dbg_print_actions(int count, action **actions)
 
 void dbg_print_hitpoints(int count, hitpoint **points)
 {
-	for (int i = 0; i < count; i++)
-	{
+	for (int i = 0; i < count; i++) {
 		hitpoint *p = *points + i;
 		printf("%d - %d / %d\n", p->start_time, p->end_time, p->column);
 	}
