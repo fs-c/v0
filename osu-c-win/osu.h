@@ -1,6 +1,7 @@
 #ifndef OSU_H
 #define OSU_H
 
+#include <stdbool.h>
 #include <windows.h>
 
 #include "beatmap.h"
@@ -8,7 +9,7 @@
 #define TIME_SIGNATURE "\xDB\x5D\xE8\x8B\x45\xE8\xA3"
 
 extern HANDLE game_proc;
-extern size_t time_address;
+extern void *time_address;
 
 /**
  * process.c
@@ -26,11 +27,11 @@ DWORD get_process_id(char *name);
 
 /**
  * process.c
- * Returns the address of the first occurence of the given pattern in the given
- * processes memory.
+ * Returns the address of the (end of the) first occurence of the given pattern
+ * in the given processes memory.
  * Returns zero if the pattern was not found.
  */
-DWORD find_pattern(HANDLE process, char *pattern);
+void *find_pattern(HANDLE process, char *pattern);
 
 /**
  * action.c
