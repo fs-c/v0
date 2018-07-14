@@ -102,6 +102,7 @@ rethinkdb_data/
 
 *.osu
 
-.vscode
+.vscode/*
 
 *.exe
+
