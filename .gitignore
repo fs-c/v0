@@ -87,17 +87,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-upload/files/*
-
-*/keys.txt
-
-pr0data/
-pr0/data/
-
-pr0gramm-scraper/data
-
-rethinkdb_data/
-
 *.out
 
 *.osu
@@ -107,3 +96,5 @@ rethinkdb_data/
 *.exe
 
 *.o
+
+rethinkdb_data
