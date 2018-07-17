@@ -4,17 +4,17 @@ section .text
 
 _start:
     
-    mov     edx,len
-    mov     ecx,msg
-    mov     ebx,1
-    mov     eax,4                   ;sys_write
+    mov     edx, len
+    mov     ecx, msg
+    mov     ebx, 1
+    mov     eax, 4					;sys_write
     int     0x80
 
-  	mov     ebx,0
-    mov     eax,1
+    mov     ebx, 0
+    mov     eax, 1
     int     0x80
 
 section .data
 
-msg db      "Hello, world!",0xa
+msg db      "Hello, world!", 0xa
 len equ     $ - msg
