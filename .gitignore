@@ -91,10 +91,15 @@ $RECYCLE.BIN/
 
 *.osu
 
-.vscode
+.vscode/*
 
+*.exe
+
+<<<<<<< HEAD
 *.exe
 
 *.o
 
 rethinkdb_data
+=======
+>>>>>>> b589f064ce74d804b25f16c0a96f2aeed3634737
