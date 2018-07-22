@@ -56,5 +56,6 @@ void get_circle_point(int radius, int angle, int *x, int *y)
 	float radians = angle * (PI / 180);
 
 	*x = radius * cos(radians);
+	// TODO: Why do we need to divide by two here?
 	*y = radius * sin(radians) * 0.5;
 }
