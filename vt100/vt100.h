@@ -1,5 +1,3 @@
-#include <math.h>
-
 #define PI 3.14159265
 
 // Most recent warning reported by any function.
@@ -72,24 +70,19 @@ void status_draw();
  */
 void line_erase(int line);
 
-/* Returns `orig` or `min` if `orig` is not in the range of [min, +inf[.
+/* Returns the current terminal window's lines and columns through the two
+ * output pointers.
  */
-static inline int constrain_above(int orig, int min);
+void get_terminal_dimensions(int *lines, int *columns);
+
+/* Returns a point on a cirle's circumference given an angle in degrees and a
+ * radius.
+ */
+void get_circle_point(int radius, int angle, int *x, int *y);
 
 /* Return `orig` or `min` if it is not in the range of [min, Infinity[.
  */
 static inline int constrain_above(int orig, int min)
 {
 	return orig < min ? min : orig;
-}
-
-/* Returns a point on a cirle's circumference given an angle in degrees and a
- * radius.
- */
-static inline void get_circle_point(int radius, int angle, int *x, int *y)
-{
-	float radians = angle * (PI / 180);
-
-	*x = radius * cos(radians);
-	*y = radius * sin(radians);
 }

@@ -2,7 +2,8 @@
 
 #include <math.h>
 #include <stdio.h>
-
+#include <unistd.h>
+#include <sys/ioctl.h>
 
 int buf_x;
 int buf_y;
@@ -39,4 +40,21 @@ void line_erase(int line)
 	cursor_move(0, y);
 	printf("\e[2K");
 	cursor_move_back();
+}
+
+void get_terminal_dimensions(int *lines, int *columns)
+{
+	struct winsize w;
+    	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+
+	*lines = w.ws_row;
+	*columns = w.ws_col;
+}
+
+void get_circle_point(int radius, int angle, int *x, int *y)
+{
+	float radians = angle * (PI / 180);
+
+	*x = radius * cos(radians);
+	*y = radius * sin(radians) * 0.5;
 }
