@@ -54,15 +54,13 @@ void draw_square(int x, int y, int width)
 
 void draw_circle(int x, int y, int radius)
 {
-	for (int i = 0; i <= 360; i++) {
-		float rads = degrees_to_radians(i);
+	for (int angle = 0; angle <= 360; angle++) {
+		int cx, cy;
+		get_circle_point(radius, angle, &cx, &cy);
 
-		int cx = round_float(radius * cos(rads)) + x;
-		int cy = round_float(radius * sin(rads) * 0.5) + y;
-
-		// printf("%d / %d\n", cx, cy);
-
-		draw_dot(cx, cy);
+		// cx and cy are relative to the top left corner of the square
+		// the circle is in.
+		draw_dot(cx + x, cy + y);
 	}
 
 	// TODO: Why in the world do we need radius / 2 here?
