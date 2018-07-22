@@ -53,9 +53,9 @@ void get_terminal_dimensions(int *lines, int *columns)
 
 void get_circle_point(int radius, int angle, int *x, int *y)
 {
-	float radians = angle * (PI / 180);
+	float radians = degrees_to_radians(angle);
 
-	*x = radius * cos(radians);
+	*x = round_float(radius * cos(radians));
 	// TODO: Why do we need to divide by two here?
-	*y = radius * sin(radians) * 0.5;
+	*y = round_float(radius * sin(radians) * 0.5);
 }
