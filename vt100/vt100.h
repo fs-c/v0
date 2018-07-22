@@ -57,12 +57,12 @@ void draw_square(int x, int y, int width);
 
 /* Moves the terminal down by it's height, effectively clearing it.
  */
-void screen_clear();
+void screen_clear(void);
 
 /* Draws the status bar which contains current X and Y coordinates of the
  * cursor and the most recent warning/error reported by any function.
  */
-void status_draw();
+void status_draw(void);
 
 /*
  * Erase the line at the given index (starts at zero, inclusive) or zero if it
