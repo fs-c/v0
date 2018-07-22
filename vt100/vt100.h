@@ -50,10 +50,19 @@ void draw_line_horizontal(int x, int y, int length);
  */
 void draw_line_vertical(int x, int y, int length);
 
+/* Draws a dot. Duh.
+ */
+void draw_dot(int x, int y);
+
 /* Draws a square where X/Y is the top left corner with a given width
  * (inclusive).
  */
 void draw_square(int x, int y, int width);
+
+/* Draws a circle with a given radius. Drawn inside a square with X/Y being
+ * it's top left coordinates.
+ */
+void draw_circle(int x, int y, int radius);
 
 /* Moves the terminal down by it's height, effectively clearing it.
  */
@@ -85,4 +94,19 @@ void get_circle_point(int radius, int angle, int *x, int *y);
 static inline int constrain_above(int orig, int min)
 {
 	return orig < min ? min : orig;
+}
+
+/* Convert degrees to radians.
+ */
+static inline float degrees_to_radians(int degrees)
+{
+	return degrees * (PI / 180);
+}
+
+/* Round a floating point value to an int.
+ */
+static inline int round_float(float x)
+{
+	int ix = (int)x;
+	return (x - ix) > 0.5 ? ix + 1 : ix;
 }
