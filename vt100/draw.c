@@ -66,6 +66,16 @@ void draw_circle(int x, int y, int radius)
 		// the circle is in.
 		draw_dot(cx + x, cy + y);
 	}
+}
 
-	cursor_move(x - radius, y - radius / 2);
+void draw_diagonal(int x, int y, int width, int height)
+{
+	float slope = width / height;
+
+	for (int w = 0; w < width; w++) {
+		int dx = x + w;
+		int dy = round_float((y + w * slope) * CHAR_RATIO);
+
+		draw_dot(dx, dy);
+	}
 }

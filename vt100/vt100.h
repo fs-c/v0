@@ -64,6 +64,11 @@ void draw_square(int x, int y, int width);
  */
 void draw_circle(int x, int y, int radius);
 
+/* Draws the diagonal of a rectangle with the given width and height from the
+ * bottom left to the top right. Relative 0/0 is top left, as always.
+ */
+void draw_diagonal(int x, int y, int width, int height);
+
 /* Moves the terminal down by it's height, effectively clearing it.
  */
 void screen_clear(void);
