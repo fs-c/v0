@@ -19,13 +19,13 @@ void screen_clear()
 void status_draw()
 {
 	line_erase(0);
-	
+
 	// Since we need to move around to draw this, save beforehand.
 	cursor_pos_save();
 
 	cursor_move(0, 0);
 	printf("%3d / %-3d | %s", buf_x, buf_y, last_error);
-	
+
 	cursor_pos_restore();
 }
 
@@ -56,6 +56,5 @@ void get_circle_point(int radius, int angle, int *x, int *y)
 	float radians = degrees_to_radians(angle);
 
 	*x = round_float(radius * cos(radians));
-	// TODO: Why do we need to divide by two here?
-	*y = round_float(radius * sin(radians) * 0.5);
+	*y = round_float(radius * sin(radians));
 }
