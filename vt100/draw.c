@@ -1,7 +1,6 @@
 #include "vt100.h"
 
-#include <math.h>
-#include <stdio.h>
+#include <stdio.h>	// printf(), putchar()
 
 #define DRAW_CHAR '#'
 // Approximation of monospace height to width ratio.

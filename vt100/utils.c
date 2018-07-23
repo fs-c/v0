@@ -1,9 +1,9 @@
 #include "vt100.h"
 
-#include <math.h>
-#include <stdio.h>
+#include <math.h> 	// cos(), sin()
+#include <stdio.h>	// printf()
 #include <unistd.h>
-#include <sys/ioctl.h>
+#include <sys/ioctl.h>	// ioctl()	
 
 int buf_x;
 int buf_y;
