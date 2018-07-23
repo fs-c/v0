@@ -53,15 +53,19 @@ void draw_square(int x, int y, int width)
 
 void draw_circle(int x, int y, int radius)
 {
+	x += radius;
+	y += radius * CHAR_RATIO;
+
 	for (int angle = 0; angle <= 360; angle++) {
 		int cx, cy;
 		get_circle_point(radius, angle, &cx, &cy);
+
+		cy *= CHAR_RATIO;
 
 		// cx and cy are relative to the top left corner of the square
 		// the circle is in.
 		draw_dot(cx + x, cy + y);
 	}
 
-	// TODO: Why in the world do we need radius / 2 here?
 	cursor_move(x - radius, y - radius / 2);
 }
