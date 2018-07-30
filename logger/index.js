@@ -52,11 +52,7 @@ const log = exports.log = (body, ...args) => {
 
   let index = 0;
   const string = body.replace(/%o/g, (match, format) => {
-    match = inspect(args[index], inspectArgs);
-
-    index++;
-
-    return match;
+    return inspect(args[index++], inspectArgs);
   });
 
   write(string);
