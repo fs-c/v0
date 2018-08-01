@@ -7,11 +7,9 @@
 static inline double deg_to_rad(double degrees);
 static inline double rad_to_deg(double radians);
 
-double distance;
-double wheel_base;
-double steering_angle;
+void solve(double wheel_base, double distance, double steering_angle);
 
-int flipped = 0;
+int debug = 1;
 
 int main(int argc, char *argv[])
 {
@@ -20,9 +18,18 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	wheel_base = atof(argv[1]);
-	distance = atof(argv[2]);
-	steering_angle = atof(argv[3]);
+	float wheel_base = atof(argv[1]);
+	float distance = atof(argv[2]);
+	float steering_angle = atof(argv[3]);
+
+	solve(wheel_base, distance, steering_angle);
+}
+
+void solve(double wheel_base, double distance, double steering_angle)
+{
+	// Is the turning circle 'flipped' or not (ergo steering left or right)?
+	// 0: Right, 1: Left
+	int flipped = 0;
 
 	// Radius of the circle we move in.
 	double radius = wheel_base / sin(deg_to_rad(steering_angle));
@@ -43,23 +50,14 @@ int main(int argc, char *argv[])
 	x *= flipped ? 1.0 : -1.0;
 	x += flipped ? -radius : radius;
 
-	printf("[ base %.2f, dist %.2f, sang %.2f ] : ",
-		wheel_base, distance, steering_angle);
-	printf("rds=%.4f ang=%.4f delta=%.4f/%.4f\n",
-		radius, angle, x, y);
+	if (debug) {
+		printf("[ base %.2f, dist %.2f, sang %.2f ] : ",
+			wheel_base, distance, steering_angle);
+		printf("rds=%.4f ang=%.4f delta=%.4f/%.4f\n",
+			radius, angle, x, y);
+	}
 
 	printf("%.2f %.2f %.2f\n", x, y, angle);
-
-	/*
-	for (int a = 0; a < 360; a++) {
-		const double r = 1.0;
-
-		double x = ((r * cos(deg_to_rad(a))) * -1.0) + r;
-		double y = sin(deg_to_rad(a));
-
-		printf("%3d° : %.2f/%.2f\n", a, x, y);
-	}
-	*/
 }
 
 static inline double deg_to_rad(double degrees)
