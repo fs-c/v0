@@ -35,12 +35,13 @@ void solve(double wheel_base, double distance, double steering_angle)
 	double radius = wheel_base / sin(deg_to_rad(steering_angle));
 
 	if (radius < 0) {
+		// Never work with a negative radius.	
 		radius *= -1.0;
 
 		flipped = 1;
 	}
 
-	// Angle from starting position (0°)s.
+	// Delta angle from starting position.
 	double angle = rad_to_deg(distance / radius);
 
 	// Delta X/Y from starting position.
@@ -60,7 +61,7 @@ void solve(double wheel_base, double distance, double steering_angle)
 	printf("%.2f %.2f %.2f\n", x, y, angle);
 }
 
-static inline double deg_to_rad(double degrees)
+static inline double deg_to_rad(double degrees) 
 {
 	return degrees * (PI / 180.0);
 }
