@@ -4,12 +4,14 @@
 
 #define PI 3.14159265359
 
-static inline float deg_to_rad(float degrees);
-static inline float rad_to_deg(float radians);
+static inline double deg_to_rad(double degrees);
+static inline double rad_to_deg(double radians);
 
-float distance;
-float wheel_base;
-float steering_angle;
+double distance;
+double wheel_base;
+double steering_angle;
+
+int flipped = 0;
 
 int main(int argc, char *argv[])
 {
@@ -18,44 +20,54 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	distance = atof(argv[1]);
-	wheel_base = atof(argv[2]);
+	wheel_base = atof(argv[1]);
+	distance = atof(argv[2]);
 	steering_angle = atof(argv[3]);
 
 	// Radius of the circle we move in.
-	float radius = wheel_base / sin(deg_to_rad(steering_angle));
-	// float radius = 1.0;
+	double radius = wheel_base / sin(deg_to_rad(steering_angle));
+
+	if (radius < 0) {
+		radius *= -1.0;
+
+		flipped = 1;
+	}
 
 	// Angle from starting position (0°)s.
-	float angle = rad_to_deg(distance / radius);
+	double angle = rad_to_deg(distance / radius);
 
 	// Delta X/Y from starting position.
-	float x = ((radius * cos(deg_to_rad(angle))) * -1.0) + radius;
-	float y = radius * sin(deg_to_rad(angle));
+	double x = radius * cos(deg_to_rad(angle));
+	double y = radius * sin(deg_to_rad(angle));
 
-	// printf("radius: %.2f, angle: %.2f, relative x/y: %.2f/%.2f\n",
-	// 	radius, angle, x, y);
+	x *= flipped ? 1.0 : -1.0;
+	x += flipped ? -radius : radius;
+
+	printf("[ base %.2f, dist %.2f, sang %.2f ] : ",
+		wheel_base, distance, steering_angle);
+	printf("rds=%.4f ang=%.4f delta=%.4f/%.4f\n",
+		radius, angle, x, y);
 
 	printf("%.2f %.2f %.2f\n", x, y, angle);
 
 	/*
 	for (int a = 0; a < 360; a++) {
-		const float r = 1.0;
+		const double r = 1.0;
 
-		float x = ((r * cos(deg_to_rad(a))) * -1.0) + r;
-		float y = sin(deg_to_rad(a));
+		double x = ((r * cos(deg_to_rad(a))) * -1.0) + r;
+		double y = sin(deg_to_rad(a));
 
 		printf("%3d° : %.2f/%.2f\n", a, x, y);
 	}
 	*/
 }
 
-static inline float deg_to_rad(float degrees)
+static inline double deg_to_rad(double degrees)
 {
 	return degrees * (PI / 180.0);
 }
 
-static inline float rad_to_deg(float radians)
+static inline double rad_to_deg(double radians)
 {
 	return radians * (180.0 / PI);
 }
