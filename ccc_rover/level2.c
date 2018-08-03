@@ -1,34 +1,55 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define PI 3.14159265359
+
+void parse_input(const char *string, const int str_len, double **arr);
 
 static inline double deg_to_rad(double degrees);
 static inline double rad_to_deg(double radians);
 
 void solve(double wheel_base, double distance, double steering_angle);
 
-int debug = 1;
+const int debug = 1;
+
+const int in_len = 6;
+char *const input[] = {
+	"1.00 1.00 30.00",
+	"2.13 4.30 23.00",
+	"1.75 3.14 -23.00",
+	"2.70 45.00 -34.00",
+	"4.20 -5.30 20.00",
+	"9.53 8.12 0.00"
+};
 
 int main(int argc, char *argv[])
 {
-	if (argc < 4) {
-		printf("error: missing arguments");
-		return -1;
+	double *args = malloc(sizeof(double) * 3);
+	for (int i = 0; i < in_len; i++) {
+		parse_input(input[i], sizeof(input[i]), &args);
+
+		solve(args[0], args[1], args[2]);
 	}
+}
 
-	float wheel_base = atof(argv[1]);
-	float distance = atof(argv[2]);
-	float steering_angle = atof(argv[3]);
+void parse_input(const char *string, const int str_len, double **arr)
+{
+	int i = 0;
+	char *token = NULL;
+	char *str = malloc(str_len);
 
-	solve(wheel_base, distance, steering_angle);
+	strcpy(str, string);
+
+	while ((token = strsep(&str, " ")))
+		(*arr)[i++] = atof(token);
 }
 
 void solve(double wheel_base, double distance, double steering_angle)
 {
 	// Is the turning circle 'flipped' or not (ergo steering left or right)?
-	// 0: Right, 1: Left
+	// Open to: 0 - Right, 1 - Left
 	int flipped = 0;
 
 	// Radius of the circle we move in.
@@ -48,13 +69,14 @@ void solve(double wheel_base, double distance, double steering_angle)
 	double x = radius * cos(deg_to_rad(angle));
 	double y = radius * sin(deg_to_rad(angle));
 
+	// Make relative to starting position.
 	x *= flipped ? 1.0 : -1.0;
 	x += flipped ? -radius : radius;
 
 	if (debug) {
 		printf("[ base %.2f, dist %.2f, sang %.2f ] : ",
 			wheel_base, distance, steering_angle);
-		printf("rds=%.4f ang=%.4f delta=%.4f/%.4f\n",
+		printf("rds=%.2f ang=%.2f delta=%.2f/%.2f\n",
 			radius, angle, x, y);
 	}
 
