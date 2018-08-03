@@ -23,7 +23,7 @@ char *const input[] = {
 	"4.20 -5.30 20.00",
 	"9.53 8.12 0.00"
 };
-
+ 
 int main(int argc, char *argv[])
 {
 	double *args = malloc(sizeof(double) * 3);
@@ -65,13 +65,17 @@ void solve(double wheel_base, double distance, double steering_angle)
 	// Delta angle from starting position.
 	double angle = rad_to_deg(distance / radius);
 
-	// Delta X/Y from starting position.
+	// X/Y from circle origin.
 	double x = radius * cos(deg_to_rad(angle));
 	double y = radius * sin(deg_to_rad(angle));
 
 	// Make relative to starting position.
 	x *= flipped ? 1.0 : -1.0;
 	x += flipped ? -radius : radius;
+
+	if (flipped) {
+		angle = 360 - angle;
+	}
 
 	if (debug) {
 		printf("[ base %.2f, dist %.2f, sang %.2f ] : ",
