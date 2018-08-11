@@ -24,7 +24,7 @@ const cursor = {
 
 const clear = {
     screen: () => write(`${esc}[2J`),
-}
+};
 
 const draw = {
     dot: (x, y) => {
@@ -32,7 +32,9 @@ const draw = {
         write(defaults.char);
     },
     rect: (x, y, w, h, fill = false) => {
-        console.log(x, y, w, h);
+        clear.screen();
+
+        console.log(columns, rows, x, y, w, h);
 
         for (let _x = 0; _x < w; _x++) for (let _y = 0; _y < h; _y++)
             if (fill || _x === 0 || _x === w - 1 || _y === 0 || _y === h - 1)
