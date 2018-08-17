@@ -1,16 +1,13 @@
-#include <math.h>
+#include "common.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define PI 3.14159265359
 
-void parse_input(const char *string, const int str_len, double **arr);
-
-static inline double deg_to_rad(double degrees);
-static inline double rad_to_deg(double radians);
-
 void solve(double wheel_base, double distance, double steering_angle);
+void parse_input(const char *string, const int str_len, double **arr);
 
 const int debug = 1;
 
@@ -53,7 +50,7 @@ void solve(double wheel_base, double distance, double steering_angle)
 	int flipped = 0;
 
 	// Radius of the circle we move in.
-	double radius = wheel_base / sin(deg_to_rad(steering_angle));
+	double radius = get_radius(wheel_base, steering_angle);
 
 	if (radius < 0) {
 		// Never work with a negative radius.	
@@ -66,8 +63,8 @@ void solve(double wheel_base, double distance, double steering_angle)
 	double angle = rad_to_deg(distance / radius);
 
 	// X/Y from circle origin.
-	double x = radius * cos(deg_to_rad(angle));
-	double y = radius * sin(deg_to_rad(angle));
+	double x, y;
+	get_circle_point(radius, angle, &x, &y);
 
 	// Make relative to starting position.
 	x *= flipped ? 1.0 : -1.0;
@@ -85,14 +82,4 @@ void solve(double wheel_base, double distance, double steering_angle)
 	}
 
 	printf("%.2f %.2f %.2f\n", x, y, angle);
-}
-
-static inline double deg_to_rad(double degrees) 
-{
-	return degrees * (PI / 180.0);
-}
-
-static inline double rad_to_deg(double radians)
-{
-	return radians * (180.0 / PI);
 }
