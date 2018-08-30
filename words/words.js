@@ -17,12 +17,18 @@
 
 const fs = require('fs');
 const path = require('path');
+
+const ejs = require('ejs');
 const marked = require('marked');
 const { highlight } = require('highlightjs');
 
 const { parseItem, copyFolder, removeFolder } = require('./src/utils');
 
 const cwd = require('process').cwd();
+
+marked.setOptions({
+    highlight: (code, lang) => highlight(lang, code).value,
+});
 
 // Array of all parsed items, filter out those where parsing failed.
 const items = fs.readdirSync(path.join(cwd, 'content'))
@@ -43,26 +49,37 @@ copyFolder(path.resolve(path.join(cwd, 'static')),
     path.resolve(path.join(cwd, 'public/static')));
 
 const templates = {
-    item: fs.readFileSync('templates/item.html', 'utf8'),
+    item: ejs.compile(fs.readFileSync('templates/item.html', 'utf8')),
+    front: ejs.compile(fs.readFileSync('templates/front.html', 'utf8')),
 }
 
-marked.setOptions({
-    highlight: (code, lang) => highlight(lang, code).value,
-});
-
+// Build items...
 for (const item of items) {
     // Absolute path to the folder for the item in public/.
-    const itemPath = path.join(publicPath, path.parse(item.path).name);
-    fs.mkdirSync(itemPath);
+    const public = path.join(publicPath, path.parse(item.path).name);
+    
+    fs.mkdirSync(public);
 
     const data = {
         content: marked(item.content),
         title: item.frontMatter.title,
     };
 
-    const template = Object.keys(data).reduce((acc, cur, i) => {
-        return acc.replace(`<%${cur.toUpperCase()}%>`, data[cur]);
-    }, templates.item);
-
-    fs.writeFileSync(path.join(itemPath, 'index.html'), template);
+    fs.writeFileSync(path.join(public, 'index.html'),
+        templates.item(data));
 }
+
+// Build front...
+const rendered = templates.front({ items: items.map((item) => {
+    const date = new Date(item.frontMatter.date);
+    item.frontMatter.humanDate = `${date.getFullYear()}-${date.getMonth()}`
+        + `-${date.getDate()}`;
+
+    const { path } = item;
+    const short = path.slice(path.lastIndexOf('/') + 1, path.lastIndexOf('.'));
+    item.shortPath = short;
+
+    return item;
+})});
+
+fs.writeFileSync(path.join(publicPath, 'index.html'), rendered);
