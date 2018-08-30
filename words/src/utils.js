@@ -71,10 +71,11 @@ const copyFolder = exports.copyFolder = (from, to) => {
             copyFolder(file, nested);
         } else {
             const content = fs.readFileSync(file);
-            const destination = path.join(to, path.parse(file).name);
+            const { ext, name } = path.parse(file);
+            const destination = path.join(to, name);
 
             try {
-                fs.writeFileSync(path.resolve(file, destination), content);                
+                fs.writeFileSync(path.resolve(file, destination) + ext, content);                
             } catch (err) { return console.error(err); }
         }
     }
