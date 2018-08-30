@@ -8,7 +8,6 @@ const parseItem = exports.parseItem = (path) => {
     let frontMatter = null;
 
     try {
-        // This will throw if the file does not exist.
         file = fs.readFileSync(path, 'utf8');
 
         if (file[0] !== '{')
@@ -30,35 +29,49 @@ const copyFolder = exports.copyFolder = (from, to) => {
         return console.error('copyFolder: invalid path %s', from);
 
     if (!fs.existsSync(to))
-        fs.mkdirSync(to);
+        try { fs.mkdirSync(to); } catch (err) { return console.error(err); }
 
     const folder = fs.readdirSync(from)
         .map((file) => path.resolve(from, file));
 
     for (const file of folder) {
         if (fs.statSync(file).isDirectory()) {
-            const nested = file.slice(file.lastIndexOf(path.sep));
+            const segment = file.slice(file.lastIndexOf(path.sep));
+            const nested = path.join(to, segment);
 
-            fs.mkdirSync(path.join(to, nested));
+            if (!fs.existsSync(nested))
+                try { fs.mkdirSync(nested); } catch (err) {
+                    return console.error(err);
+                }
 
             copyFolder(file, nested);
         } else {
             const content = fs.readFileSync(file);
             const destination = path.join(to, path.parse(file).name);
 
-            fs.writeFileSync(path.resolve(file, destination), content);
+            try {
+                fs.writeFileSync(path.resolve(file, destination), content);                
+            } catch (err) { console.error(err); }
         }
     }
 }
 
-const removeFolder = exports.removeFolder = (path) => {
-    const folder = fs.readdirSync(path);
+const removeFolder = exports.removeFolder = (folder) => {
+    if (!fs.existsSync(folder))
+        return console.error('removeFolder: invalid path %s', folder);
 
-    for (const file of folder) {
+    const contents = fs.readdirSync(folder)
+        .map((file) => path.resolve(folder, file));
+
+    for (const file of contents) {
         if (fs.statSync(file).isDirectory()) {
-            removeFolder(path.join(path, file));
-
-            fs.rmdir(path);
-        } else fs.unlinkSync(path.join(path, file));
+            removeFolder(file);
+        } else {
+            fs.unlinkSync(file);
+        }
     }
+
+    try {
+        fs.rmdirSync(folder);
+    } catch (err) { return console.error(err); }
 }
