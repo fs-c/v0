@@ -1,3 +1,20 @@
+.dub
+docs.json
+__dummy.html
+
+#d_words specific
+d_words.so
+d_words.dylib
+d_words.dll
+d_words.a
+d_words.lib
+d_words-test-*
+
+*.exe
+*.o
+*.obj
+*.lst
+
 # Dotenv files
 .env
 
