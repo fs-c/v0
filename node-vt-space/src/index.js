@@ -28,7 +28,7 @@ const clear = {
 
 const draw = {
     dot: (x, y) => {
-        cursor.move(x, y);
+        cursor.move(Math.round(x), Math.round(y));
         write(defaults.char);
     },
     rect: (x, y, w, h, fill = false) => {
@@ -48,7 +48,8 @@ player.draw = () => {
     draw.rect(int(x - width / 2), int(y - height / 2), width, height);
 };
 
-clear.screen();
-player.draw();
+process.stdout.on('resize', () => {
+    console.log(`${process.stdout.columns}x${process.stdout.rows}`);
+});
 
 while(true) {}
