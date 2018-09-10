@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A page containing, surprisingly, words.">
+	<meta name="author" content="Me.">
+
+	<link rel="icon" href="./static/favicon.png">
+	<link rel="stylesheet" href="./static/css/markdown.css">
+
+	<style>
+		h3 a {
+			color: #333 !important;
+			font-weight: normal;		
+		}
+
+		h3 {
+			margin-top: 2px !important;
+			margin-bottom: 2px !important;
+		}
+
+		span.date {
+			color: #6a737d;
+			font-size: 14px;
+			font-weight: normal;
+			white-space: nowrap;
+		}
+
+		div.light-seperator {
+			margin-bottom: 0.6em;
+			padding-bottom: 0.6em;
+			font-size: 1.5em;
+			border-bottom: 1px solid #eaecef;
+		}
+	</style>
+
+	<title>words</title>
+</head>
+<body>
+	<div class="markdown-body">
+		<h2>lw's words</h2>
+
+		Read some of my code and have a look at my projects on 
+		<a href="https://github.com/LW2904/">GitHub</a> and 
+		<a href="https://gitlab.com/fsoc">GitLab</a>. 
+		Find contact information on <a href="https://lw.ag">lw.ag/</a>.<br>
+
+		If you come across any errors in the following posts or have a suggestion, 
+		please feel free to send me an email about it. All code posted here is 
+		released under WTFPL unless otherwise noted.
+
+		<div class="light-seperator"></div>
+
+		{{#items}}
+			<div class="item">
+				<h3>
+					<a href="./{{shortPath}}/">{{frontMatter.title}}</a>
+					<span class="date" title="{{frontMatter.date}}">{{frontMatter.absoluteDate}}</span>
+				</h3>
+			</div>
+		{{/items}}
+	</div>
+
+	<script src="./static/js/utils.js"></script>	
+	<script>
+		
+		const items = document.getElementsByClassName("item");
+
+		for (const item of items) {
+			const span = item.children[0].children[1];
+			const date = new Date(span.getAttribute("title"));
+
+			span.setAttribute("title", span.innerHTML);
+			
+			span.innerHTML = prettyDate(date);
+		}
+
+	</script>
+</body>
+
+</html>

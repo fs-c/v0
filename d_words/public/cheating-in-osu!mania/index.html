@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A page containing, surprisingly, words.">
+	<meta name="author" content="Me.">
+
+	<link rel="icon" href="../static/favicon.png">
+	<link rel="stylesheet" href="../static/css/markdown.css">
+	<link rel="stylesheet" href="../static/css/highlighting.css">
+
+	<title>Cheating in osu!mania</title>
+</head>
+<body>
+	<div class="markdown-body">
+		<h1>Cheating in osu!mania</h1>
+
+		<p>I’ve been dabbling in memory reading on Linux recently, and I’ve also been having fun with a little application called <a href="https://github.com/scanmem/scanmem">scanmem</a> which can be used to isolate the address of a variable in a process.
+</p>
+<p>And coincidence has it that I’ve also started playing the game <a href="https://osu.ppy.sh/">osu!mania</a> somewhat actively in the last few weeks. Well, one thing led to another and now we are here.
+</p>
+<p>Essentially, what we are going to be doing can be divided into two stages:
+</p>
+<ul>
+<li>Parse a beatmap file (the <code class="prettyprint">.osu</code> files in your <code class="prettyprint">.../osu!/Songs/</code> path) and get the hitpoints described in it.
+</li>
+<li>Read the current songs playing time from the game process’ memory and determine which hitpoints are “due”.
+</li>
+</ul>
+<p>By parsing hits from the <code class="prettyprint">.osu</code> file we avoid having to do too much memory reading or (god forbid) reading the screens’ pixels.
+</p>
+<p>It should be noted that I will be using APIs that are specific to Linux and the X Window System in order to read the little memory we have to, and to simulate keypresses. The parts that require this are easily replaceable with close Windows equivalents, and no changes to the main program logic are required.
+</p>
+<h3 id="parsing-the-beatmap"> Parsing the beatmap</h3>
+<p>Information about beatmaps is stored in plaintext in <code class="prettyprint">.osu</code> files, and the format is <a href="https://osu.ppy.sh/help/wiki/osu!_File_Formats/Osu_(file_format)">well documented</a>. These files contain many sections, of which only the last <code class="prettyprint">[HitObjects]</code> section is relevant to us.
+</p>
+<p>The Hit Objects section is made up of CSV lines with a syntax like this: 
+</p>
+<p><code class="prettyprint">`yaml
+x, y, time, type, hitSound, [endTime], extras
+</code>`
+</p>
+<p>Of these values we only need
+</p>
+<ul>
+<li><code class="prettyprint">x </code> to determine the column this point falls in, 
+</li>
+<li><code class="prettyprint">time</code> to determine when to press the button and
+</li>
+<li><code class="prettyprint">endTime</code> to determine when to release the button.
+</li>
+</ul>
+<p>Do note that <code class="prettyprint">endTime</code> will be zero if this is a simple hit object, ergo if it’s not a Hold Note. In our implementation, if <code class="prettyprint">!endtime</code>, we will simply set it to <code class="prettyprint">time + TAPTIME</code> where <code class="prettyprint">TAPTIME</code> is something like 15.
+</p>
+<p>A <code class="prettyprint">hitpoint</code> struct containing only the requires values could look like this:
+</p>
+<p><code class="prettyprint">`c
+struct hitpoint {
+	int column;
+	int end_time;
+	int start_time;
+};
+</code>`
+</p>
+<p>These beatmaps are sorted by <code class="prettyprint">time</code>, but their <code class="prettyprint">endTime</code>s can be all over the place, so we’ll parse them into objects which we can properly sort and then execute one by one as they are due. For this we’ll build an action struct which will represent either keydown or keyup:
+</p>
+<p><code class="prettyprint">`C
+struct action {
+	int time;
+	char key;
+	bool down;
+};
+</code>`
+</p>
+<p>A Hit Object line like
+</p>
+<p><code class="prettyprint">`yaml
+64,192,1000,128,0,3670:0:0:0:0:
+</code>`
+</p>
+<p>can then be parsed into a hitpoint,
+</p>
+<p><code class="prettyprint">`C
+{ column: 0, start_time: 1000, end_time: 1128 }
+</code>`
+</p>
+<p>which can be parsed into two actions.
+</p>
+<p><code class="prettyprint">`json
+[ { time: 1000, down: true, key: 'd' },
+  { time: 1128, down: false, key: 'd' } ]
+</code>`
+</p>
+<p><em>For readability I’ve borrowed from the JSON syntax here.</em>
+</p>
+<p>An important calculation to consider in the CSV to <code class="prettyprint">hitpoint</code> conversion is that of the <code class="prettyprint">column</code> property. We know that <code class="prettyprint">x</code> determines the column, and the documentation provides us with the following formula:
+</p>
+<p><code class="prettyprint">column = X / column width</code> <em>where</em> <code class="prettyprint">column width = 512 / number of columns</code>
+</p>
+<p>Since we’re only going to support maps with four columns (aka keys) this can be shortened to <code class="prettyprint">column = 64 / 128 </code> which, when discarding decimal places, is zero.
+</p>
+<p>The default key layout in osu!mania is <code class="prettyprint">'d'</code> for the first column, <code class="prettyprint">'f'</code> for the second, <code class="prettyprint">'j'</code> for the third and <code class="prettyprint">'k'</code> for the fourth and last. Therefore the first colum (with index zero) gets converted to a <code class="prettyprint">'d'</code> when parsing the <code class="prettyprint">hitpoint</code> struct into <code class="prettyprint">action</code>s.
+</p>
+<p>I’m not going to go into map parsing any further than this since in the end it’s really just splitting up and parsing lines, but you can take a look at the code in <a href="https://github.com/LW2904/maniac/blob/master/src/beatmap.c">beatmap.c</a> where it’s fully implemented.
+</p>
+<h3 id="finding-the-gametime"> Finding the gametime</h3>
+<p>All time points in .osu files are defined as ‘miliseconds from the beginning of the song’, so it’s crucial that we be able to read the current songs playback time (from now on referred to as ‘gametime’) from the osu! process in order to be able to accurately replay them.
+</p>
+<p>In order to do this we will have to find the address of that particular variable in the game’s memory, which we can very conveniently do using the <em>scanmem</em> tool.
+</p>
+<p>While having osu! opened and with the current song’s playback stopped, start scanmem like so:
+</p>
+<p><code class="prettyprint">`bash
+$ scanmem -p &lt;PID of osu! process&gt;
+</code>`
+</p>
+<p>Having started scanmem and after beeing greeted with the default License and Warranty information, simply input zero and wait for the search to complete.
+</p>
+<p><img src="https://i.imgur.com/V2VrCaB.png" alt="">
+</p>
+<p><em>The result of searching for zero, note the stopped playback. Don’t mind wine’s messages in the background, they don’t bite.</em>
+</p>
+<p>Now, start the playback and, in scanmem keep inputting <code class="prettyprint">&gt;</code> (indicating that the value we are searching for has increased since the last search) until you are left with a reasonable amount of matches. Other commands that can be used to narrow down the list include <code class="prettyprint">&lt;</code> and <code class="prettyprint">=</code>. Go wild until you reach a number you are comfortable with, don’t forget to check the current list of matches using the <code class="prettyprint">list</code> command.
+</p>
+<p><img src="https://i.imgur.com/osRrpHY.png" alt="">
+</p>
+<p>A lot of these can be discarded immediately, and the addresses with potential can be quickly narrowed down to those at the indices 1, 3, 6, 30, 37 and 41. After a second look, 1-6 can be discarded since <code class="prettyprint">I16</code> has a maximum size of <code class="prettyprint">2^16 = 65536</code> which is much too small to hold an average song’s playtime. Of the rest we are going to pick 30 (<code class="prettyprint">0x36e59ec</code>) since it has the largest range.
+</p>
+<p>I’m not going to implement pattern scanning here since it is not required on Linux and I feel like it would go too far beyond the scope of this post, reference implementations can be found all over the web though. To get the surrounding memory for a signature simply use the <code class="prettyprint">dump</code> command.
+</p>
+<h3 id="reading-the-gametime"> Reading the gametime</h3>
+<p>Now, having found the address we want to read from, we can simply use the <a href="http://man7.org/linux/man-pages/man2/process_vm_readv.2.html"><code class="prettyprint">process_vm_readv</code></a> function introduced in recent Linux Kernel versions (>= 3.2). I want to encourage you to read the manpage on it, although its interface should be obvious from the example code below.
+</p>
+<p>```c
+#define TIME_ADDRESS 0x36e59ec
+</p>
+<p>/<em> ... </em>/
+</p>
+<p>int32<em>t get</em>gametime(pid<em>t pid)
+{
+	int32</em>t time;
+	size<em>t size = sizeof(int32</em>t);
+</p>
+<pre class="prettyprint"><code>struct iovec local[1];
+struct iovec remote[1];
+</code></pre><pre class="prettyprint"><code>local[0].iov_len = size;
+local[0].iov_base = &amp;time;
+</code></pre><pre class="prettyprint"><code>remote[0].iov_len = size;
+remote[0].iov_base = TIME_ADDRESS;
+</code></pre><pre class="prettyprint"><code>process_vm_readv(pid, local, 1, remote, 1, 0);
+</code></pre><pre class="prettyprint"><code>return time;
+</code></pre><p>}
+```
+</p>
+<h3 id="implementation"> Implementation</h3>
+<p>Before jumping into the meat of the matter, let’s think about user input for a second. We will need to a path to the beatmap file to parse, and the process ID of the osu! process. This can be implemented in a clean way with the <a href="https://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html#Using-Getopt"><code class="prettyprint">getopt</code></a> function, a GNU extension to the C standard.
+</p>
+<p>```c
+/<em> ... </em>/
+</p>
+<p>int main(int argc, char <em>argv[])
+{
+	char </em>map = "map.osu";
+    int game<em>proc</em>id = 0, c;
+</p>
+<pre class="prettyprint"><code>while ((c = getopt(argc, argv, "m:p:")) != -1) {
+	switch (c) {
+	case 'm': map = optarg;
+		break;
+	case 'p': game_proc_id = strtol(optarg, NULL, 10);
+		break;
+	}
+}
+
+if (!game_proc_id || !map) {
+	printf("usage: %s -p &lt;pid of osu! process&gt; ", argv[0]);
+	printf("-m &lt;path to beatmap.osu&gt;\n");
+	return EXIT_FAILURE;
+}
+
+/* ... */
+</code></pre><p>}
+```
+</p>
+<p>Okay so now we have the process ID we need for reading the gametime, and a path to the beatmap from which to parse the actions from.
+</p>
+<p>I mentioned that I wouldn’t go over the beatmap parsing in more detail here, but in order to properly understand the following code you will need to know how their interfaces look:
+</p>
+<p>```c
+/**
+</p>
+<ul>
+<li>Parses a beatmap file (*.osu) into an array of hitpoint structs pointed to by 
+</li>
+<li>**points.
+</li>
+<li>Returns the number of points parsed and stored.
+ <em>/
+int parse_beatmap(char </em>file, hitpoint **points);
+</li>
+</ul>
+<p>/**
+</p>
+<ul>
+<li>Parses a total of <code class="prettyprint">count</code> hitpoints from <strong>points into </strong>actions.
+</li>
+<li>Returns the number of actions parsed and stored, which should be <code class="prettyprint">count * 2</code>.
+ <em>/
+int parse_hitpoints(int count, hitpoint </em><em>points, action </em>*actions);
+</li>
+</ul>
+<p>/**
+</p>
+<ul>
+<li>Sort the array of actions given through **actions by time.
+</li>
+<li>Returns nonzero on failure.
+ <em>/
+int sort_actions(int count, action </em>*actions);
+```
+</li>
+</ul>
+<p>None of these functions are particularly exciting and using them will net us the following, rather repetitive, code:
+</p>
+<p>```c
+/<em> ... </em>/
+</p>
+<p>int main(int argc, char *<em>argv)
+{
+	/</em> ... */
+</p>
+<pre class="prettyprint"><code>hitpoint *points;
+int num_points = 0;
+if ((num_points = parse_beatmap(map, &amp;points)) == 0 || !points) {
+	printf("failed to parse beatmap (%s)\n", map);
+	return EXIT_FAILURE;
+}
+</code></pre><pre class="prettyprint"><code>printf("parsed %d hitpoints\n", num_points);
+</code></pre><pre class="prettyprint"><code>action *actions;
+int num_actions = 0;
+if ((num_actions = parse_hitpoints(num_points, &amp;points, &amp;actions)) == 0
+	|| !actions) {
+	printf("failed to parse hitpoints\n");
+	return EXIT_FAILURE;
+}
+</code></pre><pre class="prettyprint"><code>printf("parsed %d actions\n", num_actions);
+</code></pre><pre class="prettyprint"><code>free(points);
+</code></pre><pre class="prettyprint"><code>if (sort_actions(num_actions, &amp;actions) != 0) {
+	printf("failed sorting actions\n");
+	return EXIT_FAILURE;
+}
+
+return 0;
+</code></pre><p>}
+```
+</p>
+<p>So, now that we’ve parsed the beatmap into a sorted array of actions, all that’s left is the main playback loop. 
+</p>
+<p>```c
+int main()
+{
+    /<em> ... </em>/
+</p>
+<pre class="prettyprint"><code>int32_t time;
+int cur_i = 0;
+action *cur_a;
+</code></pre><pre class="prettyprint"><code>// While there's still actions left.
+while (cur_i &lt; num_actions) {
+	time = get_maptime();
+</code></pre><pre class="prettyprint"><code>// For all actions that are (over)due.
+while ((cur_a = actions + cur_i)-&gt;time &lt;= time) {
+	cur_i++;
+</code></pre><pre class="prettyprint"><code>send_keypress(cur_a-&gt;key, cur_a-&gt;down);		
+</code></pre><p>}
+</p>
+<p>nanosleep((struct timespec[]){{0, 1000000L}}, NULL);
+}
+</p>
+<p>return 0;
+}
+```
+The full code of this project can be found on <a href="https://github.com/lw2904/maniac">github.com/lw2904/maniac</a>, note that the code is not a one on one match to the examples in this post since parts were refactored in order to reach Windows portability.
+</p>
+<blockquote><p>Edit history
+</p>
+<p><strong>7/17/2018</strong>: Rewrote and restructured parts for better readability, fixed minor error in code sample, added bottom note. Changes in commit <a href="https://github.com/LW2904/blog/commit/962fb1f584a3c3d1c85ca063f92dc75c1725961e"><code class="prettyprint">962fb1f</code></a>.
+</p>
+</blockquote>
+
+	</div>
+
+</body>
+
+</html>
