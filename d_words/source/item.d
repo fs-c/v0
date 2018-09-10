@@ -16,15 +16,15 @@ struct Item {
 
 Item parseItem(const string itemPath)
 {
-	immutable content = readText(itemPath);
-	JSONValue j = parseJSON(content[0 .. indexOf(content, '\n')]);
+	immutable content = itemPath.readText;
+	JSONValue j = content[0 .. indexOf(content, '\n')].parseJSON;
 
 	Item i;
 	i.path = itemPath;
 	i.title = j["title"].str;
-	i.stub = baseName(stripExtension(itemPath));
+	i.stub = itemPath.stripExtension.baseName;
 	i.date = DateTime.fromISOExtString(j["date"].str);
-	i.content = filterMarkdown(content[indexOf(content, '\n') .. $]);
+	i.content = content[indexOf(content, '\n') .. $].filterMarkdown;
 
 	return i;
 }
