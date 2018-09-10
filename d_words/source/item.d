@@ -24,7 +24,8 @@ Item parseItem(const string itemPath)
 	i.title = j["title"].str;
 	i.stub = itemPath.stripExtension.baseName;
 	i.date = DateTime.fromISOExtString(j["date"].str);
-	i.content = content[indexOf(content, '\n') .. $].filterMarkdown;
+	i.content = filterMarkdown(content[indexOf(content, '\n') .. $],
+		MarkdownFlags.backtickCodeBlocks);
 
 	return i;
 }
