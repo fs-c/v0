@@ -2,7 +2,8 @@
 docs.json
 __dummy.html
 
-#d_words specific
+# d_words specific
+d_words
 d_words.so
 d_words.dylib
 d_words.dll
