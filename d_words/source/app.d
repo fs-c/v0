@@ -1,13 +1,17 @@
 import std.file;
 import std.path;
+import std.stdio : writeln;
 import std.exception;
+import std.datetime.date;
+import std.algorithm.sorting;
+
 
 import item;
 import mustache;
 
 alias MustacheEngine!(string) Mustache;
 
-void main()
+void _main()
 {
 	immutable publicPath = absolutePath("public");
 
@@ -24,23 +28,41 @@ void main()
 	immutable frontTemplate = buildPath(templatesPath, "front");
 
 	Mustache mustache;
-	auto context = new Mustache.Context;
+	mustache.ext = "html";	
+	auto itemContext = new Mustache.Context;
+	auto frontContext = new Mustache.Context;
+
+	Item[] items;
 
 	immutable contentPath = absolutePath("content");
 	foreach(string e; dirEntries(contentPath, SpanMode.shallow)) {
 		Item i = parseItem(e);
 
-		immutable itemFolder = buildPath(publicPath, i.stub);
+		items.length++;
+		items[items.length - 1] = i;
+
+		immutable itemFolder = buildPath(publicPath, i.slug);
 		immutable itemPath = buildPath(itemFolder, "index.html");
 		mkdir(itemFolder);
 
-		context["title"] = i.title;
-		context["content"] = i.content;
+		itemContext["title"] = i.title;
+		itemContext["content"] = i.content;
 
-		// stdout.rawWrite(mustache.render(itemTemplate, context));
-
-		write(itemPath, mustache.render(itemTemplate, context));
+		write(itemPath, mustache.render(itemTemplate, itemContext));	
 	}
+
+	items.sort!("a.date > b.date");
+
+	foreach(ref i; items) {
+		auto sub = frontContext.addSubContext("items");
+
+		sub["slug"] = i.slug;
+		sub["title"] = i.title;
+		sub["date"] = i.date.toISOExtString;
+	}
+
+	immutable frontPath = buildPath(publicPath, "index.html");	
+	write(frontPath, mustache.render(frontTemplate, frontContext));
 }
 
 void copyDir(const string from, const string to)
@@ -59,4 +81,12 @@ void copyDir(const string from, const string to)
 		else
 			copy(e.name, newPath);
 	}
+}
+
+import std.datetime.stopwatch : benchmark, StopWatch;
+void main()
+{
+	auto b = benchmark!(_main)(100);
+
+	writeln(b[0] / 100);
 }

@@ -8,7 +8,7 @@ import dmarkdown;
 
 struct Item {
 	string path;
-	string stub;
+	string slug;
 	string title;
 	DateTime date;
 	string content;
@@ -22,7 +22,7 @@ Item parseItem(const string itemPath)
 	Item i;
 	i.path = itemPath;
 	i.title = j["title"].str;
-	i.stub = itemPath.stripExtension.baseName;
+	i.slug = itemPath.stripExtension.baseName;
 	i.date = DateTime.fromISOExtString(j["date"].str);
 	i.content = filterMarkdown(content[indexOf(content, '\n') .. $],
 		MarkdownFlags.backtickCodeBlocks);

@@ -28,50 +28,48 @@
 </p>
 <p>That is probably best done by diving right into code, so let’s first get the basic skeleton out of the way:
 </p>
-<p>```
-#include <stdio.h>
-</p>
-<p>#define MAX_LENGTH 9999
-</p>
-<p>int main(int argc, char **argv)
-{
-	int cls[MAX<em>LENGTH];	// Cells.
-	int ins[MAX</em>LENGTH];	// Instructions.
-</p>
-<pre class="prettyprint"><code>int ilen = 0;           // Number of instructions.
+<pre class="prettyprint"><code>#include &lt;stdio.h&gt;
 
-// Pointers to currently active cell and instruction, respectively.
-int *ptr = cls;
-int *iptr = ins;
+#define MAX_LENGTH 9999
 
-return 0;
-</code></pre><p>}
-```
-</p>
-<p>These are almost all the variables we’ll need, but it doesn‘t really reveal any of the program structure just yet. Before getting to that we’ll have to get the reading of the brainfuck code to interpret out of the way, so let’s expand what we have so far with some file streaming and reading logic.
-</p>
-<p>```
 int main(int argc, char **argv)
 {
-    if (argc < 2) {
+	int cls[MAX_LENGTH];	// Cells.
+	int ins[MAX_LENGTH];	// Instructions.
+
+	int ilen = 0;           // Number of instructions.
+    
+	// Pointers to currently active cell and instruction, respectively.
+	int *ptr = cls;
+	int *iptr = ins;
+	
+	return 0;
+}
+</code></pre><p>These are almost all the variables we’ll need, but it doesn‘t really reveal any of the program structure just yet. Before getting to that we’ll have to get the reading of the brainfuck code to interpret out of the way, so let’s expand what we have so far with some file streaming and reading logic.
+</p>
+<pre class="prettyprint"><code>int main(int argc, char **argv)
+{
+    if (argc &lt; 2) {
 		puts("expected arguments");
 		return 1;
 	}
-</p>
-<pre class="prettyprint"><code>/* ... */
-</code></pre><pre class="prettyprint"><code>FILE stream, *fopen();
-</code></pre><pre class="prettyprint"><code>// Open the file given as first argument with read permissions.
-stream = fopen(argv[1], "r");
-</code></pre><pre class="prettyprint"><code>// Read the brainfuck to execute from the stream.
-while (ilen &lt; MAX_LENGTH &amp;&amp; (ins[ilen] = getc(stream)) != EOF)
-	ilen++;
-</code></pre><pre class="prettyprint"><code>fclose(stream);
+	
+    /* ... */
 
-return 0;
-</code></pre><p>}
-```
-</p>
-<p>So we now accept a single (required) argument which is to be a file or a path to one, and read it into <code class="prettyprint">ins</code>. Afterwards we close the stream to tie up any loose ends and to free up memory.
+	FILE stream, *fopen();
+
+    // Open the file given as first argument with read permissions.
+    stream = fopen(argv[1], "r");
+
+	// Read the brainfuck to execute from the stream.
+	while (ilen &lt; MAX_LENGTH &amp;&amp; (ins[ilen] = getc(stream)) != EOF)
+		ilen++;
+
+	fclose(stream);
+	
+	return 0;
+}
+</code></pre><p>So we now accept a single (required) argument which is to be a file or a path to one, and read it into <code class="prettyprint">ins</code>. Afterwards we close the stream to tie up any loose ends and to free up memory.
 </p>
 <p>Time to get to the meat of the matter: processing the brainfuck code. The most obvious solution would be to have a <code class="prettyprint">for</code> loop go over every character to evaluate it, but we‘ll be using a <code class="prettyprint">while</code> loop. The reason for this will become apparent soon, but let me foreshadow a bit: The <code class="prettyprint">[</code> and <code class="prettyprint">]</code> characters, used to loop, will have to move <code class="prettyprint">iptr</code> around. While a <code class="prettyprint">for</code> loop would work in theory, this gets more obvious the way it is implemented here.
 </p>
@@ -79,58 +77,52 @@ return 0;
 </p>
 <p>With those minor problems out of the way, the code is fairly simple:
 </p>
-<p>```
-int main(int argc, char *<em>argv)
+<pre class="prettyprint"><code>int main(int argc, char **argv)
 {
-	/</em> ... */
-</p>
-<pre class="prettyprint"><code>// Initialize all cells to zero.
-memset(cls, 0, MAX_LENGTH);
-
-// While iptr points to a character in ins, handle the char. 
-while ((iptr - ins) &lt; ilen) {
-    switch (*iptr) {
-    case '+':
-		++*ptr;		// Increase the value of the current cell.
-		break;
-	case '-':
-		--*ptr;		// Decrease.
-		break;
-	case '&gt;':
-		++ptr;		// Move the pointer forwards by one.
-		break;
-	case '&lt;':
-		--ptr;		// Backwards.
-		break;
-	case '.':			// Output the character at the current cell.
-		putchar(*ptr);
-		break;
-	case ',':
-		*ptr = getchar();	// Read a single character from stdin into the current cell.
-		break;
-	}
+	/* ... */
     
-    // Move to the next instruction.
-    iptr++;
+    // Initialize all cells to zero.
+	memset(cls, 0, MAX_LENGTH);
+    
+    // While iptr points to a character in ins, handle the char. 
+    while ((iptr - ins) &lt; ilen) {
+        switch (*iptr) {
+        case '+':
+			++*ptr;		// Increase the value of the current cell.
+			break;
+		case '-':
+			--*ptr;		// Decrease.
+			break;
+		case '&gt;':
+			++ptr;		// Move the pointer forwards by one.
+			break;
+		case '&lt;':
+			--ptr;		// Backwards.
+			break;
+		case '.':			// Output the character at the current cell.
+			putchar(*ptr);
+			break;
+		case ',':
+			*ptr = getchar();	// Read a single character from stdin into the current cell.
+			break;
+    	}
+        
+        // Move to the next instruction.
+        iptr++;
+    }
+    
+    putchar('\n');
+    
+    return 0;
 }
-
-putchar('\n');
-
-return 0;
-</code></pre><p>}
-```
-</p>
-<p>Now, while this doesn’t cover all of brainfuck, it <em>does</em> allow us to play around with some basic brainfuck code and to test out what we’ve done so far.
+</code></pre><p>Now, while this doesn’t cover all of brainfuck, it <em>does</em> allow us to play around with some basic brainfuck code and to test out what we’ve done so far.
 </p>
 <p>So, if you go ahead and compile and run this, you’ll already be able to try some simple stuff and see the interpreter in action.
 </p>
-<p><code class="prettyprint">`
-$ echo "&gt;&gt; ++ &lt;&lt; &gt;&gt; ." &gt; bf.txt
+<pre class="prettyprint"><code>$ echo "&gt;&gt; ++ &lt;&lt; &gt;&gt; ." &gt; bf.txt
 $ gcc main.c &amp;&amp; ./a.out bf.txt
 2
-</code>`
-</p>
-<p>The <code class="prettyprint">&gt;</code>s and <code class="prettyprint">&lt;</code>s are just there for demonstration purposes, they don’t actually do anything meaningful here. Go ahead and try something like <code class="prettyprint">, ++ .</code>, both input and output should already operate as expected.
+</code></pre><p>The <code class="prettyprint">&gt;</code>s and <code class="prettyprint">&lt;</code>s are just there for demonstration purposes, they don’t actually do anything meaningful here. Go ahead and try something like <code class="prettyprint">, ++ .</code>, both input and output should already operate as expected.
 </p>
 <p>Now, to implement the looping, I feel like it is best to go through the two loop characters in reverse order - first <code class="prettyprint">]</code> (which “closes” a loop), then <code class="prettyprint">[</code> (“opening” a loop).
 </p>
@@ -144,63 +136,58 @@ $ gcc main.c &amp;&amp; ./a.out bf.txt
 </p>
 <p>Now, this might seem rather intimidating, maybe even counter-intuitive, but the code for it is fairly simple once you’ve wrapped your head around it.
 </p>
-<p>```
-int brk = 0;		// Keep count of open bracket pairs.
-</p>
-<p>/<em> ...while... </em>/
-</p>
-<p>switch (<em>iptr) {
-/</em> ... <em>/
+<pre class="prettyprint"><code>int brk = 0;		// Keep count of open bracket pairs.
+
+/* ...while... */
+
+switch (*iptr) {
+/* ... */
 case '[':
-	if (</em>ptr != 0)
+	if (*ptr != 0)
 		break;
+
+	++iptr;
+	// Jump forwards to matching closing brace.
+	while (brk &gt; 0 || *iptr != ']') {
+		if (*iptr == '[')
+			brk++;
+		if (*iptr == ']')
+			brk--;
+
+		++iptr;
+	}
+	break;
+case ']':
+	if (*ptr == 0 &amp;&amp; ptr++)
+		break;
+
+	--iptr;
+	// Jump backwards to matching opening brace.
+	while (brk &gt; 0 || *iptr != '[') {
+		if (*iptr == '[')
+			brk--;
+		if (*iptr == ']')
+			brk++;
+
+		--iptr;
+	}
+
+	--iptr;
+	break; 
+}
+</code></pre><p>This is a full implementation of the looping in brainfuck, and it looks like quite the handful at first.
 </p>
-<pre class="prettyprint"><code>++iptr;
-// Jump forwards to matching closing brace.
-while (brk &gt; 0 || *iptr != ']') {
+<p>Lets look at one of these loops in more detail, to explore how they work:
+</p>
+<pre class="prettyprint"><code>while (brk &gt; 0 || *iptr != ']') {
 	if (*iptr == '[')
 		brk++;
 	if (*iptr == ']')
 		brk--;
-</code></pre><pre class="prettyprint"><code>++iptr;
-</code></pre><p>}
-break;
-case ']':
-if (*ptr == 0 && ptr++)
-	break;
-</p>
-<p>--iptr;
-// Jump backwards to matching opening brace.
-while (brk > 0 || <em>iptr != '[') {
-	if (</em>iptr == '[')
-		brk--;
-	if (*iptr == ']')
-		brk++;
-</p>
-<pre class="prettyprint"><code>--iptr;
-</code></pre><p>}
-</p>
-<p>--iptr;
-break; 
+
+	++iptr;
 }
-```
-</p>
-<p>This is a full implementation of the looping in brainfuck, and it looks like quite the handful at first.
-</p>
-<p>Lets look at one of these loops in more detail, to explore how they work:
-</p>
-<p>```
-while (brk > 0 || <em>iptr != ']') {
-	if (</em>iptr == '[')
-		brk++;
-	if (*iptr == ']')
-		brk--;
-</p>
-<pre class="prettyprint"><code>++iptr;
-</code></pre><p>}
-```
-</p>
-<p>The condition is the crucial element here, more specifically the <code class="prettyprint">||</code>. The whole loop can be described as <em>“While there are open brackets, do stuff to get them to go away. Now, if there are no open brackets, and the current instruction is not the closing bracket we are looking for, do stuff to get it to be the one.”</em>
+</code></pre><p>The condition is the crucial element here, more specifically the <code class="prettyprint">||</code>. The whole loop can be described as <em>“While there are open brackets, do stuff to get them to go away. Now, if there are no open brackets, and the current instruction is not the closing bracket we are looking for, do stuff to get it to be the one.”</em>
 </p>
 <p>This “stuff” that is being done is really simple. First come the checks that allow us to ignore “child bracket-pairs” - brackets that are inside the pair we are searching in. After these, just increment the instruction pointer, moving to the next instruction.
 </p>

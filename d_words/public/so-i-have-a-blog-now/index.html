@@ -35,101 +35,75 @@
 </p>
 <p>For users of Debian (or a derivate like Ubuntu) a .deb package is provided on the <a href="https://github.com/gohugoio/hugo/releases">Hugo Releases</a> page, which, after downloading, can be installed with the following command
 </p>
-<p><code class="prettyprint">`bash
-$ sudo dpkg -i hugo_*.deb
-</code>`
-</p>
-<p>Alternatively, or if your distribution is not a Debian derivative, you may of course download the pre-built binary and move it to your <code class="prettyprint">PATH </code> (most likely <code class="prettyprint">/usr/local/bin</code>), just like you would on Windows.
+<pre class="prettyprint"><code>$ sudo dpkg -i hugo_*.deb
+</code></pre><p>Alternatively, or if your distribution is not a Debian derivative, you may of course download the pre-built binary and move it to your <code class="prettyprint">PATH </code> (most likely <code class="prettyprint">/usr/local/bin</code>), just like you would on Windows.
 </p>
 <p>This is something beautiful about Hugo, where you have the option of simply downloading a pre-built binary without all the hassle of installing dependencies and build tools you might have with others (looking at you, Jekyll).
 </p>
 <p>To verify your install run the following from anywhere:
 </p>
-<p><code class="prettyprint">`bash
-$ hugo version
-</code>`
-</p>
-<h3 id="setting-up-a-basic-site"> Setting up a Basic Site</h3>
+<pre class="prettyprint"><code>$ hugo version
+</code></pre><h3 id="setting-up-a-basic-site"> Setting up a Basic Site</h3>
 <p>First, we'll want to create two new repositories on GitHub which we will be using to keep our unbuilt Hugo site, and the rendered static version, respectively.
 </p>
 <p>Note that the second repository which will be hosted on GitHub pages has to be called <code class="prettyprint">&lt;USERNAME&gt;.github.io</code>.  In this example, the first repository will simply be called 'blog'.
 </p>
 <p>After creation,
 </p>
-<p><code class="prettyprint">`bash
-$ git clone git@github.com:&lt;USERNAME&gt;/blog.git
+<pre class="prettyprint"><code>$ git clone git@github.com:&lt;USERNAME&gt;/blog.git
 $ git clone git@github.com:&lt;USERNAME&gt;/&lt;USERNAME&gt;.github.io.git
-</code>`
+</code></pre><p>Now, since Hugo does not ship with a default theme, we'll have to choose one from the <a href="https://themes.gohugo.io/">available themes</a>. The one that is being used in this blog is simply called <a href="https://themes.gohugo.io/slim/">slim</a>, and we will be using it in this example as well.
 </p>
-<p>Now, since Hugo does not ship with a default theme, we'll have to choose one from the <a href="https://themes.gohugo.io/">available themes</a>. The one that is being used in this blog is simply called <a href="https://themes.gohugo.io/slim/">slim</a>, and we will be using it in this example as well.
-</p>
-<p><code class="prettyprint">`bash
-$ cd blog
+<pre class="prettyprint"><code>$ cd blog
 $ git submodule add https://github.com/zhe/hugo-theme-slim.git themes/slim
-</code>`
+</code></pre><p>Additionally, we'll want to add our <code class="prettyprint">&lt;USERNAME&gt;.github.io.git</code> repository as a submodule in the <code class="prettyprint">public/</code> directory. Hugo will build the site from the content and source files in the <code class="prettyprint">blog</code> repository, to the <code class="prettyprint">public</code> directory - which has our GitHub pages repository as its remote origin.
 </p>
-<p>Additionally, we'll want to add our <code class="prettyprint">&lt;USERNAME&gt;.github.io.git</code> repository as a submodule in the <code class="prettyprint">public/</code> directory. Hugo will build the site from the content and source files in the <code class="prettyprint">blog</code> repository, to the <code class="prettyprint">public</code> directory - which has our GitHub pages repository as its remote origin.
+<pre class="prettyprint"><code>$ git submodule add https://github.com/&lt;USERNAME&gt;/&lt;USERNAME&gt;.github.io.git
+</code></pre><p>The <a href="https://gohugo.io/documentation/">Hugo docs</a> provide a great script, automating some steps of pushing a new version of the blog to GitHub pages, it is copied in full here: 
 </p>
-<p><code class="prettyprint">`bash
-$ git submodule add https://github.com/&lt;USERNAME&gt;/&lt;USERNAME&gt;.github.io.git
-</code>`
-</p>
-<p>The <a href="https://gohugo.io/documentation/">Hugo docs</a> provide a great script, automating some steps of pushing a new version of the blog to GitHub pages, it is copied in full here: 
-</p>
-<p>```bash
-#!/bin/bash
-</p>
-<h1 id="deploy-sh"> deploy.sh</h1>
-<p>echo -e "\033[0;32mDeploying updates to GitHub...\033[0m"
-</p>
-<h1 id="build-the-project"> Build the project.</h1>
-<p>hugo -t slim # if using a theme, replace with <code class="prettyprint">hugo -t &lt;YOURTHEME&gt;</code>
-</p>
-<h1 id="go-to-public-folder"> Go To Public folder</h1>
-<p>cd public
-</p>
-<h1 id="add-changes-to-git"> Add changes to git.</h1>
-<p>git add .
-</p>
-<h1 id="commit-changes"> Commit changes.</h1>
-<p>msg="rebuilding site <code class="prettyprint">date</code>"
+<pre class="prettyprint"><code>#!/bin/bash
+
+# deploy.sh
+
+echo -e "\033[0;32mDeploying updates to GitHub...\033[0m"
+
+# Build the project.
+hugo -t slim # if using a theme, replace with `hugo -t &lt;YOURTHEME&gt;`
+
+# Go To Public folder
+cd public
+# Add changes to git.
+git add .
+
+# Commit changes.
+msg="rebuilding site `date`"
 if [ $# -eq 1 ]
   then msg="$1"
 fi
 git commit -m "$msg"
+
+# Push source and build repos.
+git push origin master
+
+# Come Back up to the Project Root
+cd ..
+</code></pre><p>Make it executable, and run it:
 </p>
-<h1 id="push-source-and-build-repos"> Push source and build repos.</h1>
-<p>git push origin master
-</p>
-<h1 id="come-back-up-to-the-project-root"> Come Back up to the Project Root</h1>
-<p>cd ..
-```
-</p>
-<p>Make it executable, and run it:
-</p>
-<p><code class="prettyprint">`bash
-$ sudo chmod +X deploy.sh
+<pre class="prettyprint"><code>$ sudo chmod +X deploy.sh
 $ ./deploy.sh  "Optional commit message."
-</code>`
-</p>
-<h3 id="adding-content"> Adding Content</h3>
+</code></pre><h3 id="adding-content"> Adding Content</h3>
 <p>My workflow when writing a new post is rather simple, and as follows:
 </p>
-<p><code class="prettyprint">`bash
-$ hugo new content/post/new-post.md
+<pre class="prettyprint"><code>$ hugo new content/post/new-post.md
 $ vim content/post/new-post.md
-</code>`
+</code></pre><p>This newly created file will have some default <a href="https://gohugo.io/content-management/front-matter/#readout">Front Matter</a> added, which will look something like this:
 </p>
-<p>This newly created file will have some default <a href="https://gohugo.io/content-management/front-matter/#readout">Front Matter</a> added, which will look something like this:
-</p>
-<h2 id="yaml">```yaml</h2>
-<p>title: "New Post"
+<pre class="prettyprint"><code>---
+title: "New Post"
 date: 2018-06-11T16:54:19+02:00
 draft: true
-</p>
-<p>```
-</p>
-<p>Note how the title is read from the filename, and automatically capitalized to follow the MLA style of capitalization for headlines.
+---
+</code></pre><p>Note how the title is read from the filename, and automatically capitalized to follow the MLA style of capitalization for headlines.
 </p>
 
 	</div>

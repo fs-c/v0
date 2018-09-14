@@ -10,7 +10,7 @@ The former will be the focus here, for I’ve been toying around with implementi
 
 That is probably best done by diving right into code, so let’s first get the basic skeleton out of the way:
 
-```
+```C
 #include <stdio.h>
 
 #define MAX_LENGTH 9999
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 
 These are almost all the variables we’ll need, but it doesn‘t really reveal any of the program structure just yet. Before getting to that we’ll have to get the reading of the brainfuck code to interpret out of the way, so let’s expand what we have so far with some file streaming and reading logic.
 
-```
+```C
 int main(int argc, char **argv)
 {
     if (argc < 2) {
@@ -65,7 +65,7 @@ Something that might also go unnoticed and cause confusion down the road is cell
 
 With those minor problems out of the way, the code is fairly simple:
 
-```
+```C
 int main(int argc, char **argv)
 {
 	/* ... */
@@ -110,7 +110,7 @@ Now, while this doesn’t cover all of brainfuck, it *does* allow us to play aro
 
 So, if you go ahead and compile and run this, you’ll already be able to try some simple stuff and see the interpreter in action.
 
-```
+```bash
 $ echo ">> ++ << >> ." > bf.txt
 $ gcc main.c && ./a.out bf.txt
 2
@@ -130,7 +130,7 @@ Now, getting to the logic of `[` , if the current cell is zero it will move the 
 
 Now, this might seem rather intimidating, maybe even counter-intuitive, but the code for it is fairly simple once you’ve wrapped your head around it.
 
-```
+```C
 int brk = 0;		// Keep count of open bracket pairs.
 
 /* ...while... */
@@ -176,7 +176,7 @@ This is a full implementation of the looping in brainfuck, and it looks like qui
 
 Lets look at one of these loops in more detail, to explore how they work:
 
-```
+```C
 while (brk > 0 || *iptr != ']') {
 	if (*iptr == '[')
 		brk++;

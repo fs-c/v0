@@ -27,21 +27,19 @@
 </p>
 <p>Now, the title says "in C", so here goes:
 </p>
-<p>```c
-#include <stdio.h>
-</p>
-<p>#define ASCII_ESC 27
-</p>
-<p>int main()
+<pre class="prettyprint"><code>#include &lt;stdio.h&gt;
+
+#define ASCII_ESC 27
+
+int main()
 {
     setbuf(stdout, NULL);
-</p>
-<pre class="prettyprint"><code>printf("%c[2J", ASCII_ESC);
-</code></pre><pre class="prettyprint"><code>return 0;
-</code></pre><p>}
-```
-</p>
-<p>The above snippet uses the code which was already introduced as an example to clear the screen; its behavior is very similar to the <code class="prettyprint">CTRL + L</code> shortcut in bash.
+    
+	printf("%c[2J", ASCII_ESC);
+
+	return 0;
+}
+</code></pre><p>The above snippet uses the code which was already introduced as an example to clear the screen; its behavior is very similar to the <code class="prettyprint">CTRL + L</code> shortcut in bash.
 </p>
 <p>A very important statement to note is the call to <code class="prettyprint">setbuf()</code> in line 7, which disables buffering for stdout.
 </p>
@@ -49,29 +47,23 @@
 </p>
 <p>One such abstraction, which will come in very handy in the next few examples, could be called <code class="prettyprint">move_cursor()</code>.
 </p>
-<p><code class="prettyprint">`c
-void move_cursor(int x, int y)
+<pre class="prettyprint"><code>void move_cursor(int x, int y)
 {
 	printf("%c[%d;%dH", ASCII_ESC, y, x);
 }
-</code>`
-</p>
-<p>The control code to move the cursor naturally has to accept arguments in the form of line and column numbers, which are passed directly after the <code class="prettyprint">[</code> and seperated by semicolons. Note that the control code is defined as <code class="prettyprint">[{row};{column}H</code>, which is why we first pass <code class="prettyprint">y</code>, followed by <code class="prettyprint">x</code>. The arguments to <code class="prettyprint">move_cursor()</code> could also be called <code class="prettyprint">line</code> and <code class="prettyprint">column</code>, but I've found <code class="prettyprint">x</code> and <code class="prettyprint">y</code> to be more intuitive, not to speak of them being much quicker to type.
+</code></pre><p>The control code to move the cursor naturally has to accept arguments in the form of line and column numbers, which are passed directly after the <code class="prettyprint">[</code> and seperated by semicolons. Note that the control code is defined as <code class="prettyprint">[{row};{column}H</code>, which is why we first pass <code class="prettyprint">y</code>, followed by <code class="prettyprint">x</code>. The arguments to <code class="prettyprint">move_cursor()</code> could also be called <code class="prettyprint">line</code> and <code class="prettyprint">column</code>, but I've found <code class="prettyprint">x</code> and <code class="prettyprint">y</code> to be more intuitive, not to speak of them being much quicker to type.
 </p>
 <p>In combination with basic stdio functions we can do a great many things with <code class="prettyprint">move_cursor()</code>. For example, drawing a line could be done with the following function.
 </p>
-<p>```c
-void draw<em>line(int slope, int width)
+<pre class="prettyprint"><code>void draw_line(int slope, int width)
 {
 	for (int i = 0; i &lt; width; i++) {
-		move</em>cursor(i, (slope <em> -1) </em> i);
-</p>
-<pre class="prettyprint"><code>putchar('#');
-</code></pre><p>}
+		move_cursor(i, (slope * -1) * i);
+
+		putchar('#');
+	}
 }
-```
-</p>
-<p>The possibilities are endless, and I don't feel like it would add much value if I would provide more examples here - for an example use case (and implementation) do feel free to read through the code of <a href="https://github.com/LW2904/vt-space">vt-space</a>, a 2D space shooter in the terminal.
+</code></pre><p>The possibilities are endless, and I don't feel like it would add much value if I would provide more examples here - for an example use case (and implementation) do feel free to read through the code of <a href="https://github.com/LW2904/vt-space">vt-space</a>, a 2D space shooter in the terminal.
 </p>
 
 	</div>

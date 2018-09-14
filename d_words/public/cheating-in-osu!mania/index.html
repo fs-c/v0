@@ -38,11 +38,8 @@
 </p>
 <p>The Hit Objects section is made up of CSV lines with a syntax like this: 
 </p>
-<p><code class="prettyprint">`yaml
-x, y, time, type, hitSound, [endTime], extras
-</code>`
-</p>
-<p>Of these values we only need
+<pre class="prettyprint"><code>x, y, time, type, hitSound, [endTime], extras
+</code></pre><p>Of these values we only need
 </p>
 <ul>
 <li><code class="prettyprint">x </code> to determine the column this point falls in, 
@@ -56,44 +53,29 @@ x, y, time, type, hitSound, [endTime], extras
 </p>
 <p>A <code class="prettyprint">hitpoint</code> struct containing only the requires values could look like this:
 </p>
-<p><code class="prettyprint">`c
-struct hitpoint {
+<pre class="prettyprint"><code>struct hitpoint {
 	int column;
 	int end_time;
 	int start_time;
 };
-</code>`
+</code></pre><p>These beatmaps are sorted by <code class="prettyprint">time</code>, but their <code class="prettyprint">endTime</code>s can be all over the place, so we’ll parse them into objects which we can properly sort and then execute one by one as they are due. For this we’ll build an action struct which will represent either keydown or keyup:
 </p>
-<p>These beatmaps are sorted by <code class="prettyprint">time</code>, but their <code class="prettyprint">endTime</code>s can be all over the place, so we’ll parse them into objects which we can properly sort and then execute one by one as they are due. For this we’ll build an action struct which will represent either keydown or keyup:
-</p>
-<p><code class="prettyprint">`C
-struct action {
+<pre class="prettyprint"><code>struct action {
 	int time;
 	char key;
 	bool down;
 };
-</code>`
+</code></pre><p>A Hit Object line like
 </p>
-<p>A Hit Object line like
+<pre class="prettyprint"><code>64,192,1000,128,0,3670:0:0:0:0:
+</code></pre><p>can then be parsed into a hitpoint,
 </p>
-<p><code class="prettyprint">`yaml
-64,192,1000,128,0,3670:0:0:0:0:
-</code>`
+<pre class="prettyprint"><code>{ column: 0, start_time: 1000, end_time: 1128 }
+</code></pre><p>which can be parsed into two actions.
 </p>
-<p>can then be parsed into a hitpoint,
-</p>
-<p><code class="prettyprint">`C
-{ column: 0, start_time: 1000, end_time: 1128 }
-</code>`
-</p>
-<p>which can be parsed into two actions.
-</p>
-<p><code class="prettyprint">`json
-[ { time: 1000, down: true, key: 'd' },
+<pre class="prettyprint"><code>[ { time: 1000, down: true, key: 'd' },
   { time: 1128, down: false, key: 'd' } ]
-</code>`
-</p>
-<p><em>For readability I’ve borrowed from the JSON syntax here.</em>
+</code></pre><p><em>For readability I’ve borrowed from the JSON syntax here.</em>
 </p>
 <p>An important calculation to consider in the CSV to <code class="prettyprint">hitpoint</code> conversion is that of the <code class="prettyprint">column</code> property. We know that <code class="prettyprint">x</code> determines the column, and the documentation provides us with the following formula:
 </p>
@@ -112,11 +94,8 @@ struct action {
 </p>
 <p>While having osu! opened and with the current song’s playback stopped, start scanmem like so:
 </p>
-<p><code class="prettyprint">`bash
-$ scanmem -p &lt;PID of osu! process&gt;
-</code>`
-</p>
-<p>Having started scanmem and after beeing greeted with the default License and Warranty information, simply input zero and wait for the search to complete.
+<pre class="prettyprint"><code>$ scanmem -p &lt;PID of osu! process&gt;
+</code></pre><p>Having started scanmem and after beeing greeted with the default License and Warranty information, simply input zero and wait for the search to complete.
 </p>
 <p><img src="https://i.imgur.com/V2VrCaB.png" alt="">
 </p>
@@ -133,155 +112,140 @@ $ scanmem -p &lt;PID of osu! process&gt;
 <h3 id="reading-the-gametime"> Reading the gametime</h3>
 <p>Now, having found the address we want to read from, we can simply use the <a href="http://man7.org/linux/man-pages/man2/process_vm_readv.2.html"><code class="prettyprint">process_vm_readv</code></a> function introduced in recent Linux Kernel versions (>= 3.2). I want to encourage you to read the manpage on it, although its interface should be obvious from the example code below.
 </p>
-<p>```c
-#define TIME_ADDRESS 0x36e59ec
-</p>
-<p>/<em> ... </em>/
-</p>
-<p>int32<em>t get</em>gametime(pid<em>t pid)
-{
-	int32</em>t time;
-	size<em>t size = sizeof(int32</em>t);
-</p>
-<pre class="prettyprint"><code>struct iovec local[1];
-struct iovec remote[1];
-</code></pre><pre class="prettyprint"><code>local[0].iov_len = size;
-local[0].iov_base = &amp;time;
-</code></pre><pre class="prettyprint"><code>remote[0].iov_len = size;
-remote[0].iov_base = TIME_ADDRESS;
-</code></pre><pre class="prettyprint"><code>process_vm_readv(pid, local, 1, remote, 1, 0);
-</code></pre><pre class="prettyprint"><code>return time;
-</code></pre><p>}
-```
-</p>
-<h3 id="implementation"> Implementation</h3>
-<p>Before jumping into the meat of the matter, let’s think about user input for a second. We will need to a path to the beatmap file to parse, and the process ID of the osu! process. This can be implemented in a clean way with the <a href="https://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html#Using-Getopt"><code class="prettyprint">getopt</code></a> function, a GNU extension to the C standard.
-</p>
-<p>```c
-/<em> ... </em>/
-</p>
-<p>int main(int argc, char <em>argv[])
-{
-	char </em>map = "map.osu";
-    int game<em>proc</em>id = 0, c;
-</p>
-<pre class="prettyprint"><code>while ((c = getopt(argc, argv, "m:p:")) != -1) {
-	switch (c) {
-	case 'm': map = optarg;
-		break;
-	case 'p': game_proc_id = strtol(optarg, NULL, 10);
-		break;
-	}
-}
-
-if (!game_proc_id || !map) {
-	printf("usage: %s -p &lt;pid of osu! process&gt; ", argv[0]);
-	printf("-m &lt;path to beatmap.osu&gt;\n");
-	return EXIT_FAILURE;
-}
+<pre class="prettyprint"><code>#define TIME_ADDRESS 0x36e59ec
 
 /* ... */
-</code></pre><p>}
-```
+
+int32_t get_gametime(pid_t pid)
+{
+	int32_t time;
+	size_t size = sizeof(int32_t);
+
+	struct iovec local[1];
+	struct iovec remote[1];
+
+	local[0].iov_len = size;
+	local[0].iov_base = &amp;time;
+
+	remote[0].iov_len = size;
+	remote[0].iov_base = TIME_ADDRESS;
+
+	process_vm_readv(pid, local, 1, remote, 1, 0);
+
+	return time;
+}
+</code></pre><h3 id="implementation"> Implementation</h3>
+<p>Before jumping into the meat of the matter, let’s think about user input for a second. We will need to a path to the beatmap file to parse, and the process ID of the osu! process. This can be implemented in a clean way with the <a href="https://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html#Using-Getopt"><code class="prettyprint">getopt</code></a> function, a GNU extension to the C standard.
 </p>
-<p>Okay so now we have the process ID we need for reading the gametime, and a path to the beatmap from which to parse the actions from.
+<pre class="prettyprint"><code>/* ... */
+
+int main(int argc, char *argv[])
+{
+	char *map = "map.osu";
+    int game_proc_id = 0, c;
+
+	while ((c = getopt(argc, argv, "m:p:")) != -1) {
+		switch (c) {
+		case 'm': map = optarg;
+			break;
+		case 'p': game_proc_id = strtol(optarg, NULL, 10);
+			break;
+		}
+	}
+    
+    if (!game_proc_id || !map) {
+		printf("usage: %s -p &lt;pid of osu! process&gt; ", argv[0]);
+		printf("-m &lt;path to beatmap.osu&gt;\n");
+		return EXIT_FAILURE;
+	}
+    
+    /* ... */
+}
+</code></pre><p>Okay so now we have the process ID we need for reading the gametime, and a path to the beatmap from which to parse the actions from.
 </p>
 <p>I mentioned that I wouldn’t go over the beatmap parsing in more detail here, but in order to properly understand the following code you will need to know how their interfaces look:
 </p>
-<p>```c
-/**
-</p>
-<ul>
-<li>Parses a beatmap file (*.osu) into an array of hitpoint structs pointed to by 
-</li>
-<li>**points.
-</li>
-<li>Returns the number of points parsed and stored.
- <em>/
-int parse_beatmap(char </em>file, hitpoint **points);
-</li>
-</ul>
-<p>/**
-</p>
-<ul>
-<li>Parses a total of <code class="prettyprint">count</code> hitpoints from <strong>points into </strong>actions.
-</li>
-<li>Returns the number of actions parsed and stored, which should be <code class="prettyprint">count * 2</code>.
- <em>/
-int parse_hitpoints(int count, hitpoint </em><em>points, action </em>*actions);
-</li>
-</ul>
-<p>/**
-</p>
-<ul>
-<li>Sort the array of actions given through **actions by time.
-</li>
-<li>Returns nonzero on failure.
- <em>/
-int sort_actions(int count, action </em>*actions);
-```
-</li>
-</ul>
-<p>None of these functions are particularly exciting and using them will net us the following, rather repetitive, code:
-</p>
-<p>```c
-/<em> ... </em>/
-</p>
-<p>int main(int argc, char *<em>argv)
-{
-	/</em> ... */
-</p>
-<pre class="prettyprint"><code>hitpoint *points;
-int num_points = 0;
-if ((num_points = parse_beatmap(map, &amp;points)) == 0 || !points) {
-	printf("failed to parse beatmap (%s)\n", map);
-	return EXIT_FAILURE;
-}
-</code></pre><pre class="prettyprint"><code>printf("parsed %d hitpoints\n", num_points);
-</code></pre><pre class="prettyprint"><code>action *actions;
-int num_actions = 0;
-if ((num_actions = parse_hitpoints(num_points, &amp;points, &amp;actions)) == 0
-	|| !actions) {
-	printf("failed to parse hitpoints\n");
-	return EXIT_FAILURE;
-}
-</code></pre><pre class="prettyprint"><code>printf("parsed %d actions\n", num_actions);
-</code></pre><pre class="prettyprint"><code>free(points);
-</code></pre><pre class="prettyprint"><code>if (sort_actions(num_actions, &amp;actions) != 0) {
-	printf("failed sorting actions\n");
-	return EXIT_FAILURE;
-}
+<pre class="prettyprint"><code>/**
+ * Parses a beatmap file (*.osu) into an array of hitpoint structs pointed to by 
+ * **points.
+ * Returns the number of points parsed and stored.
+ */
+int parse_beatmap(char *file, hitpoint **points);
 
-return 0;
-</code></pre><p>}
-```
+/**
+ * Parses a total of `count` hitpoints from **points into **actions.
+ * Returns the number of actions parsed and stored, which should be `count * 2`.
+ */
+int parse_hitpoints(int count, hitpoint **points, action **actions);
+
+/**
+ * Sort the array of actions given through **actions by time.
+ * Returns nonzero on failure.
+ */
+int sort_actions(int count, action **actions);
+</code></pre><p>None of these functions are particularly exciting and using them will net us the following, rather repetitive, code:
 </p>
-<p>So, now that we’ve parsed the beatmap into a sorted array of actions, all that’s left is the main playback loop. 
-</p>
-<p>```c
-int main()
+<pre class="prettyprint"><code>/* ... */
+
+int main(int argc, char **argv)
 {
-    /<em> ... </em>/
-</p>
-<pre class="prettyprint"><code>int32_t time;
-int cur_i = 0;
-action *cur_a;
-</code></pre><pre class="prettyprint"><code>// While there's still actions left.
-while (cur_i &lt; num_actions) {
-	time = get_maptime();
-</code></pre><pre class="prettyprint"><code>// For all actions that are (over)due.
-while ((cur_a = actions + cur_i)-&gt;time &lt;= time) {
-	cur_i++;
-</code></pre><pre class="prettyprint"><code>send_keypress(cur_a-&gt;key, cur_a-&gt;down);		
-</code></pre><p>}
-</p>
-<p>nanosleep((struct timespec[]){{0, 1000000L}}, NULL);
+	/* ... */
+
+	hitpoint *points;
+	int num_points = 0;
+	if ((num_points = parse_beatmap(map, &amp;points)) == 0 || !points) {
+		printf("failed to parse beatmap (%s)\n", map);
+		return EXIT_FAILURE;
+	}
+
+	printf("parsed %d hitpoints\n", num_points);
+
+	action *actions;
+	int num_actions = 0;
+	if ((num_actions = parse_hitpoints(num_points, &amp;points, &amp;actions)) == 0
+		|| !actions) {
+		printf("failed to parse hitpoints\n");
+		return EXIT_FAILURE;
+	}
+
+	printf("parsed %d actions\n", num_actions);
+
+	free(points);
+
+	if (sort_actions(num_actions, &amp;actions) != 0) {
+		printf("failed sorting actions\n");
+		return EXIT_FAILURE;
+	}
+    
+    return 0;
 }
+</code></pre><p>So, now that we’ve parsed the beatmap into a sorted array of actions, all that’s left is the main playback loop. 
 </p>
-<p>return 0;
+<pre class="prettyprint"><code>int main()
+{
+    /* ... */
+    
+    int32_t time;
+	int cur_i = 0;
+	action *cur_a;
+
+    // While there's still actions left.
+	while (cur_i &lt; num_actions) {
+		time = get_maptime();
+
+        // For all actions that are (over)due.
+		while ((cur_a = actions + cur_i)-&gt;time &lt;= time) {
+			cur_i++;
+
+			send_keypress(cur_a-&gt;key, cur_a-&gt;down);		
+		}
+
+		nanosleep((struct timespec[]){{0, 1000000L}}, NULL);
+	}
+
+	return 0;
 }
-```
-The full code of this project can be found on <a href="https://github.com/lw2904/maniac">github.com/lw2904/maniac</a>, note that the code is not a one on one match to the examples in this post since parts were refactored in order to reach Windows portability.
+</code></pre><p>The full code of this project can be found on <a href="https://github.com/lw2904/maniac">github.com/lw2904/maniac</a>, note that the code is not a one on one match to the examples in this post since parts were refactored in order to reach Windows portability.
 </p>
 <blockquote><p>Edit history
 </p>
