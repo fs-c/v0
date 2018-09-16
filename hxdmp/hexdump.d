@@ -1,4 +1,5 @@
 import std.file;
+import std.math;
 import std.stdio;
 
 int main()
@@ -20,20 +21,31 @@ int main()
 
 void handle_chunk(const ubyte[] chunk, const int chunk_size, const int col_size)
 {
+	int col_i;
 	string text;
 
-	foreach (i, b; chunk) {
-		char c = cast(char)b;
+	for (int i = 0; i < chunk_size; i++) {
+		// The last chunk will most likely be smaller than the max size
+		if (i < chunk.length) {
+			ubyte b = chunk[i];
+			char c = cast(char)b;
 
-		if (c == '\n' || c == '\t' || c == ' ')
-			c = '.';
+			if (c == '\n' || c == '\t' || c == ' ')
+				c = '.';
+			
+			text ~= c;			
+			
+			writef("%02x", b);
+		// If it is, pad out the remaining space
+		} else {
+			write("  ");
+		}
 
-		text ~= c;
+		// Prefer this over modulo for performance.
+		if (++col_i >= col_size) {
+			col_i = 0;
 
-		writef("%02x", b);
-
-		if (!((i + 1) % col_size)) {
-			write(" ");			
+			write(" ");
 		}
 	}
 
