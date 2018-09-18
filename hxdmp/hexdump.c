@@ -8,7 +8,8 @@ int main()
 	const int chunk_size = cols * col_size;
 
 	int ci, r;
-	char buf[chunk_size + 1];
+	// Because a const isn't constant enough.
+	char buf[(cols * col_size) + 1];
 
 	while (r = read(0, buf, chunk_size)) {
 		int col_i = 0;
@@ -17,10 +18,9 @@ int main()
 
 		for (int i = 0; i < chunk_size; i++) {
 			if (i < r) {
-				char c = buf[i];
-
 				printf("%02x", buf[i]);
 
+				char c = buf[i];
 				if (c == '\n' || c == '\t' || c == ' ')
 					buf[i] = '.';
 			} else {
