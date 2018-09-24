@@ -10,6 +10,7 @@ d_words.dll
 d_words.a
 d_words.lib
 d_words-test-*
+d_words/public/*
 
 *.exe
 *.o
