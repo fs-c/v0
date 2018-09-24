@@ -82,6 +82,8 @@ int insertion_sort(int *array, int total)
 	return iters;
 }
 
+/* This will incur heavy perfomance losses unless the compiler actually inlines
+   it -- always use at least -O1. */
 static inline __attribute__((hot)) void swap(int *e1, int *e2)
 {
 	register int t = *e1;
