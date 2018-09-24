@@ -1,9 +1,0 @@
-{
-	"name": "d_markdown",
-	"authors": [
-		"lw"
-	],
-	"description": "Markdown parser.",
-	"copyright": "Copyright © 2018, lw",
-	"license": "MIT"
-}
