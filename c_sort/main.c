@@ -23,12 +23,13 @@ int main()
 
 	gettimeofday(&start_time, NULL);
 
-	int iter = bubble_sort(num_array, NUM_TOTAL);
+	int iter = insertion_sort(num_array, NUM_TOTAL);
 
 	gettimeofday(&end_time, NULL);
 
-	for (int i = 0; i < NUM_TOTAL; i += 1000)
-		printf("%d: %d\n", i, num_array[i]);
+	int show = 20, ind = 0;
+	for (int i = 0; i < show; i++, ind = i * (NUM_TOTAL / show))
+		printf("%d: %d\n", ind, num_array[ind]);
 
 	printf("went through %d iterations\n", iter);
 
