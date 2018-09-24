@@ -5,8 +5,10 @@
 #define RANGE 99999
 #define NUM_TOTAL 20000
 
-int bubble_sort(int *num_array, int num_total);
-int insertion_sort(int *num_array, int num_total);
+int bubble_sort(int *array, int total);
+int insertion_sort(int *array, int total);
+
+static inline __attribute__((__hot__)) void swap(int *e1, int *e2);
 
 int main()
 {
@@ -21,7 +23,7 @@ int main()
 
 	gettimeofday(&start_time, NULL);
 
-	int iter = insertion_sort(num_array, NUM_TOTAL);
+	int iter = bubble_sort(num_array, NUM_TOTAL);
 
 	gettimeofday(&end_time, NULL);
 
@@ -36,48 +38,53 @@ int main()
 }
 
 /* Optimized bubble sort as also showcased on the Bubble Sort Wikipedia article,
-   takes about 1.3s for 20000 elements. */
-int bubble_sort(int *num_array, int num_total)
+   takes about 0.65s for 20000 elements. */
+int bubble_sort(int *array, int total)
 {
-	int new_total = 0, iters = 0, temp = 0, i;
+	int new_total = 0, iters = 0, i;
 
 	do {
 		new_total = 0;
 
-		for (i = 1; i < num_total; i++) {
-			if (num_array[i - 1] > num_array[i]) {
-				temp = num_array[i];
-				num_array[i] = num_array[i - 1];
-				num_array[i - 1] = temp;
+		for (i = 1; i < total; i++) {
+			if (array[i - 1] > array[i]) {
+				swap(array + i, array + i - 1);
 
 				new_total = i;
 			}
 		}
 
 		iters += i;
-		num_total = new_total;
-	} while (num_total);
+		total = new_total;
+	} while (total);
 
 	return iters;
 }
 
-/* Simple insertion sort -- this could be optimized further. Takes about 0.45s
+/* Simple insertion sort -- this could be optimized further. Takes about 0.19s
    for 20000 elements. */
-int insertion_sort(int *num_array, int num_total)
+int insertion_sort(int *array, int total)
 {
-	int iters = 0, i = 1, temp, j;
+	int iters = 0, i = 1, j;
 
-	while (i < num_total) {
+	while (i < total) {
 		j = i++;
 
-		while (j > 0 && num_array[j - 1] > num_array[j]) {
-			temp = num_array[j];
-			num_array[j] = num_array[j - 1];
-			num_array[j-- - 1] = temp;
+		while (j > 0 && array[j - 1] > array[j]) {
+			swap(array + j, array + j - 1);
+
+			j--;
 		}
 
 		iters += j;
 	}
 
 	return iters;
+}
+
+static inline __attribute__((hot)) void swap(int *e1, int *e2)
+{
+	register int t = *e1;
+	*e1 = *e2;
+	*e2 = t;
 }
