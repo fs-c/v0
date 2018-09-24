@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <sys/time.h>
 
@@ -7,6 +8,7 @@
 
 int bubble_sort(int *array, int total);
 int insertion_sort(int *array, int total);
+int selection_sort(int *array, int total);
 
 static inline __attribute__((__hot__)) void swap(int *e1, int *e2);
 
@@ -23,7 +25,7 @@ int main()
 
 	gettimeofday(&start_time, NULL);
 
-	int iter = insertion_sort(num_array, NUM_TOTAL);
+	int iter = selection_sort(num_array, NUM_TOTAL);
 
 	gettimeofday(&end_time, NULL);
 
@@ -66,7 +68,8 @@ int bubble_sort(int *array, int total)
    for 20000 elements. */
 int insertion_sort(int *array, int total)
 {
-	int iters = 0, i = 1, j;
+	register int j = 0;
+	int iters = 0, i = 1;
 
 	while (i < total) {
 		j = i++;
@@ -81,6 +84,26 @@ int insertion_sort(int *array, int total)
 	}
 
 	return iters;
+}
+
+int selection_sort(int *array, int total)
+{
+	int iters = 0, i, j;
+	
+	for (i = 0; i < total - 1; i++) {
+		int min = i;
+
+		for (j = i + 1; j < total - 1; j++)
+			if (array[j] < array[min])
+				min = j;
+
+		if (min != i)
+			swap(array + i, array + min);
+		
+		j += iters;
+	}
+
+	return iters + i;
 }
 
 /* This will incur heavy perfomance losses unless the compiler actually inlines

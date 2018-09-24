@@ -4,6 +4,7 @@ Some sorting algorithms implemented in C for fun.
 
 - Bubble sort
 - Insertion sort
+- Selection sort
 
 ### Wishlist
 
