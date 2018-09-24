@@ -20,7 +20,7 @@ int main()
 
 	gettimeofday(&start_time, NULL);
 
-	int iter = bubble_sort(num_array, NUM_TOTAL);
+	int iter = insertion_sort(num_array, NUM_TOTAL);
 
 	gettimeofday(&end_time, NULL);
 
@@ -58,4 +58,21 @@ int bubble_sort(int *num_array, int num_total)
 	} while (num_total);
 
 	return iters;
+}
+
+int insertion_sort(int *num_array, int num_total)
+{
+	int temp, i = 1, j;
+
+	while (i < num_total) {
+		j = i++;
+
+		while (j > 0 && num_array[j - 1] > num_array[j]) {
+			temp = num_array[j];
+			num_array[j] = num_array[j - 1];
+			num_array[j-- - 1] = temp;
+		}
+	}
+
+	return 0;
 }
