@@ -17,6 +17,7 @@ type
     StringGrid1: TStringGrid;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure WriteToTable(Arr: array of Integer);
   private
 
   public
@@ -46,8 +47,17 @@ begin
 
      for i := 0 to length(Numbers) - 1 do begin
          Numbers[i] := random(100000);
+     end;
 
-         StringGrid1.cells[i mod 15, i div 15] := IntToStr(Numbers[i]);
+     WriteToTable(Numbers);
+end;
+
+procedure TForm1.WriteToTable(Arr: array of Integer);
+var
+  i: Integer;
+begin
+     for i := 0 to length(Arr) - 1 do begin
+         StringGrid1.cells[i mod 15, i div 15] := IntToStr(Arr[i]);
      end;
 end;
 

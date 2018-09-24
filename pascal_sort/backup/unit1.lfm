@@ -14,7 +14,7 @@ object Form1: TForm1
     Top = 24
     Width = 432
     ColCount = 15
-    DefaultColWidth = 24
+    DefaultColWidth = 50
     FixedCols = 0
     FixedRows = 0
     RowCount = 1400

@@ -51,5 +51,14 @@ begin
      end;
 end;
 
+procedure WriteToTable(Arr: array of Integer);
+var
+  i: Integer;
+begin
+     for i := 0 to length(Arr) - 1 do begin
+         StringGrid1.cells[i mod 15, i div 15] := IntToStr(Arr[i]);
+     end;
+end;
+
 end.
 
