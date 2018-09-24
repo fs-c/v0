@@ -6,6 +6,7 @@
 #define NUM_TOTAL 20000
 
 int bubble_sort(int *num_array, int num_total);
+int insertion_sort(int *num_array, int num_total);
 
 int main()
 {
@@ -60,9 +61,11 @@ int bubble_sort(int *num_array, int num_total)
 	return iters;
 }
 
+/* Simple insertion sort -- this could be optimized further. Takes about 0.45s
+   for 20000 elements. */
 int insertion_sort(int *num_array, int num_total)
 {
-	int temp, i = 1, j;
+	int iters = 0, i = 1, temp, j;
 
 	while (i < num_total) {
 		j = i++;
@@ -72,7 +75,9 @@ int insertion_sort(int *num_array, int num_total)
 			num_array[j] = num_array[j - 1];
 			num_array[j-- - 1] = temp;
 		}
+
+		iters += j;
 	}
 
-	return 0;
+	return iters;
 }
