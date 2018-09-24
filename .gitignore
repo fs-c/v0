@@ -12,6 +12,8 @@ d_words.lib
 d_words-test-*
 d_words/public/*
 
+node-stupidmark/*.html
+
 *.exe
 *.o
 *.obj
