@@ -22,6 +22,7 @@ int main()
 	int *num_array = malloc(sizeof(int) * NUM_TOTAL);
 	for (int i = 0; i < NUM_TOTAL; i++)
 		num_array[i] = rand() % RANGE;
+		// num_array[i] = NUM_TOTAL - i;
 
 	gettimeofday(&start_time, NULL);
 
@@ -35,13 +36,15 @@ int main()
 
 	printf("went through %d iterations\n", iter);
 
-	printf("executed in %f seconds\n",
-		(double)(end_time.tv_usec - start_time.tv_usec) / 1000000 +
-		(double)(end_time.tv_sec - start_time.tv_sec));
+	double exec_time = (double)(end_time.tv_usec - start_time.tv_usec)
+		/ 1000000 + (double)(end_time.tv_sec - start_time.tv_sec);
+	printf("executed in %f seconds\n~%fs per element\n", exec_time,
+		exec_time / NUM_TOTAL);
 }
 
-/* Optimized bubble sort as also showcased on the Bubble Sort Wikipedia article,
-   takes about 0.65s for 20000 elements. */
+/* https://en.wikipedia.org/wiki/Bubble_sort
+ * Optimized version. Random: ~0.38s/20000
+ */
 int bubble_sort(int *array, int total)
 {
 	int new_total = 0, iters = 0, i;
@@ -64,12 +67,12 @@ int bubble_sort(int *array, int total)
 	return iters;
 }
 
-/* Simple insertion sort -- this could be optimized further. Takes about 0.19s
-   for 20000 elements. */
+/* https://en.wikipedia.org/wiki/Insertion_sort
+ * Simple version, could be optimized further. Random: ~0.20s/20000
+ */
 int insertion_sort(int *array, int total)
 {
-	register int j = 0;
-	int iters = 0, i = 1;
+	int iters = 0, j = 0, i = 1;
 
 	while (i < total) {
 		j = i++;
@@ -80,12 +83,15 @@ int insertion_sort(int *array, int total)
 			j--;
 		}
 
-		iters += j;
+		iters += i - 1 - j;
 	}
 
-	return iters;
+	return iters + i;
 }
 
+/* https://en.wikipedia.org/wiki/Selection_sort
+ * Basic implementation. Random: ~0.18s/20000 and O(n²)
+ */
 int selection_sort(int *array, int total)
 {
 	int iters = 0, i, j;
@@ -100,7 +106,7 @@ int selection_sort(int *array, int total)
 		if (min != i)
 			swap(array + i, array + min);
 		
-		j += iters;
+		iters += j;
 	}
 
 	return iters + i;
