@@ -6,11 +6,13 @@
 #define RANGE 99999
 #define NUM_TOTAL 20000
 
+#define hot __attribute__((__hot__))
+
 int bubble_sort(int *array, int total);
 int insertion_sort(int *array, int total);
 int selection_sort(int *array, int total);
 
-static inline __attribute__((__hot__)) void swap(int *e1, int *e2);
+static inline hot void swap(int *e1, int *e2);
 
 int main()
 {
@@ -114,7 +116,7 @@ int selection_sort(int *array, int total)
 
 /* This will incur heavy perfomance losses unless the compiler actually inlines
    it -- always use at least -O1. */
-static inline __attribute__((hot)) void swap(int *e1, int *e2)
+static inline hot void swap(int *e1, int *e2)
 {
 	register int t = *e1;
 	*e1 = *e2;
