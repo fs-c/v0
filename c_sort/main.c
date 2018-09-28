@@ -28,7 +28,7 @@ int main()
 
 	gettimeofday(&start_time, NULL);
 
-	int iter = selection_sort(num_array, NUM_TOTAL);
+	int iter = insertion_sort(num_array, NUM_TOTAL);
 
 	gettimeofday(&end_time, NULL);
 
@@ -70,15 +70,13 @@ int bubble_sort(int *array, int total)
 }
 
 /* https://en.wikipedia.org/wiki/Insertion_sort
- * Simple version, could be optimized further. Random: ~0.20s/20000
+ * Simple version, could be optimized further. Random: ~0.19s/20000
  */
 int insertion_sort(int *array, int total)
 {
 	int iters = 0, j = 0, i = 1;
 
-	while (i < total) {
-		j = i++;
-
+	while ((j = i++) < total - 1) {
 		while (j > 0 && array[j - 1] > array[j]) {
 			swap(array + j, array + j - 1);
 
