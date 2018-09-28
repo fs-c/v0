@@ -34,16 +34,13 @@ int main()
 	   get a fair and accurate time.  */
 
 	int *ran_array = malloc(array_size);
-	for (int i = 0; i < NUM_TOTAL; i++)
-		ran_array[i] = rand() % RANGE;
-
 	int *ord_array = malloc(array_size);
-	for (int i = 0; i < NUM_TOTAL; i++)
+	int *rev_array = malloc(array_size);	
+	for (int i = 0; i < NUM_TOTAL; i++) {
 		ord_array[i] = i;
-
-	int *rev_array = malloc(array_size);
-	for (int i = 0; i < NUM_TOTAL; i++)
 		rev_array[i] = NUM_TOTAL - i;
+		ran_array[i] = rand() % RANGE;
+	}
 
 	int *arrays[] = { ran_array, ord_array, rev_array };
 	char *array_names[] = {
