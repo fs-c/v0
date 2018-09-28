@@ -6,6 +6,8 @@
 #define RANGE 99999
 #define NUM_TOTAL 20000
 
+#define SHOW_SAMPLE 0
+
 #define hot __attribute__((__hot__))
 
 int bubble_sort(int *array, int total);
@@ -13,6 +15,10 @@ int insertion_sort(int *array, int total);
 int selection_sort(int *array, int total);
 
 static inline hot void swap(int *e1, int *e2);
+static inline double time_diff(struct timeval start, struct timeval end);
+
+int (*funcs[])(int *, int) = { bubble_sort, insertion_sort, selection_sort };
+char *func_names[] = { "bubble_sort", "insertion_sort", "selection_sort" };
 
 int main()
 {
@@ -21,27 +27,66 @@ int main()
 
 	srand(start_time.tv_usec);
 
-	int *num_array = malloc(sizeof(int) * NUM_TOTAL);
+	const int array_size = sizeof(int) * NUM_TOTAL;
+
+	/* Create a random, an ordered and a reversed array to benchmark the
+	   sorting algorithms. All algos will run over a copy of these arrays to
+	   get a fair and accurate time.  */
+
+	int *ran_array = malloc(array_size);
 	for (int i = 0; i < NUM_TOTAL; i++)
-		num_array[i] = rand() % RANGE;
-		// num_array[i] = NUM_TOTAL - i;
+		ran_array[i] = rand() % RANGE;
 
-	gettimeofday(&start_time, NULL);
+	int *ord_array = malloc(array_size);
+	for (int i = 0; i < NUM_TOTAL; i++)
+		ord_array[i] = i;
 
-	int iter = insertion_sort(num_array, NUM_TOTAL);
+	int *rev_array = malloc(array_size);
+	for (int i = 0; i < NUM_TOTAL; i++)
+		rev_array[i] = NUM_TOTAL - i;
 
-	gettimeofday(&end_time, NULL);
+	int *arrays[] = { ran_array, ord_array, rev_array };
+	char *array_names[] = {
+		"random_array", "ordered_array", "reversed_array"
+	};
 
-	int show = 20, ind = 0;
-	for (int i = 0; i < show; i++, ind = i * (NUM_TOTAL / show))
-		printf("%d: %d\n", ind, num_array[ind]);
+	for (int i = 0; i < (signed)(sizeof(funcs) / sizeof(void *)); i++) {
+		int (*func)(int *array, int total) = funcs[i];
 
-	printf("went through %d iterations\n", iter);
+		printf("%s:\n", func_names[i]);
 
-	double exec_time = (double)(end_time.tv_usec - start_time.tv_usec)
-		/ 1000000 + (double)(end_time.tv_sec - start_time.tv_sec);
-	printf("executed in %f seconds\n~%fs per element\n", exec_time,
-		exec_time / NUM_TOTAL);
+		for (int j = 0; j < 3; j++) {
+			printf("\t%s:\n", array_names[j]);
+
+			/* Always work on a copy of the array, we don't want to
+			   sort the original. */
+			int *array = malloc(array_size);
+			memcpy(array, arrays[j], array_size);
+			
+			gettimeofday(&start_time, NULL);
+
+			int iter = (*func)(array, NUM_TOTAL);
+
+			gettimeofday(&end_time, NULL);
+
+			double exec_time = time_diff(start_time, end_time);
+
+			printf("\t\titerations: %d\n", iter);
+			printf("\t\texec time: %fs (%fs/e)\n", exec_time,
+				exec_time / NUM_TOTAL);
+
+#ifdef SHOW_SAMPLE
+			int ind = 0;
+			/* Remove division by 0 warning. */
+			double fac = NUM_TOTAL / (SHOW_SAMPLE || 1);
+			for (int k = 0; k < SHOW_SAMPLE; k++, ind = k * fac)
+				printf("\t\t\t%d: %d\n", ind, array[ind]);
+#endif
+
+		}
+
+		printf("\n");
+	}
 }
 
 /* https://en.wikipedia.org/wiki/Bubble_sort
@@ -110,6 +155,12 @@ int selection_sort(int *array, int total)
 	}
 
 	return iters + i;
+}
+
+static inline double time_diff(struct timeval start, struct timeval end)
+{
+	return (double)(end.tv_usec - start.tv_usec)
+		/ 1000000 + (double)(end.tv_sec - start.tv_sec);
 }
 
 /* This will incur heavy perfomance losses unless the compiler actually inlines
