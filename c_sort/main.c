@@ -10,6 +10,8 @@
 
 #define hot __attribute__((__hot__))
 
+/* All sorting functions return the number of iterations performed.
+ */
 int bubble_sort(int *array, int total);
 int insertion_sort(int *array, int total);
 int selection_sort(int *array, int total);
@@ -47,11 +49,13 @@ int main()
 		"random_array", "ordered_array", "reversed_array"
 	};
 
+	/* For every function... */
 	for (int i = 0; i < (signed)(sizeof(funcs) / sizeof(void *)); i++) {
 		int (*func)(int *array, int total) = funcs[i];
 
 		printf("%s:\n", func_names[i]);
 
+		/* For every array... */
 		for (int j = 0; j < 3; j++) {
 			printf("\t%s:\n", array_names[j]);
 
@@ -161,7 +165,7 @@ static inline double time_diff(struct timeval start, struct timeval end)
 }
 
 /* This will incur heavy perfomance losses unless the compiler actually inlines
-   it -- always use at least -O1. */
+   it -- always use at least -O1. TODO: Make this a macro? */
 static inline hot void swap(int *e1, int *e2)
 {
 	register int t = *e1;
