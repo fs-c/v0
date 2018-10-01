@@ -14,9 +14,13 @@ type
 
   TForm1 = class(TForm)
     Button1: TButton;
+    Button2: TButton;
     StringGrid1: TStringGrid;
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+
+    procedure WriteToTable(Arr: array of Integer);
   private
 
   public
@@ -46,12 +50,33 @@ begin
 
      for i := 0 to length(Numbers) - 1 do begin
          Numbers[i] := random(100000);
-
-         StringGrid1.cells[i mod 15, i div 15] := IntToStr(Numbers[i]);
      end;
+
+     WriteToTable(Numbers);
 end;
 
-procedure WriteToTable(Arr: array of Integer);
+procedure TForm1.Button2Click(Sender: TObject);
+var
+  i, j, t: Integer;
+begin
+     for i := 0 to length(Numbers) - 1 do begin
+         t := 0;
+         for j := 0 to length(Numbers) - 1 do begin
+             if Numbers[j] > Numbers[j + 1] then begin
+                t := Numbers[j];
+                Numbers[j] := Numbers[j + 1];
+                Numbers[j + 1] := t;
+             end;
+         end;
+
+         if t = 0 then
+            break;
+     end;
+
+     WriteToTable(Numbers);
+end;
+
+procedure TForm1.WriteToTable(Arr: array of Integer);
 var
   i: Integer;
 begin

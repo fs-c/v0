@@ -1,11 +1,11 @@
 object Form1: TForm1
-  Left = 266
-  Height = 954
-  Top = 107
-  Width = 683
+  Left = 336
+  Height = 837
+  Top = 83
+  Width = 648
   Caption = 'Form1'
-  ClientHeight = 954
-  ClientWidth = 683
+  ClientHeight = 837
+  ClientWidth = 648
   OnCreate = FormCreate
   LCLVersion = '1.8.4.0'
   object StringGrid1: TStringGrid
@@ -24,9 +24,18 @@ object Form1: TForm1
     Left = 48
     Height = 25
     Top = 48
-    Width = 75
+    Width = 104
     Caption = 'Generate'
     OnClick = Button1Click
     TabOrder = 1
+  end
+  object Button2: TButton
+    Left = 48
+    Height = 25
+    Top = 95
+    Width = 104
+    Caption = 'Bubble Sort'
+    OnClick = Button2Click
+    TabOrder = 2
   end
 end
