@@ -13,11 +13,11 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
-    Button1: TButton;
-    Button2: TButton;
+    ButtonGenerate: TButton;
+    ButtonBubbleSort: TButton;
     StringGrid1: TStringGrid;
-    procedure Button1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    procedure ButtonGenerateClick(Sender: TObject);
+    procedure ButtonBubbleSortClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
 
     procedure WriteToTable(Arr: array of Integer);
@@ -42,7 +42,7 @@ begin
      // StringGrid1.RowCount := length(Numbers);
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.ButtonGenerateClick(Sender: TObject);
 var
   i: Integer;
 begin
@@ -55,7 +55,7 @@ begin
      WriteToTable(Numbers);
 end;
 
-procedure TForm1.Button2Click(Sender: TObject);
+procedure TForm1.ButtonBubbleSortClick(Sender: TObject);
 var
   i, j, t: Integer;
 begin
