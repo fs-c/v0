@@ -14,7 +14,7 @@ Der Spieler kontrolliert sein Raumschiff vertikal und horizontal (also von links
 
 ![Screenshot zu Beginn des Spiels](https://i.imgur.com/p0jb5PI.png)
 
-Dieser screenshot nimmt indirekt ein Implementationsdetail vorweg, die Bewegunspräzision. Um schnelle und flexible Bewegung zu erlauben, bewegt sich das Raumschiff normalerweise in Viererschritten: ein drücken der Taste 'A' == vier Einheiten nach links. Da dies aber meist nicht ausreichend für präzise Schüsse ist, können Bewegungen in Einserschritten durch halten der Shift-Taste eingeschaltet werden.
+Dieser screenshot nimmt indirekt ein Implementationsdetail vorweg, die Bewegunspräzision. Um schnelle und flexible Bewegung zu erlauben, bewegt sich das Raumschiff normalerweise in Viererschritten: ein drücken der Taste 'A' == vier Einheiten nach links. Für genauere Bewegung und dadurch präzisere Schüsse, kann durch halten der Shift-Taste die Bewegung in Einserschritten eingeschalten werden.
 
 Wenn du möchtest, kannst du dir das ausprogrammierte Spiel [hier](https://github.com/LW2904/vt-space/releases) herunterladen, um den Spielablauf genauer zu sehen.
 
@@ -85,5 +85,10 @@ Bei größeren Projekten ist es immer hilfreich, die Entwicklung auf kleinere Sc
 TODO: Projektsetup Beschreibung -- MinGW oder VS? Mentor oder selbstständig?
 TODO: Projektstruktur (build script?)
 
-## Bewegung des Raumschiffes
+## Das Raumschiff
 
+Auch dieser Schritt kann weiter heruntergebrochen werden, was auch im Sinne dieser Übung ist. Versuche die folgenden Schritte so selbstständig wie möglich auszuarbeiten -- es ist immer eine genaue Problemstellung und das erwartete Ergebnis gegeben, sowie Wissen, welches nützlich sein könnte. Nach jedem Schritt ist auch eine Beispiellösung gegeben, mithilfe der du deinen Code überprüfen kannst.
+
+### Vorbereitung des Terminalemulators
+
+Nicht jeder Terminalemulator unterstützt VT100 codes standardmäßig, und CMD.exe ist einer von ihnen. Dieses Verhalten ist dokumentiert und 
