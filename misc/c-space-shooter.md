@@ -14,7 +14,7 @@ Der Spieler kontrolliert sein Raumschiff vertikal und horizontal (also von links
 
 ![Screenshot zu Beginn des Spiels](https://i.imgur.com/p0jb5PI.png)
 
-Dieser screenshot nimmt indirekt ein Implementationsdetail vorweg, die Bewegunspräzision. Um schnelle und flexible Bewegung zu erlauben, bewegt sich das Raumschiff normalerweise in Viererschritten: ein drücken der Taste 'A' == vier Einheiten nach links. Für genauere Bewegung und dadurch präzisere Schüsse, kann durch halten der Shift-Taste die Bewegung in Einserschritten eingeschalten werden.
+Dieser screenshot nimmt indirekt ein Implementationsdetail vorweg, die Bewegungspräzision. Um schnelle und flexible Bewegung zu erlauben, bewegt sich das Raumschiff normalerweise in Viererschritten: ein drücken der Taste 'A' == vier Einheiten nach links. Für genauere Bewegung und dadurch präzisere Schüsse, kann durch halten der Shift-Taste die Bewegung in Einserschritten eingeschalten werden.
 
 Wenn du möchtest, kannst du dir das ausprogrammierte Spiel [hier](https://github.com/LW2904/vt-space/releases) herunterladen, um den Spielablauf genauer zu sehen.
 
@@ -36,7 +36,7 @@ int main()
 ```
 
 Im obigen Beispiel sind zwei "bad-practises" enthalten, also schlechter Code-Stil:
-- `\e` ist nicht standardisiert (also nicht garantiert was wir erwarten), und...
+- `\e` ist nicht standardisiert (also nicht garantiert das, was wir erwarten), und...
 - `printf("\e[2J")` ist "Magie" -- es ist nicht direkt ersichtlich was dieses Stück code macht
 
 Eine schönere Lösung wäre daher
@@ -64,31 +64,101 @@ Die Funktion `clear_screen` abstrahiert in diesem Fall den "magischen" Teil, und
 
 Verstanden zu haben wie escape characters und sequences, und damit vt100 codes, zu verwenden sind, ist der Schlüssel zu dieser Übung. Wenn dir hier etwas unklar ist, solltest du dich noch ein wenig mit der obenstehenden Sektion beschäftigen, oder eine/n Mentor/in danach fragen.
 
+## Projektsetup
+
+TODO: Projektsetup Beschreibung -- MinGW oder VS? Mentor oder selbstständig?
+
+TODO: Projektstruktur (build script?)
+
 ## Entwicklungsschritte
 
 Bei größeren Projekten ist es immer hilfreich, die Entwicklung auf kleinere Schritte herunterzubrechen. In diesem Fall könnte das in etwa wie folgend aussehen:
 
-- Raumschiff kann bewegt werden und wird korrekt gezeichnet
-	- Verschiedene Präzisionsstufen sind, wenn angebracht, implementiert
-	- Kann nicht aus dem Terminalemulator heraus bewegt werden
-- Projektile können abgefeuert werden
-	- Verschwinden nachdem sie das obere Ende erreicht haben
-	- Bewegen sich in einer angebrachten Geschwindigkeit
-	- Maximale Anzahl ist auf ein vernünftiges Limit begrenzt
-- Gegner erscheinen and bewegen sich
-	- Verschwinden wenn sie von einem Projektil getroffen werden
-	- Langsame Schwierigkeitserhöhung durch allmähliche Erhöhung der Erscheinungsfrequenz
-	- Spiel wird nach erreichen des unteren Endes beendet
+- Die Höhe und Breite des Terminal-Fensters in Zeilen und Spalten (nicht pixel) ist bekannt
+- Der Terminalemulator unterstützt VT100 Codes und asynchronen Input
+- Das Raumschiff kann...
+	- in verschiedenen Positionen gezeichnet werden
+	- durch die WASD-Tasten bewegt werden, ...
+		- allerdings nur innerhalb des Terminal-Fensters
+		- mithilfe verschiedener Präzisionsstufen (z.B. WASD: 4er Intervall, Shift+WASD: 1er Intervall)
+- Projektile können...
+	- in verschiedenen Positionen gezeichnet werden
+	- vom Raumschiff aus durch Drücken der Space-Taste "abgefeuert" werden, dabei...
+		- fliegen sie immer "aus" der Schnauze des Raumschiffes heraus, und
+		- behalten sie eine konstante, angebrachte Geschwindigkeit bei
+	- eine gewisse Maximalanzahl nicht überschreiten
+- Gegner...
+	- können in verschiedenen Positionen gezeichnet werden
+	- fliegen vom oberen Fensterrand zum unteren, und...
+		- behalten eine konstante, angebrachte Geschwindigkeit bei 
+	- erscheinen in einem langsam höher werdenen Intervall
+	- verschwinden, wenn sie von einem Projektil "getroffen" werden
+	- verursachen ein "Game Over" wenn sie den unteren Bildschirmrand erreichen
 
-## Projektsetup
+Diese Schritte können von oben nach unten durchgearbeitet werden, in den folgenden Abschnitten wird immer jeweils eine kurze Erläuterung der Probleme und Schwierigkeiten, sowie eine _potentielle_ Lösung gegeben sein. Versuche zuerst die Schritte ohne der "Lösung" zu bearbeiten, und verwende auch andere Ressourcen wie das Internet.
 
-TODO: Projektsetup Beschreibung -- MinGW oder VS? Mentor oder selbstständig?
-TODO: Projektstruktur (build script?)
+## Das Terminal-Fenster
 
-## Das Raumschiff
+### Höhe und Breite
 
-Auch dieser Schritt kann weiter heruntergebrochen werden, was auch im Sinne dieser Übung ist. Versuche die folgenden Schritte so selbstständig wie möglich auszuarbeiten -- es ist immer eine genaue Problemstellung und das erwartete Ergebnis gegeben, sowie Wissen, welches nützlich sein könnte. Nach jedem Schritt ist auch eine Beispiellösung gegeben, mithilfe der du deinen Code überprüfen kannst.
+Unser erster Schritt wird das Ermitteln der Höhe und Breite des Terminal-Fensters sein. Wir benötigen diese um
+- sicherzustellen, dass sich unser Raumschiff nicht aus dem Fenster bewegt
+- Projektile nach erreichen des oberen Endes verschwinden zu lassen
+- festzustellen, ob ein Gegner das untere Ende erreicht hat
+- Gegner entlang des oberen Endes erscheinen zu lassen
 
-### Vorbereitung des Terminalemulators
+Informationen über die relevanten Methoden der Windows-API sind in den [Microsoft Docs unter "Window and Screen Buffer Size"](https://docs.microsoft.com/en-us/windows/console/window-and-screen-buffer-size) zu finden -- wichtig ist insbesondere die `GetConsoleScreenBufferInfo()` Methode, welche einen `HANDLE` zur Konsole erwartet.
 
-Nicht jeder Terminalemulator unterstützt VT100 codes standardmäßig, und CMD.exe ist einer von ihnen. Dieses Verhalten ist dokumentiert und 
+Eine mögliche Lösung könnte wie folgt aussehen:
+
+```C
+void get_terminal_dimensions(int *columns, int *lines)
+{
+	DWORD access = GENERIC_READ | GENERIC_WRITE;
+	DWORD mode = FILE_SHARE_READ | FILE_SHARE_WRITE;
+	HANDLE console = CreateFileW(L"CONOUT$", access, mode, NULL,
+		OPEN_EXISTING, 0, NULL);
+
+	CONSOLE_SCREEN_BUFFER_INFO screen;
+	if (!GetConsoleScreenBufferInfo(console, &screen))
+		return;
+
+    	*lines = screen.srWindow.Bottom - screen.srWindow.Top + 1;
+	*columns = screen.srWindow.Right - screen.srWindow.Left + 1;
+}
+```
+
+### VT100 Codes und asynchroner Input
+
+Wir benötigen unterstützung für VT100 primär um
+- den cursor zu bewegen, und damit zu zeichnen
+- den Bildschirm zu löschen
+
+Letzteres ist hierbei ein vitaler Punkt: wir werden den Bildschirm mehrmals in der Sekunde löschen und die "Szene" neu zeichnen. Bei jeden Übergang von einer "Szene" in die nächste (von nun an "Frame" genannt) werden Änderungen wie zum Beispiel eine Bewegung des Raumschiffes oder eines Projektils, sichtbar werden.
+
+Hier wichtig sind die [`GetConsoleMode()`](https://docs.microsoft.com/en-us/windows/console/getconsolemode) und [`SetConsoleMode()`](https://docs.microsoft.com/en-us/windows/console/setconsolemode) Methoden der Windows-API. Mehr Informationen und Beispielcode können im Artikel ["Console Virtual Terminal Sequences"](https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences#example-of-enabling-virtual-terminal-processing) der Microsoft Docs gefunden werden.
+
+Im folgenden Beispielcode wird absichtlich ein anderer Lösungsweg als der in den Microsoft Docs gefundene, gezeigt. Beide sind richtig, und dies ist nur ein Beispiel der vielen Wege die zum selben Ziel führen können.
+
+```C
+void terminal_setup()
+{
+	DWORD access = GENERIC_READ | GENERIC_WRITE;
+	DWORD mode = FILE_SHARE_READ | FILE_SHARE_WRITE;
+	HANDLE console = CreateFileW(L"CONOUT$", access, mode, NULL,
+		OPEN_EXISTING, 0, NULL);
+
+	if (!GetConsoleMode(console, &mode)) {
+		printf("GetConsoleMode error: %ld\n", GetLastError());
+		return;
+	}
+
+	mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+	if (!SetConsoleMode(console, mode)) {
+		printf("SetConsoleMode error: %ld\n", GetLastError());
+		return;
+	}
+}
+```
+
+Ebenso wichtig wie VT100-Unterstützung ist asynchroner input -- also input, auf den nicht gewartet wird. Übliherweise wird der Programmablauf nach einem Aufruf von z.B. `getchar()` pausiert, bis der Benutzer einen Buchstaben über stdin sendet. Diese Art des Benutzerinputs
