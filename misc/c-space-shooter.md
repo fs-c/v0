@@ -134,11 +134,11 @@ Wir benötigen unterstützung für VT100 primär um
 - den cursor zu bewegen, und damit zu zeichnen
 - den Bildschirm zu löschen
 
-Letzteres ist hierbei ein vitaler Punkt: wir werden den Bildschirm mehrmals in der Sekunde löschen und die "Szene" neu zeichnen. Bei jeden Übergang von einer "Szene" in die nächste (von nun an "Frame" genannt) werden Änderungen wie zum Beispiel eine Bewegung des Raumschiffes oder eines Projektils, sichtbar werden.
+Letzteres ist hierbei ein vitaler Punkt: wir werden den Bildschirm mehrmals in der Sekunde löschen und die "Szene" neu zeichnen. Bei jeden Übergang von einer "Szene" (in diesem Kontext auch "Frame" genannt) in die nächste werden Änderungen wie zum Beispiel eine Bewegung des Raumschiffes oder eines Projektils, sichtbar werden.
 
 Hier wichtig sind die [`GetConsoleMode()`](https://docs.microsoft.com/en-us/windows/console/getconsolemode) und [`SetConsoleMode()`](https://docs.microsoft.com/en-us/windows/console/setconsolemode) Methoden der Windows-API. Mehr Informationen und Beispielcode können im Artikel ["Console Virtual Terminal Sequences"](https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences#example-of-enabling-virtual-terminal-processing) der Microsoft Docs gefunden werden.
 
-Im folgenden Beispielcode wird absichtlich ein anderer Lösungsweg als der in den Microsoft Docs gefundene, gezeigt. Beide sind richtig, und dies ist nur ein Beispiel der vielen Wege die zum selben Ziel führen können.
+Wer im oben verlinkten Artikel den Abschnitt "Example of Enabling Virtual Terminal Processing" gelesen hat wird sehen, dass die folgende Methode, welche eine potentielle Lösung ist, deutlich kürzer und anders als der dort gegebene Lösungsweg ist. Auch deshalb sei hier angemerkt, dass diese Lösungen bei weitem nicht perfekt sind -- in diesem Falle liegt der Fokus auf Bündigkeit, wodurch anderes verloren geht.
 
 ```C
 void terminal_setup()
