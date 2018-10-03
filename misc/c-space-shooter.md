@@ -27,6 +27,8 @@ Escape sequences werden, wie escape characters, zwar abgesendet (z.B. via `print
 Eine Liste nützlicher escape sequences ist [hier](http://www.termsys.demon.co.uk/vtansi.htm) zu finden, näheres zu ihrer Verwendung folgt.
 
 ```C
+// Untested
+
 #include <stdio.h>
 
 int main()
@@ -42,6 +44,8 @@ Im obigen Beispiel sind zwei "bad-practises" enthalten, also schlechter Code-Sti
 Eine schönere Lösung wäre daher
 
 ```C
+// Untested
+
 #include <stdio.h>
 
 /* 0x1B is the ASCII "escape" character. */
@@ -66,7 +70,7 @@ Verstanden zu haben wie escape characters und sequences, und damit vt100 codes, 
 
 ## Projektsetup
 
-TODO: Projektsetup Beschreibung -- MinGW oder VS? Mentor oder selbstständig?
+TODO: Projektsetup Beschreibung -- MinGW oder VS? Mentor oder selbstständig? `conio.h` muss verfügbar sein!
 
 TODO: Projektstruktur (build script?)
 
@@ -112,6 +116,8 @@ Informationen über die relevanten Methoden der Windows-API sind in den [Microso
 Eine mögliche Lösung könnte wie folgt aussehen:
 
 ```C
+// Untested, straight copy
+
 void get_terminal_dimensions(int *columns, int *lines)
 {
 	DWORD access = GENERIC_READ | GENERIC_WRITE;
@@ -141,6 +147,8 @@ Hier wichtig sind die [`GetConsoleMode()`](https://docs.microsoft.com/en-us/wind
 Wer im oben verlinkten Artikel den Abschnitt "Example of Enabling Virtual Terminal Processing" gelesen hat wird sehen, dass die folgende Methode, welche eine potentielle Lösung ist, deutlich kürzer und anders als der dort gegebene Lösungsweg ist. Auch deshalb sei hier angemerkt, dass diese Lösungen bei weitem nicht perfekt sind -- in diesem Falle liegt der Fokus auf Bündigkeit, wodurch anderes verloren geht.
 
 ```C
+// Untested, straight copy
+
 void terminal_setup()
 {
 	DWORD access = GENERIC_READ | GENERIC_WRITE;
@@ -161,4 +169,37 @@ void terminal_setup()
 }
 ```
 
-Ebenso wichtig wie VT100-Unterstützung ist asynchroner input -- also input, auf den nicht gewartet wird. Übliherweise wird der Programmablauf nach einem Aufruf von z.B. `getchar()` pausiert, bis der Benutzer einen Buchstaben über stdin sendet. Diese Art des Benutzerinputs
+Ebenso wichtig wie VT100-Unterstützung ist asynchroner input -- also input, auf den nicht gewartet wird. Übliherweise wird der Programmablauf nach einem Aufruf von z.B. `getchar()` pausiert, bis der Benutzer einen Buchstaben über standard in sendet. Diese Art des Benutzerinputs wird auch "blocking input", also "blockierender input", oder "synchroner input" genannts. Asynchroner input ist am besten mit "non-blocking", also "nicht blockierender", input beschrieben.
+
+Implementationen eines solchen sind von OS zu OS sehr unterschiedlich, unter Windows werden die Funktionen [`_getch`](https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/getch-getwch?view=vs-2017) und [`_kbhit`](https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/kbhit?view=vs-2017) des `conio.h` headers hilfreich sein.
+
+Mithilfe dieser zwei Funktionen kann eine sehr simple implementation in etwa so aussehen:
+
+```C
+// Untested, straight copy
+
+char getchar_nonblock()
+{
+	if (_kbhit())
+		return _getch();
+	
+	return EOF;
+}
+```
+
+Die oben stehende Funktion wird immer `EOF` (unter den meisten Systemen -1) zurückgeben, ausser wenn der Benutzer _gerade eben_ eine Taste gedrückt hat -- dann gibt sie den gedrückten Buchstaben zurück.
+
+Verständnisfrage: Wie könnte man mithilfe von `_kbhit()` und `_getch()` die C Standard Library Funktion `getchar()` implementieren?
+
+```C
+// Untested
+
+char getchar2()
+{
+	while (!(_kbhit()))
+		;
+
+	return _getch();
+}
+```
+
