@@ -164,16 +164,16 @@ int terminal_setup()
 	HANDLE console = CreateFileW(L"CONOUT$", access, mode, NULL,
 		OPEN_EXISTING, 0, NULL);
 
-	// Fetch original console mode
+	/* Fetch original console mode */
 	if (!GetConsoleMode(console, &mode)) {
 		printf("GetConsoleMode error: %ld\n", GetLastError());
 		return -1;
 	}
 
-	// Amend the mode to enable VT codes
+	/* Amend the mode to enable VT codes */
 	mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 
-	// Apply the changes
+	/* Apply the changes /*
 	if (!SetConsoleMode(console, mode)) {
 		printf("SetConsoleMode error: %ld\n", GetLastError());
 		return -1;
@@ -194,9 +194,9 @@ Mithilfe dieser zwei Funktionen kann eine sehr simple implementation in etwa so 
 
 char getchar_nonblock()
 {
-	// If a key was pressed just now...
+	/* If a key was pressed just now... */
 	if (_kbhit())
-		// ...return it
+		/* ...return it */
 		return _getch();
 	
 	return EOF;
