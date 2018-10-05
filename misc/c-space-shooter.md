@@ -8,7 +8,7 @@ Für diese Übung solltest du bereits einfache Programmierkentnisse haben, die K
 
 ![Screenshot während des pausierten Spiels](https://i.imgur.com/4TgnLB8.png)
 
-Gegner, hier 4x4 Rechtecke, fliegen von oben nach unten und müssen vom Spieler abgeschossen werden. Wie im Luftkampf zwischen kleineren Fliegern üblich, reicht ein einziger Treffer um die feindlichen Rechtecke auszuschalten. Das Spiel läuft endlos, bis eines der gegnerischen Objekte das untere Ende des Bildschirms erreicht, wobei jeder Abschuss einen Punkt bringt -- das Ziel ist die Anhäufung möglichst vieler Punkte.
+Gegner, hier 3x4 Rechtecke, fliegen von oben nach unten und müssen vom Spieler abgeschossen werden. Wie im Luftkampf zwischen kleineren Fliegern üblich, reicht ein einziger Treffer um die feindlichen Rechtecke auszuschalten. Das Spiel läuft endlos, bis eines der gegnerischen Objekte das untere Ende des Bildschirms erreicht, wobei jeder Abschuss einen Punkt bringt -- das Ziel ist die Anhäufung möglichst vieler Punkte.
 
 Der Spieler kontrolliert sein Raumschiff vertikal und horizontal (also von links nach rechts, und von oben nach unten) wie in Computerspielen üblich mit den WASD Tasten, und kann mit drücken der Space-Taste Geschosse aubfeuern.
 
@@ -235,3 +235,77 @@ char custom_getchar()
 ### Fazit
 
 Damit ist alles rund um den Terminalemulator (bzw. das Fenster ebenjenes) getan. Eine Implementation der bis jetzt eingeführten Methoden ist in der [`1-terminal` branch](https://github.com/LW2904/vt-space/tree/1-terminal) des `vt-space` Projekts zu finden.
+
+## Das Raumschiff
+
+### Zeichnen
+
+Zum zeichnen des Raumschiffs werden wir eine `draw_ship` Methode entwickeln, welche nur wissen muss wo sie das Schiff zeichnen soll. Optional könnte man benutzerdefinierte Raumschiff-Dimensionen implementieren, aber dafür gibt es in diesem Fall wenig Verwendung.
+
+Alle gezeichneten Objekte bestehen auf dem niedrigsten Level aus einzelnen Punkten. Um einen Punkt auf einer position P zu zeichnen, muss
+
+- der Cursor auf die Position P bewegt werden, und
+- ein möglichst deckender Buchstabe (wie `#`) ausgegeben werden
+
+Um den Cursor zu bewegen gibt es die VT100 Sequence `<ESC> [<line>;<column> H` (whitespace wird beim parsen der Sequenzen ignoriert). Neu ist bei diesem Code, dass wir Parameter, separiert durch Strichpunkte, übergeben.
+
+Das schreit nach einer Abstraktion, zum Beispiel wie folgend:
+
+```C
+void move_cursor(int x, int y)
+{
+	/* Note the argument order since this expects line, column (ergo y, x)
+	   instead of the more common x, y. */
+	printf("%c [ %d;%d H", ESC, y, x);
+}
+```
+
+Jetzt wo `move_cursor` implementiert ist, können wir uns an die `draw_dot` Methode machen. Ihre Funktionsweise wurde oben bereits erläutert, hier eine mögliche Implementation
+
+```C
+#define DRAW_CHAR '#
+
+void draw_dot(int x, int y)
+{
+	move_cursor(x, y);
+
+	putchar(DRAW_CHAR);
+}
+```
+
+Damit ist die `draw_ship` Methode quasi schon fertig, das Design des Fliegers ist dir überlassen. Wie immer folgt natürlich ein Beispiel, bei dem auch gleich eine `draw_rectangle` Methode implementiert wurde.
+
+```C
+void draw_ship(int x, int y)
+{
+	const int width = 3;
+	const int height = 4;
+
+	/* Main body */
+	draw_rectangle(x, y, width, height);
+
+	/* Snout */
+	draw_dot(x + (width / 2), y - 1);
+
+	/* Left wing */
+	draw_dot(x - 1, y + 1);
+	draw_dot(x - 1, y + 2);
+
+	draw_dot(x - 2, y + 2);
+	draw_dot(x - 3, y + 2);
+
+	/* Right wing */
+	draw_dot(x + width, y + 1);
+	draw_dot(x + width, y + 2);
+
+	draw_dot(x + width + 1, y + 2);
+	draw_dot(x + width + 2, y + 2);
+}
+
+void draw_rectangle(int x, int y, int width, int height)
+{
+	for (int rx = 0; rx < width; rx++)
+		for (int ry = 0; ry < height; ry++)
+			draw_dot(x + rx, y + ry);
+}
+```
