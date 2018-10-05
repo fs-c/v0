@@ -64,15 +64,15 @@ void clear_screen()
 }
 ```
 
-Die Funktion `clear_screen` abstrahiert in diesem Fall den "magischen" Teil, und ihre Wirkung ist klar. 
+Die Funktion `clear_screen` abstrahiert in diesem Fall den "magischen" Teil, und ihre Wirkung ist klar. Solche Abstraktionen sind im wesentlichen Vereinfachungen -- sie "verstecken" kompliziertere Aufgaben und Abläufe unter einem schnell verständlichen und lesbaren Namen, in diesem Fall `clear_screen`.
 
 Verstanden zu haben wie escape characters und sequences, und damit vt100 codes, zu verwenden sind, ist der Schlüssel zu dieser Übung. Wenn dir hier etwas unklar ist, solltest du dich noch ein wenig mit der obenstehenden Sektion beschäftigen, oder eine/n Mentor/in danach fragen.
 
 ## Projektsetup
 
-TODO: Projektsetup Beschreibung -- MinGW oder VS? Mentor oder selbstständig? `conio.h` muss verfügbar sein!
+TODO: Projektsetup Beschreibung -- MinGW oder VS? `conio.h` muss verfügbar sein!
 
-TODO: Projektstruktur (build script?)
+TODO: Projektstruktur (build script? make?)
 
 ## Entwicklungsschritte
 
@@ -99,7 +99,7 @@ Bei größeren Projekten ist es immer hilfreich, die Entwicklung auf kleinere Sc
 	- verschwinden, wenn sie von einem Projektil "getroffen" werden
 	- verursachen ein "Game Over" wenn sie den unteren Bildschirmrand erreichen
 
-Diese Schritte können von oben nach unten durchgearbeitet werden, in den folgenden Abschnitten wird immer jeweils eine kurze Erläuterung der Probleme und Schwierigkeiten, sowie eine _potentielle_ Lösung gegeben sein. Versuche zuerst die Schritte ohne der "Lösung" zu bearbeiten, und verwende auch andere Ressourcen wie das Internet.
+Diese Schritte können von oben nach unten durchgearbeitet werden, in den folgenden Abschnitten wird immer jeweils eine kurze Erläuterung der Probleme und Schwierigkeiten, sowie eine _potentielle_ Lösung gegeben sein. Versuche zuerst die Schritte ohne der "Lösung" zu bearbeiten, und verwende auch andere Ressourcen wie das Internet. Wichtig ist hierbei, dass das gegebene Codebeispiel auf keinen Fall das einzig richtige sein muss, es sollte nur als Hilfestellung dienen.
 
 ## Das Terminal-Fenster
 
@@ -118,7 +118,7 @@ Eine mögliche Lösung könnte wie folgt aussehen:
 ```C
 // Untested, straight copy
 
-void get_terminal_dimensions(int *columns, int *lines)
+int get_terminal_dimensions(int *columns, int *lines)
 {
 	DWORD access = GENERIC_READ | GENERIC_WRITE;
 	DWORD mode = FILE_SHARE_READ | FILE_SHARE_WRITE;
@@ -127,10 +127,12 @@ void get_terminal_dimensions(int *columns, int *lines)
 
 	CONSOLE_SCREEN_BUFFER_INFO screen;
 	if (!GetConsoleScreenBufferInfo(console, &screen))
-		return;
+		return -1;
 
     	*lines = screen.srWindow.Bottom - screen.srWindow.Top + 1;
 	*columns = screen.srWindow.Right - screen.srWindow.Left + 1;
+
+	return 0;
 }
 ```
 
@@ -144,32 +146,38 @@ Letzteres ist hierbei ein vitaler Punkt: wir werden den Bildschirm mehrmals in d
 
 Hier wichtig sind die [`GetConsoleMode()`](https://docs.microsoft.com/en-us/windows/console/getconsolemode) und [`SetConsoleMode()`](https://docs.microsoft.com/en-us/windows/console/setconsolemode) Methoden der Windows-API. Mehr Informationen und Beispielcode können im Artikel ["Console Virtual Terminal Sequences"](https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences#example-of-enabling-virtual-terminal-processing) der Microsoft Docs gefunden werden.
 
-Wer im oben verlinkten Artikel den Abschnitt "Example of Enabling Virtual Terminal Processing" gelesen hat wird sehen, dass die folgende Methode, welche eine potentielle Lösung ist, deutlich kürzer und anders als der dort gegebene Lösungsweg ist. Auch deshalb sei hier angemerkt, dass diese Lösungen bei weitem nicht perfekt sind -- in diesem Falle liegt der Fokus auf Bündigkeit, wodurch anderes verloren geht.
+Wenn du im oben verlinkten Artikel den Abschnitt "Example of Enabling Virtual Terminal Processing" gelesen hast, wirst du sehen, dass die folgende potentielle Lösung deutlich kürzer und anders als das dort gegebene Beispiel ist. Auch deshalb sei hier nochmals angemerkt, dass diese Lösungen bei weitem nicht die einzig richtigen (oder perfekt) sind -- hier wurde bewusst ein anderer Weg genommen, um dies zu verdeutlichen.
 
 ```C
 // Untested, straight copy
 
-void terminal_setup()
+int terminal_setup()
 {
 	DWORD access = GENERIC_READ | GENERIC_WRITE;
 	DWORD mode = FILE_SHARE_READ | FILE_SHARE_WRITE;
 	HANDLE console = CreateFileW(L"CONOUT$", access, mode, NULL,
 		OPEN_EXISTING, 0, NULL);
 
+	// Fetch original console mode
 	if (!GetConsoleMode(console, &mode)) {
 		printf("GetConsoleMode error: %ld\n", GetLastError());
-		return;
+		return -1;
 	}
 
+	// Amend the mode to enable VT codes
 	mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+
+	// Apply the changes
 	if (!SetConsoleMode(console, mode)) {
 		printf("SetConsoleMode error: %ld\n", GetLastError());
-		return;
+		return -1;
 	}
+
+	return 0;
 }
 ```
 
-Ebenso wichtig wie VT100-Unterstützung ist asynchroner input -- also input, auf den nicht gewartet wird. Übliherweise wird der Programmablauf nach einem Aufruf von z.B. `getchar()` pausiert, bis der Benutzer einen Buchstaben über standard in sendet. Diese Art des Benutzerinputs wird auch "blocking input", also "blockierender input", oder "synchroner input" genannts. Asynchroner input ist am besten mit "non-blocking", also "nicht blockierender", input beschrieben.
+Ebenso wichtig wie VT100-Unterstützung ist asynchroner input -- also input, auf den nicht gewartet wird. Üblicherweise wird der Programmablauf nach einem Aufruf von z.B. `getchar()` pausiert, bis der Benutzer einen Buchstaben über standard in sendet. Diese Art des Benutzerinputs wird auch "blocking input", also "blockierender input", oder "synchroner input" genannts. Asynchroner input ist am besten mit "non-blocking", also "nicht blockierender", input beschrieben.
 
 Implementationen eines solchen sind von OS zu OS sehr unterschiedlich, unter Windows werden die Funktionen [`_getch`](https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/getch-getwch?view=vs-2017) und [`_kbhit`](https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/kbhit?view=vs-2017) des `conio.h` headers hilfreich sein.
 
@@ -187,14 +195,29 @@ char getchar_nonblock()
 }
 ```
 
-Die oben stehende Funktion wird immer `EOF` (unter den meisten Systemen -1) zurückgeben, ausser wenn der Benutzer _gerade eben_ eine Taste gedrückt hat -- dann gibt sie den gedrückten Buchstaben zurück.
+Die oben stehende Funktion wird immer `EOF` (unter den meisten Systemen -1) zurückgeben, ausser wenn der Benutzer _gerade eben_ eine Taste gedrückt hat -- in diesem Fall gibt sie den gedrückten Buchstaben zurück.
+
+Um also jede gedrückte Taste "echoen" zu lassen, also sie wieder auszugeben, könnte man die folgende Methode verwenden:
+
+```C
+// Untested
+
+void echo_input()
+{
+	while (1)
+		// If a key was pressed...
+		if (_kbhit())
+			// ...echo it back
+			putchar(_getch());
+}
+```
 
 Verständnisfrage: Wie könnte man mithilfe von `_kbhit()` und `_getch()` die C Standard Library Funktion `getchar()` implementieren?
 
 ```C
 // Untested
 
-char getchar2()
+char custom_getchar()
 {
 	while (!(_kbhit()))
 		;
