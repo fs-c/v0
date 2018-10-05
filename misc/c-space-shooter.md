@@ -1,14 +1,14 @@
 # Space Shooter
 
-In dieser Übung werden wir ein relativ fortgeschrittenes Computerspiel in C entwickeln, welches im Terminalemulator -- unter Windows standardmäßig, CMD -- läuft.Wir werden im Terminal mithilfe von spezielle control codes (Ketten von escape characters) das gesamte Spiel zeichnen und durch Tastendrücke auf dem Keyboard kontrollieren.
+In dieser Übung werden wir ein relativ fortgeschrittenes Computerspiel in C entwickeln, welches im Terminalemulator -- unter Windows standardmäßig, CMD -- läuft. Wir werden im Terminal mithilfe von speziellen control codes (Ketten von escape charactern) das gesamte Spiel zeichnen und durch Tastendrücke auf dem Keyboard kontrollieren.
 
-Diese Übung setzt einfache Programmierkentnisse voraus, so zum Beispiel die Konzepte von Bedingungen, Schleifen und Variablen. Die Programmiersprache C ist grundsätzlich eine sehr simple, und viele andere Sprachen (z.B. JavaScript, Java, C#) sind ihr oberflächlich sehr ähnlich -- Vorkentnisse in einer solcher Sprachen kann hilfreich sein.
+Für diese Übung solltest du bereits einfache Programmierkentnisse haben, die Konzepte von Schleifen, Bedingungen und Assignments bzw. Variablen sollten nichts neues sein. Im Grunde genommen ist die Programmiersprache C eine sehr einfache, und viele andere Sprachen (z.B. JavaScript, Java, C#, ...) sind ihr oberflächlich ähnlich bzw. nachempfunden. Im folgenden werden daher keine näheren Details zu C gegeben -- sollte dir etwas unklar sein, zögere nicht dich selbst im Internet schlau zu machen, oder eine/n Mentor/in um Hilfe zu bitten.
 
 ## Spielablauf
 
 ![Screenshot während des pausierten Spiels](https://i.imgur.com/4TgnLB8.png)
 
-Gegner, hier 4x4 Rechtecke, fliegen von oben nach unten und müssen vom Spieler elimiert abgeschossen werden. Wie im Luftkampf zwischen kleineren Fliegern üblich, reicht ein einziger Treffer um die feindlichen Rechtecke auszuschalten. Das Spiel läuft endlos, bis eines der gegnerischen Objekte das untere Ende des Bildschirms erreicht, wobei jeder Abschuss einen Punkt bringt -- das Ziel ist die Anhäufung möglichst vieler Punkte.
+Gegner, hier 4x4 Rechtecke, fliegen von oben nach unten und müssen vom Spieler abgeschossen werden. Wie im Luftkampf zwischen kleineren Fliegern üblich, reicht ein einziger Treffer um die feindlichen Rechtecke auszuschalten. Das Spiel läuft endlos, bis eines der gegnerischen Objekte das untere Ende des Bildschirms erreicht, wobei jeder Abschuss einen Punkt bringt -- das Ziel ist die Anhäufung möglichst vieler Punkte.
 
 Der Spieler kontrolliert sein Raumschiff vertikal und horizontal (also von links nach rechts, und von oben nach unten) wie in Computerspielen üblich mit den WASD Tasten, und kann mit drücken der Space-Taste Geschosse aubfeuern.
 
@@ -18,13 +18,17 @@ Dieser screenshot nimmt indirekt ein Implementationsdetail vorweg, die Bewegungs
 
 Wenn du möchtest, kannst du dir das ausprogrammierte Spiel [hier](https://github.com/LW2904/vt-space/releases) herunterladen, um den Spielablauf genauer zu sehen.
 
+TODO: Upload a build to the vt-space repo, might need some cleanup first
+
 ## Vorwissen
 
 __VT100 Terminal Control Escape Sequences__ (kurz: VT100 codes) erlauben uns innerhalb eines Terminals bzw. Terminalemulators z.B. die Curserposition zu ändern, oder den Bildschirm zu löschen.
 
-Escape sequences werden, wie escape characters, zwar abgesendet (z.B. via `printf` in C oder `process.stdout.send` in NodeJS) aber vom Terminal nicht genau so ausgegeben. Der escape character `\n` gibt beispielsweise an, dass ein Text von einer Zeile in die nächste übergehen soll. Eine escape sequence ist ganz einfach eine Kette von Zeichen welche interpretiert, also nicht als solche ausgegeben, werden -- so löscht `\e[2J` z.B. den sichtbaren Bildschirm.
+Escape sequences werden, wie escape character, zwar abgesendet (z.B. via `printf` in C oder `process.stdout.send` in NodeJS) aber vom Terminal nicht genau so ausgegeben. Der escape character `\n` gibt beispielsweise an, dass ein Text von einer Zeile in die nächste übergehen soll. Eine escape sequence ist ganz einfach eine Kette von Zeichen welche interpretiert, also nicht als solche ausgegeben, werden -- so löscht `\e[2J` z.B. den sichtbaren Bildschirm.
 
-Eine Liste nützlicher escape sequences ist [hier](http://www.termsys.demon.co.uk/vtansi.htm) zu finden, näheres zu ihrer Verwendung folgt.
+Eine Liste nützlicher escape sequences ist [hier](http://www.termsys.demon.co.uk/vtansi.htm) zu finden, weiter unten werden die jeweils wichtigen codes jedoch noch einmal aufgeführt.
+
+Das folgende Beispiel demonstriert die Verwendung einer VT100 escape sequence (bzw. eines VT100 codes).
 
 ```C
 // Untested
@@ -37,9 +41,9 @@ int main()
 }
 ```
 
-Im obigen Beispiel sind zwei "bad-practises" enthalten, also schlechter Code-Stil:
-- `\e` ist nicht standardisiert (also nicht garantiert das, was wir erwarten), und...
+Hier sind jedoch sind zwei "bad-practises" enthalten, also schlechter Code-Stil:
 - `printf("\e[2J")` ist "Magie" -- es ist nicht direkt ersichtlich was dieses Stück code macht
+- `\e` ist nicht standardisiert (also nicht garantiert das, was wir erwarten)
 
 Eine schönere Lösung wäre daher
 
@@ -64,7 +68,9 @@ void clear_screen()
 }
 ```
 
-Die Funktion `clear_screen` abstrahiert in diesem Fall den "magischen" Teil, und ihre Wirkung ist klar. Solche Abstraktionen sind im wesentlichen Vereinfachungen -- sie "verstecken" kompliziertere Aufgaben und Abläufe unter einem schnell verständlichen und lesbaren Namen, in diesem Fall `clear_screen`.
+Die Methode `clear_screen` abstrahiert in diesem Fall den "magischen" Teil, und ihre Funktion ist klar. Solche Abstraktionen sind im wesentlichen Vereinfachungen -- sie "verstecken" kompliziertere Aufgaben und Abläufe unter einem schnell verständlichen und lesbaren Namen, in diesem Fall `clear_screen`.
+
+Zusätzlich wurde `\e` durch den Buchstaben mit dem code `0x1B` ersetzt, welcher für `ESC` steht. In vielen Systemen ist `\e` ein gültiger escape code für `0x1B`, jedoch ist er nicht (wie beispielsweise `\n`) standardisiert. Durch die verwendung des tatsächlichen codes können wir garantieren, dass unser Spiel in jedem Standardkonformen Terminal läuft.
 
 Verstanden zu haben wie escape characters und sequences, und damit vt100 codes, zu verwenden sind, ist der Schlüssel zu dieser Übung. Wenn dir hier etwas unklar ist, solltest du dich noch ein wenig mit der obenstehenden Sektion beschäftigen, oder eine/n Mentor/in danach fragen.
 
@@ -72,7 +78,7 @@ Verstanden zu haben wie escape characters und sequences, und damit vt100 codes, 
 
 TODO: Projektsetup Beschreibung -- MinGW oder VS? `conio.h` muss verfügbar sein!
 
-TODO: Projektstruktur (build script? make?)
+TODO: Projektstruktur (build script? `make`?)
 
 ## Entwicklungsschritte
 
@@ -138,11 +144,11 @@ int get_terminal_dimensions(int *columns, int *lines)
 
 ### VT100 Codes und asynchroner Input
 
-Wir benötigen unterstützung für VT100 primär um
+Wir benötigen Unterstützung für VT100 primär um
 - den cursor zu bewegen, und damit zu zeichnen
 - den Bildschirm zu löschen
 
-Letzteres ist hierbei ein vitaler Punkt: wir werden den Bildschirm mehrmals in der Sekunde löschen und die "Szene" neu zeichnen. Bei jeden Übergang von einer "Szene" (in diesem Kontext auch "Frame" genannt) in die nächste werden Änderungen wie zum Beispiel eine Bewegung des Raumschiffes oder eines Projektils, sichtbar werden.
+Letzteres ist hierbei ein vitaler Punkt: wir werden den Bildschirm mehrmals in der Sekunde löschen und die "Szene" neu zeichnen. Bei jeden Übergang von einer "Szene" (in diesem Kontext auch "Frame" genannt) in die nächste werden Änderungen wie zum Beispiel eine Bewegung des Raumschiffs oder eines Projektils sichtbar werden.
 
 Hier wichtig sind die [`GetConsoleMode()`](https://docs.microsoft.com/en-us/windows/console/getconsolemode) und [`SetConsoleMode()`](https://docs.microsoft.com/en-us/windows/console/setconsolemode) Methoden der Windows-API. Mehr Informationen und Beispielcode können im Artikel ["Console Virtual Terminal Sequences"](https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences#example-of-enabling-virtual-terminal-processing) der Microsoft Docs gefunden werden.
 
@@ -177,7 +183,7 @@ int terminal_setup()
 }
 ```
 
-Ebenso wichtig wie VT100-Unterstützung ist asynchroner input -- also input, auf den nicht gewartet wird. Üblicherweise wird der Programmablauf nach einem Aufruf von z.B. `getchar()` pausiert, bis der Benutzer einen Buchstaben über standard in sendet. Diese Art des Benutzerinputs wird auch "blocking input", also "blockierender input", oder "synchroner input" genannts. Asynchroner input ist am besten mit "non-blocking", also "nicht blockierender", input beschrieben.
+Ebenso wichtig wie VT100-Unterstützung ist asynchroner input -- also input, auf den nicht gewartet wird. Üblicherweise wird der Programmablauf nach einem Aufruf von z.B. `getchar()` pausiert, bis der Benutzer einen Buchstaben sendet. Diese Art des Benutzerinputs wird auch "blocking input", oder "synchroner input" genannts. Asynchroner input ist am besten mit "non-blocking", also "nicht blockierender", input beschrieben.
 
 Implementationen eines solchen sind von OS zu OS sehr unterschiedlich, unter Windows werden die Funktionen [`_getch`](https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/getch-getwch?view=vs-2017) und [`_kbhit`](https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/kbhit?view=vs-2017) des `conio.h` headers hilfreich sein.
 
@@ -188,7 +194,9 @@ Mithilfe dieser zwei Funktionen kann eine sehr simple implementation in etwa so 
 
 char getchar_nonblock()
 {
+	// If a key was pressed just now...
 	if (_kbhit())
+		// ...return it
 		return _getch();
 	
 	return EOF;
@@ -204,11 +212,9 @@ Um also jede gedrückte Taste "echoen" zu lassen, also sie wieder auszugeben, k�
 
 void echo_input()
 {
-	while (1)
-		// If a key was pressed...
-		if (_kbhit())
-			// ...echo it back
-			putchar(_getch());
+	while ((char c = getchar_nonblock()))
+		if (c != EOF)
+			putchar(c);
 }
 ```
 
