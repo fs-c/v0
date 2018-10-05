@@ -157,7 +157,7 @@ Wenn du im oben verlinkten Artikel den Abschnitt "Example of Enabling Virtual Te
 ```C
 // Untested, straight copy
 
-int terminal_setup()
+int setup_terminal()
 {
 	DWORD access = GENERIC_READ | GENERIC_WRITE;
 	DWORD mode = FILE_SHARE_READ | FILE_SHARE_WRITE;
@@ -173,7 +173,7 @@ int terminal_setup()
 	/* Amend the mode to enable VT codes */
 	mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 
-	/* Apply the changes /*
+	/* Apply the changes */
 	if (!SetConsoleMode(console, mode)) {
 		printf("SetConsoleMode error: %ld\n", GetLastError());
 		return -1;
@@ -187,7 +187,7 @@ Ebenso wichtig wie VT100-Unterstützung ist asynchroner input -- also input, auf
 
 Implementationen eines solchen sind von OS zu OS sehr unterschiedlich, unter Windows werden die Funktionen [`_getch`](https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/getch-getwch?view=vs-2017) und [`_kbhit`](https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/kbhit?view=vs-2017) des `conio.h` headers hilfreich sein.
 
-Mithilfe dieser zwei Funktionen kann eine sehr simple implementation in etwa so aussehen:
+Mithilfe dieser zwei Funktionen kann eine sehr einfache implementation in etwa so aussehen:
 
 ```C
 // Untested, straight copy
@@ -203,7 +203,7 @@ char getchar_nonblock()
 }
 ```
 
-Die oben stehende Funktion wird immer `EOF` (unter den meisten Systemen -1) zurückgeben, ausser wenn der Benutzer _gerade eben_ eine Taste gedrückt hat -- in diesem Fall gibt sie den gedrückten Buchstaben zurück.
+Die oben stehende Funktion wird immer `EOF` (eine in der standard library definierte Konstante, meistens `-1`) zurückgeben, ausser wenn der Benutzer _gerade eben_ eine Taste gedrückt hat -- in diesem Fall gibt sie den gedrückten Buchstaben zurück.
 
 Um also jede gedrückte Taste "echoen" zu lassen, also sie wieder auszugeben, könnte man die folgende Methode verwenden:
 
@@ -232,3 +232,6 @@ char custom_getchar()
 }
 ```
 
+### Fazit
+
+Damit ist alles rund um den Terminalemulator (bzw. das Fenster ebenjenes) getan. Eine Implementation der bis jetzt eingeführten Methoden ist in der [`1-terminal` branch](https://github.com/LW2904/vt-space/tree/1-terminal) des `vt-space` Projekts zu finden.
