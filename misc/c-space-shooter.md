@@ -392,7 +392,7 @@ int main()
 }
 ```
 
-Ein wichtiges Detail welches in der `run_frame` Methode noch nicht implementiert wurde, ist die Einschränkung der Bewegung in das Terminal-Fenster. Dies kann auf verschiedenste Wege gelöst werden, im folgenden Beispiel wird eine `wrap_around` Methode verwendet um das Schiff aus dem jeweilig gegenüberliegendem Rand "herausfliegen" zu lassen, sollte ein Rand überschritten werden.
+Ein wichtiges Detail welches in der `run_frame` Methode noch nicht implementiert wurde, ist die Einschränkung der Bewegung in das Terminal-Fenster. Dies kann auf verschiedenste Wege gelöst werden, im folgenden Beispiel wird eine `wrap_around` Methode verwendet um das Schiff aus dem jeweilig gegenüberliegendem Rand "hereinfliegen" zu lassen, sollte ein Rand überschritten werden.
 
 ```C
 // Untested
@@ -422,4 +422,4 @@ int wrap_around(int actual, int min, int max)
 
 Damit ist die rudimentäre Bewegung des Raumschiffes abgeschlossen. Wir werden noch viel mit der `run_frame` Methode arbeiten, aber der Rahmen und wohl wichtigste Teil des Spieles, steht.
 
-
+Wie auch schon zuvor, ist eine Implementation der neuen Methoden in der [`2-spaceship` branch](https://github.com/LW2904/vt-space/tree/2-spaceship) zu finden.
