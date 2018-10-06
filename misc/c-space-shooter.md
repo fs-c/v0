@@ -252,6 +252,8 @@ Um den Cursor zu bewegen gibt es die VT100 Sequence `<ESC> [<line>;<column> H` (
 Das schreit nach einer Abstraktion, zum Beispiel wie folgend:
 
 ```C
+// Untested
+
 void move_cursor(int x, int y)
 {
 	/* Note the argument order since this expects line, column (ergo y, x)
@@ -263,6 +265,8 @@ void move_cursor(int x, int y)
 Jetzt wo `move_cursor` implementiert ist, können wir uns an die `draw_dot` Methode machen. Ihre Funktionsweise wurde oben bereits erläutert, hier eine mögliche Implementation
 
 ```C
+// Untested
+
 #define DRAW_CHAR '#
 
 void draw_dot(int x, int y)
@@ -276,6 +280,8 @@ void draw_dot(int x, int y)
 Damit ist die `draw_ship` Methode quasi schon fertig, das Design des Fliegers ist dir überlassen. Wie immer folgt natürlich ein Beispiel, bei dem auch gleich eine `draw_rectangle` Methode implementiert wurde.
 
 ```C
+// Untested
+
 void draw_ship(int x, int y)
 {
 	const int width = 3;
