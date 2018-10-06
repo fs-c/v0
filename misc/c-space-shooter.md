@@ -14,7 +14,7 @@ Der Spieler kontrolliert sein Raumschiff vertikal und horizontal (also von links
 
 ![Screenshot zu Beginn des Spiels](https://i.imgur.com/p0jb5PI.png)
 
-Dieser screenshot nimmt indirekt ein Implementationsdetail vorweg, die Bewegungspräzision. Um schnelle und flexible Bewegung zu erlauben, bewegt sich das Raumschiff normalerweise in Viererschritten: ein drücken der Taste 'A' == vier Einheiten nach links. Für genauere Bewegung und dadurch präzisere Schüsse, kann durch halten der Shift-Taste die Bewegung in Einserschritten eingeschalten werden.
+Dieser screenshot nimmt indirekt ein Implementationsdetail vorweg, die Bewegungspräzision. Um schnelle und flexible Bewegung zu erlauben, bewegt sich das Raumschiff normalerweise in Achterschritten: ein drücken der Taste 'A' == acht Einheiten nach links. Für genauere Bewegung und dadurch präzisere Schüsse, kann durch halten der Shift-Taste die Bewegung in Zweierschritten eingeschalten werden.
 
 Wenn du möchtest, kannst du dir das ausprogrammierte Spiel [hier](https://github.com/LW2904/vt-space/releases) herunterladen, um den Spielablauf genauer zu sehen.
 
@@ -90,7 +90,7 @@ Bei größeren Projekten ist es immer hilfreich, die Entwicklung auf kleinere Sc
 	- in verschiedenen Positionen gezeichnet werden
 	- durch die WASD-Tasten bewegt werden, ...
 		- allerdings nur innerhalb des Terminal-Fensters
-		- mithilfe verschiedener Präzisionsstufen (z.B. WASD: 4er Intervall, Shift+WASD: 1er Intervall)
+		- mithilfe verschiedener Präzisionsstufen (z.B. WASD: 8er Intervall, Shift+WASD: 2er Intervall)
 - Projektile können...
 	- in verschiedenen Positionen gezeichnet werden
 	- vom Raumschiff aus durch Drücken der Space-Taste "abgefeuert" werden, dabei...
@@ -267,7 +267,7 @@ Jetzt wo `move_cursor` implementiert ist, können wir uns an die `draw_dot` Meth
 ```C
 // Untested
 
-#define DRAW_CHAR '#
+#define DRAW_CHAR '#'
 
 void draw_dot(int x, int y)
 {
@@ -315,3 +315,111 @@ void draw_rectangle(int x, int y, int width, int height)
 			draw_dot(x + rx, y + ry);
 }
 ```
+
+### Bewegen
+
+Wie bereits weiter oben erwähnt, werden wir das Terminal-Fenster mehrmals in der Sekunde löschen und neu zeichnen. Das heißt wir werden keine `move_ship_left` oder `move_ship_up` Methoden haben, sondern nur `run_frame`. (Wir erinnern uns: "Frame" beudeutet in diesem Kontext das Selbe wie "Szene".)
+
+"Run" und nicht "draw", weil diese Methode mehr machen muss als nur Zeichen -- also `draw_*` -- Methoden zu kontrollieren, unter Anderem muss sie auch festgestellt werden, ob der Benutzer eine Taste (genauer, WASD oder Space) gedrückt hat. Tatsächlich wird später die gesamte Logik des Spieles durch diese Methode kontrolliert werden.
+
+Aber nun zur Bewegung des Schiffes. `run_frame` muss vorerst...
+
+- asynchron Input abfragen, ...
+	- ...und basierend darauf die Position des Raumschiffs anpassen
+- das Raumschiff in der angepassten Position zeichnen
+
+Du solltest bis jetzt alle Bausteine die für die Implementation dieser Methode benötigt werden bereits ausgearbeitet haben, der folgende Beispielcode ist entsprechend kurz.
+
+```C
+// Untested
+
+#define MOVEMENT_INTERVAL_SMALL 2
+#define MOVEMENT_INTERVAL_DEFAULT 8
+
+void run_frame()
+{
+	char c = getchar_nonblock();
+	/* If it's uppercase (ergo shift was held), use the small interval,
+	   else use default. */
+	int interval = c > 64 && c < 91 ? MOVEMENT_INTERVAL_SMALL :
+		MOVEMENT_INTERVAL_DEFAULT;
+
+	switch (c) {
+	case 'w':
+	case 'W': player_y -= interval;
+		break;
+	case 'a':
+	case 'A': player_x -= interval;
+		break;
+	case 's':
+	case 'S': player_y += interval;
+		break;
+	case 'd':
+	case 'D': player_x += interval;
+		break;
+	}
+
+	draw_ship(player_x, player_y);
+}
+```
+
+Diese Version der `run_frame` Methode erwartet, dass die globalen Variablen `player_x`, `player_y`, `term_w`, und `term_h` existieren und intialisiert sind. Die Verwendung der Methode könnte daher in etwa so aussehen:
+
+```C
+// Untested
+
+/* ... */
+
+int term_w, term_h;
+int player_x, player_y;
+
+int main()
+{
+	/* ... */
+
+	get_terminal_dimensions(&term_w, &term_h);
+
+	/* Start in the center and near the bottom of the screen */
+	player_x = term_w * 0.5;
+	player_y = term_h * 0.8;
+
+	while (1) {
+		run_frame();
+
+		/* Sleep for 0.5s */
+		Sleep(500);
+	}
+}
+```
+
+Ein wichtiges Detail welches in der `run_frame` Methode noch nicht implementiert wurde, ist die Einschränkung der Bewegung in das Terminal-Fenster. Dies kann auf verschiedenste Wege gelöst werden, im folgenden Beispiel wird eine `wrap_around` Methode verwendet um das Schiff aus dem jeweilig gegenüberliegendem Rand "herausfliegen" zu lassen, sollte ein Rand überschritten werden.
+
+```C
+// Untested
+
+void run_frame()
+{
+	/* ... */
+
+	player_x = wrap_around(player_x, 0, term_w);
+	player_y = wrap_around(player_y, 0, term_h);
+
+	draw_ship(player_x, player_y);
+}
+
+int wrap_around(int actual, int min, int max)
+{
+	if (actual < min)
+		return (min - actual) - max;
+	if (actual > max)
+		return (actual - max) + min;
+	
+	return actual;
+}
+```
+
+### Fazit
+
+Damit ist die rudimentäre Bewegung des Raumschiffes abgeschlossen. Wir werden noch viel mit der `run_frame` Methode arbeiten, aber der Rahmen und wohl wichtigste Teil des Spieles, steht.
+
+
