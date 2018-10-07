@@ -282,16 +282,16 @@ Damit ist die `draw_ship` Methode quasi schon fertig, das Design des Fliegers is
 ```C
 // Untested
 
+#define PLAYER_WIDTH 3
+#define PLAYER_HEIGHT 4
+
 void draw_ship(int x, int y)
 {
-	const int width = 3;
-	const int height = 4;
-
 	/* Main body */
-	draw_rectangle(x, y, width, height);
+	draw_rectangle(x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
 
 	/* Snout */
-	draw_dot(x + (width / 2), y - 1);
+	draw_dot(x + (PLAYER_WIDTH / 2), y - 1);
 
 	/* Left wing */
 	draw_dot(x - 1, y + 1);
@@ -301,11 +301,11 @@ void draw_ship(int x, int y)
 	draw_dot(x - 3, y + 2);
 
 	/* Right wing */
-	draw_dot(x + width, y + 1);
-	draw_dot(x + width, y + 2);
+	draw_dot(x + PLAYER_WIDTH, y + 1);
+	draw_dot(x + PLAYER_WIDTH, y + 2);
 
-	draw_dot(x + width + 1, y + 2);
-	draw_dot(x + width + 2, y + 2);
+	draw_dot(x + PLAYER_WIDTH + 1, y + 2);
+	draw_dot(x + PLAYER_WIDTH + 2, y + 2);
 }
 
 void draw_rectangle(int x, int y, int width, int height)
@@ -328,7 +328,7 @@ Aber nun zur Bewegung des Schiffes. `run_frame` muss vorerst...
 	- ...und basierend darauf die Position des Raumschiffs anpassen
 - das Raumschiff in der angepassten Position zeichnen
 
-Du solltest bis jetzt alle Bausteine die für die Implementation dieser Methode benötigt werden bereits ausgearbeitet haben, der folgende Beispielcode ist entsprechend kurz.
+Du solltest bis jetzt alle Bausteine die für die Implementation dieser Methode benötigt werden bereits ausgearbeitet haben -- der folgende Beispielcode ist entsprechend einfach, da die meiste Logik in bereits implementierte Methoden ausgelagert wird.
 
 ```C
 // Untested
@@ -336,9 +336,21 @@ Du solltest bis jetzt alle Bausteine die für die Implementation dieser Methode 
 #define MOVEMENT_INTERVAL_SMALL 2
 #define MOVEMENT_INTERVAL_DEFAULT 8
 
+int term_w, term_h;
+int player_x, player_y;
+
+/* Fetch term_w and term_h, initialise player_x and player_y to sensible
+   defaults. */
+
 void run_frame()
 {
 	char c = getchar_nonblock();
+
+	handle_player(c);
+}
+
+void handle_player(char c)
+{
 	/* If it's uppercase (ergo shift was held), use the small interval,
 	   else use default. */
 	int interval = c > 64 && c < 91 ? MOVEMENT_INTERVAL_SMALL :
@@ -359,11 +371,16 @@ void run_frame()
 		break;
 	}
 
+	player_x = wrap_around(player_x, 0, term_w);
+	player_y = wrap_around(player_y, 0, term_h);
+
 	draw_ship(player_x, player_y);
 }
 ```
 
-Diese Version der `run_frame` Methode erwartet, dass die globalen Variablen `player_x`, `player_y`, `term_w`, und `term_h` existieren und intialisiert sind. Die Verwendung der Methode könnte daher in etwa so aussehen:
+Ein wichtiges Detail ist hierbei die Auslagerung aller Raumschiff-spezifischen Logik in eine `handle_player` Methode, welche (falls vorhanden) den gedrückten Buchstaben als Parameter bekommt. Dies wird später hilfreich werden, wenn andere Spielelemente in `run_frame` ausgeführt und kontrolliert werden müssen.
+
+Diese Version der `handle_player` Methode erwartet, dass die globalen Variablen `player_x`, `player_y`, `term_w`, und `term_h` existieren und __intialisiert sind__. Die Verwendung der Methode könnte daher in etwa so aussehen:
 
 ```C
 // Untested
@@ -390,17 +407,21 @@ int main()
 		Sleep(500);
 	}
 }
+
+/* ... */
 ```
 
-Ein wichtiges Detail welches in der `run_frame` Methode noch nicht implementiert wurde, ist die Einschränkung der Bewegung in das Terminal-Fenster. Dies kann auf verschiedenste Wege gelöst werden, im folgenden Beispiel wird eine `wrap_around` Methode verwendet um das Schiff aus dem jeweilig gegenüberliegendem Rand "hereinfliegen" zu lassen, sollte ein Rand überschritten werden.
+Ein wichtiges Detail welches in der `handle_player` Methode noch nicht implementiert wurde, ist die Einschränkung der Bewegung in das Terminal-Fenster. Dies kann auf verschiedenste Wege gelöst werden, im folgenden Beispiel wird eine `wrap_around` Methode verwendet um das Schiff aus dem jeweilig gegenüberliegendem Rand "hereinfliegen" zu lassen, sollte ein Rand überschritten werden.
 
 ```C
 // Untested
 
-void run_frame()
+void handle_player(char c)
 {
 	/* ... */
 
+	/* Allow infinite movement by looping the player back around if they
+	   move over one of the edges. */
 	player_x = wrap_around(player_x, 0, term_w);
 	player_y = wrap_around(player_y, 0, term_h);
 
@@ -423,3 +444,148 @@ int wrap_around(int actual, int min, int max)
 Damit ist die rudimentäre Bewegung des Raumschiffes abgeschlossen. Wir werden noch viel mit der `run_frame` Methode arbeiten, aber der Rahmen und wohl wichtigste Teil des Spieles, steht.
 
 Wie auch schon zuvor, ist eine Implementation der neuen Methoden in der [`2-spaceship` branch](https://github.com/LW2904/vt-space/tree/2-spaceship) zu finden.
+
+## Projektile und Schießen
+
+### Zeichnen
+
+Unsere Geschosse werden einfache Linien sein, in etwa wie kurze Lasersalven. Nachdem wir ja bereits eine `draw_rectangle` Methode entwickelt haben, ist die Implementation einer `draw_projectile` Methode eine einfache Aufgabe.
+
+```C
+void draw_projectile(int x, int y)
+{
+	const int width = 1;
+	const int height = 4;
+
+	draw_rectangle(x, y, width, height);
+}
+```
+
+### Abfeuern
+
+Um Projektile abfeuern zu können müssen wir
+
+- wissen ob gerade Space gedrückt wurde, um festzustellen ob ein neues Projektil hinzugefügt werden soll
+- alle Projektile die gerade im Flug sind kennen, insbesondere...
+	- ihre Position um sie...
+		- nach oben "fliegen" zu lassen
+		- zu entfernen, sollten sie den oberen Rand erreicht haben
+	- ihre Geschwindigkeit
+
+Die Geschwindigkeit wird sich während des Fluges nicht ändern, und wir werden sie als "Zeilen/Frame" definieren. Ein Projektil mit einer Geschwindigkeit von 3 wird pro Frame drei Zeilen nach oben fliegen, also um drei Zeilen nach oben bewegt werden.
+
+Wie zuvor mit `handle_player` werden wir auch hier eine `handle_projectiles` Methode implementieren, die für jedes Frame aufgerufen wird.
+
+```C
+#define MAX_PROJECTILES 16
+
+struct projectile {
+	int x;
+	int y;
+	int speed;
+}
+
+int num_projectiles = 0;
+struct projectiles *projectiles = NULL;
+
+/* Allocate memory for the the maximum number of projectiles. */
+
+void handle_projectiles(char c)
+{
+	if (c == ' ') {
+		projectiles[num_projectiles++] = (struct projectile){
+			player_x + PLAYER_WIDTH / 2, player_y - 1,
+			PROJECTILE_SPEED
+		};
+	}
+
+	/* Remove oldest projectile(s) if there are too many. */
+	for (int i = 0; i <= num_projectiles - MAX_PROJECTILES; i++) {
+		remove_projectile(i);
+	}
+
+	for (int i = 0; i < num_projectiles; i++) {
+		handle_projectile(i);
+	}
+}
+
+void handle_projectile(int index)
+{
+	struct projectile *p = projectiles + index;
+
+	p->y -= p->speed;
+
+	/* If the projectile has flown outside of the terminal... */
+	if (p->y <= 0) {
+		/* ...remove it. */
+		remove_projectile(index);
+	}
+}
+
+void remove_projectile(int index)
+{
+	remove_array_item(projectiles, index, num_projectiles--,
+		sizeof(struct projectile));
+}
+```
+
+Der obige Beispielcode ist relativ komplex, weshalb wir ihn hier noch einmal Schritt für Schritt durchgehen.
+
+`void handle_projectiles(char c)`: 
+
+```C
+if (c == ' ') {
+	projectiles[num_projectiles++] = (struct projectile){
+		player_x + PLAYER_WIDTH / 2, player_y - 1,
+		PROJECTILE_SPEED
+	};
+}
+```
+
+Wenn die gedrückte Taste (ergo `c`) gleich `' '` ist, also die Leertase war, füge an der Stelle `num_projectiles` ein neues `struct projectile` (ergo ein Projektil) hinzu, und erhöhe `num_projectiles` um eins. Das funktioniert, weil `num_projectiles`, also die Länge des `projectiles` Array, am Anfang `0` ist. Der erste Index auf den wir schreiben ist also `0`, und nachdem wir das neue Projektil hinzugefügt haben ist er `num_projectiles + 1` -> `0 + 1` -> `1`. Beim nächsten feuern, wird `num_projectiles` eins sein, also werden wir auf den Index `1` schreiben, und danach `num_projectiles` auf `2` erhöhen, und so weiter.
+
+Das geht aber nur so lange gut, bis wir die maximale Länge erreicht haben -- in diesem Fall `MAX_PROJECTILES`, also 16. Würde diese Überschritten werden, würden wir in Speicherregionen schreiben die uns nicht gehören was zu sehr schwer findbaren Bugs führen würde. Die folgende Schleife soll dies verhindern.
+
+```C
+/* Remove oldest projectile(s) if there are too many. */
+for (int i = 0; i <= num_projectiles - MAX_PROJECTILES; i++) {
+	remove_projectile(i);
+}
+```
+
+Bis `num_projectiles` einmal `MAX_PROJECTILES` erreicht hat, passiert hier nichts -- es gibt ja auch keinen Handlungsbedarf, genug Platz ist vorhanden. Erreicht `num_projectiles` nun aber `MAX_PROJECTILES` (oder überschreitet es gar), werden die ältesten (niedrigsten) Projektile entfernt, um Platz für das nächste zu machen.
+
+
+
+Das könnte man so verdeutlichen:
+
+```
+...
+
+num_projectiles = 15
+-> Schleife läuft nicht, `i` (welches bei null anfängt) ist nicht kleiner oder gleich 15 - 16, also -1
+
+<projectil wird hinzugefügt, num_projectiles wird um eins erhöht>
+
+num_projectiles = 16
+-> Schleife läuft einmal da `16 - 16 == 0`, und `0 <= 0`
+--> Projektil an der Stelle null (also das Älteste) wird entfernt, num_projectiles ist nun wieder 15
+
+<projectil wird hinzugefügt, num_projectiles wird um eins erhöht>
+
+num_projectiles = 16
+-> Schleife läuft einmal da...
+--> ...
+
+...
+```
+
+Man könnte die obenstehende `for` Schleife als
+
+```C
+if (num_projectiles == MAX_PROJECTILES) {
+	num_projectiles = remove_projectile(num_projectiles - 1);
+}
+```
+
+vereinfachen, würde dabei allerdings nur eine von (theorethisch) vielen Möglichkeiten abdecken. Praktisch wird `num_projectiles` wahrscheinlich nie höher als 16 sein -- sollte dies aber warum auch immer doch so sein, wird die Schleifen-Implementation noch immer in der Lage sein wie erwartet zu funktionieren.
