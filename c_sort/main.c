@@ -78,8 +78,7 @@ int main()
 
 #ifdef SHOW_SAMPLE
 			int ind = 0;
-			/* Remove division by 0 warning. */
-			double fac = NUM_TOTAL / (SHOW_SAMPLE || 1);
+			double fac = NUM_TOTAL / (SHOW_SAMPLE);
 			for (int k = 0; k < SHOW_SAMPLE; k++, ind = k * fac)
 				printf("\t\t\t%d: %d\n", ind, array[ind]);
 #endif
@@ -129,6 +128,27 @@ int insertion_sort(int *array, int total)
 			j--;
 		}
 
+		iters += i - 1 - j;
+	}
+
+	return iters + i;
+}
+
+int fast_insertion_sort(int *array, int total)
+{
+	int i = 0, t, j = 0, iters = 0;
+
+	for (int i = 0; i < total; i++) {
+		j = i;
+		t = array[i];
+
+		while ((j > 0) && (array[j - 1] > t)) {
+			array[j] = array[j];
+
+			j--;
+		}
+
+		array[j] = t;
 		iters += i - 1 - j;
 	}
 
