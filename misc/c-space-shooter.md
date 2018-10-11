@@ -231,7 +231,7 @@ char custom_getchar()
 
 ### Fazit
 
-Damit ist alles rund um den Terminalemulator (bzw. das Fenster ebenjenes) getan. Eine Implementation der bis jetzt eingeführten Methoden ist in der [`1-terminal` branch](https://github.com/LW2904/vt-space/tree/1-terminal) des `vt-space` Projekts zu finden.
+Damit ist alles rund um den Terminalemulator (bzw. das Fenster ebenjenes) getan. Eine Implementation der bis jetzt eingeführten Methoden ist in [vt-space/tutorial/1-terminal zu finden](https://github.com/LW2904/vt-space/tree/master/tutorial/1-terminal). Es wäre grundsätzlich nützlich den Beispielcode kurz zu überfliegen, vielleicht kann er dich auch in Hinsicht auf Programmstruktur inspirieren.
 
 ## Das Raumschiff
 
@@ -493,7 +493,7 @@ void handle_exit()
 
 Damit ist die rudimentäre Bewegung des Raumschiffes abgeschlossen. Wir werden noch viel mit der `run_frame` Methode arbeiten, aber der Rahmen und wohl wichtigste Teil des Spieles, steht.
 
-Wie auch schon zuvor, ist eine Implementation der neuen Methoden in der [`2-spaceship` branch](https://github.com/LW2904/vt-space/tree/2-spaceship) zu finden.
+Wie auch schon zuvor, ist eine Implementation der neuen Methoden im [tutorial/2-spaceship](https://github.com/LW2904/vt-space/tree/master/tutorial/2-spaceship) Ordner zu finden.
 
 ## Projektile und Schießen
 
