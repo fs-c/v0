@@ -4,6 +4,8 @@ In dieser Übung werden wir ein relativ fortgeschrittenes Computerspiel in C ent
 
 Für diese Übung solltest du bereits einfache Programmierkentnisse haben, die Konzepte von Schleifen, Bedingungen und Assignments bzw. Variablen sollten nichts neues sein. Im Grunde genommen ist die Programmiersprache C eine sehr einfache, und viele andere Sprachen (z.B. JavaScript, Java, C#, ...) sind ihr oberflächlich ähnlich bzw. nachempfunden. Im folgenden werden daher keine näheren Details zu C gegeben -- sollte dir etwas unklar sein, zögere nicht dich selbst im Internet schlau zu machen, oder eine/n Mentor/in um Hilfe zu bitten.
 
+TODO: C-Crashkurs?
+
 ## Spielablauf
 
 PLACEHOLDER:
@@ -124,20 +126,17 @@ Informationen über die relevanten Methoden der Windows-API sind in den [Microso
 Eine mögliche Lösung könnte wie folgt aussehen:
 
 ```C
-// Untested, straight copy
-
 int get_terminal_dimensions(int *columns, int *lines)
 {
-	DWORD access = GENERIC_READ | GENERIC_WRITE;
-	DWORD mode = FILE_SHARE_READ | FILE_SHARE_WRITE;
-	HANDLE console = CreateFileW(L"CONOUT$", access, mode, NULL,
-		OPEN_EXISTING, 0, NULL);
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (console == INVALID_HANDLE_VALUE)
+		return GetLastError();
 
 	CONSOLE_SCREEN_BUFFER_INFO screen;
 	if (!GetConsoleScreenBufferInfo(console, &screen))
-		return -1;
+		return GetLastError();
 
-    	*lines = screen.srWindow.Bottom - screen.srWindow.Top + 1;
+	*lines = screen.srWindow.Bottom - screen.srWindow.Top + 1;
 	*columns = screen.srWindow.Right - screen.srWindow.Left + 1;
 
 	return 0;
@@ -154,7 +153,7 @@ Letzteres ist hierbei ein vitaler Punkt: wir werden den Bildschirm mehrmals in d
 
 Hier wichtig sind die [`GetConsoleMode()`](https://docs.microsoft.com/en-us/windows/console/getconsolemode) und [`SetConsoleMode()`](https://docs.microsoft.com/en-us/windows/console/setconsolemode) Methoden der Windows-API. Mehr Informationen und Beispielcode können im Artikel ["Console Virtual Terminal Sequences"](https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences#example-of-enabling-virtual-terminal-processing) der Microsoft Docs gefunden werden.
 
-Wenn du im oben verlinkten Artikel den Abschnitt "Example of Enabling Virtual Terminal Processing" gelesen hast, wirst du sehen, dass die folgende potentielle Lösung deutlich kürzer und anders als das dort gegebene Beispiel ist. Auch deshalb sei hier nochmals angemerkt, dass diese Lösungen bei weitem nicht die einzig richtigen (oder perfekt) sind -- hier wurde bewusst ein anderer Weg genommen, um dies zu verdeutlichen.
+Wenn du im oben verlinkten Artikel den Abschnitt "Example of Enabling Virtual Terminal Processing" gelesen hast, wirst du sehen, dass sich die folgende Lösung deutlich von dem dort gegebenen Beispiel unterscheidet. Auch deshalb sei hier nochmals angemerkt, dass diese Lösungen bei weitem nicht die einzig richtigen (oder perfekt) sind -- hier wurde bewusst ein anderer Weg genommen, um dies zu verdeutlichen.
 
 ```C
 // Untested, straight copy
@@ -168,8 +167,7 @@ int setup_terminal()
 
 	/* Fetch original console mode */
 	if (!GetConsoleMode(console, &mode)) {
-		printf("GetConsoleMode error: %ld\n", GetLastError());
-		return -1;
+		return GetLastError();
 	}
 
 	/* Amend the mode to enable VT codes */
@@ -177,8 +175,7 @@ int setup_terminal()
 
 	/* Apply the changes */
 	if (!SetConsoleMode(console, mode)) {
-		printf("SetConsoleMode error: %ld\n", GetLastError());
-		return -1;
+		return GetLastError();
 	}
 
 	return 0;
@@ -192,8 +189,6 @@ Implementationen eines solchen sind von OS zu OS sehr unterschiedlich, unter Win
 Mithilfe dieser zwei Funktionen kann eine sehr einfache implementation in etwa so aussehen:
 
 ```C
-// Untested, straight copy
-
 char getchar_nonblock()
 {
 	/* If a key was pressed just now... */
@@ -254,13 +249,11 @@ Um den Cursor zu bewegen gibt es die VT100 Sequence `<ESC> [<line>;<column> H` (
 Das schreit nach einer Abstraktion, zum Beispiel wie folgend:
 
 ```C
-// Untested
-
 void move_cursor(int x, int y)
 {
 	/* Note the argument order since this expects line, column (ergo y, x)
 	   instead of the more common x, y. */
-	printf("%c [ %d;%d H", ESC, y, x);
+	printf("%c[%d;%dH", ESC, y, x);
 }
 ```
 
@@ -333,19 +326,27 @@ Aber nun zur Bewegung des Schiffes. `run_frame` muss vorerst...
 Du solltest bis jetzt alle Bausteine die für die Implementation dieser Methode benötigt werden bereits ausgearbeitet haben -- der folgende Beispielcode ist entsprechend einfach, da die meiste Logik in bereits implementierte Methoden ausgelagert wird.
 
 ```C
-// Untested
-
-#define MOVEMENT_INTERVAL_SMALL 2
-#define MOVEMENT_INTERVAL_DEFAULT 8
+#define MOVEMENT_INTERVAL_LARGE 8
+#define MOVEMENT_INTERVAL_DEFAULT 2
 
 int term_w, term_h;
-int player_x, player_y;
 
-/* Fetch term_w and term_h, initialise player_x and player_y to sensible
-   defaults. */
+struct ship player;
+
+/* struct ship should follow the following declaration: */
+struct ship {
+	int x;
+	int y;
+	int width;
+	int height;
+}
+
+/* Fetch term_w and term_h, initialise player to sensible defaults. */
 
 void run_frame()
 {
+	clear_terminal();
+
 	char c = getchar_nonblock();
 
 	handle_player(c);
@@ -355,79 +356,100 @@ void handle_player(char c)
 {
 	/* If it's uppercase (ergo shift was held), use the small interval,
 	   else use default. */
-	int interval = c > 64 && c < 91 ? MOVEMENT_INTERVAL_SMALL :
-		MOVEMENT_INTERVAL_DEFAULT;
+	int interval = c > 64 && c < 91 ? MOVEMENT_INTERVAL_DEFAULT :
+		MOVEMENT_INTERVAL_LARGE;
 
+	/* Intervals are normalized (in this case halved) for vertical movement,
+	   since monospace characters are usually around half as wide as they
+	   are tall. */
 	switch (c) {
 	case 'w':
-	case 'W': player_y -= interval;
+	case 'W': player.y -= interval / 2;
 		break;
 	case 'a':
-	case 'A': player_x -= interval;
+	case 'A': player.x -= interval;
 		break;
 	case 's':
-	case 'S': player_y += interval;
+	case 'S': player.y += interval / 2;
 		break;
 	case 'd':
-	case 'D': player_x += interval;
+	case 'D': player.x += interval;
 		break;
 	}
 
-	player_x = wrap_around(player_x, 0, term_w);
-	player_y = wrap_around(player_y, 0, term_h);
-
-	draw_ship(player_x, player_y);
+	draw_ship(player);
 }
 ```
 
 Ein wichtiges Detail ist hierbei die Auslagerung aller Raumschiff-spezifischen Logik in eine `handle_player` Methode, welche (falls vorhanden) den gedrückten Buchstaben als Parameter bekommt. Dies wird später hilfreich werden, wenn andere Spielelemente in `run_frame` ausgeführt und kontrolliert werden müssen.
 
-Diese Version der `handle_player` Methode erwartet, dass die globalen Variablen `player_x`, `player_y`, `term_w`, und `term_h` existieren und __intialisiert sind__. Die Verwendung der Methode könnte daher in etwa so aussehen:
+Diese Version der `handle_player` Methode erwartet, dass die globalen Variablen `player`, `term_w`, und `term_h` existieren und __intialisiert sind__. Die Verwendung der Methode könnte daher in etwa so aussehen:
 
 ```C
-// Untested
+#define FRAME_INTERVAL 75
 
-/* ... */
+#define PLAYER_WIDTH 3
+#define PLAYER_HEIGHT 4
+
+#define MOVEMENT_INTERVAL_LARGE 8
+#define MOVEMENT_INTERVAL_DEFAULT 2
 
 int term_w, term_h;
-int player_x, player_y;
+
+struct ship player;
+
+/* Function declarations... */
 
 int main()
 {
 	/* ... */
 
-	get_terminal_dimensions(&term_w, &term_h);
+	int err;
+
+	if ((err = setup_terminal())) {
+		printf("setup_terminal error: %d\n", err);
+		return 1;
+	}
+
+	if ((err = get_terminal_dimensions(&term_w, &term_h))) {
+		printf("get_terminal_dimensions error: %d\n", err);
+		return 1;
+	}
+
+	hide_cursor();
+	clear_terminal();
 
 	/* Start in the center and near the bottom of the screen */
-	player_x = term_w * 0.5;
-	player_y = term_h * 0.8;
+	player = (struct ship){ term_w * 0.5, term_h * 0.8,
+		PLAYER_WIDTH, PLAYER_HEIGHT };
 
 	while (1) {
 		run_frame();
 
-		/* Sleep for 0.5s */
-		Sleep(500);
+		Sleep(FRAME_INTERVAL);
 	}
+
+	return 0;
 }
 
-/* ... */
+/* Function definitions... */
 ```
+
+Die Implementierung der `hide_cursor` und `clear_terminal` Methoden ist dir überlassen.
 
 Ein wichtiges Detail welches in der `handle_player` Methode noch nicht implementiert wurde, ist die Einschränkung der Bewegung in das Terminal-Fenster. Dies kann auf verschiedenste Wege gelöst werden, im folgenden Beispiel wird eine `wrap_around` Methode verwendet um das Schiff aus dem jeweilig gegenüberliegendem Rand "hereinfliegen" zu lassen, sollte ein Rand überschritten werden.
 
 ```C
-// Untested
-
 void handle_player(char c)
 {
 	/* ... */
 
 	/* Allow infinite movement by looping the player back around if they
 	   move over one of the edges. */
-	player_x = wrap_around(player_x, 0, term_w);
-	player_y = wrap_around(player_y, 0, term_h);
+	player.x = wrap_around(player.x, 0, term_w);
+	player.y = wrap_around(player.y, 0, term_h);
 
-	draw_ship(player_x, player_y);
+	draw_ship(player);
 }
 
 int wrap_around(int actual, int min, int max)
@@ -438,6 +460,32 @@ int wrap_around(int actual, int min, int max)
 		return (actual - max) + min;
 	
 	return actual;
+}
+```
+
+Wer die Lücken gefüllt hat, und jetzt ein laufendes Programm vor sich hat, wird merken, dass ein Detail übersehen wurde. Und zwar verstecken wir in der `main` Methode zwar den cursor, lassen ihn aber nicht wieder erscheinen.
+
+Eine solche `show_cursor` Methode nun aber einfach nach den game loop zu setzten würde das Problem auch nicht lösen -- üblicherweise wird das Spiel durch `Ctrl+C` beendet werden, welches durch ein `SIGINT` den Programmablauf stoppt, eine solche Methode würde also nie erreicht werden.
+
+Die Lösung hierfür ist eine relativ einfach -- es empfiehlt sich die Dokumentation der `signal` Methode der standard library zu lesen. Hier dennoch ein Beispiel.
+
+```C
+int main()
+{
+	/* ... */
+
+	/* Catch Ctrl + C */
+	signal(SIGINT, handle_exit);
+
+	/* ... */
+}
+
+void handle_exit()
+{
+	show_cursor();
+	clear_terminal();
+
+	exit(0);
 }
 ```
 
@@ -454,12 +502,9 @@ Wie auch schon zuvor, ist eine Implementation der neuen Methoden in der [`2-spac
 Unsere Geschosse werden einfache Linien sein, in etwa wie kurze Lasersalven. Nachdem wir ja bereits eine `draw_rectangle` Methode entwickelt haben, ist die Implementation einer `draw_projectile` Methode eine einfache Aufgabe.
 
 ```C
-void draw_projectile(int x, int y)
+void draw_projectile(struct projectile p)
 {
-	const int width = 1;
-	const int height = 4;
-
-	draw_rectangle(x, y, width, height);
+	draw_rectangle(p.x, p.y, p.width, p.height);
 }
 ```
 
@@ -479,8 +524,13 @@ Die Geschwindigkeit wird sich während des Fluges nicht ändern, und wir werden 
 Wie zuvor mit `handle_player` werden wir auch hier eine `handle_projectiles` Methode implementieren, die für jedes Frame aufgerufen wird.
 
 ```C
-#define MAX_PROJECTILES 16
+#define PROJECTILES_MAX 16
 
+#define PROJECTILE_SPEED 3
+#define PROJECTILE_WIDTH 1
+#define PROJECTILE_HEIGHT 4
+
+/* struct projectile should follow the following declaration: */
 struct projectile {
 	int x;
 	int y;
@@ -488,27 +538,23 @@ struct projectile {
 }
 
 int num_projectiles = 0;
-struct projectiles *projectiles = NULL;
-
-/* Allocate memory for the the maximum number of projectiles. */
+struct projectiles projectiles[PROJECTILES_MAX];
 
 void handle_projectiles(char c)
 {
 	if (c == ' ') {
 		projectiles[num_projectiles++] = (struct projectile){
-			player_x + PLAYER_WIDTH / 2, player_y - 1,
-			PROJECTILE_SPEED
+			player.x + player.width / 2, player.y - 1,
+			PROJECTILE_SPEED, PROJECTILE_WIDTH, PROJECTILE_HEIGHT
 		};
 	}
 
-	/* Remove oldest projectile(s) if there are too many. */
-	for (int i = 0; i <= num_projectiles - MAX_PROJECTILES; i++) {
+	/* Remove oldest projectile(s) if there are too many */
+	for (int i = 0; i <= num_projectiles - PROJECTILES_MAX; i++)
 		remove_projectile(i);
-	}
 
-	for (int i = 0; i < num_projectiles; i++) {
+	for (int i = 0; i < num_projectiles; i++)
 		handle_projectile(i);
-	}
 }
 
 void handle_projectile(int index)
@@ -517,18 +563,21 @@ void handle_projectile(int index)
 
 	p->y -= p->speed;
 
-	/* If the projectile has flown outside of the terminal... */
-	if (p->y <= 0) {
-		/* ...remove it. */
+	if (p->y <= 0 - p->height) {
 		remove_projectile(index);
+
+		return;
 	}
+
+	draw_projectile(*p);
 }
 
 void remove_projectile(int index)
 {
-	remove_array_item(projectiles, index, num_projectiles--,
+	num_projectiles = remove_array_item(projectiles, index, num_projectiles,
 		sizeof(struct projectile));
 }
+
 ```
 
 Der obige Beispielcode ist relativ komplex, weshalb wir ihn hier noch einmal Schritt für Schritt durchgehen.
@@ -538,26 +587,23 @@ Der obige Beispielcode ist relativ komplex, weshalb wir ihn hier noch einmal Sch
 ```C
 if (c == ' ') {
 	projectiles[num_projectiles++] = (struct projectile){
-		player_x + PLAYER_WIDTH / 2, player_y - 1,
-		PROJECTILE_SPEED
+		player.x + player.width / 2, player.y - 1,
+		PROJECTILE_SPEED, PROJECTILE_WIDTH, PROJECTILE_HEIGHT
 	};
 }
 ```
 
 Wenn die gedrückte Taste (ergo `c`) gleich `' '` ist, also die Leertase war, füge an der Stelle `num_projectiles` ein neues `struct projectile` (ergo ein Projektil) hinzu, und erhöhe `num_projectiles` um eins. Das funktioniert, weil `num_projectiles`, also die Länge des `projectiles` Array, am Anfang `0` ist. Der erste Index auf den wir schreiben ist also `0`, und nachdem wir das neue Projektil hinzugefügt haben ist er `num_projectiles + 1` -> `0 + 1` -> `1`. Beim nächsten feuern, wird `num_projectiles` eins sein, also werden wir auf den Index `1` schreiben, und danach `num_projectiles` auf `2` erhöhen, und so weiter.
 
-Das geht aber nur so lange gut, bis wir die maximale Länge erreicht haben -- in diesem Fall `MAX_PROJECTILES`, also 16. Würde diese Überschritten werden, würden wir in Speicherregionen schreiben die uns nicht gehören was zu sehr schwer findbaren Bugs führen würde. Die folgende Schleife soll dies verhindern.
+Das geht aber nur so lange gut, bis wir die maximale Länge erreicht haben -- in diesem Fall `PROJECTILES_MAX`, also 16. Würde diese Überschritten werden, würden wir in Speicherregionen schreiben die uns nicht gehören was zu sehr schwer findbaren Bugs führen würde. Die folgende Schleife soll dies verhindern.
 
 ```C
-/* Remove oldest projectile(s) if there are too many. */
-for (int i = 0; i <= num_projectiles - MAX_PROJECTILES; i++) {
+/* Remove oldest projectile(s) if there are too many */
+for (int i = 0; i <= num_projectiles - PROJECTILES_MAX; i++)
 	remove_projectile(i);
-}
 ```
 
-Bis `num_projectiles` einmal `MAX_PROJECTILES` erreicht hat, passiert hier nichts -- es gibt ja auch keinen Handlungsbedarf, genug Platz ist vorhanden. Erreicht `num_projectiles` nun aber `MAX_PROJECTILES` (oder überschreitet es gar), werden die ältesten (niedrigsten) Projektile entfernt, um Platz für das nächste zu machen.
-
-
+Bis `num_projectiles` einmal `PROJECTILES_MAX` erreicht hat, passiert hier nichts -- es gibt ja auch keinen Handlungsbedarf, genug Platz ist vorhanden. Erreicht `num_projectiles` nun aber `PROJECTILES_MAX` (oder überschreitet es gar), werden die ältesten (niedrigsten) Projektile entfernt, um Platz für das nächste zu machen.
 
 Das könnte man so verdeutlichen:
 
@@ -585,9 +631,8 @@ num_projectiles = 16
 Man könnte die obenstehende `for` Schleife als
 
 ```C
-if (num_projectiles == MAX_PROJECTILES) {
+if (num_projectiles == PROJECTILES_MAX)
 	num_projectiles = remove_projectile(num_projectiles - 1);
-}
 ```
 
-vereinfachen, würde dabei allerdings nur eine von (theorethisch) vielen Möglichkeiten abdecken. Praktisch wird `num_projectiles` wahrscheinlich nie höher als 16 sein -- sollte dies aber warum auch immer doch so sein, wird die Schleifen-Implementation noch immer in der Lage sein wie erwartet zu funktionieren.
+vereinfachen, würde dabei allerdings nur eine von (theorethisch) vielen Möglichkeiten abdecken. Praktisch wird `num_projectiles` wahrscheinlich nie höher als 16 sein -- sollte dies aber aus welchem Grund auch immer doch so sein, wird die Schleifen-Implementation noch immer in der Lage sein wie erwartet zu funktionieren.
