@@ -639,7 +639,13 @@ Man könnte die obenstehende `for` Schleife als
 
 ```C
 if (num_projectiles == PROJECTILES_MAX)
-	num_projectiles = remove_projectile(num_projectiles - 1);
+	remove_projectile(num_projectiles - 1);
 ```
 
 vereinfachen, würde dabei allerdings nur eine von (theorethisch) vielen Möglichkeiten abdecken. Praktisch wird `num_projectiles` wahrscheinlich nie höher als 16 sein -- sollte dies aber aus welchem Grund auch immer doch so sein, wird die Schleifen-Implementation noch immer in der Lage sein wie erwartet zu funktionieren.
+
+### Fazit
+
+Damit ist das abfeuern (und damit das zeichnen und die bewegung von) Projektilen vollständig implementiert.
+
+Beispielcode ist wie immer unter [tutorial/3-projectile](https://github.com/LW2904/vt-space/tree/master/tutorial/3-projectile) zu finden.
