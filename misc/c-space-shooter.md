@@ -41,9 +41,14 @@ Das folgende Beispiel demonstriert die Verwendung einer VT100 escape sequence (b
 
 int main()
 {
+	/* Disable stdout buffering */
+	setbuf(stdout, NULL);
+
 	printf("\e[2J");
 }
 ```
+
+Im oberen Beispiel wichtig ist der call zu `setbuf`, mit dem wir das standard output buffering ausschalten, in dem wir den buffer auf `NULL` setzen. Sonst würde alles, was wir zu stdout senden gebuffert (also zwischengespeichert) werden, und erst nach einem Zeilenumbruch (`\n`) abgesendet werden. Wir müssten also immer ein `\n` an unsere vt100 codes hängen, was nicht sehr praktikabel ist -- hiermit umgehen wir dieses Problem.
 
 Hier sind jedoch sind zwei "bad-practises" enthalten, also schlechter Code-Stil:
 - `printf("\e[2J")` ist "Magie" -- es ist nicht direkt ersichtlich was dieses Stück code macht
@@ -63,6 +68,8 @@ void clear_screen();
 
 int main()
 {
+	setbuf(stdout, NULL);
+
 	clear_screen();
 }
 
