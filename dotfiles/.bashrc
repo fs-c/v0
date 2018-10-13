@@ -11,4 +11,4 @@ alias grep="grep --color=auto"
 alias gccp="gcc -Werror -O2"
 # Development
 alias gccd="gcc -Wall -Wextra -Wpedantic -Wduplicated-cond -Wduplicated-branches \
--Wlogical-op -Wnull-dereference -Wshadow=local -Wuseless-cast -Og"
+-Wlogical-op -Wnull-dereference -Wshadow=local -Og"
