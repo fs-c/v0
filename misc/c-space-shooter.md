@@ -10,7 +10,7 @@ TODO: C-Crashkurs?
 
 ![Screenshot während des pausierten Spiels](https://i.imgur.com/KmkZkqf.png)
 
-Gegner, hier 3x4 Rechtecke, fliegen von oben nach unten und müssen vom Spieler abgeschossen werden. Wie im Luftkampf zwischen kleineren Fliegern üblich, reicht ein einziger Treffer um die feindlichen Rechtecke auszuschalten. Das Spiel läuft endlos, bis eines der gegnerischen Objekte das untere Ende des Bildschirms erreicht, wobei jeder Abschuss einen Punkt bringt -- das Ziel ist die Anhäufung möglichst vieler Punkte.
+Gegner, hier 4x4 Rechtecke, fliegen von oben nach unten und müssen vom Spieler abgeschossen werden. Wie im Luftkampf zwischen kleineren Fliegern üblich, reicht ein einziger Treffer um die feindlichen Rechtecke auszuschalten. Das Spiel läuft endlos, bis eines der gegnerischen Objekte das untere Ende des Bildschirms erreicht, wobei jeder Abschuss einen Punkt bringt -- das Ziel ist die Anhäufung möglichst vieler Punkte.
 
 Der Spieler kontrolliert sein Raumschiff vertikal und horizontal (also von links nach rechts, und von oben nach unten) wie in Computerspielen üblich mit den WASD Tasten, und kann mit drücken der Space-Taste Geschosse aubfeuern.
 
@@ -27,8 +27,6 @@ Eine Liste nützlicher escape sequences ist [hier](http://www.termsys.demon.co.u
 Das folgende Beispiel demonstriert die Verwendung einer VT100 escape sequence (bzw. eines VT100 codes).
 
 ```C
-// Untested
-
 #include <stdio.h>
 
 int main()
@@ -49,8 +47,6 @@ Hier sind jedoch sind zwei "bad-practises" enthalten, also schlechter Code-Stil:
 Eine schönere Lösung wäre daher
 
 ```C
-// Untested
-
 #include <stdio.h>
 
 /* 0x1B is the ASCII "escape" character. */
