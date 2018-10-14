@@ -8,21 +8,13 @@ TODO: C-Crashkurs?
 
 ## Spielablauf
 
-PLACEHOLDER:
-![Screenshot während des pausierten Spiels](https://i.imgur.com/4TgnLB8.png)
+![Screenshot während des pausierten Spiels](https://i.imgur.com/KmkZkqf.png)
 
 Gegner, hier 3x4 Rechtecke, fliegen von oben nach unten und müssen vom Spieler abgeschossen werden. Wie im Luftkampf zwischen kleineren Fliegern üblich, reicht ein einziger Treffer um die feindlichen Rechtecke auszuschalten. Das Spiel läuft endlos, bis eines der gegnerischen Objekte das untere Ende des Bildschirms erreicht, wobei jeder Abschuss einen Punkt bringt -- das Ziel ist die Anhäufung möglichst vieler Punkte.
 
 Der Spieler kontrolliert sein Raumschiff vertikal und horizontal (also von links nach rechts, und von oben nach unten) wie in Computerspielen üblich mit den WASD Tasten, und kann mit drücken der Space-Taste Geschosse aubfeuern.
 
-PLACEHOLDER:
-![Screenshot zu Beginn des Spiels](https://i.imgur.com/p0jb5PI.png)
-
-Dieser screenshot nimmt indirekt ein Implementationsdetail vorweg, die Bewegungspräzision. Um schnelle und flexible Bewegung zu erlauben, bewegt sich das Raumschiff normalerweise in Achterschritten: ein drücken der Taste 'A' == acht Einheiten nach links. Für genauere Bewegung und dadurch präzisere Schüsse, kann durch halten der Shift-Taste die Bewegung in Zweierschritten eingeschalten werden.
-
 Wenn du möchtest, kannst du dir das ausprogrammierte Spiel [hier](https://github.com/LW2904/vt-space/releases) herunterladen, um den Spielablauf genauer zu sehen.
-
-TODO: Upload a build to the vt-space repo, might need some cleanup first
 
 ## Vorwissen
 
@@ -267,8 +259,6 @@ void move_cursor(int x, int y)
 Jetzt wo `move_cursor` implementiert ist, können wir uns an die `draw_dot` Methode machen. Ihre Funktionsweise wurde oben bereits erläutert, hier eine mögliche Implementation
 
 ```C
-// Untested
-
 #define DRAW_CHAR '#'
 
 void draw_dot(int x, int y)
@@ -282,32 +272,27 @@ void draw_dot(int x, int y)
 Damit ist die `draw_ship` Methode quasi schon fertig, das Design des Fliegers ist dir überlassen. Wie immer folgt natürlich ein Beispiel, bei dem auch gleich eine `draw_rectangle` Methode implementiert wurde.
 
 ```C
-// Untested
-
-#define PLAYER_WIDTH 3
-#define PLAYER_HEIGHT 4
-
-void draw_ship(int x, int y)
+void draw_ship(struct ship s)
 {
 	/* Main body */
-	draw_rectangle(x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
+	draw_rectangle(s.x, s.y, s.width, s.height);
 
 	/* Snout */
-	draw_dot(x + (PLAYER_WIDTH / 2), y - 1);
+	draw_dot(s.x + (s.width / 2), s.y - 1);
 
 	/* Left wing */
-	draw_dot(x - 1, y + 1);
-	draw_dot(x - 1, y + 2);
+	draw_dot(s.x - 1, s.y + 1);
+	draw_dot(s.x - 1, s.y + 2);
 
-	draw_dot(x - 2, y + 2);
-	draw_dot(x - 3, y + 2);
+	draw_dot(s.x - 2, s.y + 2);
+	draw_dot(s.x - 3, s.y + 2);
 
 	/* Right wing */
-	draw_dot(x + PLAYER_WIDTH, y + 1);
-	draw_dot(x + PLAYER_WIDTH, y + 2);
+	draw_dot(s.x + s.width, s.y + 1);
+	draw_dot(s.x + s.width, s.y + 2);
 
-	draw_dot(x + PLAYER_WIDTH + 1, y + 2);
-	draw_dot(x + PLAYER_WIDTH + 2, y + 2);
+	draw_dot(s.x + s.width + 1, s.y + 2);
+	draw_dot(s.x + s.width + 2, s.y + 2);
 }
 
 void draw_rectangle(int x, int y, int width, int height)
@@ -318,11 +303,22 @@ void draw_rectangle(int x, int y, int width, int height)
 }
 ```
 
+In der `draw_ship` Methode verbirgt sich noch ein Detail: sie nimmt ein `struct ship` als Parameter. Dieses ist wie folgt deklariert:
+
+```C
+struct ship {
+	int x;
+	int y;
+	int width;
+	int height;
+};
+```
+
 ### Bewegen
 
 Wie bereits weiter oben erwähnt, werden wir das Terminal-Fenster mehrmals in der Sekunde löschen und neu zeichnen. Das heißt wir werden keine `move_ship_left` oder `move_ship_up` Methoden haben, sondern nur `run_frame`. (Wir erinnern uns: "Frame" beudeutet in diesem Kontext das Selbe wie "Szene".)
 
-"Run" und nicht "draw", weil diese Methode mehr machen muss als nur Zeichen -- also `draw_*` -- Methoden zu kontrollieren, unter Anderem muss sie auch festgestellt werden, ob der Benutzer eine Taste (genauer, WASD oder Space) gedrückt hat. Tatsächlich wird später die gesamte Logik des Spieles durch diese Methode kontrolliert werden.
+"Run" und nicht "draw", weil diese Methode mehr machen muss als nur Zeichen-Methoden (also `draw_*` Methoden) zu kontrollieren -- unter anderem muss sie auch feststellen, ob der Benutzer eine Taste (genauer, WASD oder Space) gedrückt hat. Tatsächlich wird später die gesamte Logik des Spieles durch diese Methode kontrolliert werden.
 
 Aber nun zur Bewegung des Schiffes. `run_frame` muss vorerst...
 
@@ -330,7 +326,7 @@ Aber nun zur Bewegung des Schiffes. `run_frame` muss vorerst...
 	- ...und basierend darauf die Position des Raumschiffs anpassen
 - das Raumschiff in der angepassten Position zeichnen
 
-Du solltest bis jetzt alle Bausteine die für die Implementation dieser Methode benötigt werden bereits ausgearbeitet haben -- der folgende Beispielcode ist entsprechend einfach, da die meiste Logik in bereits implementierte Methoden ausgelagert wird.
+Du solltest bis jetzt alle Bausteine die für die Implementation dieser Methode benötigt werden bereits ausprogrammiert haben -- der folgende Beispielcode ist entsprechend einfach, da die meiste Logik in bereits implementierte Methoden ausgelagert wird.
 
 ```C
 #define MOVEMENT_INTERVAL_LARGE 8
@@ -339,14 +335,6 @@ Du solltest bis jetzt alle Bausteine die für die Implementation dieser Methode 
 int term_w, term_h;
 
 struct ship player;
-
-/* struct ship should follow the following declaration: */
-struct ship {
-	int x;
-	int y;
-	int width;
-	int height;
-}
 
 /* Fetch term_w and term_h, initialise player to sensible defaults. */
 
@@ -472,9 +460,9 @@ int wrap_around(int actual, int min, int max)
 
 Wer die Lücken gefüllt hat, und jetzt ein laufendes Programm vor sich hat, wird merken, dass ein Detail übersehen wurde. Und zwar verstecken wir in der `main` Methode zwar den cursor, lassen ihn aber nicht wieder erscheinen.
 
-Eine solche `show_cursor` Methode nun aber einfach nach den game loop zu setzten würde das Problem auch nicht lösen -- üblicherweise wird das Spiel durch `Ctrl+C` beendet werden, welches durch ein `SIGINT` den Programmablauf stoppt, eine solche Methode würde also nie erreicht werden.
+Eine solche `show_cursor` Methode nun aber einfach nach den game loop zu setzten würde das Problem auch nicht lösen -- üblicherweise wird das Spiel durch `Ctrl+C` beendet werden, welches durch ein `SIGINT` den Programmablauf stoppt. Eine solche Methode würde also nie erreicht werden.
 
-Die Lösung hierfür ist eine relativ einfach -- es empfiehlt sich die Dokumentation der `signal` Methode der standard library zu lesen. Hier dennoch ein Beispiel.
+Die Lösung hierfür ist eine relativ einfache -- es empfiehlt sich die Dokumentation der `signal` Methode der C standard library zu lesen. Hier dennoch ein Beispiel.
 
 ```C
 int main()
@@ -498,7 +486,7 @@ void handle_exit()
 
 ### Fazit
 
-Damit ist die rudimentäre Bewegung des Raumschiffes abgeschlossen. Wir werden noch viel mit der `run_frame` Methode arbeiten, aber der Rahmen und wohl wichtigste Teil des Spieles, steht.
+Damit ist die Bewegung des Raumschiffes vollständig implementiert. Wir werden noch viel mit der `run_frame` Methode arbeiten, aber der Rahmen und wohl wichtigste Teil des Spieles, steht.
 
 Wie auch schon zuvor, ist eine Implementation der neuen Methoden im [tutorial/2-spaceship](https://github.com/LW2904/vt-space/tree/master/tutorial/2-spaceship) Ordner zu finden.
 
@@ -533,10 +521,10 @@ Um Projektile abfeuern zu können müssen wir
 
 - wissen ob gerade Space gedrückt wurde, um festzustellen ob ein neues Projektil hinzugefügt werden soll
 - alle Projektile die gerade im Flug sind kennen, insbesondere...
+	- ihre Geschwindigkeit
 	- ihre Position um sie...
 		- nach oben "fliegen" zu lassen
-		- zu entfernen, sollten sie den oberen Rand erreicht haben
-	- ihre Geschwindigkeit
+		- zu entfernen, sobald sie den oberen Rand erreicht haben
 
 Die Geschwindigkeit wird sich während des Fluges nicht ändern, und wir werden sie als "Zeilen/Frame" definieren. Ein Projektil mit einer Geschwindigkeit von 3 wird pro Frame drei Zeilen nach oben fliegen, also um drei Zeilen nach oben bewegt werden.
 
@@ -590,6 +578,17 @@ void remove_projectile(int index)
 		sizeof(struct projectile));
 }
 
+int remove_array_item(void *array, int index, int length, size_t item_size)
+{
+	size_t byte_offset = item_size * index;
+	size_t new_size = item_size * (length - index - 1);
+
+	char *arr = (char *)array;
+
+	memmove(arr + byte_offset, arr + byte_offset + item_size, new_size);
+
+	return length - 1;
+}
 ```
 
 Der obige Beispielcode ist relativ komplex, weshalb wir ihn hier noch einmal Schritt für Schritt durchgehen.
