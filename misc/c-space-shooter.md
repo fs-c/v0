@@ -515,6 +515,18 @@ void draw_projectile(struct projectile p)
 }
 ```
 
+`struct projectile` ist in diesem Beispiel so deklariert:
+
+```C
+struct projectile {
+	int x;
+	int y;
+	int speed;
+	int width;
+	int height;
+};
+```
+
 ### Abfeuern
 
 Um Projektile abfeuern zu können müssen wir
@@ -536,13 +548,6 @@ Wie zuvor mit `handle_player` werden wir auch hier eine `handle_projectiles` Met
 #define PROJECTILE_SPEED 3
 #define PROJECTILE_WIDTH 1
 #define PROJECTILE_HEIGHT 4
-
-/* struct projectile should follow the following declaration: */
-struct projectile {
-	int x;
-	int y;
-	int speed;
-}
 
 int num_projectiles = 0;
 struct projectiles projectiles[PROJECTILES_MAX];
@@ -649,3 +654,183 @@ vereinfachen, würde dabei allerdings nur eine von (theorethisch) vielen Möglic
 Damit ist das abfeuern (und damit das zeichnen und die bewegung von) Projektilen vollständig implementiert.
 
 Beispielcode ist wie immer unter [tutorial/3-projectile](https://github.com/LW2904/vt-space/tree/master/tutorial/3-projectile) zu finden.
+
+## Gegner und Eliminierungen
+
+### Zeichnen
+
+Der Einfachheit halber werden unsere Gegner einfache Rechtecke sein. Das hat den Vorteil, dass wir diese mit unserer `draw_rectangle` Methode sehr einfach zeichnen können, aber es erleichtert zusätzlich auch die hit-detection, also die Feststellung von Treffern.
+
+```C
+void draw_enemy(struct enemy e)
+{
+	draw_rectangle(e.x, e.y, e.width, e.height);
+}
+```
+
+Wie schon bei den Projektilen deklarieren wir für Gegner ein `struct enemy`, das wie folgt aussieht.
+
+```C
+struct enemy {
+	int x;
+	int y;
+	int speed;
+	int width;
+	int height;
+};
+```
+
+### Erscheinen ("Spawnen")
+
+Gegner sollen in einem langsam höher werdendem Intervall von "oben" nach "unten" fliegen. Erreichen sie das untere Ende des Terminals soll das spiel beendet werden -- das sollte hier also immer eintreten nachdem wir uns erst später mit dem abschiessen von Gegnern befassen werden.
+
+"Bewegung" schreit nach einer `handle_*` Methode wie wir sie bereits für das Raumschiff und die Projektile implementiert haben. Das könnte in etwa wie folgt aussehen.
+
+```C
+#define STATUS_FAIL -1
+#define STATUS_CONTNUE 0
+
+#define ENEMIES_MAX 32
+
+#define ENEMY_SPEED 1
+#define ENEMY_WIDTH 4
+#define ENEMY_HEIGHT 4
+#define ENEMY_FREQUENCY 40
+
+int num_enemies = 0;
+int enemy_freq = ENEMY_FREQUENCY;
+struct enemy enemies[ENEMIES_MAX];
+
+int handle_enemies()
+{
+	static int spawn_counter = 0;
+	static int increase_counter = 0;
+
+	if (++spawn_counter > enemy_freq) {
+		spawn_counter = 0;
+
+		/* Range in terminal X: [10%, 90%] */
+		int x = (rand() % term_w * 0.8) + term_w * 0.1;
+		/* Start just outside the terminal Y */
+		int y = 0 - ENEMY_WIDTH;
+
+		enemies[num_enemies++] = (struct enemy){ x, y, ENEMY_SPEED,
+			ENEMY_WIDTH, ENEMY_HEIGHT };
+	}
+
+	if (++increase_counter > enemy_freq * 2) {
+		increase_counter = 0;
+
+		enemy_freq--;
+	}
+
+	/* Remove oldest enemies if there are too many, this should never
+	   realistically happen */
+	for (int i = 0; i <= num_enemies - ENEMIES_MAX; i++)
+		remove_enemy(i);
+	
+	for (int i = 0; i < num_enemies; i++) {
+		struct enemy *e = enemies + i;
+
+		e->y += e->speed;
+
+		/* If an enemy reached the bottom of the terminal, notify our
+		   caller */
+		if (e->y >= term_h)
+			return STATUS_FAIL;
+		
+		draw_enemy(*e);
+	}
+
+	return STATUS_CONTINUE;
+}
+
+void remove_enemy(int index)
+{
+	num_enemies = remove_array_item(enemies, index, num_enemies,
+		sizeof(struct enemy));
+}
+```
+
+Hier passieren viele Dinge, also wieder Schritt für Schritt:
+
+Die erste Hälfte der Methode befasst sich mit dem spawning (also dem hinzufügen) von neuen Gegnern. Erreicht der `spawn_counter`, welcher mit jedem call um eins erhöht wird, die `enemy_freq` (also "enemy frequency", zu Deutsch "Gegnerhäufigkeit") wird ein neuer `enemy` hinzugefügt. Die anfängliche Y Position aller Gegner ist immer gleich -- sie erscheinen knapp ausserhalb des Terminal-Fensters. Die X Position jedoch ist zufällig aus einem Bereich von 10% zu 90% der Breite des Terminal-Fensters gewählt.
+
+Damit haben wir jetzt also ein regelmässiges Erscheinen von Gegnern, aber die Frequenz, und damit die Schwierigkeit, bleibt konstant. Aus diesem Grunde wird der `increase_counter` neben dem `spawn_counter` erhöht, und sorgt für regelmässige Schwierigkeitserhöhungen durch eine Verringerung der Pause zwischen den spawns.
+
+Der nächste `for`-loop ist von `handle_projectiles` bereits bekannt, hier ist er jedoch eher der Vollständigkeit halber inkludiert. Es ist sehr unwahrscheinlich, dass jemals mehr als `ENEMIES_MAX` Gegner auf dem Bildschirm sein werden -- das würde entweder eine unrealistisch hohe Spawnfrequenz oder ein sehr großes Terminal-Fenster voraussetzen.
+
+Im darauf folgenden `for`-loop ist eine ähnliche Logik wie in der `handle_projetile` Methode zu finden, hier lohnt sich das Auslagern allerdings nicht wirklich.
+
+Wichtig bei dieser Methode ist der return type, in diesem Fall `int`. `handle_enemies` gibt einen Status zurück der angibt ob das Spiel weitergehen, oder beendet werden soll. Überschreitet nun ein Gegner das untere Ende des Terminals gibt die Methode `STATUS_FAIL` zurück, und erwartet, dass die aufrufende Methode (in userem Fall wird das `run_frame` sein) auf den Status reagiert.
+
+Das kann dann in etwa so implementiert werden.
+
+```C
+int main()
+{
+	/* ... */
+
+	while (1) {
+		if (run_frame() != STATUS_CONTNUE)
+			break;
+
+		Sleep(FRAME_INTERVAL);
+	}
+
+	/* ... */
+}
+
+int run_frame()
+{
+	/* ... */
+
+	/* On failure, move status up the chain */
+	if (handle_enemies() == STATUS_FAIL)
+		return STATUS_FAIL;
+
+	return 0;
+}
+```
+
+Damit ist die oben definierte Funktionalität vollständig implementiert. Das einzige verbleibende kritische Feature ist nun das eliminieren von Gegnern.
+
+### Abschüsse
+
+Nachdem das Abschiessen von Gegnern eher zu den `projectile` Handlern passt, werden wir die relevante Logik auch in der `handle_projectile` Methode implementieren -- spätestens jetzt wird klar werden, warum wir das in eine eigene Methode ausgelagert haben.
+
+Um nun in `handle_projectile` einen Abschuss festzustellen müssen wir nur beobachten ob das jeweilige Projektil "in" einem Gegner ist. Das könnte man so implementieren:
+
+```C
+int eliminations = 0;
+
+void handle_projectile(int index)
+{
+	/* ... */
+
+	for (int i = 0; i < num_enemies; i++) {
+		struct enemy *e = enemies + i;
+
+		/* If the projectile is "inside" of any enemy... */
+		if (pos_inside(p->x, p->y, e->x, e->y, e->width, e->height)) {
+			remove_enemy(i);
+			remove_projectile(index);
+
+			eliminations++;
+		}
+	}
+
+	draw_projectile(*p);
+}
+```
+
+### Fazit
+
+Damit ist die Grundfunktion des Spiels fertig implementiert. Es gibt noch viele Möglichkeiten die Funktionalität auszubauen, vielleicht kannst du Inspiration von dem Originalprojekt unter [vt-space/original](https://github.com/LW2904/vt-space/tree/master/original) bekommen. Unter [vt-space/tutorial/4-enemies](https://github.com/LW2904/vt-space/tree/master/tutorial/4-enemies) ist wie immer eine vollständige Implementation der erwähnten Methoden gegeben, die nun das Funktionsfähige Spiel bilden.
+
+Noch ausstehende und im Original implementierte Features wären beispielsweise
+
+- Linux support
+- "Game Over"-Screen mit Eliminierungen und Möglichkeit zum restart
+- Möglichkeit das Spiel zu pausieren
+- "Help"-Screen mit Keybinds und Spielstart bei Tastendruck
