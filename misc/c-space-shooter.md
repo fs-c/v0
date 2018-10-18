@@ -31,14 +31,13 @@ Das folgende Beispiel demonstriert die Verwendung einer VT100 escape sequence (b
 
 int main()
 {
-	/* Disable stdout buffering */
-	setbuf(stdout, NULL);
+	setvbuf(stdout, NULL, _IONBF, 0);
 
 	printf("\e[2J");
 }
 ```
 
-Im oberen Beispiel wichtig ist der call zu `setbuf`, mit dem wir das standard output buffering ausschalten, in dem wir den buffer auf `NULL` setzen. Sonst würde alles, was wir zu stdout senden gebuffert (also zwischengespeichert) werden, und erst nach einem Zeilenumbruch (`\n`) abgesendet werden. Wir müssten also immer ein `\n` an unsere vt100 codes hängen, was nicht sehr praktikabel ist -- hiermit umgehen wir dieses Problem.
+Im oberen Beispiel wichtig ist der call zu `setvbuf`, mit dem wir das standard output buffering ausschalten, in dem wir den buffer auf `NULL` setzen. Sonst würde alles, was wir zu stdout senden gebuffert (also zwischengespeichert) werden, und erst nach einem Zeilenumbruch (`\n`) abgesendet werden. Wir müssten also immer ein `\n` an unsere vt100 codes hängen, was nicht sehr praktikabel ist -- hiermit umgehen wir dieses Problem.
 
 Hier sind jedoch sind zwei "bad-practises" enthalten, also schlechter Code-Stil:
 - `printf("\e[2J")` ist "Magie" -- es ist nicht direkt ersichtlich was dieses Stück code macht
@@ -420,7 +419,7 @@ int main()
 		Sleep(FRAME_INTERVAL);
 	}
 
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 /* Function definitions... */
@@ -476,7 +475,7 @@ void handle_exit()
 	show_cursor();
 	clear_terminal();
 
-	exit(0);
+	exit(EXIT_SUCCESS);
 }
 ```
 
@@ -683,7 +682,7 @@ Gegner sollen in einem langsam höher werdendem Intervall von "oben" nach "unten
 
 ```C
 #define STATUS_FAIL -1
-#define STATUS_CONTNUE 0
+#define STATUS_CONTINUE 0
 
 #define ENEMIES_MAX 32
 
@@ -767,7 +766,7 @@ int main()
 	/* ... */
 
 	while (1) {
-		if (run_frame() != STATUS_CONTNUE)
+		if (run_frame() != STATUS_CONTINUE)
 			break;
 
 		Sleep(FRAME_INTERVAL);
@@ -784,7 +783,7 @@ int run_frame()
 	if (handle_enemies() == STATUS_FAIL)
 		return STATUS_FAIL;
 
-	return 0;
+	return STATUS_CONTINUE;
 }
 ```
 
