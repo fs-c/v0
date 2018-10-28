@@ -4,8 +4,8 @@ object Form1: TForm1
   Top = 159
   Width = 832
   Caption = 'Form1'
-  ClientHeight = 849
-  ClientWidth = 832
+  ClientHeight = 954
+  ClientWidth = 640
   LCLVersion = '1.8.4.0'
   object StringGrid1: TStringGrid
     Left = 224
