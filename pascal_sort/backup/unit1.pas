@@ -100,21 +100,6 @@ begin
      iterations := 0;
      time_start := Now;
 
-     {
-     while i < Length(Numbers) do begin
-         Inc(i);
-         j := i;
-
-         while (j > 0) and (Numbers[j - 1] > Numbers[j]) do begin
-               tmp := Numbers[j];
-               Numbers[j] := Numbers[j - 1];
-               Numbers[j - 1] := tmp;
-
-               Dec(j);
-         end;
-     end;
-     }
-
      for i := 0 to Length(Numbers) do begin
          j := i;
          tmp := Numbers[i];
