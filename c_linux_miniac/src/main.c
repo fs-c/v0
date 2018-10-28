@@ -295,7 +295,7 @@ static void print_usage()
 static inline __hot int32_t get_maptime()
 {
 	int32_t time = 0;
-	size_t size = sizeof(int32_t);
+	static size_t size = sizeof(int32_t);
 
 	/*
 	// This function is called in tight loops, use the faster, insecure
@@ -304,8 +304,8 @@ static inline __hot int32_t get_maptime()
 		return 0;
 	*/
 
-	struct iovec local[1];
-	struct iovec remote[1];
+	static struct iovec local[1];
+	static struct iovec remote[1];
 
 	local[0].iov_len = size;
 	local[0].iov_base = &time;
