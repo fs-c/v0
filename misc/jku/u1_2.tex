@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Übung 1}
+\author{Laurenz Weixlbaumer, 11804751}
+\date{Oktober 2018}
+
+\renewcommand{\arraystretch}{1.5}
+\renewcommand\thesubsection{(\alph{subsection})}
+
+\usepackage{mathtools}
+
+\begin{document}
+
+\maketitle
+
+\stepcounter{section} % Start at 2
+\section{Boolesche Algebra}
+Prüfe oder widerlege die folgenden Aussagen und verwende dazu die Regeln und
+Gesetze der Booleschen Algebra. Gib dazu bei jedem Beweisschritt die verwendete
+Regel oder das verwendete Gesetz an.
+
+\subsection{$\overline{a \land (b \lor c) \lor (\overline{a} \land b)} = (\overline{a} \land \overline{b}) \lor (\overline{b} \land \overline{c})$}
+
+Der Übersicht halber wird die Funktionsgleichung im folgenden in $f_1(a, b, c) = \overline{a \land (b \lor c) \lor (\overline{a} \land b)}$ und $f_2(a, b, c) = (\overline{a} \land \overline{b}) \lor (\overline{b} \land \overline{c})$ geteilt, und vorerst getrennt vereinfacht.
+
+\begin{center}
+\begin{tabular}{c | c}
+    $f_1$\\
+    \hline
+    $\overline{a \land (b \lor c) \lor (\overline{a} \land b)}$ & Ausgangsfunktion\\
+    $\overline{(a \land b) \lor (a \land c) \lor (\overline{a} \land b)}$ & Distributivgesetz\\
+    $\overline{b \land (a \lor \overline{a}) \lor (a \land c)}$ & Distributivgesetz\\
+    $\overline{b \lor (a \land c)}$ & Komplementärgesetz
+\end{tabular}
+\end{center}
+
+Es sei angemerkt, dass in den obigen Beweisschritten das Gesetz der Kommutativität neben anderen ohne expliziten Hinweis angewandt wurde.
+
+\begin{center}
+\begin{tabular}{c | c}
+    $f_2$\\
+    \hline
+    $(\overline{a} \land \overline{b}) \lor (\overline{b} \land \overline{c})$ & Ausgangsfunktion\\
+    $\overline{(a \lor b)} \lor \overline{(b \lor c)}$ & De Morgansche Regel\\
+    $\overline{(a \lor b) \land (b \lor c)}$ & De Morgansche Regel\\
+    $\overline{b \lor (a \land c)}$ & Distributivgesetz
+\end{tabular}
+\end{center}
+
+Damit ist das Zutreffen der Aussage $f_1 = f_2$ bewiesen.
+
+\clearpage
+
+\subsection{$(x \lor y) \land (\overline{x} \lor y) = (\overline{x} \lor y) \land (\overline{x} \lor \overline{y})$}
+
+Wie bereits in \textbf{(a)} wird die Funktionsgleichung auch hier in $f_1(x, y) = (x \lor y) \land (\overline{x} \lor y)$ und $f_2(x, y) = (\overline{x} \lor y) \land (\overline{x} \lor \overline{y})$ geteilt, und getrennt vereinfacht.
+
+\begin{center}
+\begin{tabular}{c | c}
+    $f_1$\\
+    \hline
+    $(x \lor y) \land (\overline{x} \lor y)$ & Ausgangsfunktion\\
+    $y \lor (x \land \overline{x})$ & Distributivgesetz\\
+    $y$ & Komplementärgesetz
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{c | c}
+    $f_2$\\
+    \hline
+    $(\overline{x} \lor y) \land (\overline{x} \lor \overline{y})$ & Ausgangsfunktion\\
+    $\overline{x} \lor (y \land \overline{y})$ & Distributivgesetz\\
+    $\overline{x}$ & Komplementärgesetz
+\end{tabular}
+\end{center}
+
+Nachdem $y \neq \overline{x}$, ist die Aussage $f_1 = f_2$ als falsch widerlegt.
+
+\end{document}

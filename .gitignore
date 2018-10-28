@@ -120,6 +120,8 @@ $RECYCLE.BIN/
 
 *.o
 
+*.aux
+
 rethinkdb_data
 
 miniac

@@ -1,0 +1,82 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Übung 1}
+\author{Laurenz Weixlbaumer, 11804751}
+\date{Oktober 2018}
+
+\renewcommand\thesubsection{(\alph{subsection})}
+
+\usepackage{mathtools}
+
+\begin{document}
+
+\maketitle
+
+\section{Wahrheitstabellen}
+Überprüfe mittels einer vollständigen Wahrheitstabelle die (Un)-Gleichheit folgender Aussagen.
+
+\subsection{$x \lor y = \neg{(x \land y)}$}
+
+\begin{center}
+\begin{tabular}{c | c || c | c}
+    $x$ & $y$ & $x \lor y$ & $\neg(x \land y)$\\
+    \hline
+    0 & 0 & 0 & 1\\
+    0 & 1 & 1 & 1\\
+    1 & 0 & 1 & 1\\
+    1 & 1 & 1 & 0
+\end{tabular}
+\end{center}
+
+\vspace{10px}
+
+Nachdem die Funktionswerte in den jeweiligen Zeilen nicht übereinstimmen ist die Aussage unwahr.
+
+\vspace{10px}
+
+\subsection{$x \lor (y \land z) = (x \lor y) \land (x \lor z)$}
+
+\begin{center}
+\begin{tabular}{c | c | c || c | c}
+    $x$ & $y$ & $z$ & $x \lor (y \land z)$ & $(x \lor y) \land (x \lor z)$\\
+    \hline
+    0 & 0 & 0 & 0 & 0\\
+    0 & 0 & 1 & 0 & 0\\
+    0 & 1 & 0 & 0 & 0\\
+    0 & 1 & 1 & 1 & 1\\
+    1 & 0 & 0 & 1 & 1\\
+    1 & 0 & 1 & 1 & 1\\
+    1 & 1 & 0 & 1 & 1\\
+    1 & 1 & 1 & 1 & 1
+\end{tabular}
+\end{center}
+
+\vspace{10px}
+
+Nachdem die Funktionswerte in den jeweiligen Zeilen übereinstimmen ist die Aussage wahr.
+
+Die Funktion $(x \lor y) \land (x \lor z)$ könnte nach der Regel der Distributivität auch zu ${x \lor (y \land z)}$ umformuliert werden, wodurch das Ergebnis offensichtlich wird.
+
+\subsection{$(\neg{x} \land \neg{y}) \lor (x \land z) \lor (y \land z) = (x \land y) \lor (x \land z)$}
+
+\begin{center}
+\begin{tabular}{c | c | c || c | c}
+    $x$ & $y$ & $z$ & $(\neg{x} \land \neg{y}) \lor (x \land z) \lor (y \land z)$ & $(x \land y) \lor (x \land z)$\\
+    \hline
+    0 & 0 & 0 & 1 & 0\\
+    0 & 0 & 1 & 1 & 0\\
+    0 & 1 & 0 & 0 & 0\\
+    0 & 1 & 1 & 1 & 0\\
+    1 & 0 & 0 & 0 & 0\\
+    1 & 0 & 1 & 1 & 1\\
+    1 & 1 & 0 & 1 & 1\\
+    1 & 1 & 1 & 1 & 1
+\end{tabular}
+\end{center}
+
+\vspace{10px}
+
+Nachdem die Funktionswerte in den jeweiligen Zeilen nicht übereinstimmen ist die Aussage unwahr.
+
+\end{document}
