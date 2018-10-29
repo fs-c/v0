@@ -1,0 +1,83 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{enumerate}
+
+\title{Übung 2}
+\author{Laurenz Weixlbaumer, 11804751}
+\date{Oktober 2018}
+
+\renewcommand{\arraystretch}{1.3}
+\renewcommand\thesubsection{(\alph{subsection})}
+
+\usepackage{mathtools}
+
+\begin{document}
+
+\maketitle
+
+\stepcounter{section}\stepcounter{section}\stepcounter{section} % Start at 4
+\section{Grundrechnungsarten}
+
+\begin{enumerate}[{(\alph{enumi})}]
+\item Addiere folgende Binärzahlen: $11110_2$ und $100111_2$.
+
+\begin{center}
+\begin{tabular}{l | c | c | c | c | c | c | c }
+     Summand 1 & 0 & 0 & 1 & 1 & 1 & 1 & 0 \\
+     \hline
+     Summand 2 & 0 & 1 & 0 & 0 & 1 & 1 & 1 \\
+     \hline
+     Übertrag  & 1 & 1 & 1 & 1 & 1 & 0 & 0 \\
+     \hline
+     \hline
+     Summe     & 1 & 0 & 0 & 0 & 1 & 0 & 1
+\end{tabular}
+\end{center}
+
+\item Addiere folgende Oktalzahlen: $23_8$ und $17_8$.
+
+\begin{center}
+\begin{tabular}{l | c | c }
+     Summand 1 & 2 & 3 \\
+     \hline
+     Summand 2 & 1 & 7 \\
+     \hline
+     Übertrag  & 1 & 0 \\
+     \hline\hline
+     Summe     & 4 & 2
+\end{tabular}
+\end{center}
+
+\item Multipliziere folgende Binärzahlen: $110011_2$ und $1110_2$.
+
+\begin{center}
+\begin{tabular}{ c c c c c c c c c c c c }
+      & 1 & 1 & 0 & 1 & 1 & * & 1 & 1 & 1 & 0 \\
+    \hline
+      & 1 & 1 & 0 & 1 & 1 &   &   &   &   & + \\
+      &   & 1 & 1 & 0 & 1 & 1 &   &   &   & + \\
+      &   &   & 1 & 1 & 0 & 1 & 1 &   &   & + \\
+      &   &   &   & 0 & 0 & 0 & 0 & 0 &   & + \\
+    \hline\hline
+    1 & 0 & 1 & 1 & 1 & 1 & 0 & 1 & 0 &   & = \\
+\end{tabular}
+\end{center}
+
+\clearpage
+
+\item Multipliziere folgende Hexadezimalzahlen: $AB_{16}$ und $CD_{16}$.
+
+\begin{center}
+\begin{tabular}{ c c c c c }
+    A & B & * & C & D \\
+    \hline
+    8 & 0 & 4 &   & +\\
+      & 8 & A & F & + \\
+    \hline\hline
+    8 & 8 & E & F & =
+\end{tabular}
+\end{center}
+
+\end{enumerate}
+
+\end{document}
