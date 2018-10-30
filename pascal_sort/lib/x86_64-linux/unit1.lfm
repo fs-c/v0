@@ -1,11 +1,11 @@
 object Form1: TForm1
-  Left = 256
-  Height = 849
-  Top = 124
-  Width = 832
+  Left = 257
+  Height = 803
+  Top = 145
+  Width = 831
   Caption = 'Form1'
-  ClientHeight = 849
-  ClientWidth = 832
+  ClientHeight = 803
+  ClientWidth = 831
   LCLVersion = '1.8.4.0'
   object StringGrid1: TStringGrid
     Left = 224
@@ -40,7 +40,7 @@ object Form1: TForm1
   object LabelIterations: TLabel
     Left = 48
     Height = 17
-    Top = 192
+    Top = 208
     Width = 62
     Caption = 'Iterations'
     ParentColor = False
@@ -48,7 +48,7 @@ object Form1: TForm1
   object LabelTime: TLabel
     Left = 48
     Height = 17
-    Top = 211
+    Top = 227
     Width = 33
     Caption = 'Time'
     ParentColor = False
@@ -61,5 +61,14 @@ object Form1: TForm1
     Caption = 'Insertion Sort'
     OnClick = ButtonInsertionSortClick
     TabOrder = 3
+  end
+  object ButtonShellSort: TButton
+    Left = 48
+    Height = 25
+    Top = 160
+    Width = 104
+    Caption = 'Shell Sort'
+    OnClick = ButtonShellSortClick
+    TabOrder = 4
   end
 end

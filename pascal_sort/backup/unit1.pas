@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Grids,
-  StdCtrls, DateUtils;
+  StdCtrls, DateUtils, LazLogger;
 
 type
 
@@ -140,8 +140,8 @@ begin
     interval := (interval * 3) + 1;
 
   while interval > 0 do begin
-    for i := interval + 1 to Length(Numbers) do begin
-      pos := i - 1;
+    for i := interval to Length(Numbers) do begin
+      pos := i;
       val := Numbers[i];
 
       while (pos > interval) and (Numbers[pos - interval] >= val) do begin
@@ -152,7 +152,7 @@ begin
       Numbers[pos] := val;
     end;
 
-    interval := (interval - 1) div 3;
+    interval := (interval div 3) - 1;
   end;
 
   WriteToGrid(Numbers, StringGrid1);
