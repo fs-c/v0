@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{enumerate}
+
+\title{Übung 2}
+\author{Laurenz Weixlbaumer, 11804751}
+\date{Oktober 2018}
+
+\renewcommand{\arraystretch}{1.3}
+\renewcommand\thesubsection{(\alph{subsection})}
+
+\usepackage{mathtools}
+
+\begin{document}
+
+\maketitle
+
+\stepcounter{section}\stepcounter{section} % Start at 3
+\section{Ternärsystem}
+
+\begin{enumerate}[{(\alph{enumi})}]
+    \item Wandle die Dezimalzahl 69 in das Ternärsystem um. Gib dazu den Lösungsweg an.
+    
+    Der Basisumwandlung der Variante 2 folgend, kann die Dezimalzahl wie folgend in das Ternärsystem umgewandelt werden.
+    
+    \begin{center}
+    \begin{tabular}{c | c}
+        Rechnung & $Rest_3$\\
+        \hline
+        $69 : 3 = 23$ & 0\\
+        $23 : 3 = 7$ & 2\\
+        $7 : 3 = 2$ & 1\\
+        $2 : 3 = 0$ & 2\\
+        $0 : 3 = 0$ & 0\\
+    \end{tabular}
+    \end{center}
+    
+    Die Ternärzahl kann nun von oben nach unten aus den jeweiligen Resten abgelesen werden, demnach
+    
+    $$
+    69_{10} = 2120_3
+    $$
+\end{enumerate}
+
+\end{document}

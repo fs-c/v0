@@ -1,0 +1,76 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Übung 2}
+\author{Laurenz Weixlbaumer, 11804751}
+\date{Oktober 2018}
+
+\renewcommand{\arraystretch}{1.3}
+\renewcommand\thesubsection{(\alph{subsection})}
+
+\usepackage{mathtools}
+
+\begin{document}
+
+\maketitle
+
+\stepcounter{section} % Start at 2
+\section{Binärzahlen}
+
+\subsection{}
+Befülle folgende Tabelle mit Binärzahlen. Verwende dafür pro Feld die minimal mögliche Anzahl an Bits.
+
+\begin{center}
+\begin{tabular}{ c | c | c | c | c | c | c | c | c | c | c | c }
+    -4 & -3 & -2 & -1 & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
+    \hline
+    100 & 11 & 10 & 1 & 0 & 1 & 10 & 11 & 100 & 101 & 110 & 111\\
+    \hline
+    1100 & 111 & 110 & 11 & 00/10 & 01 & 010 & 011 & 0100 & 0101 & 0110 & 0111\\
+\end{tabular}
+\end{center}
+
+Die Ordnung der Zeilen stimmt mit derer auf dem Übungszettel überein.
+
+\subsection{}
+Konvertiere die nicht vorzeichenbehaftete Binärzahl $01001011, 0101_2$ in eine Dezimalzahl. Gib dazu den Lösungsweg an.
+
+$$01001011_{2} = 75_{10}$$
+
+Lösungsweg siehe Aufgabe 1, Basisumwandlungen. Die gesamte Zahl kann nun durch Addition des ganzzahligen Teiles und des Bruchteiles ermittelt werden.
+
+$$01001011, 0101_2 = 75_{10} + 0 * 0.5_{10} + 1 * 0.25_{10} + 0 * 0.125_{10} + 1 * 0.0625_{10} = 75, 3125_{10}$$
+
+\clearpage
+
+\subsection{}
+
+Konvertiere die Dezimalzahl $107, 59375_{10}$ in eine nicht vorzeichenbehaftete Binärzahl. Gib dazu den Lösungsweg an.
+
+$$
+107_{10} = 1101011_{2}
+$$
+
+Der Lösungsweg für die Ermittlung des Bruchteils folgt.
+
+\begin{center}
+\begin{tabular}{ c | c }
+    Rechnung & Überlauf\\
+    \hline
+    $0,59375 * 2 = 1,1875$ & 1\\
+    $0,1875 * 2 = 0,375$ & 0\\
+    $0,375 * 2 = 0,75$ & 0\\
+    $0,75 * 2 = 1,5$ & 1\\
+    $0,5 * 2 = 1$ & 1
+\end{tabular}
+\end{center}
+
+Aus den Überläufen (von oben nach unten gelesen) kann nun die Binärzahl $10011_2$ gelesen werden.
+
+Daraus folgt:
+
+$$
+107_{10} + 0,59375_{10} = 1101011_{2} + 0,10011_{2} = 1101011,10011_2
+$$
+
+\end{document}
