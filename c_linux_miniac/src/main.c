@@ -241,7 +241,7 @@ static int play(char *map)
 static void play_loop(struct action *actions, int num_actions)
 {
 	int cur_i = 0;				// Current action offset.
-	struct action cur_a = {0};		// Pointer to current action.
+	struct action *cur_a;			// Pointer to current action.
 	int32_t time = get_maptime();		// Current maptime.
 
 	const int title_len = 128;		// Max length of title.
@@ -257,19 +257,19 @@ static void play_loop(struct action *actions, int num_actions)
 	while (cur_i < num_actions) {
 		time = get_maptime();
 
-		while ((cur_a = actions[cur_i]).time < time) {
-			cur_i++;
-
-			send_keypress(cur_a.key, cur_a.down);
-		}
-
-		// while (cur_i < num_actions &&
-		// 	(cur_a = actions + cur_i)->time < time)
-		// {
+		// while ((cur_a = actions[cur_i]).time < time) {
 		// 	cur_i++;
 
-		// 	send_keypress(cur_a->key, cur_a->down);
+		// 	send_keypress(cur_a.key, cur_a.down);
 		// }
+
+		while (cur_i < num_actions &&
+			(cur_a = actions + cur_i)->time < time)
+		{
+			cur_i++;
+
+			send_keypress(cur_a->key, cur_a->down);
+		}
 
 		// nanosleep((struct timespec[]){{ 0, 1000L }}, NULL);
 	}
