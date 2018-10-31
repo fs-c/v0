@@ -59,10 +59,10 @@ const refillPool = async () => {
         return endTick('failed fetching ids', err);
     }
 
-    // The ID is already in the database, leave unchanged.
-    const conflict = (id, od, nd) => {
-        log.trace('id insertion conflict');
-        return od;
+    const conflict = (id, oid, nid) => {
+        log.trace({ oid, nid }, 'id insertion conflict, preferring original');
+
+        return oid;
     };
 
     let res;
@@ -91,12 +91,12 @@ const processID = async (active) => {
 
     let cUpd;
     if (entry !== null) {
-        log.trace('found country entry, incrementing');
+        log.trace({ entry }, 'found country entry, incrementing');
         cUpd = await countries.get(country).update({
             occ: r.row('occ').add(1).default(1),
         });
     } else {
-        log.trace('no country entry found, inserting');
+        log.trace({ country }, 'no country entry found, inserting');
         cUpd = await countries.insert({ id: country, occ: 1 });
     }
 
@@ -131,7 +131,7 @@ const tick = async () => {
     const subpool = await pool.filter({ open: true }).limit(1);
     const active = subpool[0];
 
-    log.trace('fetched subpool');
+    log.trace({ active }, 'fetched subpool');
 
     // No open ID found, refill pool.
     if (!active) {
@@ -153,14 +153,14 @@ const setup = async (structure) => {
         log.trace('creating %s', db);
 
         try { await r.dbCreate(db); } catch (err) {
-            log.trace('db err: ' + (err.msg || err.message));            
+            log.trace(err, 'database creation error');
         }
 
         for (const table of structure[db]) {
             log.trace('creating %s.%s', db, table);
 
             try { await r.db(db).tableCreate(table); } catch (err) {
-                log.trace('db err: ' + err.msg || err.message);
+                log.trace(err, 'table creation error');
             }
         }
     }
