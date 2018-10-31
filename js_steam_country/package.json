@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "nodemon -e ts,tsx --exec ts-node ./src/index.ts"    
   },
   "keywords": [],
   "author": "",
@@ -14,8 +15,14 @@
     "dotenv": "^5.0.1",
     "got": "^8.3.1",
     "pino": "^4.17.2",
-    "rethinkdbdash": "^2.3.31",
-    "steamcommunity": "^3.36.2",
-    "steamid": "^1.1.0"
+    "rethinkdb-ts": "^2.4.0-rc.10"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.9",
+    "@types/dotenv": "^4.0.3",
+    "@types/got": "^9.2.0",
+    "@types/pino": "^5.6.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.4"
   }
 }
