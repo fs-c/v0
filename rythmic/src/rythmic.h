@@ -1,0 +1,50 @@
+#ifndef RYTHMIC_H
+#define RYTHMIC_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <inttypes.h>
+#include <sys/types.h>
+
+#define OSU_PROC_NAME "osu!.exe"
+
+#define HOME_ENV "USERPROFILE"
+#define SIGNATURE "\xDB\x5D\xE8\x8B\x45\xE8\xA3"
+
+#define SEPERATOR '\\'
+#define DEFAULT_OSU_PATH "\\AppData\\Local\\osu!\\Songs\\"
+
+#ifdef DEBUG
+
+#define debug(...)                                      \
+	printf("[debug] [%s:%s] ", __FILE__, __func__); \
+	printf(__VA_ARGS__);                            \
+	putchar('\n');
+
+#define debug_winerror(message) 						   \
+	wchar_t buf[256];							   \
+	FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, \
+		NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),   \
+		buf, (sizeof(buf) / sizeof(wchar_t)), NULL);			   \
+	printf("[debug] [%s:%s] [winerror] %s: %ls", __FILE__, __func__,	   \
+		message, buf);							   \
+
+#else
+
+#define debug(...) \
+	;
+
+#define debug_winerror(code) \
+	;
+
+#endif /* DEBUG */
+
+/* process.c */
+pid_t get_process_id(const char *proc_name);
+HANDLE get_process_handle(const int proc_id);
+
+/* window.c */
+int get_window_handle(const pid_t process_id, void **out_window_handle);
+
+#endif /* RYTHMIC_H */
