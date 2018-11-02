@@ -12,14 +12,13 @@ static WINBOOL __stdcall enum_windows_callback(HWND handle, LPARAM param);
 int get_window_handle(const pid_t process_id, void **out_window_handle)
 {
 	struct handle_data data = { 0, process_id };
-	if (!(EnumWindows((WNDENUMPROC)enum_windows_callback, (LPARAM)&data))) {
-		// debug("failed enumerating windows (%d)", (int)GetLastError());
+	if ((EnumWindows((WNDENUMPROC)enum_windows_callback, (LPARAM)&data)) == 0) {
 		debug_winerror("failed enumerating windows");
 
-		// return 0;
+		return 0;
 	}
 
-	debug("got window handle for process with ID %d", process_id);
+	debug("got window handle for process with ID %d", (int)process_id);
 
 	HWND handle = data.window_handle;
 	*out_window_handle = malloc(sizeof(HWND));
