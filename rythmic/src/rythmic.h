@@ -21,7 +21,7 @@
 #define debug(...)                                      \
 	printf("[debug] [%s:%s] ", __FILE__, __func__); \
 	printf(__VA_ARGS__);                            \
-	putchar('\n');
+	putchar('\n');					\
 
 #define debug_winerror(message) 						   \
 	wchar_t buf[256];							   \
@@ -41,6 +41,12 @@
 
 #endif /* DEBUG */
 
+extern pid_t game_proc_id;
+extern HANDLE game_proc_handle;
+
+extern RECT game_window_rect;
+extern HWND game_window_handle;
+
 /* process.c */
 pid_t get_process_id(const char *proc_name);
 HANDLE get_process_handle(const int proc_id);
@@ -48,5 +54,8 @@ HANDLE get_process_handle(const int proc_id);
 /* window.c */
 int get_window_coordinates(HWND window_handle, RECT *window_rect);
 int get_window_handle(const pid_t process_id, void **out_window_handle);
+
+/* mouse.c */
+void set_mouse_position(int x, int y);
 
 #endif /* RYTHMIC_H */
