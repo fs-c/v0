@@ -2,6 +2,8 @@
 
 #include <tlhelp32.h>
 
+#define MAX_COORD 65535
+
 struct handle_data {
 	HWND window_handle;
 	unsigned long process_id;
@@ -16,7 +18,7 @@ int get_window_handle(const pid_t process_id, void **out_window_handle)
 	   on success. (TODO?) */
 	EnumWindows((WNDENUMPROC)enum_windows_callback, (LPARAM)&data);
 
-	debug("got window handle for process with ID %d", (int)process_id);
+	debug("got window handle to process with ID %d", (int)process_id);
 
 	HWND handle = data.window_handle;
 	*out_window_handle = malloc(sizeof(HWND));
@@ -54,7 +56,26 @@ int get_window_coordinates(HWND window_handle, RECT *window_rect)
 		return 0;
 	}
 
-	debug("got window coordinates (lower: %ld/%ld, upper: %ld/%ld)",
+	debug("got window coordinates in pixels (%ld/%ld %ld/%ld)",
+		window_rect->left, window_rect->top, window_rect->right,
+		window_rect->bottom);
+
+	/* TODO: Shouldn't there be a -1 here? */
+	const int screen_width = GetSystemMetrics(SM_CXSCREEN);
+	const int screen_height = GetSystemMetrics(SM_CYSCREEN);
+
+	debug("got screen dimensions (%dx%d)", screen_width,
+		screen_height);
+
+	/* Top left X/Y */
+	window_rect->left *= MAX_COORD / screen_width;
+	window_rect->top *= MAX_COORD / screen_height;
+
+	/* Bottom right X/Y */
+	window_rect->right *= MAX_COORD / screen_width;
+	window_rect->bottom *= MAX_COORD / screen_height;
+
+	debug("got normalized coordinates (%ld/%ld %ld/%ld)",
 		window_rect->left, window_rect->top, window_rect->right,
 		window_rect->bottom);
 	
