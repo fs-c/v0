@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <windows.h>
 #include <inttypes.h>
 #include <sys/types.h>
@@ -45,6 +46,7 @@ pid_t get_process_id(const char *proc_name);
 HANDLE get_process_handle(const int proc_id);
 
 /* window.c */
+int get_window_coordinates(HWND window_handle, RECT *window_rect);
 int get_window_handle(const pid_t process_id, void **out_window_handle);
 
 #endif /* RYTHMIC_H */

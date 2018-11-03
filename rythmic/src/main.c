@@ -19,6 +19,11 @@ int main()
 		fatal("couldn't open handle to window");
 	}
 
+	RECT game_window_rect = {0};
+	if (!(get_window_coordinates(game_window_handle, &game_window_rect))) {
+		fatal("couldn't get window coordinates");
+	}
+
 	return 0;
 }
 
