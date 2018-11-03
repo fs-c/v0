@@ -8,12 +8,13 @@ HANDLE get_process_handle(const int proc_id)
 
 	if (!(proc_handle = OpenProcess(PROCESS_VM_READ, 0, proc_id))) {
 		printf("failed to get handle to game process\n");
+
 		return NULL;
 	}
 
-	debug("got handle to game process with ID %d",
+	debug("got handle to process with ID %d",
 		(int)proc_id);
-	
+
 	return proc_handle;
 }
 
@@ -43,7 +44,7 @@ pid_t get_process_id(const char *proc_name)
 
 			proc_id = (pid_t)entry.th32ProcessID;
 
-			debug("found game process with id %d and name %s",
+			debug("found process with id %d and name %s",
 				(int)proc_id, proc_name);
 
 			return proc_id;
