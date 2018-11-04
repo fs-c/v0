@@ -50,6 +50,8 @@ extern HANDLE game_proc_handle;
 extern RECT game_window_rect;
 extern HWND game_window_handle;
 
+extern void *game_time_address;
+
 /* process.c */
 pid_t get_process_id(const char *proc_name);
 HANDLE get_process_handle(const int proc_id);
@@ -63,5 +65,15 @@ int get_window_handle(const pid_t process_id, void **out_window_handle);
 
 /* mouse.c */
 void set_mouse_position(int x, int y);
+
+/* memory.c */
+#define read_game_memory(offset, buffer, size, read)			\
+	ReadProcessMemory(game_proc_handle, (LPCVOID)offset, buffer,	\
+		size, (SIZE_T *)read);					\
+
+#define get_game_time(time)						\
+	read_game_memory(game_time_address, &time, 4, NULL);		\
+
+void *get_game_time_address();
 
 #endif /* RYTHMIC_H */
