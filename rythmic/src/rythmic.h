@@ -72,7 +72,7 @@ void set_mouse_position(int x, int y);
 		size, (SIZE_T *)read);					\
 
 #define get_game_time(time)						\
-	read_game_memory(game_time_address, &time, 4, NULL);		\
+	read_game_memory(game_time_address, time, 4, NULL);		\
 
 void *get_game_time_address();
 
