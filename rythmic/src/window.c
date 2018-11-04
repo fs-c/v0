@@ -56,7 +56,7 @@ int get_window_coordinates(HWND window_handle, RECT *window_rect)
 		return 0;
 	}
 
-	debug("got window coordinates in pixels (%ld/%ld %ld/%ld)",
+	debug("got window coordinates in pixels (%ld/%ld, %ld/%ld)",
 		window_rect->left, window_rect->top, window_rect->right,
 		window_rect->bottom);
 
@@ -71,7 +71,7 @@ int get_window_coordinates(HWND window_handle, RECT *window_rect)
 	window_rect->right *= horizontal_factor;
 	window_rect->bottom *= vertical_factor;
 
-	debug("got normalized window coordinates (%ld/%ld %ld/%ld)",
+	debug("got normalized window coordinates (%ld/%ld, %ld/%ld)",
 		window_rect->left, window_rect->top, window_rect->right,
 		window_rect->bottom);
 	
