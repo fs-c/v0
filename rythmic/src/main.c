@@ -27,8 +27,6 @@ int main()
 		fatal("couldn't get window coordinates");
 	}
 
-	set_mouse_position(300, 300);
-
 	return 0;
 }
 
