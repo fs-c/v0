@@ -9,14 +9,14 @@ static inline void *check_chunk(const unsigned char *sig, size_t sig_len,
 
 void *get_game_time_address()
 {
-	void *adress = find_pattern((unsigned char *)SIGNATURE,
-		sizeof(SIGNATURE) - 1);
+	void *address_ptr = find_pattern((unsigned char *)SIGNATURE,
+		sizeof(SIGNATURE) - 1), *adress = NULL;
 
-	if (!adress)
+	if (!address_ptr)
 		return NULL;
 
 	size_t read = 0;
-	read_game_memory(adress, &adress, sizeof(void *),
+	read_game_memory(address_ptr, &adress, sizeof(void *),
 		&read);
 
 	if (!read)
