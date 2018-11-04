@@ -60,22 +60,18 @@ int get_window_coordinates(HWND window_handle, RECT *window_rect)
 		window_rect->left, window_rect->top, window_rect->right,
 		window_rect->bottom);
 
-	/* TODO: Shouldn't there be a -1 here? */
-	const int screen_width = GetSystemMetrics(SM_CXSCREEN);
-	const int screen_height = GetSystemMetrics(SM_CYSCREEN);
-
-	debug("got screen dimensions (%dx%d)", screen_width,
-		screen_height);
+	const int vertical_factor = MAX_COORD / GetSystemMetrics(SM_CYSCREEN);
+	const int horizontal_factor = MAX_COORD / GetSystemMetrics(SM_CXSCREEN);
 
 	/* Top left X/Y */
-	window_rect->left *= MAX_COORD / screen_width;
-	window_rect->top *= MAX_COORD / screen_height;
+	window_rect->left *= horizontal_factor;
+	window_rect->top *= vertical_factor;
 
 	/* Bottom right X/Y */
-	window_rect->right *= MAX_COORD / screen_width;
-	window_rect->bottom *= MAX_COORD / screen_height;
+	window_rect->right *= horizontal_factor;
+	window_rect->bottom *= vertical_factor;
 
-	debug("got normalized coordinates (%ld/%ld %ld/%ld)",
+	debug("got normalized window coordinates (%ld/%ld %ld/%ld)",
 		window_rect->left, window_rect->top, window_rect->right,
 		window_rect->bottom);
 	
