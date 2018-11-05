@@ -16,7 +16,7 @@ void *get_game_time_address()
 		return NULL;
 
 	size_t read = 0;
-	read_game_memory(address_ptr, &adress, sizeof(void *),
+	read_game_memory(address_ptr, &adress, sizeof(DWORD),
 		&read);
 
 	if (!read)
