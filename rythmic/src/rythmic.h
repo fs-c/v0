@@ -58,7 +58,7 @@ HANDLE get_process_handle(const int proc_id);
 
 /* window.c */
 #define get_window_title(title, max_len) 			\
-	GetWindowText(game_window_handle, *title, max_len)	\
+	GetWindowTextW(game_window_handle, *title, max_len)	\
 
 int get_window_coordinates(HWND window_handle, RECT *window_rect);
 int get_window_handle(const pid_t process_id, void **out_window_handle);
