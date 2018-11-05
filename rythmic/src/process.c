@@ -7,7 +7,7 @@ HANDLE get_process_handle(const int proc_id)
 	HANDLE proc_handle = NULL;
 
 	if (!(proc_handle = OpenProcess(PROCESS_VM_READ, 0, proc_id))) {
-		printf("failed to get handle to game process\n");
+		debug_winerror("failed to get handle to game process");
 
 		return NULL;
 	}
@@ -32,8 +32,8 @@ pid_t get_process_id(const char *proc_name)
 	PROCESSENTRY32 entry = { 0 };
 	entry.dwSize = sizeof(PROCESSENTRY32);
 
-	if (!Process32First(proc_list, &entry)) {
-		debug("couldn't get processes");
+	if (!(Process32First(proc_list, &entry))) {
+		debug_winerror("couldn't get processes");
 
 		goto exit_fail;
 	}

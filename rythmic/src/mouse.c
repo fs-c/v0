@@ -14,7 +14,7 @@ void set_mouse_position(int x, int y)
 	input.mi.dwExtraInfo = 0;
 
 	if (!(SendInput(1, &input, sizeof(INPUT)))) {
-		debug("failed sending input to %d/%d", x, y);
+		debug_winerror("failed sending input to %d/%d", x, y);
 
 		return;
 	}
