@@ -6,11 +6,15 @@ void *game_time_address = NULL;
 HWND game_window_handle = NULL;
 HANDLE game_proc_handle = NULL;
 
+static void play();
+static int standby();
 static void fatal(const char *message);
 
 int main()
 {
 	setbuf(stdout, NULL);
+
+	/* Do basic setup */
 
 	if (!(game_proc_id = get_process_id(OSU_PROC_NAME))) {
 		fatal("couldn't get process id");
@@ -32,28 +36,42 @@ int main()
 		fatal("couldn't get time address");
 	}
 
-	void *a = 0x13260c4;
-
-	debug("%d, %d", a == game_time_address, (int)a - (int)game_time_address);
-
-	debug("%#x -- %#x", game_time_address, a);
-
-	int32_t val1 = 0;
-	int32_t val2 = 0;
-
-	while (1) {
-		read_game_memory(a, &val1, 4, NULL);
-
-		get_game_time(&val2);
-
-		debug("%d / %d", val1, val2);
-
-		Sleep(200);
-	}
+	while (standby())
+		play();
 
 	return 0;
 }
 
+/* Block until the user is in a beatmap.
+ */
+static int standby()
+{
+	/* Wide characters are used here because it's not unlikely that a
+	   beatmap (and therefore title) might contain rather exotic
+	   characters. */
+
+	wchar_t title[256];
+	size_t title_len = 0;
+
+	while ((title_len = get_window_title(&title, sizeof(title))))
+		if (wcscmp(title, L"osu!"))
+			break;
+		else Sleep(200);
+	
+	/* TODO */
+
+	return 0;
+}
+
+/* Load and play the current beatmap, return once the user exits it.
+ */
+static void play()
+{
+	/* TODO */
+}
+
+/* Log an error message and exit with status 1.
+ */
 static void fatal(const char *message)
 {
 	if (message) {
