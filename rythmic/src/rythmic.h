@@ -39,7 +39,7 @@
 #define debug(...) \
 	;
 
-#define debug_winerror(code) \
+#define debug_winerror(...) \
 	;
 
 #endif /* DEBUG */
