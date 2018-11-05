@@ -46,13 +46,13 @@ static void *find_pattern(const BYTE *signature, const size_t sig_len)
 
 /* TODO: Implement a more efficient pattern matching algorithm */
 static inline void *check_chunk(const BYTE *signature, const size_t sig_len,
-	const BYTE *buffer, const size_t buf_len)
+	const BYTE *chunk, const size_t buf_len)
 {
 	for (size_t i = 0; i < buf_len; i++) {
 		int hit = 1;
 
 		for (size_t j = 0; j < sig_len && hit; j++)
-			hit = buffer[i + j] == signature[j];
+			hit = chunk[i + j] == signature[j];
 
 		if (hit)
 			return (void *)(i + sig_len);
