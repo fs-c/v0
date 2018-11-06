@@ -14,8 +14,6 @@ int main()
 {
 	setbuf(stdout, NULL);
 
-	/* Do basic setup */
-
 	if (!(game_proc_id = get_process_id(OSU_PROC_NAME))) {
 		fatal("couldn't get process id");
 	}
@@ -57,8 +55,6 @@ static int standby()
 		if (wcscmp(title, L"osu!"))
 			break;
 		else Sleep(200);
-	
-	/* TODO */
 
 	return 0;
 }
