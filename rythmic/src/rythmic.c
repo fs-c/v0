@@ -1,5 +1,7 @@
 #include "rythmic.h"
 
+char osu_path[256];
+
 pid_t game_proc_id = 0;
 RECT game_window_rect = { 0 };
 void *game_time_address = NULL;
@@ -9,6 +11,10 @@ HANDLE game_proc_handle = NULL;
 static void play();
 static int standby();
 static void fatal(const char *message);
+
+/* TODO: These should probably be moved somewhere else */
+static size_t get_osu_path(char *out_path, const size_t path_size);
+static size_t get_env_var(char *name, char *out_var, const size_t var_size);
 
 int main()
 {
@@ -34,6 +40,10 @@ int main()
 		fatal("couldn't get time address");
 	}
 
+	if (!(get_osu_path(osu_path, sizeof(osu_path)))) {
+		fatal("couldn't get osu path");
+	}
+
 	while (standby())
 		play();
 
@@ -44,17 +54,24 @@ int main()
  */
 static int standby()
 {
-	/* Wide characters are used here because it's not unlikely that a
-	   beatmap (and therefore title) might contain rather exotic
-	   characters. */
-
-	wchar_t title[256];
+	char title[256];
 	size_t title_len = 0;
 
 	while ((title_len = get_window_title(&title, sizeof(title))))
-		if (wcscmp(title, L"osu!"))
+		if (strcmp(title, "osu!"))
 			break;
 		else Sleep(200);
+	
+	char path[512];
+	size_t path_len = 0;
+
+	if (!(path_len = find_beatmap(osu_path, title, path, sizeof(path)))) {
+		printf("warning: failed to parse beatmap path\n");
+
+		return 0;
+	}
+
+	debug("map: %s", path);
 
 	return 0;
 }
@@ -75,4 +92,40 @@ static void fatal(const char *message)
 	}
 
 	exit(1);
+}
+
+static size_t get_osu_path(char *out_path, const size_t path_size)
+{
+	size_t home_len = 0;
+	char home[path_size];
+
+	if (!(home_len = get_env_var(HOME_ENV, home, path_size))) {
+		debug("couldn't fetch HOME_ENV (%s)", HOME_ENV);
+
+		return 0;
+	}
+
+	strcpy_s(out_path, path_size, home);
+	strcpy_s(out_path + home_len, path_size - home_len,
+		DEFAULT_OSU_PATH);
+	
+	debug("osu path is '%s'", out_path);
+
+	return strlen(out_path);
+}
+
+static size_t get_env_var(char *name, char *out_var, const size_t var_size)
+{
+	size_t var_len = 0;
+	char *var = getenv(name);
+
+	if (!var || !(var_len = strlen(var))) {
+		debug("environment variable %s does not exist", name);
+
+		return 0;
+	}
+
+	strcpy_s(out_var, var_size, var);
+
+	return strlen(out_var);
 }
