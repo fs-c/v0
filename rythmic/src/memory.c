@@ -31,7 +31,7 @@ static void *find_pattern(const BYTE *signature, const size_t sig_len)
 {
 	const size_t read_size = MEMORY_CHUNK_SIZE;
 	BYTE chunk[read_size];
-	
+
 	for (size_t off = 0; off < INT_MAX; off += read_size - sig_len) {
 		read_game_memory((void *)off, chunk, read_size, NULL);
 
