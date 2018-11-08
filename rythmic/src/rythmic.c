@@ -127,5 +127,5 @@ static size_t get_env_var(char *name, char *out_var, const size_t var_size)
 
 	strcpy_s(out_var, var_size, var);
 
-	return strlen(out_var);
+	return var_len;
 }
