@@ -5,8 +5,8 @@
 #define MAX_COORD 65535
 
 struct handle_data {
+	pid_t process_id;
 	HWND window_handle;
-	unsigned long process_id;
 };
 
 static WINBOOL __stdcall enum_windows_callback(HWND handle, LPARAM param);
@@ -50,6 +50,8 @@ static WINBOOL __stdcall enum_windows_callback(HWND handle, LPARAM param)
 
 int get_window_coordinates(HWND window_handle, RECT *window_rect)
 {
+	/* Fetch the coordinates of the top left corner of the window, in
+	   pixels */
 	if (!(GetWindowRect(window_handle, window_rect))) {
 		debug_winerror("couldn't get window coordinates");
 
@@ -60,6 +62,8 @@ int get_window_coordinates(HWND window_handle, RECT *window_rect)
 		window_rect->left, window_rect->top, window_rect->right,
 		window_rect->bottom);
 
+	/* The pixels to normalized coordinates ratio for the monitor
+	   resolution */
 	const int vertical_factor = MAX_COORD / GetSystemMetrics(SM_CYSCREEN);
 	const int horizontal_factor = MAX_COORD / GetSystemMetrics(SM_CXSCREEN);
 
