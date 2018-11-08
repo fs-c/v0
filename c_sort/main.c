@@ -8,7 +8,10 @@
 
 #define SHOW_SAMPLE 0
 
-#define hot __attribute__((__hot__))
+#define swap(e1, e2)		\
+	temp = *(e1);		\
+	*(e1) = *(e2);		\
+	*(e2) = temp;		\
 
 /* All sorting functions return the number of iterations performed.
  */
@@ -16,11 +19,12 @@ int bubble_sort(int *array, int total);
 int insertion_sort(int *array, int total);
 int selection_sort(int *array, int total);
 
-static inline hot void swap(int *e1, int *e2);
 static inline double time_diff(struct timeval start, struct timeval end);
 
 int (*funcs[])(int *, int) = { bubble_sort, insertion_sort, selection_sort };
 char *func_names[] = { "bubble_sort", "insertion_sort", "selection_sort" };
+
+int temp = 0;
 
 int main()
 {
@@ -182,13 +186,4 @@ static inline double time_diff(struct timeval start, struct timeval end)
 {
 	return (double)(end.tv_usec - start.tv_usec)
 		/ 1000000 + (double)(end.tv_sec - start.tv_sec);
-}
-
-/* This will incur heavy perfomance losses unless the compiler actually inlines
-   it -- always use at least -O1. TODO: Make this a macro? */
-static inline hot void swap(int *e1, int *e2)
-{
-	register int t = *e1;
-	*e1 = *e2;
-	*e2 = t;
 }
