@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-#define sread(dest, size, count)			\
-	rd = fread(dest, size, count, stream);		\
-	if (rd != (size * count))			\
-		printf("fread failed (%d)\n", (int)rd);	\
+#define sread(dest, size, count)					\
+	rd = fread(dest, size, count, stream);				\
+	if (rd != count)						\
+		printf("fread failed (%d, %d)\n", (int)rd, (int)count);	\
 
 typedef unsigned char BYTE;
 
-uint64_t uleb_extract();
+uint64_t read_uleb128();
 size_t read_osu_string(char *out_buffer);
 
 FILE *stream;
@@ -32,43 +32,35 @@ int main(int argc, char *argv[])
 
 	BYTE mode;
 	sread(&mode, sizeof(BYTE), 1);
-
 	printf("game mode: %d\n", (int)mode);
 
 	int32_t version;
 	sread(&version, sizeof(version), 1);
-
 	printf("game version: %d\n", version);
 
 	char string_buffer[2048];
 
 	read_osu_string(string_buffer);
-
 	printf("beatmap hash: %s\n", string_buffer);
 
 	read_osu_string(string_buffer);
-
-	printf("player name: %s\n", string_buffer);
+	printf("artist name: %s\n", string_buffer);
 	
 	read_osu_string(string_buffer);
-
 	printf("replay hash: %s\n", string_buffer);
 
 	sread(string_buffer, sizeof(short), 6);
 
 	int32_t score;
 	sread(&score, sizeof(score), 1);
-
 	printf("score: %d\n", score);
 
 	BYTE perfect;
 	sread(&perfect, sizeof(perfect), 1);
-
 	printf("perfect: %d\n", perfect);
 
 	int32_t mods_used;
 	sread(&mods_used, sizeof(mods_used), 1);
-
 	printf("mods used: %d\n", mods_used);
 
 	read_osu_string(string_buffer);
@@ -90,7 +82,7 @@ size_t read_osu_string(char *out_buffer)
 		return 0;
 	}
 
-	uint64_t len = uleb_extract();
+	uint64_t len = read_uleb128();
 
 	printf("len: %d\n", (int)len);
 
@@ -103,7 +95,9 @@ size_t read_osu_string(char *out_buffer)
 	return len;
 }
 
-uint64_t uleb_extract()
+/* Taken from Appendix C of Section 7.6 of the DWARF 3 spec.
+ */
+uint64_t read_uleb128()
 {
 	BYTE by = 0;
 	int shift = 0;
