@@ -1,23 +1,22 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-#define dbgread(dest, size, count)					\
-	rd = fread((void *)dest, size, count, stream);			\
-	printf("got: %d, wanted: %d * %d (%d)\n",			\
-		(int)(rd * size), (int)size, (int)count, size * count);	\
+#define sread(dest, size, count)			\
+	rd = fread(dest, size, count, stream);		\
+	if (rd != (size * count))			\
+		printf("fread failed (%d)\n", (int)rd);	\
+
+typedef unsigned char BYTE;
 
 uint64_t uleb_extract();
-size_t read_osu_string(void *out_buffer);
+size_t read_osu_string(char *out_buffer);
 
 FILE *stream;
 size_t rd = 0;
 
-typedef unsigned char BYTE;
-
 int main(int argc, char *argv[])
 {
 	setbuf(stdout, NULL);
-	setbuf(stream, NULL);
 
 	if (argc < 2) {
 		printf("usage: %s <path to .osr file>\n", argv[0]);
@@ -32,100 +31,94 @@ int main(int argc, char *argv[])
 	} else printf("opened file %s for reading\n", argv[1]);
 
 	BYTE mode;
-	dbgread(&mode, sizeof(BYTE), 1);
+	sread(&mode, sizeof(BYTE), 1);
 
 	printf("game mode: %d\n", (int)mode);
 
 	int32_t version;
-	dbgread(&version, sizeof(version), 1);
+	sread(&version, sizeof(version), 1);
 
 	printf("game version: %d\n", version);
 
-	char beatmap_hash[4096];
-	read_osu_string(beatmap_hash);
+	char string_buffer[2048];
 
-	printf("beatmap hash: %s\n", beatmap_hash);
+	read_osu_string(string_buffer);
+
+	printf("beatmap hash: %s\n", string_buffer);
+
+	read_osu_string(string_buffer);
+
+	printf("player name: %s\n", string_buffer);
+	
+	read_osu_string(string_buffer);
+
+	printf("replay hash: %s\n", string_buffer);
+
+	sread(string_buffer, sizeof(short), 6);
+
+	int32_t score;
+	sread(&score, sizeof(score), 1);
+
+	printf("score: %d\n", score);
+
+	BYTE perfect;
+	sread(&perfect, sizeof(perfect), 1);
+
+	printf("perfect: %d\n", perfect);
+
+	int32_t mods_used;
+	sread(&mods_used, sizeof(mods_used), 1);
+
+	printf("mods used: %d\n", mods_used);
+
+	read_osu_string(string_buffer);
+
+	int64_t timestamp;
+	sread(&timestamp, sizeof(timestamp), 1);
+
+	printf("timestamp: %ld\n", timestamp);
 }
 
-size_t read_osu_string(void *out_buffer)
+size_t read_osu_string(char *out_buffer)
 {
 	BYTE indicator;
-	dbgread(&indicator, sizeof(BYTE), 1);
+	sread(&indicator, sizeof(BYTE), 1);
 
 	if (indicator != 0x0b) {
-		printf("string indicator set to invalid value");
+		printf("string indicator set to invalid value\n");
 
 		return 0;
 	}
 
 	uint64_t len = uleb_extract();
 
-	printf("len: %d\n", len);
+	printf("len: %d\n", (int)len);
 
-	/*
 	for (size_t i = 0; i < len; i++) {
-		dbgread(out_buffer++, sizeof(char), 1);
+		sread(out_buffer++, sizeof(char), 1);
 	}
-	*/
+
+	*out_buffer = '\0';
 
 	return len;
 }
 
 uint64_t uleb_extract()
 {
-#ifdef notdef
-	/* This is taken from the opensolaris linker, I don't think they will
-	   mind much. */
-	uint64_t	dot = *dotp;
-	uint64_t	res = 0;
-	int		more = 1;
-	int		shift = 0;
-	int		val;
-
-	data += dot;
-
-	while (more) {
-		/*
-		 * Pull off lower 7 bits
-		 */
-		val = (*data) & 0x7f;
-
-		/*
-		 * Add prepend value to head of number.
-		 */
-		res = res | (val << shift);
-
-		/*
-		 * Increment shift & dot pointer
-		 */
-		shift += 7;
-		dot++;
-
-		/*
-		 * Check to see if hi bit is set - if not, this
-		 * is the last byte.
-		 */
-		more = ((*data++) & 0x80) >> 7;
-	}
-
-	*dotp = dot;
-	return (res);
-#endif
-
 	BYTE by = 0;
 	int shift = 0;
-	uint64_t res = 0;
+	uint64_t result = 0;
 
 	while (1) {
-		dbgread(&by, sizeof(by), 1);
+		sread(&by, sizeof(by), 1);
 
-		res |= (by & 0x7f) << shift;
+		result |= ((by & 0x7f) << shift);
 
-		if ((by & 0x80) >> 7)
+		if (!(by & 0x80))
 			break;
-		
+
 		shift += 7;
 	}
 
-	return res;
+	return result;
 }
