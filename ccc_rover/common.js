@@ -13,3 +13,15 @@ const getCirclePoint = exports.getCirclePoint = (radius, angle) => {
         y: radius * Math.sin(radians),
     };
 };
+
+const rotateVector = exports.rotateVector = (vectorX, vectorY, angle) => {
+    const a = degToRad(angle);
+    
+    const acos = Math.cos(a);
+    const asin = Math.sin(a);
+    
+    return {
+        x: (acos * vectorX) + (asin * vectorY),
+        y: ((asin * -1) * vectorX) + (acos * vectorY),
+    };
+};

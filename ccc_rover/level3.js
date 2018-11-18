@@ -1,4 +1,4 @@
-const { getRadius, getCirclePoint, radToDeg } = require('./common');
+const { getRadius, getCirclePoint, radToDeg, rotateVector } = require('./common');
 
 const inputs = [
     '1.00 3 1.00 15.00 1.00 0.00 1.00 -15.00',
@@ -19,23 +19,20 @@ const parseInput = (string) => {
     };
 };
 
-console.log(parseInput(inputs[0]));
+const solve = (input) => {
+    for (const { angle, distance } of input.segments) {
+        const radius = getRadius(input.wheelbase, angle);
+        // const delta = radToDeg(distance / radius);
+        // const point = getCirclePoint(radius, delta);
+ 
+        const vector = rotateVector(radius, 0, angle);
 
+        console.log({ angle, distance }, vector);
+    }
+};
 
-// const solve = (input) => {
-//     for (const { angle, distance } of input.segments) {
-//         const radius = getRadius(input.wheelbase, angle);
+for (const input of inputs) {
+    const parsed = parseInput(input);
 
-//         const delta = radToDeg(distance / radius);
-
-//         const point = getCirclePoint(radius, delta);
-
-//         console.log(radius, point);
-//     }
-// };
-
-// for (const input of inputs) {
-//     const parsed = parseInput(input);
-
-//     solve(parsed);
-// }
+    solve(parsed);
+}
