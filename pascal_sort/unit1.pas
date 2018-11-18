@@ -13,19 +13,25 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    ButtonBinarySearch: TButton;
     ButtonShellSort: TButton;
     ButtonInsertionSort: TButton;
     ButtonGenerate: TButton;
     ButtonBubbleSort: TButton;
+    EditSearchValue: TEdit;
+    LabelSearchComparisons: TLabel;
+    LabelSearchIndex: TLabel;
     LabelIterations: TLabel;
     LabelTime: TLabel;
     StringGrid1: TStringGrid;
+    procedure ButtonBinarySearchClick(Sender: TObject);
     procedure ButtonGenerateClick(Sender: TObject);
     procedure ButtonBubbleSortClick(Sender: TObject);
     procedure ButtonInsertionSortClick(Sender: TObject);
     procedure ButtonShellSortClick(Sender: TObject);
 
     procedure WriteToGrid(Arr: array of integer; Grid: TStringGrid);
+    procedure BinarySearchRecursive(Value: integer; Min: integer; Max: integer; Hops: integer);
   private
 
   public
@@ -55,6 +61,35 @@ begin
   end;
 
   WriteToGrid(Numbers, StringGrid1);
+end;
+
+procedure TForm1.ButtonBinarySearchClick(Sender: TObject);
+begin
+  BinarySearchRecursive(StrToInt(EditSearchValue.Text), 0, length(Numbers) - 1, 0);
+end;
+
+procedure TForm1.BinarySearchRecursive(Value: integer; Min: integer; Max: integer;
+  Hops: integer);
+var
+  mid: integer;
+begin
+  if max >= min then begin
+    mid := min + ((max - min) div 2);
+
+    if Numbers[mid] < value then
+       BinarySearchRecursive(value, mid + 1, max, Hops + 1);
+
+    if Numbers[mid] > value then
+       BinarySearchRecursive(value, min, mid - 1, Hops + 1);
+
+    if Numbers[mid] = value then begin
+       LabelSearchIndex.Caption := IntToStr(mid);
+       LabelSearchComparisons.Caption := IntToStr(hops);
+    end;
+  end else begin
+    LabelSearchIndex.Caption := 'Value not found';
+    LabelSearchComparisons.Caption := IntToStr(hops);
+  end;
 end;
 
 procedure TForm1.ButtonBubbleSortClick(Sender: TObject);
