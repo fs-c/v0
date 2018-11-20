@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Übung 3}
+\author{Laurenz Weixlbaumer, 11804751}
+\date{November 2018}
+
+\renewcommand{\arraystretch}{1.3}
+\renewcommand\thesubsection{(\alph{subsection})}
+
+\usepackage{enumitem}
+\usepackage{mathtools}
+
+\begin{document}
+
+\maketitle
+
+\section{Binärzahlen}
+
+\begin{enumerate}[label=(\alph*)]
+\item Tabelle mit verschiedenen binären Darstellungsarten.
+\begin{center}
+\begin{tabular}{ | r | r | r | r | r | }
+    \hline
+    Dezimal & Betrag/Vorzeichen & 1er-Komplement & 2er-Komplement & Offset_{16}\\
+    \hline \hline
+    $7_{10}$ & $00111_2$ & $00111_2$ & $00111_2$ & $10111_2$ \\
+    \hline
+    $-9_{10}$ & $11001_2$ & $10110_2$ & $10111_2$ & $00111_2$ \\
+    \hline
+    $11_{10}$ & $01011_2$ & $01011_2$ & $01011_2$ & $11011_2$ \\
+    \hline
+    $5_{10}$ & $00101_2$ & $00101_2$ & $00101_2$ & $10101_2$ \\
+    \hline
+    $-11_{10}$ & $11011_2$ & $10100_2$ & $10101_2$ & $00101_2$ \\
+    \hline
+\end{tabular}
+\end{center}
+
+\item \dots
+
+$-77.625_{10}$ als nicht vorzeichenbehaftete Binärzahl ist $01001101.101_2$.
+
+\begin{center}
+\begin{tabular}{ c | c }
+    $01001101.101_2$ & negieren \\
+    $10110010.010_2$ & +1 \\
+    \hline \hline
+    $10110010.011_2$ & 2er-Komplement
+\end{tabular}
+\end{center}
+
+\item \dots
+
+\begin{center}
+\begin{tabular}{ c | c }
+    $11781 + (- 16223)$ & Umwandlung zu 10er-Komplement \\
+    $11781 + 83777$ & Addition \\
+    $95558$ & Rückwandlung \\
+    \hline \hline
+    $-04442$ & Ergebnis in dezimal
+\end{tabular}
+\end{center}
+
+\item $1111_2 + 1111_2$ führt zu $10000_2$. Nachdem aber nur 4 Bits pro Zahl zur Verfügung stehen, wird das tatsächliche Ergebnis wahrscheinlich $0000_2$ betragen -- es kommt zu einer Bereichsüberschreitung.
+
+Ist der Überlauf nicht $0_2$, ist es durch eine Addition zu einer Bereichs\-überschreitung gekommen.
+
+\end{enumerate}
+
+\end{document}
