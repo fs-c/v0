@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 const int in_len = 6;
 char *const input[] = {
@@ -8,6 +10,11 @@ char *const input[] = {
 	"2.70 3 5.00 10.00 5.00 -10.00 20.00 0.00",
 	"4.20 1 -100.00 -12.00",
 	"9.53 10 -1.00 1.00 -2.00 2.00 3.00 -3.00 4.00 4.00 5.00 -5.00 6.00 6.00 7.00 7.00 -8.00 8.00 9.00 9.00 10.00 -10.00"
+};
+
+struct segment {
+	double dist;
+	double angle;
 };
 
 int main()
@@ -23,7 +30,8 @@ int main()
 	free(args);
 }
 
-void parse_input(const char *string, const int str_len, double **arr)
+void parse_input(const char *string, const int str_len, double *base,
+	struct segment *segs)
 {
 	int i = 0;
 	char *token = NULL;
@@ -31,9 +39,12 @@ void parse_input(const char *string, const int str_len, double **arr)
 
 	strcpy(str, string);
 
-	*arr = malloc(sizeof(double) * 2);
+	while ((token = strsep(&str, " ")) && ++i) {
+		if (i == 1) {
+			*base = atof(token);
+			continue;
+		}
 
-	while ((token = strsep(&str, " "))) {
 		
 	}
 

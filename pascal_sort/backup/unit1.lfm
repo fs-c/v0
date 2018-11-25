@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 257
+  Left = 1141
   Height = 803
-  Top = 145
+  Top = 289
   Width = 831
   Caption = 'Form1'
   ClientHeight = 803
@@ -39,17 +39,17 @@ object Form1: TForm1
   end
   object LabelIterations: TLabel
     Left = 48
-    Height = 17
+    Height = 15
     Top = 208
-    Width = 62
+    Width = 49
     Caption = 'Iterations'
     ParentColor = False
   end
   object LabelTime: TLabel
     Left = 48
-    Height = 17
-    Top = 227
-    Width = 33
+    Height = 15
+    Top = 224
+    Width = 27
     Caption = 'Time'
     ParentColor = False
   end
@@ -70,5 +70,37 @@ object Form1: TForm1
     Caption = 'Shell Sort'
     OnClick = ButtonShellSortClick
     TabOrder = 4
+  end
+  object ButtonBinarySearch: TButton
+    Left = 48
+    Height = 25
+    Top = 264
+    Width = 104
+    Caption = 'Binary Search'
+    OnClick = ButtonBinarySearchClick
+    TabOrder = 5
+  end
+  object EditSearchValue: TEdit
+    Left = 48
+    Height = 23
+    Top = 296
+    Width = 104
+    TabOrder = 6
+  end
+  object LabelSearchIndex: TLabel
+    Left = 48
+    Height = 15
+    Top = 336
+    Width = 28
+    Caption = 'Index'
+    ParentColor = False
+  end
+  object LabelSearchComparisons: TLabel
+    Left = 48
+    Height = 15
+    Top = 352
+    Width = 70
+    Caption = 'Comparisons'
+    ParentColor = False
   end
 end
