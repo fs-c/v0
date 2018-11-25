@@ -41,21 +41,21 @@ int main(int argc, char *argv[])
 	char string_buffer[2048];
 
 	read_osu_string(string_buffer);
-	printf("beatmap hash: %s\n", string_buffer);
+	printf("beatmap checksum: %s\n", string_buffer);
 
 	read_osu_string(string_buffer);
-	printf("artist name: %s\n", string_buffer);
+	printf("player name: %s\n", string_buffer);
 	
 	read_osu_string(string_buffer);
-	printf("replay hash: %s\n", string_buffer);
+	printf("replay checksum: %s\n", string_buffer);
 
-	sread(string_buffer, sizeof(short), 6);
+	sread(string_buffer, sizeof(uint16_t), 6);
 
 	int32_t score;
 	sread(&score, sizeof(score), 1);
 	printf("score: %d\n", score);
 
-	BYTE perfect;
+	int16_t perfect;
 	sread(&perfect, sizeof(perfect), 1);
 	printf("perfect: %d\n", perfect);
 
@@ -84,7 +84,7 @@ size_t read_osu_string(char *out_buffer)
 
 	uint64_t len = read_uleb128();
 
-	printf("len: %d\n", (int)len);
+	printf("  len: %d\n", (int)len);
 
 	for (size_t i = 0; i < len; i++) {
 		sread(out_buffer++, sizeof(char), 1);
