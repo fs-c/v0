@@ -156,3 +156,4 @@ lib/
 *.app/
 
 miniac
+mimic.o
