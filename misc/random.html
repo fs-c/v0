@@ -1,0 +1,31 @@
+<select id="select">
+	<option value="">Weather types</option>
+	<option value="sunshine">Sunshine</option>
+	<option value="rain">Rain</option>
+</select>
+
+<p id="text">Please select a weather type</p>
+
+<script>
+
+	const select = document.getElementById("select");
+	const paragraph = document.getElementById("text");
+
+	function setWeather() {
+		/* Get the currently selected value */
+		const choice = select.value;
+
+		if (choice === "sunshine") {
+			paragraph.textContent = "Your eyes will die today.";
+		} else if (choice === "rain") {
+			paragraph.textContent = "Rain is falling outside today.";
+		} else {
+			/* The selected weather type doesn't match any we know */
+			paragraph.textContent = "Please select a weather type.";
+		}
+	}
+
+	/* Call the setWeather function once the selected option changes */
+	select.addEventListener("change", setWeather);
+
+</script>
