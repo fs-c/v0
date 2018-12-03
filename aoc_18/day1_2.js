@@ -1,44 +1,12 @@
 const assert = require('assert');
 
-const rawInput = require('fs').readFileSync('day1_input.txt', 'utf8');
+const utils = require('./utils');
+const { find, insert } = utils.sortedArray;
 
-const insert = (arr, val) => {
-    let mid;
-    let lo = 0;
-    let hi = arr.length;
-
-    while (lo < hi) {
-        mid = (lo + hi) >>> 1;
-
-        if (arr[mid] < val)
-            lo = mid + 1;
-        else hi = mid;
-    }
-
-    arr.splice(lo, 0, val);
-};
-
-const find = (arr, val) => {
-    let mid;
-    let lo = 0;
-    let hi = arr.length;
-
-    while (lo < hi) {
-        mid = (lo + hi) >>> 1;
-
-        if (arr[mid] === val)
-            return mid;
-
-        if (arr[mid] < val)
-            lo = mid + 1;
-        else hi = mid;
-    }
-
-    return -1;
-};
+const rawInput = utils.readInput(1);
 
 const solve = (input, sep = '\n') => {
-    const frequencies = [ ];
+    const frequencies = [];
     const deltas = input.split(sep).map((e) => parseInt(e, 10));
 
     let i = 0;

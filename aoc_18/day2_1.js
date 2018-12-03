@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const rawInput = require('fs').readFileSync('day2_input.txt', 'utf8');
+const rawInput = require('./utils').readInput(2);
 
 const parseLine = (line) => {
     const occ = [];
@@ -35,7 +35,7 @@ const solve = (input) => {
         three += nthree;
     }
 
-    console.log(two * three);
-}
+    return two * three;
+};
 
-solve(rawInput);
+console.log(solve(rawInput));
