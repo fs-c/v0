@@ -16,9 +16,15 @@ struct beatmap {
 	int slider_multiplier;
 };
 
-struct hitobjects {
+struct hitobject {
 	int x;
 	int y;
 	int time;
 	int type;
 };
+
+size_t parse_beatmap(char *path, struct beatmap *map,
+	struct hitobjects *objects)
+{
+	
+}
