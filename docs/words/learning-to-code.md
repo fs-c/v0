@@ -52,11 +52,15 @@ Now, to see that I didn't just talk out of my ass earlier, about Node using a JS
 
 ![Node REPL inside a CMD window.](https://i.imgur.com/f3zL4eo.gif)
 
-This is pretty nice and all, but we still haven't gotten to the point where we can actually run scripts, as in files containing JavaScript code. With NodeJS that's done by running `node <script>.js`, where `<script>` is the name of the file you want to run.
+This is pretty nice and all, but we still haven't gotten to the point where we can actually run scripts, as in files containing JavaScript code. With NodeJS that's done by running `node <script>`, where `<script>` is the name of the file you want to run.
 
 <script src="https://gist.github.com/LW2904/171a379fe525ca81660292f61b77566f.js"></script>
 
 The above code introduces [function declarations](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function), and [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals).
+
+As mentioned above, scripts like this can be run with the `node <script>` command, so in this case `node example1.js`.
+
+![Running example1.js in cmd through node](https://i.imgur.com/qoom9bm.png)
 
 Okay, so in the beginning I mentioned "learning to code through studying working code of practical relevance". I will now throw (well commented) code at your feet, tell you what parts of it are new/important, and give you links to relevant documentation.
 
@@ -68,10 +72,20 @@ As a first example, let's build a program to encrypt messages.
 
 This is very short, but there's a load of new things here:
 
-- using [`process.argv`](https://nodejs.org/dist/latest-v11.x/docs/api/process.html#process_process_argv) to get command line arguments
+- [`String.fromCharCode()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode) and [`String.prototype.charCodeAt()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt) and the concept of UTF-16 codes
 - [`const`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const) and [`let`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let)
 - using the [`for...of` loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) to iterate over a string
 
 I would really like to encourage you to at least skim the contents of the documentation I'm linking here -- this is all you're going to get.
 
-If it hasn't become obvious from reading the `process.argv` documentation yet (you _did_ read it, right?), this little script can be used like so: `node <name>.js <shift> <message>`. So, as an example, `node rot_cipher.js 2 "Don't tell anyone, but I think the NSA is watching me!"`.
+Running this will cause the encrypted version of `message` (in this case `Hello there!`) to be printed.
+
+![Running rot_cipher_1.js](https://i.imgur.com/8hhevvh.png)
+
+On its own, this little script is not particularly useful. In order to change either the message or the value it is shifted with requires us to edit the code, and that is suboptimal at best. Decrypting messages, which simply requires shifting by `-(previous shift)` would therefore also require a change in the script -- this simply imposes too much inflexibility upon us.
+
+Therefore, a modified and significantly more flexible version is required.
+
+<script src="https://gist.github.com/LW2904/f864bc0f44e4d97d7d8d89a9f37c15ba.js"></script>
+
+If it hasn't become obvious from reading the `process.argv` documentation yet (you _did_ read it, right?), this little script can be used like so: `node <script> <shift> <message>`. So, as an example, `node rot_cipher.js 2 "Don't tell anyone, but I think the NSA is watching me!"`.
