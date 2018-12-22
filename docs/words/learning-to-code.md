@@ -72,7 +72,7 @@ As a first example, let's build a program to encrypt messages.
 
 This is very short, but there's a load of new things here:
 
-- [`String.fromCharCode()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode) and [`String.prototype.charCodeAt()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt) and the concept of UTF-16 codes
+- [`String.fromCharCode`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode) and [`String.prototype.charCodeAt`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt) and the concept of UTF-16 codes
 - [`const`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const) and [`let`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let)
 - using the [`for...of` loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) to iterate over a string
 
@@ -82,10 +82,20 @@ Running this will cause the encrypted version of `message` (in this case `Hello 
 
 ![Running rot_cipher_1.js](https://i.imgur.com/8hhevvh.png)
 
-On its own, this little script is not particularly useful. In order to change either the message or the value it is shifted with requires us to edit the code, and that is suboptimal at best. Decrypting messages, which simply requires shifting by `-(previous shift)` would therefore also require a change in the script -- this simply imposes too much inflexibility upon us.
+On its own, this little script is not particularly useful. In order to change either the message or the value it is shifted with requires us to edit the code, and that is suboptimal at best. Decrypting messages, which simply requires shifting by `(previous shift) * -1` would therefore also require a change in the script -- this simply imposes too much inflexibility upon us.
 
 Therefore, a modified and significantly more flexible version is required.
 
 <script src="https://gist.github.com/LW2904/f864bc0f44e4d97d7d8d89a9f37c15ba.js"></script>
 
-If it hasn't become obvious from reading the `process.argv` documentation yet (you _did_ read it, right?), this little script can be used like so: `node <script> <shift> <message>`. So, as an example, `node rot_cipher.js 2 "Don't tell anyone, but I think the NSA is watching me!"`.
+The main takeaway from the script obove is that you can use [`process.argv`](https://nodejs.org/docs/latest/api/process.html) to get the _arguments_ that were passed to the script. You’ve already come accross a number of programs that accept arguments, the `node` command, for example.
+
+Other things that are new here include,
+
+- [`Array.prototype.slice` ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice) to remove array elements (read the `process.argv` documentation to find out why we can discard the first two elements in the above example)
+- [`parseInt`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt) to parse a `String` object into a `Number` object
+
+If it hasn't become obvious from reading the `process.argv` documentation yet (you _did_ read it, right?), this little script can be used like so: `node <script> <shift> <message>`. So, as an example:
+
+![Encrypting and decrypting a message](https://i.imgur.com/Bvyize7.png)
+
