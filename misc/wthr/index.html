@@ -6,8 +6,11 @@
 
 <p id="text">Please select a weather type</p>
 
+<img id="image" src=""/>
+
 <script>
 
+	const image = document.getElementById("image");
 	const select = document.getElementById("select");
 	const paragraph = document.getElementById("text");
 
@@ -17,11 +20,17 @@
 
 		if (choice === "sunshine") {
 			paragraph.textContent = "Your eyes will die today.";
+
+			image.src = "./sun.png";
 		} else if (choice === "rain") {
 			paragraph.textContent = "Rain is falling outside today.";
+
+			image.src = "./rain.png";			
 		} else {
 			/* The selected weather type doesn't match any we know */
 			paragraph.textContent = "Please select a weather type.";
+
+			image.src = "";
 		}
 	}
 
