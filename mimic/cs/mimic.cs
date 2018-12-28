@@ -8,23 +8,27 @@ public class Mimic
         if (args.Length == 0)
         {
             Console.WriteLine("usage: <executable> <path to .osr file>");
+
+	    	System.Environment.Exit(1);
         }
 
         try
         {
-            using (BinaryReader stream = new BinaryReader(File.Open(args[0], FileMode.Open)))
+            using (BinaryReader stream = new BinaryReader(File.Open(args[0],
+	    		FileMode.Open)))
             {
-                byte mode = stream.ReadByte();
-                stream.ReadByte(); // Why?
-                int version = stream.ReadInt32();
+                var mode = stream.ReadByte();
+				Console.WriteLine("mode:        {0:D}", mode);
+                var version = stream.ReadInt32();
+				Console.WriteLine("version:     {0:D}", version);
 
-                string beatmap = stream.ReadString();
+                var beatmap = stream.ReadString();
                 Console.WriteLine(beatmap);
 
-                string player = stream.ReadString();
+                var player = stream.ReadString();
                 Console.WriteLine(player);
 
-                string local = stream.ReadString();
+                var local = stream.ReadString();
                 Console.WriteLine(local);
             }
         }
