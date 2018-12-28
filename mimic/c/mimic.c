@@ -1,22 +1,22 @@
 #include "read.h"
 
 #include <stdio.h>
-
-FILE *stream;
-int little_endian = 0;
+#include <stdlib.h>
 
 int main(int argc, char *argv[])
 {
 	setbuf(stdout, NULL);
 
 	if (argc < 2) {
-		printf("usage: %s <path to .osr file>\n", argv[0]);
+		printf("usage: %s <path to .osr file> [<path to out file>]\n", argv[0]);
 
 		return 1;
 	}
 
-	if (!(stream = fopen(argv[1], "r"))) {
-		printf("couldn't open file %s\n", argv[1]);
+	FILE *stream = NULL;
+
+	if (!(stream = fopen(argv[1], "rb"))) {
+		printf("couldn't open file %s for reading\n", argv[1]);
 
 		return 1;
 	} else printf("opened file %s for reading\n", argv[1]);
@@ -26,8 +26,6 @@ int main(int argc, char *argv[])
 	int test_endian = 1;
 	if (*(char *)&test_endian == 1) {
 		printf("on a little-endian system\n");
-
-		little_endian = 1;
 	} else printf("on a big-endian system\n");
 
 	/* ruleset */
@@ -73,6 +71,35 @@ int main(int argc, char *argv[])
 	int64_t timestamp = read_int64();
 	printf("timestamp: %ld\n", timestamp);
 
+	/* length in bytes of the LZMA compressed replay data */
 	int32_t data_len = read_int32();
 	printf("data_len: %d\n", data_len);
+
+	if (argc < 3) {
+		printf("no outfile given, stopping\n");
+
+		return 0;
+	}
+
+	FILE *out_stream = NULL;
+
+	if(!(out_stream = fopen(argv[2], "wb"))) {
+		printf("couldn't open file %s for writing\n", argv[2]);
+
+		return 1;
+	} else printf("opened file %s for writing\n", argv[2]);
+
+	for (int32_t i = 0; i < data_len; i++) {
+		int c = fgetc(stream);
+
+		if (c == EOF) {
+			printf("reached EOF early, bailing out (%d)\n", i);
+
+			break;
+		}
+
+		fputc(c, out_stream);
+	}
+	
+	return 0;
 }
