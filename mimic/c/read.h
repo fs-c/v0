@@ -24,32 +24,22 @@ void set_stream(FILE *new_stream)
 
 BYTE read_byte()
 {
-	// BYTE by;
-	// sread(&by, sizeof(by), 1);
-	// return by;
-
 	type_read(BYTE);
 }
 
 int16_t read_int16()
 {
-	int16_t val;
-	sread(&val, sizeof(val), 1);
-	return val;
+	type_read(int16_t);
 }
 
 int32_t read_int32()
 {
-	int32_t val;
-	sread(&val, sizeof(val), 1);
-	return val;
+	type_read(int32_t);
 }
 
 int64_t read_int64()
 {
-	int64_t val;
-	sread(&val, sizeof(val), 1);
-	return val;
+	type_read(int64_t);
 }
 
 /* Taken from Section 7.6 of the DWARF 3 spec, Appendix C */
