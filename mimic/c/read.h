@@ -1,3 +1,6 @@
+#ifndef READ_H
+#define READ_H
+
 #include <stdio.h>
 #include <inttypes.h>
 
@@ -103,5 +106,7 @@ void u32_switch_endian(uint32_t *x)
 		((*x >> 8) & 0x0000FF00) |
 		(*x << 24);
 }
+
+#endif
 
 #endif
