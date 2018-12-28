@@ -2,6 +2,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "easylzma/decompress.h"
+
+int basic_decompress(elzma_file_format format, BYTE *in_data,
+	size_t in_len, BYTE **out_data, size_t *out_len);
+int input_callback(void *ctx, void *buf, size_t * size);
+size_t output_callback(void *ctx, const void *buf, size_t size);
 
 int main(int argc, char *argv[])
 {
@@ -75,6 +83,39 @@ int main(int argc, char *argv[])
 	int32_t data_len = read_int32();
 	printf("data_len: %d\n", data_len);
 
+	BYTE *data = malloc(data_len);
+
+	if (!data) {
+		printf("failed allocating %d bytes for compressed data\n",
+			data_len);
+		
+		return 1;
+	}
+
+	for (int32_t i = 0; i < data_len; i++) {
+		int c = fgetc(stream);
+
+		if (c == EOF) {
+			printf("reached EOF early, bailing out (%d)\n", i);
+
+			break;
+		}
+
+		data[i] = c;
+	}
+
+	BYTE *decomp = NULL;
+	size_t decomp_len = 0;
+
+	int rc = basic_decompress(ELZMA_lzma, data, data_len, &decomp,
+		&decomp_len);
+
+	if (rc != ELZMA_E_OK) {
+		printf("decompression failed\n");
+
+		return 1;
+	}
+
 	if (argc < 3) {
 		printf("no outfile given, stopping\n");
 
@@ -89,17 +130,82 @@ int main(int argc, char *argv[])
 		return 1;
 	} else printf("opened file %s for writing\n", argv[2]);
 
-	for (int32_t i = 0; i < data_len; i++) {
-		int c = fgetc(stream);
-
-		if (c == EOF) {
-			printf("reached EOF early, bailing out (%d)\n", i);
-
-			break;
-		}
-
-		fputc(c, out_stream);
+	for (size_t i = 0; i < decomp_len; i++) {
+		putc(decomp[i], out_stream);
 	}
-	
+
 	return 0;
+}
+
+struct data_stream 
+{
+    BYTE *in_data;
+    size_t in_len;
+
+    BYTE *out_data;
+    size_t out_len;
+};
+
+int basic_decompress(elzma_file_format format, BYTE *in_data,
+	size_t in_len, BYTE **out_data, size_t *out_len)
+{
+    int rc;
+    elzma_decompress_handle hand;
+    
+    hand = elzma_decompress_alloc();
+    
+    /* now run the compression */
+    {
+        struct data_stream ds;
+        ds.in_data = in_data;
+        ds.in_len = in_len;
+        ds.out_data = NULL;
+        ds.out_len = 0;
+
+        rc = elzma_decompress_run(hand, input_callback, (void *)&ds,
+		output_callback, (void *)&ds, format);
+        
+        if (rc != ELZMA_E_OK) {
+            if (ds.out_data != NULL)
+	    	free(ds.out_data);
+            elzma_decompress_free(&hand);
+            return rc;
+        }
+        
+        *out_data = ds.out_data;
+        *out_len = ds.out_len;
+    }
+
+    return rc;
+}
+
+int input_callback(void *ctx, void *buf, size_t * size)
+{
+    size_t rd = 0;
+    struct data_stream *ds = (struct data_stream *)ctx;
+
+    rd = (ds->in_len < *size) ? ds->in_len : *size;
+
+    if (rd > 0) {
+        memcpy(buf, (void *) ds->in_data, rd);
+        ds->in_data += rd;
+        ds->in_len -= rd;
+    }
+
+    *size = rd;
+
+    return 0;
+}
+
+size_t output_callback(void *ctx, const void *buf, size_t size)
+{
+    struct data_stream *ds = (struct data_stream *)ctx;
+
+    if (size > 0) {
+        ds->out_data = realloc(ds->out_data, ds->out_len + size);
+        memcpy((void *) (ds->out_data + ds->out_len), buf, size);
+        ds->out_len += size;
+    }
+
+    return size;
 }
