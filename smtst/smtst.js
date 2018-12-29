@@ -1,37 +1,32 @@
+exports.padding = 18;
 exports.context = this;
 
-exports.serial = [];
-exports.concurrent = [];
-
-const defaultPadding = 18;
-
 exports.report = (err, name) => {
-    const padded = name.padEnd(defaultPadding);
-    const status = err ? err.message : 'Passed';
+    const padded = name.padEnd(exports.padding);
+    const status = err ? err.data.message : 'Passed';
 
     console.log(`${padded}${status}`);
 }
 
-exports.execute = () => {
-    (async () => {
-    
-    for (const task of exports.serial) {
-        try {
-            await (task.func.call(exports.context, ...task.args));
+exports.execute = (func, args = []) => {
+    const bound = func.bind(exports.context, ...args);
 
-            exports.report(null, task.func.name);
-        } catch (err) {
-            exports.report(err, task.func.name);
-        }
+    bound().then(() => {
+        exports.report(null, func.name);
+    }).catch((err) => {
+        exports.report(err, func.name);
+    });
+}
+
+exports.execute.serially = async (func, args = []) => {
+    const bound = func.bind(exports.context, ...args);
+
+    let err = null;
+    try {
+        await bound();
+    } catch (catched) {
+        err = catched;
     }
 
-    })().catch(console.error);
-
-    for (const task of exports.concurrent) {
-        task.func.call(exports.context, ...task.args).then(() => {
-            exports.report(null, task.func.name);
-        }).catch((err) => {
-            exports.report(err, task.func.name);
-        })
-    }
-};
+    exports.report(err, func.name);
+}
