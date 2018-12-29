@@ -1,8 +1,4 @@
-#ifndef READ_H
-#define READ_H
-
-#include <stdio.h>
-#include <inttypes.h>
+#include "mimic.h"
 
 #define sread(dest, size, count)					\
 	rd = fread(dest, size, count, stream);				\
@@ -14,7 +10,7 @@
 	sread(&val, sizeof(val), 1);	\
 	return val;			\
 
-typedef unsigned char BYTE;
+static uint64_t read_uleb128();
 
 /* Used by sread */
 size_t rd = 0;
@@ -45,27 +41,6 @@ int64_t read_int64()
 	type_read(int64_t);
 }
 
-/* Taken from Section 7.6 of the DWARF 3 spec, Appendix C */
-uint64_t read_uleb128()
-{
-	BYTE by = 0;
-	int shift = 0;
-	uint64_t result = 0;
-
-	while (1) {
-		sread(&by, sizeof(by), 1);
-
-		result |= ((by & 0x7f) << shift);
-
-		if (!(by & 0x80))
-			break;
-
-		shift += 7;
-	}
-
-	return result;
-}
-
 /* These are really just C# strings */
 size_t read_osu_string(char *out_buffer)
 {
@@ -91,6 +66,27 @@ size_t read_osu_string(char *out_buffer)
 	return len;
 }
 
+/* Taken from Section 7.6 of the DWARF 3 spec, Appendix C */
+static uint64_t read_uleb128()
+{
+	BYTE by = 0;
+	int shift = 0;
+	uint64_t result = 0;
+
+	while (1) {
+		sread(&by, sizeof(by), 1);
+
+		result |= ((by & 0x7f) << shift);
+
+		if (!(by & 0x80))
+			break;
+
+		shift += 7;
+	}
+
+	return result;
+}
+
 /* Just keeping these around in case they are ever needed again */
 #ifdef NULL
 
@@ -106,7 +102,5 @@ void u32_switch_endian(uint32_t *x)
 		((*x >> 8) & 0x0000FF00) |
 		(*x << 24);
 }
-
-#endif
 
 #endif
