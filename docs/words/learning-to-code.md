@@ -1,4 +1,4 @@
-{ "title": "Learning to Code", "date": "2018-11-10", "hidden": true }
+{ "title": "Learning to Code", "date": "2018-11-10", "hidden": 1 }
 
 This is my take at attempting to convey the usefulness and beauty of programming to those new to the craft.
 
