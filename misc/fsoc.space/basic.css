@@ -1,0 +1,14 @@
+body,
+html {	font-family: monospace; }
+
+a { 	text-decoration: none;	}
+
+p.center {
+	text-align: center; }
+
+div.center {
+	position: absolute;
+	top: 47%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%); }

@@ -1,0 +1,75 @@
+object Form1: TForm1
+  Left = 430
+  Height = 473
+  Top = 221
+  Width = 387
+  Caption = 'Form1'
+  ClientHeight = 473
+  ClientWidth = 387
+  OnCreate = FormCreate
+  LCLVersion = '1.8.4.0'
+  object ListMemo: TMemo
+    Left = 16
+    Height = 392
+    Top = 48
+    Width = 248
+    TabOrder = 0
+  end
+  object NameEdit: TEdit
+    Left = 16
+    Height = 23
+    Top = 16
+    Width = 248
+    TabOrder = 1
+  end
+  object AppendButton: TButton
+    Left = 280
+    Height = 25
+    Top = 14
+    Width = 91
+    Caption = 'Append'
+    OnClick = AppendButtonClick
+    TabOrder = 2
+  end
+  object GetByIndexButton: TButton
+    Left = 280
+    Height = 25
+    Top = 48
+    Width = 91
+    Caption = 'Get by Index'
+    OnClick = GetByIndexButtonClick
+    TabOrder = 3
+  end
+  object SearchEdit: TEdit
+    Left = 280
+    Height = 23
+    Top = 112
+    Width = 91
+    TabOrder = 4
+  end
+  object OutputLabel: TLabel
+    Left = 16
+    Height = 1
+    Top = 448
+    Width = 1
+    ParentColor = False
+  end
+  object GetByNameButton: TButton
+    Left = 280
+    Height = 25
+    Top = 80
+    Width = 91
+    Caption = 'Get by Name'
+    OnClick = GetByNameButtonClick
+    TabOrder = 5
+  end
+  object LengthButton: TButton
+    Left = 280
+    Height = 25
+    Top = 144
+    Width = 91
+    Caption = 'Get Length'
+    OnClick = LengthButtonClick
+    TabOrder = 6
+  end
+end
