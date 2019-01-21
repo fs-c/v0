@@ -4,7 +4,8 @@
 // @version      0.1
 // @description  allows hiding of fictions, reducing their visibility
 // @author       fsoc
-// @license      MIT; https://opensource.org/licenses/MIT
+// @license      MIT
+// @copyright    2019, lw (https://fsoc.space)
 // @match        https://www.royalroad.com/fictions/*
 // @grant        none
 // ==/UserScript==
