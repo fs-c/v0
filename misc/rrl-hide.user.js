@@ -8,6 +8,10 @@
 // @grant        none
 // ==/UserScript==
 
+// ==OpenUserJS==
+// @author fsoc
+// ==/OpenUserJS==
+
 (function() {
 
 const { localStorage } = window;
