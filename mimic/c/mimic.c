@@ -72,12 +72,18 @@ int main(int argc, char *argv[])
 	int32_t data_len = read_int32();
 	printf("data_len: %d\n", data_len);
 
+	if (argc < 3) {
+		printf("no outfile given, stopping\n");
+
+		return 0;
+	}
+
 	BYTE *data = malloc(data_len);
 
 	if (!data) {
 		printf("failed allocating %d bytes for compressed data\n",
 			data_len);
-		
+
 		return 1;
 	}
 
@@ -103,12 +109,6 @@ int main(int argc, char *argv[])
 		printf("decompression failed\n");
 
 		return 1;
-	}
-
-	if (argc < 3) {
-		printf("no outfile given, stopping\n");
-
-		return 0;
 	}
 
 	FILE *out_stream = NULL;
