@@ -41,8 +41,10 @@ const generateString = (length) => {
     return text;
 };
 
-const updateToken = async (id, auth, code, redirect, refresh) => {
-    debug('updating token for %o', id);
+const updateToken = async (id, auth, code, redirect, refresh = false) => {
+    debug('updating token for %o (refresh: %o)', id, refresh);
+
+    debug({ auth, code, redirect });
 
     const form = refresh ? {
         refresh_token: code,
@@ -84,6 +86,8 @@ app.use(async (ctx, next) => {
         await next();
     } catch (err) {
         debug(err);
+
+        await ctx.render('error', { err });
     }
 });
 
@@ -91,8 +95,7 @@ app.use(_.get('/from/:id', async (ctx, id, next) => {
     let data = temp[id];
 
     if (!data) {
-        ctx.status = 404;
-        return ctx.body = 'ERROR: Invalid id.'
+        throw new Error('Invalid ID');
     }
 
     if (data.updated + (data.expires_in * 1000) < Date.now()) {
@@ -107,7 +110,11 @@ app.use(_.get('/from/:id', async (ctx, id, next) => {
         },
     });
 
-    ctx.render('listening', { playback });
+    if (!playback) {
+        throw new Error('Failed fetching playback data');
+    }
+
+    await ctx.render('listening', { playback });
 }));
 
 app.use(_.get('/add', async (ctx, next) => {
@@ -116,7 +123,7 @@ app.use(_.get('/add', async (ctx, next) => {
 
     temp[state] = true;
 
-    return ctx.redirect('https://accounts.spotify.com/authorize?' +
+    ctx.redirect('https://accounts.spotify.com/authorize?' +
         new URLSearchParams({
             scope,
             state,
@@ -132,8 +139,7 @@ app.use(_.get('/callback', async (ctx, next) => {
     const { code, state } = ctx.query;
 
     if (!temp[state]) {
-        ctx.status = '403';
-        return ctx.body = 'ERROR: State mismatch.';
+        throw new Error('State mismatch');
     }
 
     await updateToken(state, client.encoded, code, redirectURI);
