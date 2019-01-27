@@ -1,0 +1,9 @@
+<div class="content">
+    <% if (playback.is_playing) { %>
+        <p>
+            <%= playback.item.artists[0].name %> - <%= playback.item.name %>
+        </p>
+    <% } else { %>
+        <p>Not currently playing any track.</p>
+    <% } %>
+</div>
