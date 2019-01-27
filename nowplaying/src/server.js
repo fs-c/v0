@@ -4,6 +4,7 @@ const inDev = process.env.NODE_ENV !== 'production';
 
 const _ = require('koa-route');
 const app = new (require('koa'))();
+const { join, resolve } = require('path');
 const { URLSearchParams } = require('url');
 // TODO: Replace this bloated mess.
 const { get, post } = require('request-promise-native');
@@ -68,18 +69,7 @@ const updateToken = async (id, auth, code, redirect, refresh = false) => {
     return temp[id] = res;
 };
 
-require('koa-ejs')(app, {
-    viewExt: 'ejs',
-    root: require('path').join(__dirname, 'views'),
-});
-
 app.use(require('@koa/cors')());
-
-if (inDev) {
-    const staticDir = require('path').resolve(__dirname, '../static');
-
-    app.use(require('koa-static')(staticDir, { maxage: 0 }));
-}
 
 app.use(async (ctx, next) => {
     try {
@@ -89,6 +79,24 @@ app.use(async (ctx, next) => {
 
         await ctx.render('error', { err });
     }
+});
+
+if (inDev) {
+    const staticDir = resolve(__dirname, '../static');
+
+    app.use(require('koa-static')(staticDir, { maxage: 0 }));
+}
+
+app.use(async (ctx, next) => {
+    const protocol = process.env.PROTOCOL || ctx.protocol;
+    const root = process.env.ROOT ? `/${process.env.ROOT}` : '/';
+
+    await require('koa-views')(join(__dirname, '/views'), {
+        extension: 'ejs',
+        options: {
+            base: `${protocol}://${ctx.host}${root}`,
+        },
+    })(ctx, next);
 });
 
 app.use(_.get('/from/:id', async (ctx, id, next) => {
@@ -113,6 +121,8 @@ app.use(_.get('/from/:id', async (ctx, id, next) => {
     if (!playback) {
         throw new Error('Failed fetching playback data');
     }
+
+    debug(playback);
 
     await ctx.render('listening', { playback });
 }));

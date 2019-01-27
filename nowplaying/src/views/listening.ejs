@@ -1,9 +1,21 @@
-<div class="content">
+<html>
+
+<head>
+  <title>nowplaying</title>
+  
+  <%- include('partials/head') %>
+</head>
+
+<body>
+
+  <div class="content">
     <% if (playback.is_playing) { %>
-        <p>
-            <%= playback.item.artists[0].name %> - <%= playback.item.name %>
-        </p>
+      <p><%= playback.item.artists[0].name %> - <%= playback.item.name %></p>
     <% } else { %>
-        <p>Not currently playing any track.</p>
+      <p>Not currently playing any track.</p>
     <% } %>
-</div>
+  </div>
+
+</body>
+
+</html>
