@@ -1,14 +1,51 @@
-body,
-html { font-family: monospace; }
+body, html {
+    font-family: monospace;
+}
 
-a { text-decoration: none;	}
+a {
+    text-decoration: none;
+}
 
 p.center {
-	text-align: center; }
+    text-align: center;
+}
+
+small.weightless {
+    font-weight: normal;
+}
 
 div.center {
-	position: absolute;
-	top: 47%;
-	left: 50%;
-	margin-right: -50%;
-	transform: translate(-50%, -50%); }
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+div.box {
+    width: 90%;
+}
+
+@media (min-width: 400px) {
+    div.box {
+        width: 80%;
+    }
+}
+
+@media (min-width: 550px) {
+    div.box {
+        width: 70%;
+    }
+}
+
+@media (min-width: 750px) {
+    div.box {
+        width: 60%;
+    }
+}
+
+@media (min-width: 950px) {
+    div.box {
+        width: 50%;
+    }
+}
