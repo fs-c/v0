@@ -26,18 +26,21 @@ let lastFinished = true;
  */
 
  /**
-  * End tick, logging a final status and setting it to finished.
-  *
-  * TODO: This is not solved well, add a proper TS implementation.
+  * TODO: This is a stupid implementation.
   */
-const endTick = (msg: any, optObj?: any) => {
-    let obj = optObj || {};
-
+const endTick = (msg: any, obj: any = {}) => {
     if (typeof msg === 'string') {
         obj.msg = msg;
     } else { obj = msg; }
 
-    log.info(obj);
+    log.debug(obj);
+};
+
+ /**
+  * TODO: This is a stupid implementation.
+  */
+const finishTick = (msg: any, optObj?: any) => {
+    endTick(msg, optObj || {});
 
     lastFinished = true;
 };
@@ -61,7 +64,7 @@ const refillPool = async () => {
             .map((id) => ({ id, ts: Date.now(), open: true }));
     } catch (err) {
         // Will retry on next tick.
-        return endTick('failed fetching ids', err);
+        return finishTick('failed fetching ids', err);
     }
 
     const conflict = (id: RDatum<any>, oid: RDatum<any>, nid: RDatum<any>) => {
@@ -74,10 +77,10 @@ const refillPool = async () => {
     try {
         res = await pool.insert(ids, { conflict }).run();
     } catch (err) {
-        return endTick('failed inserting ids', err);
+        return finishTick('failed inserting ids', err);
     }
 
-    return endTick('inserted new ids', res);
+    return finishTick('inserted new ids', res);
 };
 
 /**
@@ -113,7 +116,7 @@ const processID = async (active: IPoolItem) => {
 
     log.trace(pUpd, 'closed id in pool');
 
-    return endTick('updated country', cUpd);
+    return finishTick('updated country', cUpd);
 };
 
 /**
@@ -155,7 +158,7 @@ const tick = async () => {
  */
 const setup = async (structure: { [key: string]: string[] }) => {
     for (const db of Object.keys(structure)) {
-        log.trace('creating %s', db);
+        log.trace('trying to create database "%s"', db);
 
         try { await r.dbCreate(db).run(); } catch (err) {
             log.trace(err, 'database creation error');
@@ -165,7 +168,7 @@ const setup = async (structure: { [key: string]: string[] }) => {
         }
 
         for (const table of structure[db]) {
-            log.trace('creating %s.%s', db, table);
+            log.trace('trying to create table "%s.%s"', db, table);
 
             try { await r.db(db).tableCreate(table).run(); } catch (err) {
                 log.trace(err, 'table creation error');
@@ -176,9 +179,14 @@ const setup = async (structure: { [key: string]: string[] }) => {
 
 (async () => {
     await r.connectPool();
+
+    log.trace('initialized connection pool');
+
     await setup({
         steam: [ 'id_pool', 'countries' ],
     });
+
+    log.trace('database structure intact');
 
     const interval = process.env.INTERVAL || 60 * 1000;
     tick().catch((err) => log.warn(err));
