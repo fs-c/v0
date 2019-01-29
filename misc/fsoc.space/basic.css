@@ -3,6 +3,11 @@ body, html {
 }
 
 a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+a:hover {
     text-decoration: none;
 }
 
@@ -25,9 +30,15 @@ div.center {
 div.box {
     width: 90%;
 }
+div.small-box {
+    width: 90%;
+}
 
 @media (min-width: 400px) {
     div.box {
+        width: 80%;
+    }
+    div.small-box {
         width: 80%;
     }
 }
@@ -36,16 +47,25 @@ div.box {
     div.box {
         width: 70%;
     }
+    div.small-box {
+        width: 60%;
+    }
 }
 
 @media (min-width: 750px) {
     div.box {
         width: 60%;
     }
+    div.small-box {
+        width: 50%;
+    }
 }
 
 @media (min-width: 950px) {
     div.box {
         width: 50%;
+    }
+    div.small-box {
+        width: 25%;
     }
 }
