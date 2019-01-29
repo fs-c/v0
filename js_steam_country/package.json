@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon -e ts,tsx --exec ts-node ./src/index.ts"    
+    "watch": "nodemon -e ts,tsx --exec ts-node ./src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +15,8 @@
     "dotenv": "^5.0.1",
     "got": "^8.3.1",
     "pino": "^4.17.2",
-    "rethinkdb-ts": "^2.4.0-rc.10"
+    "rethinkdb-ts": "^2.4.0-rc.10",
+    "rethinkdbdash": "^2.3.31"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.9",
