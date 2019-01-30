@@ -12,7 +12,7 @@ let currentTick = {
 };
 
 (async () => {
-    await buildStructure(structure);
+    await buildStructure(r, structure);
 })();
 
 const pool = r.db('steam').table('id_pool');

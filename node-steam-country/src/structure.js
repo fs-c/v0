@@ -4,7 +4,7 @@ const defaultStructure = {
     steam: [ 'id_pool', 'countries' ],    
 };
 
-const buildStructure = async (struct) => {
+const buildStructure = async (r, struct) => {
     for (const db of Object.keys(struct)) {
         log.trace('creating %s', db);
 
