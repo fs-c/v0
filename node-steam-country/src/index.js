@@ -78,31 +78,27 @@ const processID = async (active) => {
     const country = (await getCountry(active.id)) || 'no_country';
     const entry = await countries.get(country);
 
-    let cUpd;
-    if (entry !== null) {
-        log.trace({ entry }, 'found country entry, incrementing');
-        cUpd = await countries.get(country).update({
+    const result = entry !== null ? (
+        await countries.get(country).update({
             occ: r.row('occ').add(1).default(1),
-        });
-    } else {
-        log.trace({ country }, 'no country entry found, inserting');
-        cUpd = await countries.insert({ id: country, occ: 1 });
-    }
+        })
+    ) : (
+        await countries.insert({ id: country, occ: 1 })
+    );
 
-    // Close the id and update the timestamp.
-    const pUpd = await pool.get(active.id).update({
+    await pool.get(active.id).update({
         open: false,
         ts: Date.now(),
     });
 
     log.trace('closed id in pool');
 
-    return finishTick('updated country', cUpd);
+    return finishTick('updated country', result);
 };
 
 const runTick = async () => {
     if (!currentTick.finished) {
-        endTick('current tick unfinished, skipping');
+        return endTick('current tick unfinished, skipping');
     }
 
     currentTick.number++;
@@ -126,13 +122,15 @@ const runTick = async () => {
 
 const runTicks = () => {
     const tickError = (err) => {
+        /* All the error recovery and handling logic is elsewhere, just log it
+           as warning so prod knows something's going wrong */
         log.warn(err);
     };
 
     runTick().catch(tickError);
 
     setInterval(() => {
-        runTick().catch((err) => log.warn(err));
+        runTick().catch(tickError);
     }, interval);
 };
 
