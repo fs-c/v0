@@ -4,8 +4,6 @@ In dieser Übung werden wir ein relativ fortgeschrittenes Computerspiel in C ent
 
 Für diese Übung solltest du bereits einfache Programmierkentnisse haben, die Konzepte von Schleifen, Bedingungen und Assignments bzw. Variablen sollten nichts neues sein. Im Grunde genommen ist die Programmiersprache C eine sehr einfache, und viele andere Sprachen (z.B. JavaScript, Java, C#, ...) sind ihr oberflächlich ähnlich bzw. nachempfunden. Im folgenden werden daher keine näheren Details zu C gegeben -- sollte dir etwas unklar sein, zögere nicht dich selbst im Internet schlau zu machen, oder eine/n Mentor/in um Hilfe zu bitten.
 
-TODO: C-Crashkurs?
-
 ## Spielablauf
 
 ![Screenshot während des pausierten Spiels](https://i.imgur.com/KmkZkqf.png)
@@ -150,8 +148,6 @@ Hier wichtig sind die [`GetConsoleMode()`](https://docs.microsoft.com/en-us/wind
 Wenn du im oben verlinkten Artikel den Abschnitt "Example of Enabling Virtual Terminal Processing" gelesen hast, wirst du sehen, dass sich die folgende Lösung deutlich von dem dort gegebenen Beispiel unterscheidet. Auch deshalb sei hier nochmals angemerkt, dass diese Lösungen bei weitem nicht die einzig richtigen (oder perfekt) sind -- hier wurde bewusst ein anderer Weg genommen, um dies zu verdeutlichen.
 
 ```C
-// Untested, straight copy
-
 int setup_terminal()
 {
 	DWORD access = GENERIC_READ | GENERIC_WRITE;
@@ -199,8 +195,6 @@ Die oben stehende Funktion wird immer `EOF` (eine in der standard library defini
 Um also jede gedrückte Taste "echoen" zu lassen, also sie wieder auszugeben, könnte man die folgende Methode verwenden:
 
 ```C
-// Untested
-
 void echo_input()
 {
 	while ((char c = getchar_nonblock()))
@@ -212,8 +206,6 @@ void echo_input()
 Verständnisfrage: Wie könnte man mithilfe von `_kbhit()` und `_getch()` die C Standard Library Funktion `getchar()` implementieren?
 
 ```C
-// Untested
-
 char custom_getchar()
 {
 	while (!(_kbhit()))
