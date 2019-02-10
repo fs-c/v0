@@ -5,16 +5,16 @@ const defaults = {
     logLevel: process.env.NODE_ENV === 'production' ? 'warn' : 'trace',
 };
 
-const missing = (name, code = 1) => {
-    log.fatal(`'${name}' env variable is missing`);
-
-    process.exit(code);
-};
-
 /* We should do this before requiring the logger */
 exports.logLevel = process.env.LOG_LEVEL || defaults.logLevel;
 
 const log = require('./logger')('constants');
+
+const missing = (name, code = 1) => {
+    log.fatal(`'${name}' env variable is missing but required`);
+
+    process.exit(code);
+};
 
 exports.steam = {};
 
