@@ -1,7 +1,10 @@
 require('dotenv').config();
 
 const defaults = {
+    /* Tick interval */
     interval: 60 * 1000,
+    /* Fallback country code */
+    country: 'no_country',
     logLevel: process.env.NODE_ENV === 'production' ? 'warn' : 'trace',
 };
 

@@ -1,4 +1,4 @@
-const { interval, fallbackID } = require('./constants');
+const { defaults, interval, fallbackID } = require('./constants');
 
 const log = require('./logger')('index');
 const r = require('rethinkdbdash')({ silent: true });
@@ -23,8 +23,6 @@ const endTick = (msg = `concluding tick ${currentTick.number}`, meta = false) =>
 
     state.message = msg;
 
-    /* Meta information is rarely provided, it'd be annoying to log an empty
-       meta object almost every tick */
     if (meta) {
         state.meta = meta;
     }
@@ -62,8 +60,6 @@ const refillPool = async () => {
 
         return finishTick('inserted new ids', res);        
     } catch (err) {
-        /* This should only fail in very rare cases, it's worth logging the full
-           object here */
         log.trace(err);
 
         /* Set tick to finished even if this failed because the pool will need
@@ -75,7 +71,7 @@ const refillPool = async () => {
 const processID = async (active) => {
     log.debug(active, 'processing id');
 
-    const country = (await getCountry(active.id)) || 'no_country';
+    const country = (await getCountry(active.id)) || defaults.country;
     const entry = await countries.get(country);
 
     const result = entry !== null ? (
