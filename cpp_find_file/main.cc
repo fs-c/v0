@@ -8,12 +8,16 @@ using string_size = std::string::size_type;
 string_size compare_strings(const std::string &source,
 	const std::string &target);
 
-int main()
+int main(int argc, char *argv[])
 {
-	size_t diff = compare_strings("bla [easy] blu", "bla bli");
+	if (argc < 3) {
+		std::cerr << "usage: " << argv[0] << " "
+			<< "<target string> <source string>\n";
+		
+		return 1;
+	}
 
-	std::cout << diff;
-	std::cout << "\n";
+	std::cout << compare_strings(argv[1], argv[2]) << '\n';
 }
 
 string_size compare_strings(const std::string &source,
