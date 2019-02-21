@@ -1,1 +1,0 @@
-gcc -Wall -Wextra -std="c99" -Wno-format *.c -leasylzma_s -o mimic.o

@@ -1,9 +1,0 @@
-{
-	"name": "d_template",
-	"authors": [
-		"lw"
-	],
-	"description": "A minimal D application.",
-	"copyright": "Copyright © 2018, lw",
-	"license": "MIT"
-}
