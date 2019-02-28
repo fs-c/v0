@@ -152,7 +152,7 @@ const connectHeaders = {
 
         'grauth': process.env.COOKIE_GRAUTH,
         'csrf-token': process.env.COOKIE_CSRF,
-        'gnar_containerId': process.env.COOKIE_GNAR_ID, // From where?
+        'gnar_containerId': process.env.COOKIE_GNAR_ID,
     }),
 };
 
