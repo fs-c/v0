@@ -14,7 +14,9 @@ const serializeCookies = (obj) => {
 };
 
 class Grammarly extends EventEmitter {
-    constructor(options) {
+    constructor(options = {}) {
+        super();
+
         this.temp  = [];
 
         this.connection = {};
@@ -36,21 +38,10 @@ class Grammarly extends EventEmitter {
 
             this.connection = connection;
 
+            this.setupConnectionHandlers();
+            this.handleInitial();
+
             this.emit('connected');
-        });
-
-        this.connection.on('error', (err) => {
-            this.log.error(err, 'connection error');
-        });
-
-        this.connection.on('close', () => {
-            this.log.info('connection closed');
-        });
-
-        this.connection.on('message', (msg) => {
-            this.log.trace('received message');
-
-            this.handleMessage(msg);
         });
     }
 
@@ -93,7 +84,7 @@ class Grammarly extends EventEmitter {
         this.client.connect('wss://capi.grammarly.com/freews', null,
             'https://app.grammarly.com', this.connectHeaders);
     })().catch((err) => {
-        this.emit('error', err);
+        this.emit('connectError', err);
     }) }
 
     handleMessage(msg) {
@@ -135,6 +126,7 @@ class Grammarly extends EventEmitter {
             action: "start",
             client: "denali_editor",
             clientSubtype: "general",
+            // TODO: Could this be altered to include more features?
             clientSupports: [
                 "text_info", "free_inline_advanced_alerts", "readability_check", 
                 "sentence_variety_check", "filler_words_check", "alerts_update", 
@@ -144,6 +136,42 @@ class Grammarly extends EventEmitter {
             dialect: "british",
             // Missing docid and documentContext
         }));
+
+        this.log.trace('sent initial message');
+    }
+
+    submitText(text) {
+        this.connection.sendUTF(JSON.stringify({
+            id: 1,
+            rev: 0, // What's this?
+            doc_len: 0, // Seems to always be zero; obsolete?
+            deltas: [
+                { ops: [ { insert: text, }, ], },
+            ],
+            action: 'submit_ot',
+        }));
+
+        log.debug('sent text delta');
+    }
+
+    setupConnectionHandlers() {
+        this.connection.on('error', (err) => {
+            this.log.error(err, 'connection error');
+
+            this.emit('connectionError', err);
+        });
+
+        this.connection.on('close', () => {
+            this.log.info('connection closed');
+
+            this.emit('disconnected');
+        });
+
+        this.connection.on('message', (msg) => {
+            this.log.trace('received message');
+
+            this.handleMessage(msg);
+        });
     }
 }
 
