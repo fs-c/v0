@@ -1,5 +1,4 @@
-require('dotenv').config();
-
+const axios = require('axios');
 const client = new (require('websocket').client)();
 
 const log = require('pino')({
@@ -7,6 +6,39 @@ const log = require('pino')({
     name: 'grmly',
     level: 'trace',
 });
+
+(async () => {
+
+// Doesn't handle edge cases so use with caution
+const serializeCookies = (obj) => {
+    let string = '';
+
+    for (const name in obj) {
+        string += `${name}=${JSON.stringify(obj[name])}; `;
+    }
+
+    return string;
+};
+
+try {
+    const { headers } = await axios.get('https://grammarly.com');
+
+    const cookies = (headers['set-cookie'] || [])
+        .map((ckie) => ckie.split(';')[0])
+        .reduce((acc, cur, i) => {
+            const splt = cur.split('=');
+            acc[splt[0]] = splt[1];
+            return acc;
+        }, {});
+
+    process.env.COOKIE_GRAUTH = cookies['grauth'];
+    process.env.COOKIE_CSRF = cookies['csrf-token'];
+    process.env.COOKIE_GNAR_ID = cookies['gnar_containerId'];
+} catch (err) {
+    log.error(err, 'failed request, aborting');
+
+    process.exit(1);
+}
 
 client.on('connectFailed', (err) => {
     log.error(err, `connect error`);
@@ -105,23 +137,12 @@ client.on('connect', (conn) => {
     sendInitial(conn);
 });
 
-// Doesn't handle edge cases so use with caution
-const serializeCookies = (obj) => {
-    let string = '';
-
-    for (const name in obj) {
-        string += `${name}=${JSON.stringify(obj[name])}; `;
-    }
-
-    return string;
-};
-
 const connectHeaders = {
     'Host': 'capi.grammarly.com',
     'Origin': 'https://app.grammarly.com', // Obsolete?
 
     'Sec-WebSocket-Version': '13',
-    'Sec-WebSocket-Key': 'ryNHZcluMWgWAi/ItNENiA==', // From where?
+    // Sec-WebSocket-Key is missing
 
     'Cookie': serializeCookies({
         'isGrammarlyUser': true,
@@ -137,3 +158,5 @@ const connectHeaders = {
 
 client.connect('wss://capi.grammarly.com/freews', null,
     'https://app.grammarly.com', connectHeaders, null);
+
+})();
