@@ -1,4 +1,5 @@
 const pino = require('pino');
+const axios = require('axios');
 const WebSocket = require('websocket');
 const EventEmitter = require('events');
 
@@ -23,11 +24,11 @@ class Grammarly extends EventEmitter {
         this.cookies = options.cookies || {};
         this.client = options.client || new (WebSocket.client)();
 
-        this.log = options.logging ? pino({
+        this.log = pino({
             base: null,
             name: 'grammarly',
-            loglevel: options.logging,
-        }) : () => {};
+            level: options.logging || 'warn',
+        });
 
         this.client.on('connectFailed', (err) => {
             this.log.error(err, `connect error`);
@@ -84,6 +85,8 @@ class Grammarly extends EventEmitter {
         this.client.connect('wss://capi.grammarly.com/freews', null,
             'https://app.grammarly.com', this.connectHeaders);
     })().catch((err) => {
+        this.log.trace('connect error', err);
+
         this.emit('connectError', err);
     }) }
 
@@ -97,9 +100,11 @@ class Grammarly extends EventEmitter {
         try {
             const data = JSON.parse(msg.utf8Data);
 
+            this.log.trace({ action: data.action }, 'received message');
+
             this.handleData(data);
         } catch (err) {
-            this.log.debug(err, 'parsing error');
+            this.log.debug(err, 'got invalid message, aborting');
 
             return;
         }
@@ -151,7 +156,18 @@ class Grammarly extends EventEmitter {
             action: 'submit_ot',
         }));
 
-        log.debug('sent text delta');
+        this.log.trace('sent text delta');
+
+        this.connection.sendUTF(JSON.stringify({
+            id: 3,
+            action: 'option',
+            name: 'gnar_containerId',
+            value: this.cookies.gnarID,
+        }));
+
+        this.log.trace('sent container id');
+
+        this.log.debug('finished text submission');
     }
 
     setupConnectionHandlers() {
@@ -168,8 +184,6 @@ class Grammarly extends EventEmitter {
         });
 
         this.connection.on('message', (msg) => {
-            this.log.trace('received message');
-
             this.handleMessage(msg);
         });
     }
