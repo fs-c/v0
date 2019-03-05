@@ -32,6 +32,8 @@ class Grammarly extends EventEmitter {
 
         this.client.on('connectFailed', (err) => {
             this.log.error(err, `connect error`);
+
+            this.emit('connectError', err);
         });
 
         this.client.on('connect', (connection) => {
@@ -68,6 +70,7 @@ class Grammarly extends EventEmitter {
     connect() { (async () => {
         const { headers } = await axios.get('https://grammarly.com');
 
+        // TODO: Just look at it
         const cookies = (headers['set-cookie'] || [])
             .map((ckie) => ckie.split(';')[0])
             .reduce((acc, cur, i) => {
@@ -89,6 +92,45 @@ class Grammarly extends EventEmitter {
 
         this.emit('connectError', err);
     }) }
+
+    handleInitial() {
+        this.sendJSON({
+            id: 1,
+            token: "", // This is empty in the original hello as well
+            action: "start",
+            client: "denali_editor",
+            clientSubtype: "general",
+            // TODO: Could this be altered to include more features?
+            clientSupports: [
+                "text_info", "free_inline_advanced_alerts", "readability_check", 
+                "sentence_variety_check", "filler_words_check", "alerts_update", 
+                "alerts_changes", "free_clarity_alerts",
+            ],
+            clientVersion: "1.5.43-1577+master",
+            dialect: "british",
+            // Missing docid and documentContext
+        });
+
+        this.log.debug('sent initial message');
+    }
+
+    setupConnectionHandlers() {
+        this.connection.on('error', (err) => {
+            this.log.error(err, 'connection error');
+
+            this.emit('connectionError', err);
+        });
+
+        this.connection.on('close', () => {
+            this.log.info('connection closed');
+
+            this.emit('disconnected');
+        });
+
+        this.connection.on('message', (msg) => {
+            this.handleMessage(msg);
+        });
+    }
 
     handleMessage(msg) {
         if (msg.type !== 'utf8' || !msg.utf8Data) {
@@ -124,29 +166,8 @@ class Grammarly extends EventEmitter {
         }
     }
 
-    handleInitial() {
-        this.connection.sendUTF(JSON.stringify({
-            id: 1,
-            token: "", // This is empty in the original hello as well
-            action: "start",
-            client: "denali_editor",
-            clientSubtype: "general",
-            // TODO: Could this be altered to include more features?
-            clientSupports: [
-                "text_info", "free_inline_advanced_alerts", "readability_check", 
-                "sentence_variety_check", "filler_words_check", "alerts_update", 
-                "alerts_changes", "free_clarity_alerts",
-            ],
-            clientVersion: "1.5.43-1577+master",
-            dialect: "british",
-            // Missing docid and documentContext
-        }));
-
-        this.log.trace('sent initial message');
-    }
-
     submitText(text) {
-        this.connection.sendUTF(JSON.stringify({
+        this.sendJSON({
             id: 1,
             rev: 0, // What's this?
             doc_len: 0, // Seems to always be zero; obsolete?
@@ -154,38 +175,34 @@ class Grammarly extends EventEmitter {
                 { ops: [ { insert: text, }, ], },
             ],
             action: 'submit_ot',
-        }));
+        });
 
         this.log.trace('sent text delta');
 
-        this.connection.sendUTF(JSON.stringify({
+        this.sendJSON({
             id: 3,
             action: 'option',
             name: 'gnar_containerId',
             value: this.cookies.gnarID,
-        }));
+        });
 
         this.log.trace('sent container id');
 
         this.log.debug('finished text submission');
     }
 
-    setupConnectionHandlers() {
-        this.connection.on('error', (err) => {
-            this.log.error(err, 'connection error');
+    sendJSON(data) {
+        if (!this.connection.connected) {
+            this.log.trace(`tried sending data through disconnected socket`);
 
-            this.emit('connectionError', err);
-        });
+            return;
+        }
 
-        this.connection.on('close', () => {
-            this.log.info('connection closed');
+        const string = JSON.stringify(data);
 
-            this.emit('disconnected');
-        });
+        this.log.trace(string, `sending to ${this.connection.remoteAddress}`);
 
-        this.connection.on('message', (msg) => {
-            this.handleMessage(msg);
-        });
+        this.connection.sendUTF(string);
     }
 }
 
