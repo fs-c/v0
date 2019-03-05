@@ -5,6 +5,8 @@
 namespace fs = std::filesystem;
 using string_size = std::string::size_type;
 
+std::string find_file(const std::string &target, const std::string &path);
+
 string_size compare_strings(const std::string &source,
 			    const std::string &target);
 
@@ -28,8 +30,13 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	std::string target {argv[2]};
+	std::string best_match = find_file(argv[2], path);
 
+	std::cout << "best match: '" << best_match << "'" << std::endl;
+}
+
+std::string find_file(const std::string &target, const std::string &path)
+{
 	struct best_match {
 		std::string name;
 		string_size score;
@@ -51,7 +58,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	std::cout << "best match: '" << best_match.name << "'" << std::endl;
+	return best_match.name;
 }
 
 string_size compare_strings(const std::string &source,
