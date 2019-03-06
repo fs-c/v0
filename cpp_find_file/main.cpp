@@ -4,8 +4,7 @@
 
 std::string find_file(const std::string &target, const std::string &path);
 
-size_t compare_strings(const std::string &source,
-			    const std::string &target);
+size_t compare_strings(const std::string &source, const std::string &target);
 
 int main(int argc, char *argv[])
 {
@@ -18,7 +17,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	std::string path {argv[1]};
+	std::string path{argv[1]};
 
 	if (!std::filesystem::exists(path)) {
 		std::cerr << "the given directory (" << path
@@ -43,11 +42,11 @@ std::string find_file(const std::string &target, const std::string &path)
 	best_match.score = static_cast<size_t>(-1);
 
 	for (const auto &entry : std::filesystem::directory_iterator(path)) {
-		const auto name {entry.path().string()};
-		const auto score {compare_strings(name, target)};
+		const auto name{entry.path().string()};
+		const auto score{compare_strings(name, target)};
 
 		std::cout << "name: '" << name << "', target: '" << target
-			<< "' = " << score << std::endl;
+			  << "' = " << score << std::endl;
 
 		if (best_match.score == -1 || score < best_match.score) {
 			best_match.name = name;
@@ -58,15 +57,14 @@ std::string find_file(const std::string &target, const std::string &path)
 	return best_match.name;
 }
 
-size_t compare_strings(const std::string &base,
-			    const std::string &target)
+size_t compare_strings(const std::string &base, const std::string &target)
 {
 	if (base.size() > target.size()) {
 		return compare_strings(target, base);
 	}
 
 	const auto min_size = base.size(), max_size = target.size();
-	std::vector<size_t> lev_dist(min_size + 1);		
+	std::vector<size_t> lev_dist(min_size + 1);
 
 	for (size_t i = 0; i <= min_size; i++) {
 		lev_dist[i] = i;
@@ -81,8 +79,8 @@ size_t compare_strings(const std::string &base,
 			if (base[j - 1] == target[i - 1]) {
 				lev_dist[j] = prev;
 			} else {
-				const auto smaller = std::min(lev_dist[j - 1],
-					lev_dist[j]);
+				const auto smaller =
+					std::min(lev_dist[j - 1], lev_dist[j]);
 
 				lev_dist[j] = std::min(smaller, prev) + 1;
 			}
