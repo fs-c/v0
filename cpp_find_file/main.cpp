@@ -39,15 +39,15 @@ std::string find_file(const std::string &target, const std::string &path)
 		std::string name;
 	} best_match;
 
-	// Let it overflow on purpose, assumes that string size is always unsigned
+	// Let it overflow on purpose, assumes that size is always unsigned
 	best_match.score = static_cast<size_t>(-1);
 
 	for (const auto &entry : std::filesystem::directory_iterator(path)) {
 		const auto name {entry.path().string()};
 		const auto score {compare_strings(name, target)};
 
-		std::cout << "name: '" << name << "', target: '" << target << "' = "
-			<< score << std::endl;
+		std::cout << "name: '" << name << "', target: '" << target
+			<< "' = " << score << std::endl;
 
 		if (best_match.score == -1 || score < best_match.score) {
 			best_match.name = name;
@@ -73,15 +73,16 @@ size_t compare_strings(const std::string &base,
 	}
 
 	for (size_t i = 1; i <= max_size; i++) {
-		size_t prev = lev_dist[0]++;
+		auto prev = lev_dist[0]++;
 
 		for (size_t j = 1; j <= min_size; j++) {
-			size_t prev_save = lev_dist[j];
+			const auto prev_save = lev_dist[j];
 
 			if (base[j - 1] == target[i - 1]) {
 				lev_dist[j] = prev;
 			} else {
-				const auto smaller = std::min(lev_dist[j - 1], lev_dist[j]);
+				const auto smaller = std::min(lev_dist[j - 1],
+					lev_dist[j]);
 
 				lev_dist[j] = std::min(smaller, prev) + 1;
 			}
