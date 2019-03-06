@@ -2,7 +2,7 @@
 #include <iostream>
 #include <filesystem>
 
-std::string find_file(const std::string &target, const std::string &path);
+std::string find_file(const std::string &path, const std::string &target);
 
 size_t compare_strings(const std::string &source, const std::string &target);
 
@@ -26,12 +26,12 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	std::string best_match = find_file(argv[2], path);
+	std::string best_match = find_file(path, argv[2]);
 
 	std::cout << "best match: '" << best_match << "'" << std::endl;
 }
 
-std::string find_file(const std::string &target, const std::string &path)
+std::string find_file(const std::string &path, const std::string &target)
 {
 	struct best_match {
 		size_t score;
