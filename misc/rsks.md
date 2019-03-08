@@ -6,8 +6,8 @@ _Many who took great risks, be it to their social or financial status, or their 
 
 _Reasons for taking risks are as manifold as they are irrelevant._ Once the deed is done, the road leading up to it becomes largely inconsequential -- whether the decision to sprint into a burning apartment complex in an attempt to rescue a child was made with extensive prior consideration or in the spur of the moment will matter little when the smoke begins filling one's lungs. Whether Steve Jobs dropped out of college in order to bring his master plan to completion or because he was uninterested in his classes has no real importance, in the end.
 
-_Going by the earlier definition, all risks bring with them probable or potential damage._ In essence, taking a risk opens up the possibility of incurring any kind of negative occurrence. Further the definition states that "[risks] may be avoided through preemptive action". But "[the] only strategy that is guaranteed to fail is not taking risks"^[2]^, and all potential consequences pale in comparison to those which are then inevitable.
+_Going by the earlier definition, all risks bring with them probable or potential damage._ In essence, taking a risk opens up the possibility of incurring any kind of negative occurrence. Further, the definition states that "[risks] may be avoided through preemptive action". But "[the] only strategy that is guaranteed to fail is not taking risks"^[2]^, and all potential consequences pale in comparison to those which are then inevitable.
 
-Risks are necessary and important not only for furthering ones own agenda, but also for allowing society and technology as a whole to progress. Why we take risks is a question that, in the context of the risk itself, becomes meaningless.
+Risks are necessary and important not only for furthering one's own agenda but also for allowing society and technology as a whole to progress. Why we take risks is a question that, in the context of the risk itself, becomes meaningless.
 
 [1] https://www.businessdictionary.com/definition/risk.html, [2] https://www.cbsnews.com/news/facebooks-mark-zuckerberg-insights-for-entrepreneurs/
