@@ -49,15 +49,15 @@ class Grammarly extends EventEmitter {
     }
 
     get connectHeaders() { return {
-        'Host': 'capi.grammarly.com',
-        'Origin': 'https://app.grammarly.com', // Obsolete?
+        // Host and Origin are missing
 
         'Sec-WebSocket-Version': '13',
         // Sec-WebSocket-Key is missing
 
         'Cookie': serializeCookies({
             'isGrammarlyUser': true,
-            'browser_info': 'CHROME:67:COMPUTER:SUPPORTED:FREEMIUM:WINDOWS_10:WINDOWS',
+            // Changed FREEMIUM to PREMIUM, apparently they don't check this
+            'browser_info': 'CHROME:67:COMPUTER:SUPPORTED:PREMIUM:WINDOWS_10:WINDOWS',
             'experiment_groups': 'gdpr_signup_enabled|gb_in_editor_free_Test1|'
                 + 'google_docs_free_release_enabled',
 
