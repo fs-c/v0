@@ -38,7 +38,6 @@ std::string find_file(const std::string &path, const std::string &target)
 		std::string name;
 	} best_match;
 
-	// Let it overflow on purpose, assumes that size is always unsigned
 	best_match.score = static_cast<size_t>(-1);
 
 	for (const auto &entry : std::filesystem::directory_iterator(path)) {
