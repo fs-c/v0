@@ -159,3 +159,6 @@ miniac
 mimic.o
 
 .vs
+
+# Java binaries
+*.class
