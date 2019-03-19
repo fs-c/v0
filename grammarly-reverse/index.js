@@ -5,7 +5,9 @@ const grammarly = new Grammarly({ logging: 'trace' });
 grammarly.connect();
 
 grammarly.on('ready', () => {
-    grammarly.submitText('henlo my englisch is not god');
+    const content = require('fs').readFileSync(process.argv[2], 'utf8');
+
+    grammarly.submitText(content);
 });
 
 grammarly.on('alerts', (alerts) => {

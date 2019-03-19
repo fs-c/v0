@@ -2,13 +2,9 @@
 #include <iostream>
 #include <filesystem>
 
-namespace fs = std::filesystem;
-using string_size = std::string::size_type;
+std::string find_file(const std::string &path, const std::string &target);
 
-std::string find_file(const std::string &target, const std::string &path);
-
-string_size compare_strings(const std::string &source,
-			    const std::string &target);
+size_t compare_strings(const std::string &source, const std::string &target);
 
 int main(int argc, char *argv[])
 {
@@ -21,36 +17,35 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	std::string path {argv[1]};
+	std::string path{argv[1]};
 
-	if (!fs::exists(path)) {
+	if (!std::filesystem::exists(path)) {
 		std::cerr << "the given directory (" << path
 			  << ") does not exist" << std::endl;
 
 		return 1;
 	}
 
-	std::string best_match = find_file(argv[2], path);
+	std::string best_match = find_file(path, argv[2]);
 
 	std::cout << "best match: '" << best_match << "'" << std::endl;
 }
 
-std::string find_file(const std::string &target, const std::string &path)
+std::string find_file(const std::string &path, const std::string &target)
 {
 	struct best_match {
+		size_t score;
 		std::string name;
-		string_size score;
 	} best_match;
 
-	// Let it overflow on purpose, assumes that string_size is always unsigned
-	best_match.score = static_cast<string_size>(-1);
+	best_match.score = static_cast<size_t>(-1);
 
-	for (const auto &entry : fs::directory_iterator(path)) {
-		const auto name {entry.path().string()};
-		const auto score {compare_strings(name, target)};
+	for (const auto &entry : std::filesystem::directory_iterator(path)) {
+		const auto name{entry.path().string()};
+		const auto score{compare_strings(name, target)};
 
-		std::cout << "name: '" << name << "', target: '" << target << "' = "
-			<< score << std::endl;
+		std::cout << "name: '" << name << "', target: '" << target
+			  << "' = " << score << std::endl;
 
 		if (best_match.score == -1 || score < best_match.score) {
 			best_match.name = name;
@@ -61,33 +56,32 @@ std::string find_file(const std::string &target, const std::string &path)
 	return best_match.name;
 }
 
-string_size compare_strings(const std::string &source,
-			    const std::string &target)
+size_t compare_strings(const std::string &base, const std::string &target)
 {
-	if (source.size() > target.size()) {
-		return compare_strings(target, source);
+	if (base.size() > target.size()) {
+		return compare_strings(target, base);
 	}
 
-	const string_size min_size = source.size(), max_size = target.size();
-	std::vector<string_size> lev_dist(min_size + 1);
+	const auto min_size = base.size(), max_size = target.size();
+	std::vector<size_t> lev_dist(min_size + 1);
 
-	for (string_size i = 0; i <= min_size; i++) {
+	for (size_t i = 0; i <= min_size; i++) {
 		lev_dist[i] = i;
 	}
 
-	for (string_size i = 1; i <= max_size; i++) {
-		string_size prev = lev_dist[0]++;
+	for (size_t i = 1; i <= max_size; i++) {
+		auto prev = lev_dist[0]++;
 
-		for (string_size j = 1; j <= min_size; j++) {
-			string_size prev_save = lev_dist[j];
+		for (size_t j = 1; j <= min_size; j++) {
+			const auto prev_save = lev_dist[j];
 
-			if (source[j - 1] == target[i - 1]) {
+			if (base[j - 1] == target[i - 1]) {
 				lev_dist[j] = prev;
 			} else {
-				lev_dist[j] = std::min(std::min(lev_dist[j - 1],
-								lev_dist[j]),
-						       prev)
-					      + 1;
+				const auto smaller =
+					std::min(lev_dist[j - 1], lev_dist[j]);
+
+				lev_dist[j] = std::min(smaller, prev) + 1;
 			}
 
 			prev = prev_save;
