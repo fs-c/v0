@@ -16,6 +16,5 @@ fi
 
 # This is an ugly solution
 cd $DIR
-touch -t 000101010000 *
 zip -r -t 2015-01-01  "../k11804751_Übung$DIR.zip" .
 cd ..

@@ -34,6 +34,10 @@ div.small-box {
     width: 90%;
 }
 
+ul {
+	
+}
+
 @media (min-width: 400px) {
     div.box {
         width: 80%;
