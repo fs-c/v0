@@ -38,10 +38,27 @@ ul.unstyled {
     list-style-type: none;
 }
 
+span.date {
+    color: #6a737d;
+    font-size: 14px;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+div.light-seperator {
+    margin-bottom: 0.6em;
+    padding-bottom: 0.6em;
+    font-size: 1.5em;
+    border-bottom: 1px solid #eaecef;
+}
+
 div.box {
     width: 90%;
 }
 div.small-box {
+    width: 90%;
+}
+div.medium-box {
     width: 90%;
 }
 
@@ -50,6 +67,9 @@ div.small-box {
         width: 80%;
     }
     div.small-box {
+        width: 80%;
+    }
+    div.medium-box {
         width: 80%;
     }
 }
@@ -61,6 +81,9 @@ div.small-box {
     div.small-box {
         width: 60%;
     }
+    div.medium-box {
+        width: 65%;
+    }
 }
 
 @media (min-width: 750px) {
@@ -70,6 +93,9 @@ div.small-box {
     div.small-box {
         width: 50%;
     }
+    div.medium-box {
+        width: 55%;
+    }
 }
 
 @media (min-width: 950px) {
@@ -78,5 +104,8 @@ div.small-box {
     }
     div.small-box {
         width: 25%;
+    }
+    div.medium-box {
+        width: 40%
     }
 }
