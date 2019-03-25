@@ -15,6 +15,13 @@ p.center {
     text-align: center;
 }
 
+.heavy {
+    margin-bottom: 0px;
+}
+.light {
+    margin-top: 0px;
+}
+
 small.weightless {
     font-weight: normal;
 }
@@ -27,15 +34,15 @@ div.center {
     transform: translate(-50%, -50%);
 }
 
+ul.unstyled {
+    list-style-type: none;
+}
+
 div.box {
     width: 90%;
 }
 div.small-box {
     width: 90%;
-}
-
-ul {
-	
 }
 
 @media (min-width: 400px) {
