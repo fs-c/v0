@@ -1,4 +1,3 @@
-
 import java.io.*;
 
 /**
@@ -199,27 +198,11 @@ public class Out {
      *         string.  
      *         
      * @see java.io.PrintStream#format(String, Object...)
-	 */	 
+	 */
+	 
 	public static void format(String format, Object... args) {
 		out.format(format, args);
-	}
-
-	/**
-	 * Writes a formatted string to this output stream using the specified
-     * format string and arguments and starts a new line. 
-     * Uses {@link java.io.PrintStream#format(String, Object...)}
-	 * 
-	 * @param format 
-     *         A format string as described in {@link java.util.Formatter}
-     *
-     * @param  args
-     *         Arguments referenced by the format specifiers in the format
-     *         string.  
-     *         
-     * @see java.io.PrintStream#format(String, Object...)
-	 */	 
-	public static void formatln(String format, Object... args) {
-		format(format + "%n", args);
+		
 	}
 
 	/**
