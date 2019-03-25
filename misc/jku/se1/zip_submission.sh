@@ -16,5 +16,5 @@ fi
 
 # This is an ugly solution
 cd $DIR
-zip -r -t 2015-01-01  "../k11804751_Übung$DIR.zip" .
+zip -r "../k11804751_Übung$DIR.zip" .
 cd ..
