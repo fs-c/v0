@@ -14,7 +14,7 @@ class PositionTracker {
 
 				int deltaX = (curX - prevX) * 100,
 					deltaY = (curY - prevY) * 100;
-				
+
 				dist += (int)Math.sqrt(
 					Math.pow(deltaX, 2) + Math.pow(deltaY, 2)
 				);
@@ -22,7 +22,7 @@ class PositionTracker {
 
 			Out.format("Track %d: %8d m %8d sec %8d cm/sec%n", trackIndex + 1,
 				dist / 100, time, dist / time);
-			
+
 			trackIndex++;
 		}
 
