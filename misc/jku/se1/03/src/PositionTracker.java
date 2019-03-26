@@ -7,8 +7,6 @@ class PositionTracker {
 		while (!In.isEof()) {
 			int length = In.readInt(), time = (length - 1) * 5, dist = 0;
 
-			Out.format("l: %d, t: %d%n", length, time);
-
 			int prevX = In.readInt(), prevY = In.readInt();
 
 			for (int i = 0; i < length - 1; i++) {
@@ -22,9 +20,9 @@ class PositionTracker {
 				);
 			}
 
-			Out.format("Track %d: %8d m %8d sec %8d cm/sec%n", trackIndex,
+			Out.format("Track %d: %8d m %8d sec %8d cm/sec%n", trackIndex + 1,
 				dist / 100, time, dist / time);
-
+			
 			trackIndex++;
 		}
 
