@@ -9,6 +9,9 @@ class TimeFormatter {
 		}
 
 		char ch = In.readChar();
+		if (!In.done() || ch != ':') {
+			Out.println("error: missing colon");
+		}
 
 		int minute = In.readInt();
 
