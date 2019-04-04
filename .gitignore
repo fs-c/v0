@@ -165,3 +165,5 @@ mimic.o
 
 # Compressed files
 *.zip
+
+out.txt
