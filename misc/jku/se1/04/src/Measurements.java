@@ -24,16 +24,10 @@ class Measurements {
 				hist[2]++;
 			} else hist[3]++;
 
-			if (index < values.length) {
-				values[index++] = cur;
+			for (int i = 0; i < values.length - 1; i++)
+				values[i] = values[i + 1];
 
-				continue;
-			} else {
-				for (int i = 0; i < values.length - 1; i++)
-					values[i] = values[i + 1];
-
-				values[values.length - 1] = cur;
-			}
+			values[values.length - 1] = cur;
 
 			double mean = 0;
 			for (double val : values)
