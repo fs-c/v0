@@ -3,12 +3,6 @@ class CaesarCipher {
     public static final int LOCASE_BEGIN = 97;
 
     public static void main(String[] args) {
-        // while (true) {
-        //     int c = (int)In.read();
-
-        //     Out.format("%d%n", c);
-        // }
-
         while (true) {
             Out.print("'e' for encrypt, 'd' for decrypt, 'q' to quit: ");
             char mode = In.read();
@@ -20,7 +14,7 @@ class CaesarCipher {
             String output = In.readWord();
 
             Out.print("Key: ");
-            int shift = (In.readInt() * (mode == 'd' ? -1 : 1)) % 26;
+            int shift = (In.readInt() % 26) * (mode == 'd' ? -1 : 1);
 
             Out.print("Text: ");
             String text = "";
@@ -44,7 +38,7 @@ class CaesarCipher {
                     LOCASE_BEGIN;
 
                 cipher.setCharAt(i, (char)(
-                    ((int)old - offset + shift) % 26 + offset
+                    (((int)old - offset + shift) % 26) + offset
                 ));
             }
 
