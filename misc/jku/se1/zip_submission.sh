@@ -14,7 +14,9 @@ if [ ! -d "$DIR" ]; then
 	exit 1;
 fi
 
+NAME="k11804751_Übung$DIR.zip"
+
 # This is an ugly solution
 cd $DIR
-zip -r "../k11804751_Übung$DIR.zip" .
+zip -x "*.pdf" -r "../$NAME" .
 cd ..
