@@ -29,6 +29,9 @@ class Measurements {
 
 			values[values.length - 1] = cur;
 
+			if (index++ < 10)
+				continue;
+
 			double mean = 0;
 			for (double val : values)
 				mean += val;
