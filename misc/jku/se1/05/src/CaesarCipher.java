@@ -1,5 +1,4 @@
 public class CaesarCipher {
-
 	static final int ALPHABET_SIZE = 26;
 
 	public static void main(String[] args) {
@@ -30,27 +29,8 @@ public class CaesarCipher {
 					Out.print("Text: ");
 				}
 
-				StringBuilder cipher = new StringBuilder(text);
-				for (int i = 0; i < cipher.length(); i++) {
-					int lbound, ubound;
-					char oldChar = cipher.charAt(i);
+				String cipher = transformText(text, key);
 
-					if (Character.isLetter(oldChar)) {
-						if (Character.isLowerCase(oldChar)) {
-							lbound = 'a';
-							ubound = 'z';
-						} else {
-							lbound = 'A';
-							ubound = 'Z';
-						}
-						char newChar = (char) (oldChar + key);
-						if (newChar > ubound)
-							newChar -= ALPHABET_SIZE;
-						if (newChar < lbound)
-							newChar += ALPHABET_SIZE;
-						cipher.setCharAt(i, newChar);
-					}
-				}
 				Out.print(cipher);
 
 				if (ch == 'e') {
@@ -60,5 +40,39 @@ public class CaesarCipher {
 				}
 			}
 		} while (In.done() && ch != 'q');
+	}
+
+	public static String transformText(String text, int key) {
+		StringBuilder cipher = new StringBuilder(text);
+
+		for (int i = 0; i < cipher.length(); i++) {
+			char curChar = cipher.charAt(i);
+
+			if (Character.isLetter(curChar)) {
+				cipher.setCharAt(i, transformChar(curChar, key));
+			}
+		}
+
+		return cipher.toString();
+	}
+
+	public static char transformChar(char ch, int key) {
+		int lbound, ubound;
+
+		if (Character.isLowerCase(ch)) {
+			lbound = 'a';
+			ubound = 'z';
+		} else {
+			lbound = 'A';
+			ubound = 'Z';
+		}
+
+		char newChar = (char) (ch + key);
+		if (newChar > ubound)
+			newChar -= ALPHABET_SIZE;
+		if (newChar < lbound)
+			newChar += ALPHABET_SIZE;
+
+		return newChar;
 	}
 }
