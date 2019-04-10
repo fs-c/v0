@@ -5,7 +5,7 @@ const totp = require('steam-totp');
 const home = require('os').homedir();
 
 const dataPath = ([
-    path.join(home, '.steam.json'),
+    path.join(home, process.env.STEAM_DATA || '.steam.json'),
     /* Optional other paths here */
 ].filter((p) => fs.existsSync(p)))[0];
 
