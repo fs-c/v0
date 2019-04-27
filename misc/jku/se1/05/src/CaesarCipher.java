@@ -16,20 +16,14 @@ public class CaesarCipher {
 				int key = In.readInt() % ALPHABET_SIZE;
 				In.readLine();
 
-				String text = null;
+				Out.print("Text: ");
+				String text = getText(ch == 'd' ? filename : null);
+
 				if (ch == 'e') {
-					Out.print("Text: ");
-					text = In.readLine();
 					Out.open(filename);
-				} else {
-					In.open(filename);
-					text = In.readFile();
-					In.close();
-					key = -key;
-					Out.print("Text: ");
 				}
 
-				String cipher = transformText(text, key);
+				String cipher = transformText(text, ch == 'e' ? key : -key);
 
 				Out.print(cipher);
 
@@ -74,5 +68,17 @@ public class CaesarCipher {
 			newChar += ALPHABET_SIZE;
 
 		return newChar;
+	}
+
+	public static String getText(String filename) {
+		String text;
+
+		if (filename != null) {
+			In.open(filename);
+			text = In.readFile();
+			In.close();
+		} else text = In.readLine();
+
+		return text;
 	}
 }
