@@ -1,0 +1,7 @@
+http://sortbenchmark.org/
+
+https://github.com/tarsa/SortingAlgorithmsBenchmark (rel: https://encode.ru/threads/1914-Sorting-Algorithms-Benchmark)
+
+https://rosettacode.org/wiki/Compare_sorting_algorithms%27_performance
+
+http://alejandroerickson.com/j/2016/08/02/benchmarking-int-sorting-algorithms.html
