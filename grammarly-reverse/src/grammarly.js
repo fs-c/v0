@@ -3,7 +3,7 @@ const axios = require('axios');
 const WebSocket = require('websocket');
 const EventEmitter = require('events');
 
-// Doesn't handle edge cases so use with caution
+// TODO: Doesn't handle edge cases
 const serializeCookies = (obj) => {
     let string = '';
 
@@ -18,16 +18,22 @@ class Grammarly extends EventEmitter {
     constructor(options = {}) {
         super();
 
+        this.options = Object.assign({
+            cookies: {},
+            logging: 'silent',
+            client: new (WebSocket.client)(),
+        }, options);
+
         this.temp  = [];
 
         this.connection = {};
-        this.cookies = options.cookies || {};
-        this.client = options.client || new (WebSocket.client)();
+        this.client = this.options.client;
+        this.cookies = this.options.cookies;
 
         this.log = pino({
             base: null,
             name: 'grammarly',
-            level: options.logging || 'warn',
+            level: this.options.logging,
         });
 
         this.client.on('connectFailed', (err) => {
