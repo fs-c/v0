@@ -167,3 +167,5 @@ mimic.o
 *.zip
 
 out.txt
+
+.idea
