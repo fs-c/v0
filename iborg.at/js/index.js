@@ -1,39 +1,39 @@
 const scrollTo = (element) => {
-	const speed = $(element).offset().top / 2;
-	
-	$('html, body').animate({
-		scrollTop: $(element).offset().top
-	}, speed);
+    const speed = $(element).offset().top / 2;
+
+    $('html, body').animate({
+        scrollTop: $(element).offset().top
+    }, speed);
 };
 
 $(document).ready(() => {
-	console.log("rdy");
-	
-	$("#b_info").click(() => {
-		scrollTo('#info');
-	});
+    console.log("rdy");
 
-	$("#b_faq").click(() => {
-		scrollTo('#faq');
-	});
+    $("#info-button").click(() => {
+        scrollTo('#info');
+    });
 
-	$("#b_skills").click(() => {
-		scrollTo('#skills');
-	});
+    $("#faq-button").click(() => {
+        scrollTo('#faq');
+    });
 
-	$("#scroll_home").click(() => {
-		const speed = $(window).scrollTop() / 2;
+    $("#skills-button").click(() => {
+        scrollTo('#skills');
+    });
 
-		$('html, body').animate({
-			scrollTop: '0px'
-		}, speed);
-	});
+    $("#scroll-home").click(() => {
+        const speed = $(window).scrollTop() / 2;
 
-	$(window).scroll(() => {
-		if ($(window).scrollTop() > 0) {
-			$("#scroll_home").fadeIn(300);
-		} else {
-			$("#scroll_home").fadeOut(300);
-		}
-	});
+        $('html, body').animate({
+            scrollTop: '0px'
+        }, speed);
+    });
+
+    $(window).scroll(() => {
+        if ($(window).scrollTop() > 0) {
+            $("#scroll-home").fadeIn(300);
+        } else {
+            $("#scroll-home").fadeOut(300);
+        }
+    });
 });
