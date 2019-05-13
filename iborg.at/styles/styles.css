@@ -23,7 +23,7 @@ header img {
     box-shadow: 0 10px 10px #aaaaaa;
 }
 
-header .motto {
+header .motto-container {
     margin-top: 15px;
     padding: 8px;
 }
@@ -42,7 +42,7 @@ nav {
     right: 30px;
 }
 
-nav ul.text_links {
+nav ul.text-navigation-links {
     text-shadow: 3px 3px 2px #555555;
 }
 
@@ -54,7 +54,7 @@ nav li {
     display: inline-block;
 }
 
-nav ul.text_links li:first-child {
+nav ul.text-navigation-links li:first-child {
     margin-left: 84px;
 }
 
@@ -136,14 +136,14 @@ ul {
     opacity: 0.5;
 }
 
-.quote {
+.quote-content {
     font-size: 29px;
     font-weight: bold;
     color: #9da2a9;
     text-align: center;
 }
 
-.author {
+.quote-author {
     font-style: italic;
     text-align: right;
     width: 100%;
@@ -174,7 +174,7 @@ ul {
     font-size: 16px;
 }
 
-#column-one {
+#side-column {
     width: 500px;
     float: left;
 }
@@ -215,39 +215,39 @@ section:first-child {
     margin-bottom: 15px;
 }
 
-#column-two {
+#main-column {
     margin-left: 515px;
 }
 
-#column-two table {
+#main-column table {
     width: 100%;
     border-collapse: collapse;
 }
 
-#column-two table th {
+#main-column table th {
     vertical-align: bottom;
 }
 
-#column-two table td {
+#main-column table td {
     text-align: center;
     min-width: 30px;
     padding: 4px;
 }
 
-#column-two table td:first-child {
+#main-column table td:first-child {
     text-align: left;
 }
 
-#column-two table tr:nth-child(odd) {
+#main-column table tr:nth-child(odd) {
     background-color: #f2f2f2;
 }
 
-#column-two table tr.sum {
+#main-column table tr.sum {
     background-color: #aab0b6;
     color: #ffffff;
 }
 
-#column-two table tr:nth-child(1) {
+#main-column table tr:nth-child(1) {
     background-color: #ffffff;
 }
 
@@ -256,11 +256,11 @@ section:first-child {
         width: 100%;
     }
 
-    #column-one {
+    #side-column {
         width: 40%;
     }
 
-    #column-two {
+    #main-column {
         margin-left: 41%;
     }
 
@@ -290,19 +290,19 @@ section:first-child {
 
 @media only screen and (max-width: 768px) {
     main {
-        padding: 0px;
+        padding: 0;
     }
 
-    .quote {
+    .quote-content {
         font-size: 22px;
     }
 
-    #column-one {
+    #side-column {
         float: none;
         width: 100%
     }
 
-    #column-two {
+    #main-column {
         width: 100%;
         margin-left: 0;
     }
@@ -319,12 +319,11 @@ section:first-child {
 }
 
 @media only screen and (max-width: 600px) {
-    /*bis inklusive 600px Breite: Smartphones*/
-    .quote {
+    .quote-content {
         font-size: 19px;
     }
 
-    .author {
+    .quote-author {
         padding-right: 20px;
         font-size: 12px;
     }
@@ -343,7 +342,7 @@ section:first-child {
         width: 19%;
     }
 
-    nav ul.text_links li:first-child {
+    nav ul.text-navigation-links li:first-child {
         margin-left: 20%;
     }
 }
