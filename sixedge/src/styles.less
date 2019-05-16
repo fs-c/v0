@@ -1,0 +1,23 @@
+html, body {
+    /* Height and width fallback for older browsers. */
+    height: 100%;
+    width: 100%;
+
+    /* Set height and width to match the viewport */
+    height: 100vh;
+    width: 100vw;
+
+    margin: 0;
+}
+
+.fit-screen {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+
+    position: fixed;
+    object-fit: contain;
+    box-sizing: border-box;
+}
