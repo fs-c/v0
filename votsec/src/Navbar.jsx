@@ -1,6 +1,6 @@
 import { withAuth } from '@okta/okta-react';
 import React, { Component } from 'react';
-import { Container, Icon, Image, Menu } from 'semantic-ui-react';
+import { Container, Menu } from 'semantic-ui-react';
 import { checkAuthentication } from './helpers';
 
 export default withAuth(class Navbar extends Component {
@@ -31,9 +31,9 @@ export default withAuth(class Navbar extends Component {
 
     render() {
         const menuItems = this.state.authenticated === true ? [
-            <Menu.Item id="profile-button" as="a" href="/profile">Profile</Menu.Item>,
-            <Menu.Item id="logout-button" as="a" onClick={this.logout}>Logout</Menu.Item>
-        ] : [ <Menu.Item as="a" onClick={this.login}>Login</Menu.Item> ];
+            <Menu.Item key="profile" id="profile-button" as="a" href="/profile">Profile</Menu.Item>,
+            <Menu.Item key="logout" id="logout-button" as="a" onClick={this.logout}>Logout</Menu.Item>
+        ] : [ <Menu.Item key="login" as="a" onClick={this.login}>Login</Menu.Item> ];
 
         return (
             <div>
