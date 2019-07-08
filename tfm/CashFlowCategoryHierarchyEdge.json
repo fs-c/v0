@@ -1,0 +1,1308 @@
+{
+    "odata.metadata": "https://localhost:44316/odata/$metadata#APP_CashFlowCategoryHierarchyEdge",
+    "value": [
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+                    "APP_Code": "+/-",
+                    "APP_SortOrder": "2"
+                },
+                "APP_CashFlowCategoryUuid": "e4409f8b-56f7-4249-9634-f36fda41c3fe",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Test Karin",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": true,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": true,
+                "APP_SortOrder": null,
+                "APP_CashFlowPrefixUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": null
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+                "APP_CashFlowCategoryGroupName": "Net In/Out",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "1"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "d2087e38-1af6-4d04-a268-180b697c3840",
+            "APP_ChildUuid": "e4409f8b-56f7-4249-9634-f36fda41c3fe",
+            "APP_ParentUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "e4409f8b-56f7-4249-9634-f36fda41c3fe",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_ReconciliationCategory": {
+                    "APP_CashFlowCategoryUuid": "c0b49488-4b8b-48af-a62a-f466dfc4bd8d",
+                    "APP_CashFlowCategoryID": null,
+                    "APP_CashFlowCategoryName": "Test KH Outflows",
+                    "APP_IsHidden": false,
+                    "APP_IsInternal": false,
+                    "APP_IsNeutral": false,
+                    "APP_IsSumCategory": false,
+                    "APP_ShowBelowForecast": false,
+                    "APP_SortOrder": null,
+                    "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                    "APP_ReconciliationCategoryUuid": "6eeaeafc-aaac-4fb8-a5d1-268483746f42",
+                    "APP_SourceSystemUuid": null
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                    "APP_Code": "+",
+                    "APP_SortOrder": "0"
+                },
+                "APP_CashFlowCategoryUuid": "6eeaeafc-aaac-4fb8-a5d1-268483746f42",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Test KH Inflows",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": null,
+                "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_ReconciliationCategoryUuid": "c0b49488-4b8b-48af-a62a-f466dfc4bd8d",
+                "APP_SourceSystemUuid": null
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+                "APP_CashFlowCategoryGroupName": "Inflows",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "4"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "d720bfd6-29dd-448e-a7b3-25063fd21932",
+            "APP_ChildUuid": "6eeaeafc-aaac-4fb8-a5d1-268483746f42",
+            "APP_ParentUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "6eeaeafc-aaac-4fb8-a5d1-268483746f42",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                    "APP_Code": "-",
+                    "APP_SortOrder": "1"
+                },
+                "APP_CashFlowCategoryUuid": "b8de5b63-67d9-436b-983f-a5bafe536fb0",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Investments",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "140",
+                "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+                "APP_CashFlowCategoryGroupName": "Outflows",
+                "APP_ShowAboveChildren": true,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "5"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "7e748b19-47e0-4190-ad4c-291668e4e239",
+            "APP_ChildUuid": "b8de5b63-67d9-436b-983f-a5bafe536fb0",
+            "APP_ParentUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "b8de5b63-67d9-436b-983f-a5bafe536fb0",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                    "APP_Code": "+",
+                    "APP_SortOrder": "0"
+                },
+                "APP_CashFlowCategoryUuid": "58ae7fce-8c7b-4668-88b6-0ce327782bcf",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Other inflows",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "60",
+                "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+                "APP_CashFlowCategoryGroupName": "Inflows",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "4"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "7468deaf-925c-4d35-88c0-2a774a6c7477",
+            "APP_ChildUuid": "58ae7fce-8c7b-4668-88b6-0ce327782bcf",
+            "APP_ParentUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "58ae7fce-8c7b-4668-88b6-0ce327782bcf",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                    "APP_Code": "-",
+                    "APP_SortOrder": "1"
+                },
+                "APP_CashFlowCategoryUuid": "0c09661e-a717-4a67-ad30-60b6fc4cb515",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Dividend paid",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": true,
+                "APP_SortOrder": "110",
+                "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+                "APP_CashFlowCategoryGroupName": "Outflows",
+                "APP_ShowAboveChildren": true,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "5"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "7b1b7193-9255-4eff-a5d5-2c9ef7ad9443",
+            "APP_ChildUuid": "0c09661e-a717-4a67-ad30-60b6fc4cb515",
+            "APP_ParentUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "0c09661e-a717-4a67-ad30-60b6fc4cb515",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                    "APP_Code": "+",
+                    "APP_SortOrder": "0"
+                },
+                "APP_CashFlowCategoryUuid": "0233045c-4af7-48d9-be0f-b859ed795771",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Inflows from maintenance",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "30",
+                "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+                "APP_CashFlowCategoryGroupName": "Inflows",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "4"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "d2142069-8026-4639-a82e-2e551cb676ec",
+            "APP_ChildUuid": "0233045c-4af7-48d9-be0f-b859ed795771",
+            "APP_ParentUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "0233045c-4af7-48d9-be0f-b859ed795771",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                    "APP_Code": "-",
+                    "APP_SortOrder": "1"
+                },
+                "APP_CashFlowCategoryUuid": "66b5303f-5b0c-4a76-9af3-a1632ebf59f7",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Payments to suppliers",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "70",
+                "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+                "APP_CashFlowCategoryGroupName": "Outflows",
+                "APP_ShowAboveChildren": true,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "5"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "112ef8a0-4ed5-4919-b8b3-3d9158358673",
+            "APP_ChildUuid": "66b5303f-5b0c-4a76-9af3-a1632ebf59f7",
+            "APP_ParentUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "66b5303f-5b0c-4a76-9af3-a1632ebf59f7",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+                    "APP_Code": "+/-",
+                    "APP_SortOrder": "2"
+                },
+                "APP_CashFlowCategoryUuid": "5f214fe4-f1e3-46ee-968a-8d1768e09c62",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Changes Internal Deposits / Loans",
+                "APP_IsHidden": false,
+                "APP_IsInternal": true,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": null,
+                "APP_CashFlowPrefixUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "c870cd94-7520-41c5-83bd-ab8a14555eca",
+                "APP_CashFlowCategoryGroupName": "Neutral 1.1",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": null
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "3c64ed2e-ae29-49d0-b0f8-45e7533d3d49",
+            "APP_ChildUuid": "5f214fe4-f1e3-46ee-968a-8d1768e09c62",
+            "APP_ParentUuid": "c870cd94-7520-41c5-83bd-ab8a14555eca",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "5f214fe4-f1e3-46ee-968a-8d1768e09c62",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "c870cd94-7520-41c5-83bd-ab8a14555eca",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                    "APP_Code": "-",
+                    "APP_SortOrder": "1"
+                },
+                "APP_CashFlowCategoryUuid": "ad1134bb-7fb3-4d37-be45-3404b922920d",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Interest paid",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "120",
+                "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+                "APP_CashFlowCategoryGroupName": "Outflows",
+                "APP_ShowAboveChildren": true,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "5"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "1404a5ce-a3d1-44f4-afee-49366ee971cd",
+            "APP_ChildUuid": "ad1134bb-7fb3-4d37-be45-3404b922920d",
+            "APP_ParentUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "ad1134bb-7fb3-4d37-be45-3404b922920d",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                    "APP_Code": "+",
+                    "APP_SortOrder": "0"
+                },
+                "APP_CashFlowCategoryUuid": "0c7713ff-59a2-4797-b1c2-23716140e9b8",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Dividend received",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "50",
+                "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+                "APP_CashFlowCategoryGroupName": "Inflows",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "4"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "cc1c1bf1-55a4-45e0-8d83-51e2c6856768",
+            "APP_ChildUuid": "0c7713ff-59a2-4797-b1c2-23716140e9b8",
+            "APP_ParentUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "0c7713ff-59a2-4797-b1c2-23716140e9b8",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                    "APP_Code": "-",
+                    "APP_SortOrder": "1"
+                },
+                "APP_CashFlowCategoryUuid": "4ecace04-e6b5-4ccb-a55a-48a0bf37f5a9",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Other outflows",
+                "APP_IsHidden": true,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "130",
+                "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+                "APP_CashFlowCategoryGroupName": "Outflows",
+                "APP_ShowAboveChildren": true,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "5"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "0f8edd15-3c7f-4d63-986d-54eae071e02c",
+            "APP_ChildUuid": "4ecace04-e6b5-4ccb-a55a-48a0bf37f5a9",
+            "APP_ParentUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "4ecace04-e6b5-4ccb-a55a-48a0bf37f5a9",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+                "APP_CashFlowCategoryGroupName": "Neutral 1",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": true,
+                "APP_SortOrder": "2000"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+                "APP_CashFlowCategoryGroupName": "Net In/Out",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "1"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "5e557e05-8b97-4911-8c73-64267a0f6d83",
+            "APP_ChildUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+            "APP_ParentUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": null,
+            "APP_ChildCashFlowCategoryGroupUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+            "APP_ParentCashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                    "APP_Code": "-",
+                    "APP_SortOrder": "1"
+                },
+                "APP_CashFlowCategoryUuid": "654d8614-daef-40be-b0cf-72b5a2496ecb",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Taxes",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": true,
+                "APP_SortOrder": "100",
+                "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+                "APP_CashFlowCategoryGroupName": "Outflows",
+                "APP_ShowAboveChildren": true,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "5"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "90868bdc-c313-4038-b4cf-76cff50ae94d",
+            "APP_ChildUuid": "654d8614-daef-40be-b0cf-72b5a2496ecb",
+            "APP_ParentUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "654d8614-daef-40be-b0cf-72b5a2496ecb",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                    "APP_Code": "+",
+                    "APP_SortOrder": "0"
+                },
+                "APP_CashFlowCategoryUuid": "1f801418-4efb-4ece-917a-f5c58d64a040",
+                "APP_CashFlowCategoryID": "abc",
+                "APP_CashFlowCategoryName": "Inflows from sales (software)",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "10",
+                "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+                "APP_CashFlowCategoryGroupName": "Inflows",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "4"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "24bfcbf3-1064-498d-b9db-7d34e540f47c",
+            "APP_ChildUuid": "1f801418-4efb-4ece-917a-f5c58d64a040",
+            "APP_ParentUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "1f801418-4efb-4ece-917a-f5c58d64a040",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_ReconciliationCategory": {
+                    "APP_CashFlowCategoryUuid": "6eeaeafc-aaac-4fb8-a5d1-268483746f42",
+                    "APP_CashFlowCategoryID": null,
+                    "APP_CashFlowCategoryName": "Test KH Inflows",
+                    "APP_IsHidden": false,
+                    "APP_IsInternal": false,
+                    "APP_IsNeutral": false,
+                    "APP_IsSumCategory": false,
+                    "APP_ShowBelowForecast": false,
+                    "APP_SortOrder": null,
+                    "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                    "APP_ReconciliationCategoryUuid": "c0b49488-4b8b-48af-a62a-f466dfc4bd8d",
+                    "APP_SourceSystemUuid": null
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                    "APP_Code": "-",
+                    "APP_SortOrder": "1"
+                },
+                "APP_CashFlowCategoryUuid": "c0b49488-4b8b-48af-a62a-f466dfc4bd8d",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Test KH Outflows",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": null,
+                "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_ReconciliationCategoryUuid": "6eeaeafc-aaac-4fb8-a5d1-268483746f42",
+                "APP_SourceSystemUuid": null
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+                "APP_CashFlowCategoryGroupName": "Outflows",
+                "APP_ShowAboveChildren": true,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "5"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "7407522e-842b-42e9-82ee-812590edc68f",
+            "APP_ChildUuid": "c0b49488-4b8b-48af-a62a-f466dfc4bd8d",
+            "APP_ParentUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "c0b49488-4b8b-48af-a62a-f466dfc4bd8d",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+                "APP_CashFlowCategoryGroupName": "Outflows",
+                "APP_ShowAboveChildren": true,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "5"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+                "APP_CashFlowCategoryGroupName": "Net In/Out",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "1"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "d7f57fcd-cfde-4a21-afe3-883d102e5e0a",
+            "APP_ChildUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "APP_ParentUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": null,
+            "APP_ChildCashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "APP_ParentCashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                    "APP_Code": "+",
+                    "APP_SortOrder": "0"
+                },
+                "APP_CashFlowCategoryUuid": "e49dec61-4919-4d28-9134-c439855416dc",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Interest received",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "40",
+                "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+                "APP_CashFlowCategoryGroupName": "Inflows",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "4"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "9481fb0f-5a2d-4515-8571-ac8d09c2cf36",
+            "APP_ChildUuid": "e49dec61-4919-4d28-9134-c439855416dc",
+            "APP_ParentUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "e49dec61-4919-4d28-9134-c439855416dc",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                    "APP_Code": "+",
+                    "APP_SortOrder": "0"
+                },
+                "APP_CashFlowCategoryUuid": "95c2576d-8597-4c1b-8843-2844c76e1642",
+                "APP_CashFlowCategoryID": "123",
+                "APP_CashFlowCategoryName": "Inflows from sales (consulting)",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": null,
+                "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "e3e1c7fe-0020-47ef-93b6-ffade7989f7e",
+                "APP_CashFlowCategoryGroupName": "Test2",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": null
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "d2316c2b-9950-4881-bbdc-c447c1ed6352",
+            "APP_ChildUuid": "95c2576d-8597-4c1b-8843-2844c76e1642",
+            "APP_ParentUuid": "e3e1c7fe-0020-47ef-93b6-ffade7989f7e",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "95c2576d-8597-4c1b-8843-2844c76e1642",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "e3e1c7fe-0020-47ef-93b6-ffade7989f7e",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "c870cd94-7520-41c5-83bd-ab8a14555eca",
+                "APP_CashFlowCategoryGroupName": "Neutral 1.1",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": null
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+                "APP_CashFlowCategoryGroupName": "Neutral 1",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": true,
+                "APP_SortOrder": "2000"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "8573e02a-1701-47f9-95a1-c7c188c1f3da",
+            "APP_ChildUuid": "c870cd94-7520-41c5-83bd-ab8a14555eca",
+            "APP_ParentUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": null,
+            "APP_ChildCashFlowCategoryGroupUuid": "c870cd94-7520-41c5-83bd-ab8a14555eca",
+            "APP_ParentCashFlowCategoryGroupUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                    "APP_Code": "-",
+                    "APP_SortOrder": "1"
+                },
+                "APP_CashFlowCategoryUuid": "63773fcd-5c3e-4a87-9eb8-a49ab7af81a4",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Salaries (HIDDEN)",
+                "APP_IsHidden": true,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "90",
+                "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+                "APP_CashFlowCategoryGroupName": "Outflows",
+                "APP_ShowAboveChildren": true,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "5"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "e157db29-2d9e-4700-b769-d803c58ec012",
+            "APP_ChildUuid": "63773fcd-5c3e-4a87-9eb8-a49ab7af81a4",
+            "APP_ParentUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "63773fcd-5c3e-4a87-9eb8-a49ab7af81a4",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "74d712ab-c16c-4bc2-903f-84f736b9ed82",
+                "APP_CashFlowCategoryGroupName": "Test1",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": true,
+                "APP_SortOrder": "15"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+                "APP_CashFlowCategoryGroupName": "Neutral 1",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": true,
+                "APP_SortOrder": "2000"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "6d6ccf7e-c98a-47de-81bd-e5400641683f",
+            "APP_ChildUuid": "74d712ab-c16c-4bc2-903f-84f736b9ed82",
+            "APP_ParentUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": null,
+            "APP_ChildCashFlowCategoryGroupUuid": "74d712ab-c16c-4bc2-903f-84f736b9ed82",
+            "APP_ParentCashFlowCategoryGroupUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+                    "APP_Code": "+/-",
+                    "APP_SortOrder": "2"
+                },
+                "APP_CashFlowCategoryUuid": "a82cc63e-2cb4-406e-927e-24c6f2489c4c",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Neutral Test Category RS",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": true,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": null,
+                "APP_CashFlowPrefixUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "c870cd94-7520-41c5-83bd-ab8a14555eca",
+                "APP_CashFlowCategoryGroupName": "Neutral 1.1",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": null
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "9f5e84a8-a4b0-4106-85cc-e95d79a8a19b",
+            "APP_ChildUuid": "a82cc63e-2cb4-406e-927e-24c6f2489c4c",
+            "APP_ParentUuid": "c870cd94-7520-41c5-83bd-ab8a14555eca",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "a82cc63e-2cb4-406e-927e-24c6f2489c4c",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "c870cd94-7520-41c5-83bd-ab8a14555eca",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+                "APP_CashFlowCategoryGroupName": "Inflows",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "4"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+                "APP_CashFlowCategoryGroupName": "Net In/Out",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "1"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "c9f1c9fe-7cd6-4acc-9539-eb4f2e31b060",
+            "APP_ChildUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "APP_ParentUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": null,
+            "APP_ChildCashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "APP_ParentCashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "e3e1c7fe-0020-47ef-93b6-ffade7989f7e",
+                "APP_CashFlowCategoryGroupName": "Test2",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": null
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "74d712ab-c16c-4bc2-903f-84f736b9ed82",
+                "APP_CashFlowCategoryGroupName": "Test1",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": true,
+                "APP_SortOrder": "15"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "c2384347-faed-4374-b8ed-f22199ddfcac",
+            "APP_ChildUuid": "e3e1c7fe-0020-47ef-93b6-ffade7989f7e",
+            "APP_ParentUuid": "74d712ab-c16c-4bc2-903f-84f736b9ed82",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": null,
+            "APP_ChildCashFlowCategoryGroupUuid": "e3e1c7fe-0020-47ef-93b6-ffade7989f7e",
+            "APP_ParentCashFlowCategoryGroupUuid": "74d712ab-c16c-4bc2-903f-84f736b9ed82",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                    "APP_Code": "-",
+                    "APP_SortOrder": "1"
+                },
+                "APP_CashFlowCategoryUuid": "d4abe330-6961-4e16-8470-0f73910ac634",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Payments infrastructure",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "80",
+                "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+                "APP_CashFlowCategoryGroupName": "Outflows",
+                "APP_ShowAboveChildren": true,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "5"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "ce82ce4b-e75d-4528-9570-0889805a220d",
+            "APP_ChildUuid": "d4abe330-6961-4e16-8470-0f73910ac634",
+            "APP_ParentUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "d4abe330-6961-4e16-8470-0f73910ac634",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+                    "APP_Code": "+/-",
+                    "APP_SortOrder": "2"
+                },
+                "APP_CashFlowCategoryUuid": "de122d3c-9aa3-4cdf-affa-34510abfb752",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Test Without Group",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": true,
+                "APP_SortOrder": null,
+                "APP_CashFlowPrefixUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": null
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+                "APP_CashFlowCategoryGroupName": "Net In/Out",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "1"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "9f122b67-24c6-4ddf-bc6a-9d51e7ef8683",
+            "APP_ChildUuid": "de122d3c-9aa3-4cdf-affa-34510abfb752",
+            "APP_ParentUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_ChildCashFlowCategoryUuid": "de122d3c-9aa3-4cdf-affa-34510abfb752",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "3bf04b7f-d4e5-4879-a32b-316910dfc71f",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard2",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                    "APP_Code": "-",
+                    "APP_SortOrder": "1"
+                },
+                "APP_CashFlowCategoryUuid": "d4abe330-6961-4e16-8470-0f73910ac634",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Payments infrastructure",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "80",
+                "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+                "APP_CashFlowCategoryGroupName": "Net In/Out",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "1"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "c057c874-5b51-42a9-bde9-9fef31578503",
+            "APP_ChildUuid": "d4abe330-6961-4e16-8470-0f73910ac634",
+            "APP_ParentUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "3bf04b7f-d4e5-4879-a32b-316910dfc71f",
+            "APP_ChildCashFlowCategoryUuid": "d4abe330-6961-4e16-8470-0f73910ac634",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "3bf04b7f-d4e5-4879-a32b-316910dfc71f",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard2",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+                "APP_CashFlowCategoryGroupName": "Inflows",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "4"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+                "APP_CashFlowCategoryGroupName": "Neutral 1",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": true,
+                "APP_SortOrder": "2000"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "33204140-5729-4f45-a0ba-09298f34489c",
+            "APP_ChildUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "APP_ParentUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "3bf04b7f-d4e5-4879-a32b-316910dfc71f",
+            "APP_ChildCashFlowCategoryUuid": null,
+            "APP_ChildCashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "APP_ParentCashFlowCategoryGroupUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "3bf04b7f-d4e5-4879-a32b-316910dfc71f",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard2",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategory": {
+                "APP_SourceSystem": {
+                    "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                    "APP_LongName": "WEB",
+                    "APP_Note": null,
+                    "APP_ShortName": "WEB"
+                },
+                "APP_CashFlowPrefix": {
+                    "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                    "APP_Code": "+",
+                    "APP_SortOrder": "0"
+                },
+                "APP_CashFlowCategoryUuid": "58ae7fce-8c7b-4668-88b6-0ce327782bcf",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Other inflows",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "60",
+                "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_ReconciliationCategoryUuid": null,
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+                "APP_CashFlowCategoryGroupName": "Inflows",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "4"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "cc5fcc78-4582-4116-9a33-050d9dbc23b3",
+            "APP_ChildUuid": "58ae7fce-8c7b-4668-88b6-0ce327782bcf",
+            "APP_ParentUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "3bf04b7f-d4e5-4879-a32b-316910dfc71f",
+            "APP_ChildCashFlowCategoryUuid": "58ae7fce-8c7b-4668-88b6-0ce327782bcf",
+            "APP_ChildCashFlowCategoryGroupUuid": null,
+            "APP_ParentCashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyType": {
+                "APP_CashFlowCategoryHierarchyTypeUuid": "3bf04b7f-d4e5-4879-a32b-316910dfc71f",
+                "APP_CashFlowCategoryHierarchyTypeName": "Standard2",
+                "APP_IsPublic": true,
+                "APP_SortOrder": "1"
+            },
+            "APP_ChildCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+                "APP_CashFlowCategoryGroupName": "Net In/Out",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": "1"
+            },
+            "APP_ParentCashFlowCategoryGroup": {
+                "APP_CashFlowCategoryGroupUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+                "APP_CashFlowCategoryGroupName": "Neutral 1",
+                "APP_ShowAboveChildren": false,
+                "APP_ShowBelowForecast": true,
+                "APP_SortOrder": "2000"
+            },
+            "APP_CashFlowCategoryHierarchyEdgeUuid": "3a785d21-a76b-4445-9f56-956bf6825126",
+            "APP_ChildUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "APP_ParentUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+            "APP_CashFlowCategoryHierarchyTypeUuid": "3bf04b7f-d4e5-4879-a32b-316910dfc71f",
+            "APP_ChildCashFlowCategoryUuid": null,
+            "APP_ChildCashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "APP_ParentCashFlowCategoryGroupUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+            "errorMessages": []
+        }
+    ],
+    "metadata": {
+        "properties": {}
+    }
+}

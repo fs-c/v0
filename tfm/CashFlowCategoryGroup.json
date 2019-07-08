@@ -1,0 +1,74 @@
+{
+    "odata.metadata": "https://localhost:44316/odata/$metadata#APP_CashFlowCategoryGroup",
+    "value": [
+        {
+            "APP_CashFlowCategoryGroupUuid": "6274026c-71e6-4576-8f2e-2db70e460f47",
+            "APP_CashFlowCategoryGroupName": "Net In/Out",
+            "APP_ShowAboveChildren": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "1",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryGroupUuid": "57ec9fc4-4291-4549-a9b5-acdfbe86d2b7",
+            "APP_CashFlowCategoryGroupName": "Inflows",
+            "APP_ShowAboveChildren": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "4",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryGroupUuid": "c5e696f6-b614-415a-aba6-0ee1b3a0b8b5",
+            "APP_CashFlowCategoryGroupName": "Outflows",
+            "APP_ShowAboveChildren": true,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "5",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryGroupUuid": "74d712ab-c16c-4bc2-903f-84f736b9ed82",
+            "APP_CashFlowCategoryGroupName": "Test1",
+            "APP_ShowAboveChildren": false,
+            "APP_ShowBelowForecast": true,
+            "APP_SortOrder": "15",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryGroupUuid": "341a6d90-4ca1-4ced-b110-8a8ac6811513",
+            "APP_CashFlowCategoryGroupName": "Neutral 1",
+            "APP_ShowAboveChildren": false,
+            "APP_ShowBelowForecast": true,
+            "APP_SortOrder": "2000",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryGroupUuid": "c870cd94-7520-41c5-83bd-ab8a14555eca",
+            "APP_CashFlowCategoryGroupName": "Neutral 1.1",
+            "APP_ShowAboveChildren": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": null,
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryGroupUuid": "e3e1c7fe-0020-47ef-93b6-ffade7989f7e",
+            "APP_CashFlowCategoryGroupName": "Test2",
+            "APP_ShowAboveChildren": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": null,
+            "errorMessages": []
+        }
+    ],
+    "metadata": {
+        "properties": {
+            "APP_ShowAboveChildren": {
+                "type": "Edm.Boolean"
+            },
+            "APP_ShowBelowForecast": {
+                "type": "Edm.Boolean"
+            },
+            "APP_SortOrder": {
+                "type": "Edm.Decimal"
+            }
+        }
+    }
+}

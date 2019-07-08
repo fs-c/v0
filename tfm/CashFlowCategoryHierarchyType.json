@@ -1,0 +1,50 @@
+{
+    "odata.metadata": "https://localhost:44316/odata/$metadata#APP_CashFlowCategoryHierarchyType",
+    "value": [
+        {
+            "APP_CashFlowCategoryHierarchyTypeUuid": "c494f04d-8761-4804-9650-be7de8ee72ea",
+            "APP_CashFlowCategoryHierarchyTypeName": "Standard",
+            "APP_IsPublic": true,
+            "APP_SortOrder": "1",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyTypeUuid": "3bf04b7f-d4e5-4879-a32b-316910dfc71f",
+            "APP_CashFlowCategoryHierarchyTypeName": "Standard2",
+            "APP_IsPublic": true,
+            "APP_SortOrder": "1",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyTypeUuid": "7d892d0d-7b5a-40bd-8ed5-2d5c566b6ea4",
+            "APP_CashFlowCategoryHierarchyTypeName": "Test1",
+            "APP_IsPublic": true,
+            "APP_SortOrder": "1",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyTypeUuid": "cacf9c71-ed90-40c0-af98-cb1d7692fcab",
+            "APP_CashFlowCategoryHierarchyTypeName": "xyz",
+            "APP_IsPublic": true,
+            "APP_SortOrder": "50",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowCategoryHierarchyTypeUuid": "71549743-5c0c-4548-a7e3-bf99931a5e46",
+            "APP_CashFlowCategoryHierarchyTypeName": "abc",
+            "APP_IsPublic": true,
+            "APP_SortOrder": "100",
+            "errorMessages": []
+        }
+    ],
+    "metadata": {
+        "properties": {
+            "APP_IsPublic": {
+                "type": "Edm.Boolean"
+            },
+            "APP_SortOrder": {
+                "type": "Edm.Decimal"
+            }
+        }
+    }
+}
