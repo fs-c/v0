@@ -19,7 +19,12 @@
     "@angular/platform-browser": "~8.1.0",
     "@angular/platform-browser-dynamic": "~8.1.0",
     "@angular/router": "~8.1.0",
+    "@progress/kendo-angular-common": "^1.0.0",
+    "@progress/kendo-angular-l10n": "^2.0.0",
+    "@progress/kendo-angular-treeview": "^4.0.0",
+    "@progress/kendo-theme-default": "latest",
     "rxjs": "~6.4.0",
+    "tree-model": "^1.0.7",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
   },
