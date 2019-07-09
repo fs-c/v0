@@ -9,28 +9,7 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   
   <script src="http://kendo.cdn.telerik.com/2019.2.619/js/jquery.min.js"></script>
-  <script>
-      if (typeof jQuery == "undefined") {
-          // fallback to local jQuery
-          document.write(decodeURIComponent('%3Cscript src="/path/to/local/jquery.min.js" %3E%3C/script%3E'));
-      }
-  </script>
-
   <script src="http://kendo.cdn.telerik.com/2019.2.619/js/kendo.all.min.js"></script>
-  <script>
-    if (typeof kendo == "undefined") {
-        // checking for loaded CSS files is cumbersome,
-        // that's why we assume that if the scripts have failed, so have the stylesheets
-
-        // fallback to local Kendo UI stylesheets
-        document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/path/to/local/kendo.common.min.css" %3C/%3E'));
-        document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/path/to/local/kendo.blueopal.min.css" %3C/%3E'));
-
-        // fallback to local Kendo UI scripts
-        document.write(decodeURIComponent('%3Cscript src="/path/to/local/kendo.all.min.js" %3E%3C/script%3E'));
-        // also add kendo.aspnetmvc.min.js or kendo.timezones.min.js, if needed
-    }
-  </script>
 </head>
 <body>
   <app-root></app-root>
