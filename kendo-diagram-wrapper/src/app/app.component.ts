@@ -1,7 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
-import '@progress/kendo-ui';
-
 declare var kendo: any;
 
 @Component({
@@ -11,13 +9,14 @@ declare var kendo: any;
 })
 export class AppComponent {
   title = 'kendo-diagram-wrapper';
-/*
+
   constructor() {
     if (window !== undefined) {
       (window as any).$ = kendo.jQuery;
     }
   }
 
+  /*
   @ViewChild('h1Element') el: ElementRef;
   @ViewChild('datePicker') datePickerEl: ElementRef;
 
