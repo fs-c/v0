@@ -18,5 +18,5 @@ NAME="k11804751_Übung$DIR.zip"
 
 # This is an ugly solution
 cd $DIR
-zip -x "*.pdf" -r "../$NAME" .
+zip -x "*.pdf" -x "*.class" -r "../$NAME" .
 cd ..
