@@ -2,7 +2,7 @@
 
 This is my take at attempting to convey the usefulness and beauty of programming to those new to the craft.
 
-Here, you will have the opportunity to learn about some of the very basics of software development using __JavaScript__ (or JS for short) through studying __working code of practical relevance__. It is very much a __personal document__, as everyone absords and assimilates knowledge differently, but I don't feel like that should stop me from writing it down.
+Here, you will have the opportunity to learn about some of the very basics of software development using __JavaScript__ (or JS for short) through studying __working code of practical relevance__. It is very much a __personal document__, as everyone absorbs and assimilates knowledge differently, but I don't feel like that should stop me from writing it down.
 
 >JavaScript (not to be confused with Java) is a high-level, dynamic, multi-paradigm and weakly-typed language used for both client-side and server-side scripting. Its primary use is in rendering and performing manipulation of web pages
 >
@@ -12,7 +12,7 @@ While this is all well and good, we don't really care too much about what the ab
 
 This means that your browser runs JavaScript code that is loaded alongside websites, which can then be used to make them interactive. To see a demonstration of your browser's JS interpreter just hit <kbd>F12</kbd> and switch to the "Console" tab.
 
-You're now in the developer tools of your browser, which (among other things) provides you with a REPL -- a read–eval–print loop. It takes user input (in this case, JavaScript code), evaluates it, and prints the result.
+You should now see the developer tools of your browser, which (among other things) provides you with a REPL -- a read–eval–print loop. It takes user input (in this case, JavaScript code), evaluates it, and prints the result.
 
 ![A demonstration of the REPL.](https://i.imgur.com/rxvvoks.gif)
 
@@ -30,11 +30,11 @@ Now, as previously mentioned, JS is usually run on websites, in the browser. Tha
 >
 >From ["About node.js"](https://stackoverflow.com/tags/node.js/info) on StackOverflow
 
-Yes. Got that? No? Well, that's ok. What you need to know is: NodeJS (commonly referred to as just "Node") can run JavaScript on your PC, without requiring you to load a website (be it local or not). To do that it uses the V8 engine, which is also used in Chromium, and therefore Google Chrome. (Assuming you don't use Firefox, you used V8 just now to play around with the REPL!)
+Yes. Got that? No? Well, that's ok. What you need to know is: NodeJS (commonly referred to as just "Node") can run JavaScript on your PC, without requiring you to load a website (be it local or not). To do that it uses the V8 engine, which is also used in Chromium, and therefore Google Chrome. There's a good chance you used V8 just now, playing around in the REPL!
 
-It's mainly used on servers and to write quick little console scripts, but through a number of pretty neat frameworks, some beautiful desktop and mobile apps have been developed (Discord, Atom, parts of the Facebook App). To top it off, Node is Open Source (under the MIT license) and backed by the Linux Foundation.
+It's mainly used on servers and to write quick little console scripts, but through a number of pretty neat frameworks, some beautiful desktop and mobile apps have been developed (Discord, Atom, parts of the Facebook App). To top it off, Node is Open Source (under the MIT license) and backed by the Linux Foundation. There has been much discussion on whether or not it is actually well suited to many of these tasks, and I will not attempt to get into that topic. Fact is that it's being used for these things in the real world, and it can't hurt to know your way around it and it's ecosystem.
 
-Enough of that now, though, let's get into writing scripts using Node! Once you've installed Node, you can use the `node` command in your terminal. On Windows, search for "cmd" or "Command Prompt" in the [Start Menu](https://i.imgur.com/SRqsdvE.jpg) (the thing that pops up when you press the "Windows" key) and search for "cmd" or "Command Prompt".
+Enough of that now, though. Let's get into writing scripts using Node! Once you've installed Node, you can use the `node` command in your terminal. On Windows, search for "cmd" or "Command Prompt" in the [Start Menu](https://i.imgur.com/SRqsdvE.jpg) (the thing that pops up when you press the "Windows" key) and search for "cmd" or "Command Prompt".
 
 Now, with your terminal open, you can check that Node is properly installed by issuing the `node -v` command. If everything is set up the way it should be, that will output the version number of the installed Node build (anything above 8.0.0 is fine, but >= 10.0.0 would be optimal).
 
@@ -42,13 +42,15 @@ Now, with your terminal open, you can check that Node is properly installed by i
 
 Assuming that this worked, the `node` command is now available anywhere in the terminal. You probably started out in `C:\Users\<USERNAME>` (it's alright if you didn't), but you'll most likely want to do your scripting somewhere else, in a dedicated folder.
 
-Since we're already in the terminal, let's create a `code` folder where we will put our scripts using `mkdir`, which is a command (just like `node`) that creates directories. To "move" to this new folder, use the `cd` command which can be used to move around the directory structure. 
+Since we're already in the terminal, let's create a `code` folder where we will put our scripts using `mkdir`, which is a command (just like `node`) that creates directories. To "move" to this new folder, use the `cd` command which can be used to move around the directory structure.
+
+_Note that the directory name is completely arbitrary._
 
 ![Creating the code directory and switching to it using the mkdir and cd commands](https://i.imgur.com/wo363Pu.gif)
 
 A note on `cd`: to go "up" a directory, do `cd ..`. This can also be chained like `cd ../../some/other/path`.
 
-Now, to see that I didn't just talk out of my ass earlier, about Node using a JS engine just like your browser, try out the `node` command, without any switches or arguments. Lo and behold, it's a REPL!
+Feel free to try out the `node` command, without any arguments. Lo and behold, it's a REPL!
 
 ![Node REPL inside a CMD window.](https://i.imgur.com/f3zL4eo.gif)
 
