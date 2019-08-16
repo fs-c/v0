@@ -1,0 +1,551 @@
+{
+    "odata.metadata": "https://localhost:44316/odata/$metadata#APP_CashFlowCategory",
+    "value": [
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_Code": "+",
+                "APP_SortOrder": "0"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "1f801418-4efb-4ece-917a-f5c58d64a040",
+            "APP_CashFlowCategoryID": "abc",
+            "APP_CashFlowCategoryName": "Inflows from sales (software)",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "10",
+            "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_Code": "+",
+                "APP_SortOrder": "0"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "0233045c-4af7-48d9-be0f-b859ed795771",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Inflows from maintenance",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "30",
+            "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_Code": "+",
+                "APP_SortOrder": "0"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "e49dec61-4919-4d28-9134-c439855416dc",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Interest received",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "40",
+            "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_Code": "+",
+                "APP_SortOrder": "0"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "0c7713ff-59a2-4797-b1c2-23716140e9b8",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Dividend received",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "50",
+            "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_Code": "+",
+                "APP_SortOrder": "0"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "58ae7fce-8c7b-4668-88b6-0ce327782bcf",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Other inflows",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "60",
+            "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_Code": "-",
+                "APP_SortOrder": "1"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "66b5303f-5b0c-4a76-9af3-a1632ebf59f7",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Payments to suppliers",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "70",
+            "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_Code": "-",
+                "APP_SortOrder": "1"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "d4abe330-6961-4e16-8470-0f73910ac634",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Payments infrastructure",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "80",
+            "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_Code": "-",
+                "APP_SortOrder": "1"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "63773fcd-5c3e-4a87-9eb8-a49ab7af81a4",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Salaries (HIDDEN)",
+            "APP_IsHidden": true,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "90",
+            "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_Code": "-",
+                "APP_SortOrder": "1"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "654d8614-daef-40be-b0cf-72b5a2496ecb",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Taxes",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": true,
+            "APP_SortOrder": "100",
+            "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_Code": "-",
+                "APP_SortOrder": "1"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "0c09661e-a717-4a67-ad30-60b6fc4cb515",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Dividend paid",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": true,
+            "APP_SortOrder": "110",
+            "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_Code": "-",
+                "APP_SortOrder": "1"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "ad1134bb-7fb3-4d37-be45-3404b922920d",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Interest paid",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "120",
+            "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_Code": "-",
+                "APP_SortOrder": "1"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "4ecace04-e6b5-4ccb-a55a-48a0bf37f5a9",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Other outflows",
+            "APP_IsHidden": true,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "130",
+            "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_Code": "-",
+                "APP_SortOrder": "1"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "b8de5b63-67d9-436b-983f-a5bafe536fb0",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Investments",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": "140",
+            "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+                "APP_Code": "+/-",
+                "APP_SortOrder": "2"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "5f214fe4-f1e3-46ee-968a-8d1768e09c62",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Changes Internal Deposits / Loans",
+            "APP_IsHidden": false,
+            "APP_IsInternal": true,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": null,
+            "APP_CashFlowPrefixUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_Code": "+",
+                "APP_SortOrder": "0"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "95c2576d-8597-4c1b-8843-2844c76e1642",
+            "APP_CashFlowCategoryID": "123",
+            "APP_CashFlowCategoryName": "Inflows from sales (consulting)",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": null,
+            "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+                "APP_Code": "+/-",
+                "APP_SortOrder": "2"
+            },
+            "APP_SourceSystem": {
+                "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+                "APP_LongName": "WEB",
+                "APP_Note": null,
+                "APP_ShortName": "WEB"
+            },
+            "APP_CashFlowCategoryUuid": "a82cc63e-2cb4-406e-927e-24c6f2489c4c",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Neutral Test Category RS",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": true,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": null,
+            "APP_CashFlowPrefixUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": "d9df07e6-1d50-4607-a216-fac92a92c229",
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+                "APP_Code": "+/-",
+                "APP_SortOrder": "2"
+            },
+            "APP_CashFlowCategoryUuid": "e4409f8b-56f7-4249-9634-f36fda41c3fe",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Test Karin",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": true,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": true,
+            "APP_SortOrder": null,
+            "APP_CashFlowPrefixUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": null,
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_Code": "+",
+                "APP_SortOrder": "0"
+            },
+            "APP_ReconciliationCategory": {
+                "APP_CashFlowCategoryUuid": "c0b49488-4b8b-48af-a62a-f466dfc4bd8d",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Test KH Outflows",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": null,
+                "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_ReconciliationCategoryUuid": "6eeaeafc-aaac-4fb8-a5d1-268483746f42",
+                "APP_SourceSystemUuid": null
+            },
+            "APP_CashFlowCategoryUuid": "6eeaeafc-aaac-4fb8-a5d1-268483746f42",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Test KH Inflows",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": null,
+            "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+            "APP_ReconciliationCategoryUuid": "c0b49488-4b8b-48af-a62a-f466dfc4bd8d",
+            "APP_SourceSystemUuid": null,
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+                "APP_Code": "-",
+                "APP_SortOrder": "1"
+            },
+            "APP_ReconciliationCategory": {
+                "APP_CashFlowCategoryUuid": "6eeaeafc-aaac-4fb8-a5d1-268483746f42",
+                "APP_CashFlowCategoryID": null,
+                "APP_CashFlowCategoryName": "Test KH Inflows",
+                "APP_IsHidden": false,
+                "APP_IsInternal": false,
+                "APP_IsNeutral": false,
+                "APP_IsSumCategory": false,
+                "APP_ShowBelowForecast": false,
+                "APP_SortOrder": null,
+                "APP_CashFlowPrefixUuid": "cd4148d0-dd49-48c3-af26-55275490f1f3",
+                "APP_ReconciliationCategoryUuid": "c0b49488-4b8b-48af-a62a-f466dfc4bd8d",
+                "APP_SourceSystemUuid": null
+            },
+            "APP_CashFlowCategoryUuid": "c0b49488-4b8b-48af-a62a-f466dfc4bd8d",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Test KH Outflows",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": false,
+            "APP_SortOrder": null,
+            "APP_CashFlowPrefixUuid": "59d43e02-1018-4939-9f2d-0efb6eadc363",
+            "APP_ReconciliationCategoryUuid": "6eeaeafc-aaac-4fb8-a5d1-268483746f42",
+            "APP_SourceSystemUuid": null,
+            "errorMessages": []
+        },
+        {
+            "APP_CashFlowPrefix": {
+                "APP_PrefixTypeUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+                "APP_Code": "+/-",
+                "APP_SortOrder": "2"
+            },
+            "APP_CashFlowCategoryUuid": "de122d3c-9aa3-4cdf-affa-34510abfb752",
+            "APP_CashFlowCategoryID": null,
+            "APP_CashFlowCategoryName": "Test Without Group",
+            "APP_IsHidden": false,
+            "APP_IsInternal": false,
+            "APP_IsNeutral": false,
+            "APP_IsSumCategory": false,
+            "APP_ShowBelowForecast": true,
+            "APP_SortOrder": null,
+            "APP_CashFlowPrefixUuid": "b0b13e4b-ffd6-42c0-83e1-5aa602950b4b",
+            "APP_ReconciliationCategoryUuid": null,
+            "APP_SourceSystemUuid": null,
+            "errorMessages": []
+        }
+    ],
+    "metadata": {
+        "properties": {
+            "APP_IsHidden": {
+                "type": "Edm.Boolean"
+            },
+            "APP_IsInternal": {
+                "type": "Edm.Boolean"
+            },
+            "APP_IsNeutral": {
+                "type": "Edm.Boolean"
+            },
+            "APP_IsSumCategory": {
+                "type": "Edm.Boolean"
+            },
+            "APP_ShowBelowForecast": {
+                "type": "Edm.Boolean"
+            },
+            "APP_SortOrder": {
+                "type": "Edm.Decimal"
+            }
+        }
+    }
+}

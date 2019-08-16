@@ -1,0 +1,13 @@
+<form [formGroup]="nodeForm" (ngSubmit)="onSubmit(nodeForm.value)">
+  <div>
+    <label>Name</label>
+    <input type="text" formControlName="name">
+  </div>
+
+  <div>
+    <label>Parent</label>
+    <input type="text" formControlName="parent">
+  </div>
+
+  <button class="button" type="submit">Add Node</button>
+</form>

@@ -1,1 +1,0 @@
-If you're in the same course(s) and looking to copy, remember the MIT license. I'll have a valid defense if you get caught, you don't.
