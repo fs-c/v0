@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JS Basics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        const names = [ 'Lisa', 'Sarah', 'Hans', 'Max' ];
+        const numbers = [ 11, 23, 3, 14, 35, 51, 22, 7, 9, 33 ];
+
+        const output = (name, data) => {
+            document.write(`${name}: ${data}<br />`);
+        };
+
+        const mean = (values) =>
+            values.reduce((acc, cur) => acc += cur, 0) / values.length;
+
+        const longestString = (strings) => {
+            let longest = '';
+
+            for (const string of strings) {
+                if (string.length > longest.length)
+                    longest = string;
+            }
+
+            return longest;
+        };
+
+        const sortStrings = (strings) => {
+            if (strings.length === 0)
+                return [];
+
+            let left = [], right = [], pivot = strings[0];
+            for (let i = 1; i < strings.length; i++) {
+                if (strings[i] < pivot) {
+                    left.push(strings[i]);
+                } else {
+                    right.push(strings[i]);
+                }
+            }
+
+            return [ ...sortStrings(left), pivot, ...sortStrings(right) ];
+        }
+    </script>
+</head>
+
+<body>
+    <h1>JS Basics</h1>
+
+    <p>Laurenz Weixlbaumer, 30/09/19</p>
+
+    <p>
+        <script>output('Numbers', numbers)</script>
+        <script>output('Mean', mean(numbers))</script>
+
+        <br />
+
+        <script>output('Names', names)</script>
+        <script>output('Longest', (() => {
+                const longest = longestString(names);
+                return `${longest} (${longest.length} characters)`
+            })())</script>
+        <script>output('Sorted', sortStrings(names))</script>
+    </p>
+</body>
+
+</html>
