@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dynamic HTML</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        const setBackground = (color) => document.body.style.backgroundColor = color;
+
+        const getOffset = (min = -50, max = 50) =>
+            Math.floor(Math.random() * (max - min + 1) + min);
+        const parseValue = (string) => Number.parseInt(string.slice(0, -2));
+
+        const moveBall = (ball) => {
+            const style = window.getComputedStyle(ball);
+
+            ball.style.top = `${parseValue(style.top) + getOffset()}px`;
+            ball.style.left = `${parseValue(style.left) + getOffset()}px`;
+        };
+    </script>
+
+    <style>
+        #ball {
+            position: absolute;
+            top: 20px;
+            left: 300px;
+        }
+
+        #catch-me {
+            position: absolute;
+            top: 300px;
+            left: 250px;
+        }
+    </style>
+</head>
+
+<body style="border-bottom: 1px solid gray">
+    <h1>JS Basics</h1>
+
+    <p>Laurenz Weixlbaumer, 30/09/19</p>
+
+    <div>
+        <p>
+            <button onclick="setBackground('white')">
+                White
+            </button>
+    
+            <button onclick="setBackground('teal')">
+                Blue
+            </button>
+    
+            <button onclick="setBackground('darkorange')">
+                Orange
+            </button>
+    
+            <button onclick="setBackground('mediumaquamarine')">
+                Green
+            </button>
+        </p>
+    
+        <img src='./50cent1.jpg' onmouseover="this.src = './50cent2.jpg'"
+            onmouseout="this.src = './50cent1.jpg'">
+
+        <img src='./ball-blau.png' id='ball' onclick="this.style.top = '300px'">
+
+        <img src='./catchme.png' id='catch-me' onmouseover="moveBall(this)">
+    </div>
+</body>
+
+</html>
