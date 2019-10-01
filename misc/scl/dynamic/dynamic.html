@@ -15,8 +15,8 @@
         const moveBall = (ball) => {
             const style = window.getComputedStyle(ball);
 
-            ball.style.top = `${parseValue(style.top) + getOffset()}px`;
-            ball.style.left = `${parseValue(style.left) + getOffset()}px`;
+            ball.style.top = `${Math.abs(parseValue(style.top) + getOffset())}px`;
+            ball.style.left = `${Math.abs(parseValue(style.left) + getOffset())}px`;
         };
     </script>
 
@@ -64,7 +64,7 @@
 
         <img src='./ball-blau.png' id='ball' onclick="this.style.top = '300px'">
 
-        <img src='./catchme.png' id='catch-me' onmouseover="moveBall(this)">
+        <img src='./catchme.png' id='catch-me' onmouseover="moveBall(this)" onclick="alert('Congrats!')">
     </div>
 </body>
 
