@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Gamepad</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        const limit = (min, max) => (value) =>
+            value >= max ? max : value <= min ? min : value;
+        const parseValue = (string) => Number.parseInt(string.slice(0, -2));        
+
+        let pacman = null;
+        const speed = 100;
+
+        const move = (mx, my) => {
+            const style = window.getComputedStyle(pacman);
+            const { innerWidth, innerHeight } = window;
+
+            const dx = mx * speed, dy = my * speed;
+            const size = parseValue(style.width);
+
+            const absx = limit(0, innerWidth - size)(parseValue(style.left) + dx);
+            const absy = limit(0, innerHeight - size)(parseValue(style.top) + dy);
+
+            pacman.style.top = `${absy}px`;
+            pacman.style.left = `${absx}px`;
+        };
+
+        const reset = () => {
+
+            pacman.style.top = '100px';
+            pacman.style.left = '100px';
+            pacman.style.width = `${parseValue(window.getComputedStyle(pacman).width) + 25}px`
+        }
+    </script>
+
+    <style type='text/css'>
+        div.button-container {
+            border: 2px solid black;
+            border-radius: 1em;
+            display: flex;
+            flex-wrap: wrap;
+            width: 60px;
+            padding: 10px;
+            background: papayawhip;
+        }
+
+        div.button-container > img {
+            width: 20px;
+            height: 20px;
+        }
+
+        #pacman {
+            width: 75px;
+            top: 100px;
+            left: 100px;
+            z-index: -1;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div class='button-container'>
+        <img src='buttonblau.png' onclick='move(-1, -1)' />
+        <img src='buttonblau.png' onclick='move(0, -1)' />
+        <img src='buttonblau.png' onclick='move(1, -1)' />
+        <img src='buttonblau.png' onclick='move(-1, 0)' />
+        <img src='buttongelb.png' onclick='reset()' />
+        <img src='buttonblau.png' onclick='move(1, 0)' />
+        <img src='buttonblau.png' onclick='move(-1, 1)' />
+        <img src='buttonblau.png' onclick='move(0, 1)' />
+        <img src='buttonblau.png' onclick='move(1, 1)' />
+    </div>
+
+    <img src='pacman.png' id='pacman' />
+
+    <script>
+        pacman = document.getElementById('pacman');
+    </script>
+</body>
+
+</html>
