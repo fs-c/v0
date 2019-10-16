@@ -1,111 +1,40 @@
-body, html {
-    font-family: serif;
+@font-face {
+    font-family: Vollkorn;
+    src: url("../fonts/Vollkorn-Regular.eot");
+    src: local("Vollkorn"),
+    url("../fonts/Vollkorn-Regular.woff2") format("woff2"), 
+    url("../fonts/Vollkorn-Regular.woff") format("woff"),
+    url("../fonts/Vollkorn-Regular.ttf") format("truetype");
 }
 
-a {
-    color: inherit;
-    text-decoration: underline;
+@font-face {
+    font-family: Vollkorn;
+    font-weight: bold;
+    src: url("../fonts/Vollkorn-Bold.eot");
+    src: local("Vollkorn Bold"),
+    local("Vollkorn"),
+    url("../fonts/Vollkorn-Bold.woff2") format("woff2"),
+    url("../fonts/Vollkorn-Bold.woff") format("woff"),
+    url("../fonts/Vollkorn-Bold.ttf") format("truetype");
 }
 
-a:hover {
-    text-decoration: none;
+h1, h2, h3, h4, h5 { margin: 0; }
+
+body {
+    font-family: Vollkorn, serif;
+
+    text-rendering: optimizeLegibility;
+    font-variant-ligatures: common-ligatures;
+    font-kerning: normal;
+    font-feature-settings: "liga";
+
+    margin: 0px;
+    padding: 50px;
 }
 
-p.center {
-    text-align: center;
+main {
+    max-width: 400px;
+    font-size: 1.125em;
 }
 
-.heavy {
-    margin-bottom: 0px;
-}
-.light {
-    margin-top: 0px;
-}
-
-small.weightless {
-    font-weight: normal;
-}
-
-div.center {
-    position: absolute;
-    top: 47%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-}
-
-ul.unstyled {
-    list-style-type: none;
-}
-
-span.date {
-    color: #6a737d;
-    font-size: 14px;
-    font-weight: normal;
-    white-space: nowrap;
-}
-
-div.light-seperator {
-    margin-bottom: 0.6em;
-    padding-bottom: 0.6em;
-    font-size: 1.5em;
-    border-bottom: 1px solid #eaecef;
-}
-
-div.box {
-    width: 90%;
-}
-div.small-box {
-    width: 90%;
-}
-div.medium-box {
-    width: 90%;
-}
-
-@media (min-width: 400px) {
-    div.box {
-        width: 80%;
-    }
-    div.small-box {
-        width: 80%;
-    }
-    div.medium-box {
-        width: 80%;
-    }
-}
-
-@media (min-width: 550px) {
-    div.box {
-        width: 70%;
-    }
-    div.small-box {
-        width: 60%;
-    }
-    div.medium-box {
-        width: 65%;
-    }
-}
-
-@media (min-width: 750px) {
-    div.box {
-        width: 60%;
-    }
-    div.small-box {
-        width: 50%;
-    }
-    div.medium-box {
-        width: 55%;
-    }
-}
-
-@media (min-width: 950px) {
-    div.box {
-        width: 50%;
-    }
-    div.small-box {
-        width: 25%;
-    }
-    div.medium-box {
-        width: 40%
-    }
-}
+a { color: inherit; }
