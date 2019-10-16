@@ -1,4 +1,5 @@
 @font-face {
+    font-display: fallback;
     font-family: Vollkorn;
     src: url("../fonts/Vollkorn-Regular.eot");
     src: local("Vollkorn"),
@@ -8,6 +9,7 @@
 }
 
 @font-face {
+    font-display: fallback;
     font-family: Vollkorn;
     font-weight: bold;
     src: url("../fonts/Vollkorn-Bold.eot");
