@@ -20,10 +20,6 @@
     url("../fonts/Vollkorn-Bold.ttf") format("truetype");
 }
 
-:root {
-    --emphasis: #F49B0B;
-}
-
 h1, h2, h3, h4, h5 { margin: 0; }
 
 body {
@@ -39,18 +35,6 @@ body {
 }
 
 main {
-    max-width: 430px;
+    max-width: 400px;
     font-size: 1.125em;
-}
-
-a { color: inherit; }
-a:hover { text-decoration-color: var(--emphasis); }
-
-::selection {
-    background-color: var(--emphasis);
-}
-
-span.highlight {
-    text-decoration: underline;
-    text-decoration-color: var(--emphasis);
 }
