@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      body {
+        background-color: lightslategray;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+      }
+
+      div.container {
+        margin: auto;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      button {
+        background-color: lightsteelblue;
+        border: 1px solid black;
+        border-radius: 2px;
+        transition: 0.2s;
+      }
+
+      button:hover {
+        cursor: pointer;
+        background-color: lightseagreen;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <h1>ARAM or Draft?</h1>
+
+      <div>
+        <button onclick="onClick()">Choose</button>
+      </div>
+
+      <h3 id='result'></h3>
+    </div>
+
+    <script>
+      const choose = () => [ 'Abyss', 'Rift' ][Math.floor(Math.random() * 2)];
+
+      const onClick = () => document.getElementById('result').innerHTML = choose();
+    </script>
+  </body>
+</html>
