@@ -6,39 +6,86 @@
 
     <style>
       body {
-        background-color: lightslategray;
+        margin: 0;
+        min-height: 100vh;
+
+        color: #FFFFFF;
+        background-color: #10161A;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
-      div.container {
-        margin: auto;
-        max-width: 400px;
+      h1, h2, h3, h4, h5 { margin: 0 0 0.2em 0; }
+
+      p {
+        color: #CED9E0;
+        font-size: 0.8em;
+      }
+
+      .card {
+        padding: 1em;
+
+        max-width: 300px;
+
+        border-radius: 5px;
+        border: 1px solid #CED9E0;
+
         display: flex;
         flex-direction: column;
       }
 
-      button {
-        background-color: lightsteelblue;
-        border: 1px solid black;
-        border-radius: 2px;
-        transition: 0.2s;
+      .row {
+        display: flex;
+        flex-direction: row;
       }
 
-      button:hover {
+      .row.center { justify-content: center; }
+
+      .card button {
+        flex-grow: 1;
+
+        padding: 0.3em;
+
+        color: #BFCCD6;
+        background-color: #202B33;
+
+        border-radius: 5px;
+        border: 1px solid #293742;
+
         cursor: pointer;
-        background-color: lightseagreen;
+      }
+
+      .card button:hover {
+        color: #FFFFFF;
+        border-color: #202B33;
+        background-color: #182026;
+      }
+
+      #result {
+        margin-top: 1em;
+
       }
     </style>
   </head>
   <body>
-    <div class='container'>
-      <h1>ARAM or Draft?</h1>
+    <div class='card'>
+      <h1>Abyss or Rift?</h1>
 
-      <div>
+      <p>
+        A lightweight tool to reduce endless back and forth to a single push of
+        a button.
+      </p>
+
+      <div class='row'>
         <button onclick="onClick()">Choose</button>
       </div>
 
-      <h3 id='result'></h3>
+      <div class='row center'>
+        <h3 id='result'></h3>
+      </div>
     </div>
 
     <script>
