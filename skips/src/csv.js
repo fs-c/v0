@@ -1,6 +1,8 @@
 // TODO: Might as well scrap this and write a replacement
 const neatCsv = require('neat-csv');
 
+const { convertToUTC } = require('./utils');
+
 const parseRawDate = (date, time) => {
     const sdate = date.split('.');
 
@@ -15,10 +17,15 @@ const parseRawDate = (date, time) => {
     }
 
     const [ hour, minute ] = stime;
-    const [ day, month, year ] = sdate;
+    const [ day,,year ] = sdate;
+
+    const month = parseInt(sdate[1]) - 1
 
     // Using long form for compatibility and consistency
-    return new Date(year, month, day, hour, minute);
+    // return convertToUTC(new Date(year, parseInt(month) - 1, day, hour, minute));
+
+    return { year, month, day, hour, minute,
+        date: new Date(year, month, day, hour, minute) };
 };
 
 const parseCsv = async (raw) => {
@@ -43,6 +50,7 @@ const parseCsv = async (raw) => {
     const absences = rows.map((e) => ({
         begin: parseRawDate(e.bdate, e.btime),
         end: parseRawDate(e.edate, e.etime),
+        day: parseRawDate(e.edate, e.etime).date.getDay() - 1,
         reason: e.reason || e.textreason, // Not sure what the difference is
         excused: e.excnr !== '0', // Works so far, but rather shaky
         raw: e,

@@ -1,3 +1,5 @@
+const { convertToUTC } = require('./utils');
+
 const parseRawDate = (raw) => {
     const date = raw.split('T')[0];
     const time = raw.split('T')[1];
@@ -10,11 +12,12 @@ const parseRawDate = (raw) => {
     const month = parseInt(date.slice(4, 6)) - 1;
     const day = date.slice(6, 8);
 
-    const hour = time.slice(0, 2);
+    const hour = parseInt(time.slice(0, 2)) + 1 % 24; // Shaky
     const minute = time.slice(2, 4);
-    const second = time.slice(4, 6);
 
-    return new Date(year, month, day, hour, minute, second);
+    // return convertToUTC(new Date(year, month, day, hour, minute, second));
+    return { year, month, day, hour, minute,
+        date: new Date(year, month, day, hour, minute) }
 };
 
 const parseIcs = async (raw) => {
@@ -36,9 +39,9 @@ const parseIcs = async (raw) => {
     }
 
     return segments.map((e) => e.map((e) => e.split(':')[1])).map((e) => ({
-        start: parseRawDate(e[1]),
+        begin: parseRawDate(e[1]),
         end: parseRawDate(e[2]),
-        day: parseRawDate(e[1]).getDay() - 1,
+        day: parseRawDate(e[1]).date.getDay() - 1,
         subject: e[5],
     })).reduce((acc, cur) => {
         if (!acc[cur.day])
