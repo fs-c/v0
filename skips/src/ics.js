@@ -10,8 +10,6 @@ const parseRawDate = (raw) => {
     const month = parseInt(date.slice(4, 6)) - 1;
     const day = date.slice(6, 8);
 
-    console.log({ year, month, day });
-
     const hour = time.slice(0, 2);
     const minute = time.slice(2, 4);
     const second = time.slice(4, 6);
@@ -40,9 +38,14 @@ const parseIcs = async (raw) => {
     return segments.map((e) => e.map((e) => e.split(':')[1])).map((e) => ({
         start: parseRawDate(e[1]),
         end: parseRawDate(e[2]),
-        day: parseRawDate(e[1]).getDay(),
+        day: parseRawDate(e[1]).getDay() - 1,
         subject: e[5],
-    }));
+    })).reduce((acc, cur) => {
+        if (!acc[cur.day])
+            acc[cur.day] = [];
+        acc[cur.day].push(cur);
+        return acc;
+    }, []);
 };
 
 exports.parseIcs = parseIcs;
