@@ -1,0 +1,9 @@
+div.container {
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+form div.group:not(:first-child) {
+    margin-top: 10px;
+}
