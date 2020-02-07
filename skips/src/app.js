@@ -1,7 +1,14 @@
 console.log(`alpha v0.0.1`);
 
-const neatCsv = require('neat-csv');
+const { parseCsv } = require('./csv');
+const { parseIcs } = require('./ics');
+
+let currentAbsences = null;
+let currentTimetable = null;
+
 const csvInput = document.getElementById('csv-input');
+const icsInput = document.getElementById('ics-input');
+const generateButton = document.getElementById('generate-button');
 
 const readFile = (file) => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -23,19 +30,46 @@ const readFile = (file) => new Promise((resolve, reject) => {
     reader.readAsText(file, 'UTF-8');
 });
 
-const onFileSelected = async ({ target }) => {
+const onFileSelected = (f) => async ({ target }) => {
     if (target.files.length > 1) {
-        console.log('multiple files selected, ignoring all but first');
+        console.warn('multiple files selected, ignoring all but first');
     }
 
     const file = target.files[0];
-    const raw = await readFile(file);
-    const csv = await neatCsv(raw, {
-        separator: '\t',
-        headers: [ 'last', 'first', 'id', 'class', 'bdate', 'btime', 'edate', 'etime', 'int', 'reason',	'textreason', 'excnr', 'status', 'exctext', 'selfreported' ],
-    });
 
-    console.log(csv);
+    if (!file) {
+        throw new Error('could not get file');
+    }
+
+    const raw = await readFile(file);
+
+    if (!raw) {
+        throw new Error('could not read file');
+    }
+
+    await f(raw);
+
+    if (currentAbsences && currentTimetable) {
+        generateButton.disabled = false;
+    }
 };
 
-csvInput.addEventListener('change', onFileSelected);
+const onCsvSelected = async (raw) => {
+    currentAbsences = await parseCsv(raw);
+
+    console.log({ currentAbsences });
+};
+
+const onIcsSelected = async (raw) => {
+    currentTimetable = await parseIcs(raw);
+
+    console.log({ currentTimetable });
+};
+
+const onGenerateClick = async () => {
+};
+
+csvInput.addEventListener('input', onFileSelected(onCsvSelected));
+icsInput.addEventListener('input', onFileSelected(onIcsSelected));
+
+generateButton.addEventListener('click', onGenerateClick);

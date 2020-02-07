@@ -1,21 +1,35 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href="./css/style.css" rel="stylesheet">
+  <link href="./css/style.css" rel="stylesheet">
 
-    <title>skips</title>
-  </head>
-  <body>
+  <title>skips</title>
+</head>
+<body>
+  <div class="container">
     <h1>skips</h1>
 
-    <form>
+    <form class='card'>
+      <div class="group">
         <input type="file" id="csv-input" name="csv-input" accept=".csv">
-    </form>
+        <br><small>Abwesenheitsliste im CVS-Format</small>
+      </div>
 
-    <script src="./js/bundle.js" ></script>
-  </body>
+      <div class="group">
+        <input type="file" id="ics-input" name="ics-input" accept=".ics">
+        <br><small>Stundenplanfragment im ICS-Format</small>
+      </div>
+
+      <div class="group">
+        <button type="button" id="generate-button" disabled>Berechnen</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="./js/bundle.js" ></script>
+</body>
 </html>
