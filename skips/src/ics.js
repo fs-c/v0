@@ -15,7 +15,6 @@ const parseRawDate = (raw) => {
     const hour = parseInt(time.slice(0, 2)) + 1 % 24; // Shaky
     const minute = time.slice(2, 4);
 
-    // return convertToUTC(new Date(year, month, day, hour, minute, second));
     return { year, month, day, hour, minute,
         date: new Date(year, month, day, hour, minute) }
 };

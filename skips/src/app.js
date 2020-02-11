@@ -74,17 +74,7 @@ const onGenerateClick = async () => {
         }
     }
 
-    console.log({ absences, subjects });
-
-    const now = new Date();
-
-    console.log(daysIntoYear(SCHOOL_START), daysIntoYear(now), daysIntoYear(SCHOOL_START) + daysIntoYear(now), (daysIntoYear(SCHOOL_START) + daysIntoYear(now)) / 7);
-
-    resultBox.innerHTML = `${currentAbsences.absences.length} Absenzen analysiert\n`
-        + Object.keys(absences).map((e) =>
-            `${e}: ${absences[e]} - ${absences[e] / (subjects[e] * TOTAL_WEEKS)} (jhrl.)`
-            + ` - ${(absences[e] / (subjects[e] * ((365 - daysIntoYear(SCHOOL_START) -  + daysIntoYear(now)) / 7)))}`
-        ).join('\n');
+    console.log({ subjects, absences });
 };
 
 csvInput.addEventListener('input', onFileSelected(onCsvSelected));

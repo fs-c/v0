@@ -21,9 +21,6 @@ const parseRawDate = (date, time) => {
 
     const month = parseInt(sdate[1]) - 1
 
-    // Using long form for compatibility and consistency
-    // return convertToUTC(new Date(year, parseInt(month) - 1, day, hour, minute));
-
     return { year, month, day, hour, minute,
         date: new Date(year, month, day, hour, minute) };
 };
