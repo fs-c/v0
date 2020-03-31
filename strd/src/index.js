@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const argv = require('minimist')(process.argv.slice(2));
-process.env.verbose = argv['v'] ? 1 : 0;
+process.env.verbose = argv['d'] ? 1 : 0;
 
 const Totp = require('steam-totp');
 const User = require('steam-user');
@@ -24,10 +24,19 @@ console.log(`
 `);
 
 if (argv['h']) {
-    console.log(`Usage: strd [-hic]\n`
+    console.log(`Usage: strd [-hcd]\n`
         + `    -h Displays usage information and exits.\n`
         + `    -c Location of the config file, can be absolute or relative. [~/.strd.json]\n`
-        + `    -v Enables verbose logging.`
+        + `    -d Enables verbose (debug) logging.`
+    );
+
+    console.log(`\nConfig format:\n`
+        + `    {\n`
+        + `        "name": "unique steam account name",\n`
+        + `        "password": "corresponding password",\n`
+        + `        "shasec": "shared secret",\n`
+        + `        "idsec": "identity secret",\n`
+        + `    }`
     );
 
     return;
