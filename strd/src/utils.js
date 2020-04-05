@@ -53,8 +53,14 @@ const printTradeOffer = (offer, user) => {
     );
 }
 
+const printChangedOffer = (offer, oldState) => {
+    log('offer #%o changed %o -> %o', offer.id, Manager.ETradeOfferState[oldState],
+        Manager.ETradeOfferState[offer.state]);
+}
+
 module.exports = {
     log, verbose,
     readConfig,
     printTradeOffer,
+    printChangedOffer,
 };

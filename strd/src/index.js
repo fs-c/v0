@@ -9,7 +9,8 @@ const rls = require('readline-sync');
 const Community = require('steamcommunity');
 const TradeManager = require('steam-tradeoffer-manager');
 
-const { log, verbose, readConfig, printTradeOffer } = require('./utils');
+const { log, verbose, readConfig, printTradeOffer,
+    printChangedOffer } = require('./utils');
 
 console.log(`
  :::::::: ::::::::::: :::::::::  :::::::::
@@ -98,7 +99,9 @@ client.on('webSession', (sessionID, cookies) => {
         log('trade manager ready');
     });
 
-	community.setCookies(cookies);
+    community.setCookies(cookies);
+    // TODO: This is deprecated.
+    community.startConfirmationChecker(15000, idsec);
 });
 
 client.on('error', (err) => {
@@ -158,7 +161,10 @@ manager.on('newOffer', (offer) => {
     });
 });
 
+manager.on('sentOfferChanged', (offer, oldState) => {
+    printChangedOffer(offer, oldState);
+});
+
 manager.on('receivedOfferChanged', (offer, oldState) => {
-    log('offer #%o changed %o -> %o', offer.id, Manager.ETradeOfferState[oldState],
-        Manager.ETradeOfferState[offer.state]);
+    printChangedOffer(offer, oldState);
 });
