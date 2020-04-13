@@ -3,6 +3,8 @@ const path = require('path');
 const momment = require('moment');
 const { log } = require('@sturmwalzer/logger');
 
+const TradeManager = require('steam-tradeoffer-manager');
+
 const defaultConfigPath = path.join(require('os').homedir(), '.strd.json');
 
 const verbose = process.env.verbose == 1 ? log : () => {};
@@ -54,7 +56,7 @@ const printTradeOffer = (offer, user) => {
 }
 
 const printChangedOffer = (offer, oldState) => {
-    log('offer #%o changed %o -> %o', offer.id, Manager.ETradeOfferState[oldState],
+    log('offer #%o changed %o -> %o', offer.id, TradeManager.ETradeOfferState[oldState],
         Manager.ETradeOfferState[offer.state]);
 }
 
