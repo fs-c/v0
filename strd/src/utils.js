@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const momment = require('moment');
+const moment = require('moment');
 const { log } = require('@sturmwalzer/logger');
 
-const TradeManager = require('steam-tradeoffer-manager');
+const Manager = require('steam-tradeoffer-manager');
 
 const defaultConfigPath = path.join(require('os').homedir(), '.strd.json');
 
