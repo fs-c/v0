@@ -1,0 +1,20 @@
+{
+  "name": "skips",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify src/app.js -o public/js/bundle.js",
+    "watch": "watchify src/app.js -o public/js/bundle.js --debug --verbose"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^16.5.0",
+    "watchify": "^3.11.1"
+  },
+  "dependencies": {
+    "chart.js": "^2.9.3",
+    "lzma": "^2.3.2"
+  }
+}
