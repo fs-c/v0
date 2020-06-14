@@ -31,7 +31,7 @@ const parseManiaHitObjectLines = (columnCount, lines) => {
         actions.push({ time: endTime, column });
     }
 
-    return actions.sort((a, b) => a.time < b.time);
+    return actions.filter((a) => !isNaN(a.time)).sort((a, b) => a.time < b.time);
 };
 
 const parseRawOsu = (raw) => {
@@ -159,17 +159,17 @@ const parseReplayStream = (raw) => {
         const y = Number(s[2]);                 // float
         const bitwiseKeys = Number(s[3], 10);   // int
 
-        lastTime += diff;
+        // console.log(diff, x, y, bitwiseKeys);
 
-        if (!i && !diff) {
-            continue;
-        }
+        lastTime += diff;
 
         if (diff < 0) {
             continue;
         }
 
-        lastTime += diff;
+        if (!i && !diff) {
+            continue;
+        }
 
         const pressed = [];
         const binaryKeys = decToBin(x).split('').reverse().join('');
@@ -177,7 +177,9 @@ const parseReplayStream = (raw) => {
             pressed[i] = i < binaryKeys ? binaryKeys[i] === '1' : false;
         }
 
-        actions.push({ time: lastTime, pressed });
+        if (binaryKeys !== '0' && pressed.includes(true)) {
+            actions.push({ time: lastTime, pressed });
+        }
     }
 
     return actions;
@@ -219,8 +221,7 @@ const parseRawOsr = (raw) => {
     const lzmaBytes = bytes.readBytes(lzmaLength);
 
     const rawActions = lzma.decompress(lzmaBytes);
-    const actions = parseReplayStream(rawActions).filter((act) =>
-        act.pressed.reduce((acc, cur) => acc ? true : cur, false));
+    const actions = parseReplayStream(rawActions);
 
     return { mode, hash: replayHash, gameVersion, playerName, totalScore, perfect, actions };
 };
