@@ -58,26 +58,29 @@ const onFileAdded = (f) => async ({ target }) => {
     await f(raw);
 };
 
-const actionsToChunks = (objects, timeframe) => {
-    let lastTime = 0;
-    let timePassed = 0;
-    let cur_chunk_i = 0;
-    const chunks = [0];
-    for (const action of objects) {
-        if (timePassed >= timeframe) {
-            timePassed = 0;
-            chunks[++cur_chunk_i] = 0;
-        }
+const actionsToChunks = (actions, timeFrame) => {
+    const chunks = [];
 
-        timePassed += action.time - lastTime;
-        chunks[cur_chunk_i]++;
-        lastTime = action.time;
+    const chunks_needed = Math.floor(actions[actions.length - 1].time / timeFrame);
+
+    console.log('will need', chunks_needed, 'chunks');
+
+    for (let chunk_i = 0; chunk_i < chunks_needed; chunk_i++) {
+        chunks.push(0);
+
+        for (let action_i = 0; action_i < actions.length; action_i++) {
+            const action = actions[action_i];
+
+            if (action.time >= timeFrame * chunk_i && action.time <= timeFrame * (chunk_i + 1)) {
+                chunks[chunk_i]++;
+            }
+        }
     }
 
     return chunks;
 };
 
-const timeframe = 2;
+const timeFrame = 1;
 
 const onOsuAdded = async (raw) => {
     const string = Buffer.from(raw).toString('utf8');
@@ -86,14 +89,18 @@ const onOsuAdded = async (raw) => {
     console.log(`parsed beatmap ${beatmap.metadata.artist} - ${beatmap.metadata.title}`
         + ` (${beatmap.metadata.beatmapid}) by ${beatmap.metadata.creator}`);
 
-    const chunks = actionsToChunks(beatmap.hitobjects, timeframe * 1000);
+    const chunks = actionsToChunks(beatmap.hitobjects, timeFrame * 1000);
+
+    console.log(chunks);
 
     graph.data.datasets.push({
+        pointRadius: 0,
+        pointHitRadius: 4,
         label: 'Actions/Timeframe (.osu)',
         backgroundColor: 'rgba(255,99,132,0.2)',
         borderColor: 'rgba(255,99,132,1)',
         borderWidth: 2,
-        data: chunks.map((c, i) => ({ x: (i * timeframe), y: c })),
+        data: chunks.map((c, i) => ({ x: i, y: c })),
     });
 
     graph.update();
@@ -106,14 +113,18 @@ const onOsrAdded = async (raw) => {
 
     console.log(`parsed replay ${replay.hash}`);
 
-    const chunks = actionsToChunks(replay.actions, timeframe * 1000);
+    const chunks = actionsToChunks(replay.actions, timeFrame * 1000);
+
+    console.log(chunks);
 
     graph.data.datasets.push({
+        pointRadius: 0,
+        pointHitRadius: 4,
         label: 'Actions/Timeframe (.osr)',
         backgroundColor: 'rgba(0, 141, 213, 0.2)',
         borderColor: 'rgba(0, 141, 213, 1)',
         borderWidth: 2,
-        data: chunks.map((c, i) => ({ x: (i * timeframe), y: c })),
+        data: chunks.map((c, i) => ({ x: i, y: c })),
     });
 
     graph.update();
