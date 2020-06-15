@@ -31,7 +31,7 @@ const parseManiaHitObjectLines = (columnCount, lines) => {
         actions.push({ time: endTime, column });
     }
 
-    return actions.filter((a) => !isNaN(a.time)).sort((a, b) => a.time < b.time);
+    return actions.filter((a) => !isNaN(a.time)).sort((a, b) => a.time - b.time);
 };
 
 const parseRawOsu = (raw) => {
