@@ -69,3 +69,14 @@ const onFileAdded = (f) => async ({ target }) => {
 };
 
 exports.onFileAdded = onFileAdded;
+
+const getColorScheme = () => ({
+    background: '255,255,255',
+    foreground: '0,0,0',
+    highlight: [
+        '0,141,213',
+        '255,99,132',
+    ],
+});
+
+exports.getColorScheme = getColorScheme;
