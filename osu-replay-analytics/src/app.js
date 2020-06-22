@@ -1,29 +1,40 @@
-const { onFileAdded } = require('./utils');
 const { parseRawOsu, parseRawOsr } = require('./parse');
+const { onFileAdded, getColorScheme } = require('./utils');
 
+const graph = require('./graph');
 const slider = require('./slider');
 
 const osuInput = document.getElementById('osu-input');
 const osrInput = document.getElementById('osr-input');
 
+let beatmap, replay;
+
 const onOsuAdded = async (raw) => {
     const string = Buffer.from(raw).toString('utf8');
-    const beatmap = parseRawOsu(string);
+    beatmap = parseRawOsu(string);
 
     console.log(`parsed beatmap ${beatmap.metadata.artist} - ${beatmap.metadata.title}`
         + ` (${beatmap.metadata.beatmapid}) by ${beatmap.metadata.creator}`);
     console.log(beatmap);
 
-    slider.addEvents(beatmap.events, 'rgba(255,0,0, 0.5)');
+    slider.addEvents(beatmap.events, `rgba(${getColorScheme().highlight[0]}, 0.5)`);
+
+    graph.addActionsDensity(beatmap.events, 'Action Density in Beatmap',
+        getColorScheme().highlight[0]);
 };
 
 const onOsrAdded = async (raw) => {
-    const replay = parseRawOsr(raw);
+    replay = parseRawOsr(raw);
 
     console.log(`parsed replay ${replay.hash}`);
     console.log(replay);
 
-    slider.addEvents(replay.events, 'rgba(0,0,255, 0.5)');
+    slider.addEvents(replay.events, `rgba(${getColorScheme().highlight[1]}, 0.5)`);
+
+    if (beatmap) {
+        graph.addEventsOffset(replay.events, beatmap.events,
+            'Action Offsets of Replay', getColorScheme().highlight[1]);
+    }
 };
 
 osuInput.addEventListener('input', onFileAdded(onOsuAdded));
