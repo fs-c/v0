@@ -47,3 +47,25 @@ const equalArray = (arr1, arr2) => {
 }
 
 exports.equalArray = equalArray;
+
+const onFileAdded = (f) => async ({ target }) => {
+    if (target.files.length > 1) {
+        console.warn('multiple files selected, ignoring all but the first');
+    }
+
+    const file = target.files[0];
+
+    if (!file) {
+        throw new Error('could not get file');
+    }
+
+    const raw = await readFile(file);
+
+    if (!raw) {
+        throw new Error('could not read file');
+    }
+
+    await f(raw);
+};
+
+exports.onFileAdded = onFileAdded;
