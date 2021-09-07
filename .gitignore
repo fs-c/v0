@@ -150,7 +150,7 @@ rethinkdb_data
 # These can be changed by user in Lazarus/project options.
 backup/
 *.bak
-lib/
+# lib/
 
 # Application bundle for Mac OS
 *.app/
