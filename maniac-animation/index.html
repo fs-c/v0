@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="animation">
+
+    </div>
+
+    <script>
+        const container = document.getElementById('animation');
+
+        const setup = () => {
+            const line = document.createElement('div');
+
+            line.className = 'line';
+
+            container.appendChild(line);
+
+            const rows = [
+                document.createElement('div'),
+                document.createElement('div'),
+                document.createElement('div'),
+                document.createElement('div'),
+            ].map((r) => container.appendChild(r));
+
+            return rows;
+        };
+
+        const createElement = (rows) => {
+            const element = document.createElement('div');
+
+            element.className = 'note';
+
+            const row = rows[Math.floor(Math.random() * rows.length)];
+
+            element.addEventListener('animationend', (e) => {
+                element.remove();
+            });
+
+            row.appendChild(element);
+        };
+
+        const rows = setup();
+
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        (async () => {
+            while (true) {
+                await sleep(Math.floor(Math.random() * 300));
+
+                createElement(rows);
+            }
+        })();
+    </script>
+</body>
+
+</html>

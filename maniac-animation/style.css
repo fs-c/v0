@@ -1,0 +1,68 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#animation {
+    position: relative;
+    
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+
+    overflow: hidden;
+
+    margin: 1rem;
+    width: 100%;
+    height: 70vh;
+
+    border: 1px solid gray;
+    border-radius: 0.5rem;
+}
+
+#animation > .line {
+    position: absolute;
+    width: 100%;
+    top: calc(50% - 2px);
+    height: 1px;
+    background-color: gray;
+}
+
+#animation > * {
+    flex-grow: 1;
+    position: relative;
+    max-width: 100%;
+}
+
+div.note {
+    height: 3%;
+    position: absolute;
+    width: 100%;
+
+    animation-duration: 1.5s;
+    animation-name: note-movement;
+    animation-timing-function: linear;
+
+    background-color: aqua;
+}
+
+@keyframes note-movement {
+    from {
+        top: -3%;
+    }
+
+    49% {
+        background-color: aqua;
+    }
+    50% {
+        background-color: black;
+    }
+
+    to {
+        top: calc(100% + 20px);
+        background-color: black;
+    }
+}
