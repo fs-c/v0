@@ -109,14 +109,14 @@ const drawHelpLines = () => {
 const generatePoints = (total = 10, closed = false) => {
     const points = [];
 
-    const radianPart = (Math.PI * 2) / total; // performance stronk
+    const segmentRadians = (Math.PI * 2) / total;
 
     for (let i = 0; i < total; i++) {
-        const radians = radianPart * i;
+        const radians = segmentRadians * i;
 
         points.push([
-            center[0] + Math.cos(radians) * outerRadius,
-            center[1] + Math.sin(radians) * outerRadius
+            center[0] + (Math.cos(radians) * outerRadius),
+            center[1] + (Math.sin(radians) * outerRadius)
         ]);
     }
 
