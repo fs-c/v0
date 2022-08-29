@@ -228,23 +228,23 @@ const getControlPoints = (points, middlePoints, anchorPoints) => {
     return controls;
 };
 
-const drawBlob = (element, points, attributes) => {
+const drawBlob = (element, points, {
+    tension, position, ...attributes
+}) => {
     const middlePoints = getMiddlePoints(points);
     const anchorPoints = getAnchorPoints(points, middlePoints);
     const controlPoints = getControlPoints(points, middlePoints, anchorPoints);
     
-    const center = getCenter(element);
-
     let pathDescription = '';
 
-    const firstPoint = relToAbs(center, points[0]);
+    const firstPoint = relToAbs(position, points[0]);
     pathDescription += `M ${firstPoint[0]} ${firstPoint[1]} `;
 
     for (let i = 0; i < points.length; i++) {
         pathDescription += getBezierDescription(
-            relToAbs(center, controlPoints[wrapIndex(i * 2 + 1, controlPoints.length)]),
-            relToAbs(center, controlPoints[wrapIndex(i * 2 + 2, controlPoints.length)]),
-            relToAbs(center, points[wrapIndex(i + 1, points.length)]),
+            relToAbs(position, controlPoints[wrapIndex(i * 2 + 1, controlPoints.length)]),
+            relToAbs(position, controlPoints[wrapIndex(i * 2 + 2, controlPoints.length)]),
+            relToAbs(position, points[wrapIndex(i + 1, points.length)]),
         );
     }
 
@@ -266,17 +266,28 @@ const drawRandomBlob = (element, attributes) => {
 };
 
 const drawRandomTopography = (element, {
-    stages = 5, ...attributes
+    position = getCenter(element),
+    // inner radius, excluding stages and spread
+    radius = 300,
+    spread = radius / 3,
+    tension = 1,
+    stages = 5,
+    // each stage should be this much larger than the preceding one (exponential growth)
+    stageGrowth = 0,
+    // or (!) each stage should grow by this value times the first size (constant growth)
+    stageProportion = 0.1,
+    colorScheme = colors.emerald,
 } = {}) => {
+    const points = generateRandomPoints(5, { radius, spread });
 
-    const points = generateRandomPoints(5, { radius: 150, spread: 75 });
+    const colorKeys = Object.keys(colorScheme);
 
     for (let i = stages - 1; i >= 0; i--) {
-        const factor = 1 + (i / 5);
+        const factor = stageGrowth ? Math.pow(stageGrowth, i) : 1 + stageProportion * i;
 
         drawBlob(element, points.map((p) => scale(p, factor)), {
-            fill: 'none',
-            stroke: 'black',
+            fill: colorScheme[colorKeys[stages - i]],
+            tension, position,
         });
     }
 };
@@ -285,10 +296,18 @@ const drawRandomTopography = (element, {
 // --- setup ---
 //
 
-const container = document.getElementById('container');
+const svg = document.getElementById('container').children[0];
 
-for (const child of container.children) {
-    drawRandomTopography(child, {
-        colorScheme: colors.emerald,
-    });
-}
+drawRandomTopography(svg, {
+    position: [ 0, 0 ],
+    radius: window.innerWidth / 3,
+    stageProportion: 0.2,
+    colorScheme: colors.emerald,
+});
+
+drawRandomTopography(svg, {
+    position: [ window.innerWidth, window.innerHeight ],
+    radius: window.innerWidth / 3,
+    stageProportion: 0.2,
+    colorScheme: colors.emerald,
+});

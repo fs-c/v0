@@ -6,9 +6,6 @@ html, body {
 #container {
     width: 100vw;
     height: 100vh;
-
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 #container > * {
