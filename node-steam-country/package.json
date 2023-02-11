@@ -13,7 +13,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "dotenv": "^5.0.1",
-    "got": "^8.3.1",
+    "got": "^12.5.3",
     "pino": "^4.17.2",
     "rethinkdb-ts": "^2.4.0-rc.10",
     "rethinkdbdash": "^2.3.31"
