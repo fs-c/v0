@@ -1,1 +1,0 @@
-gcc -DDEBUG -Wall -Wextra -Og src/*.c -o rythmic
