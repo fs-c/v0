@@ -1,7 +1,7 @@
 ## a1
 
-R_Vcalc = 200O
-R_V = 220O
+R_Vcalc = 200 O
+R_V = 220 O
 
 ## a2
 
@@ -89,3 +89,16 @@ T = 1/f
 bit pattern duration = T/20
 
 first value = (1/f/20) \* 10^6 = 190,8396946565 microseconds
+
+6.1.1
+
+wir wollen kontinuierliche messung -> rechtecksignal mit <50Hz (20mS intervall)
+
+laufzeit speichern/messen und in formel einfuegen
+
+6.1.3
+
+R_Vcalc = 200 O
+R_V = 220 O
+
+6.2 motor dreht nach links erst ab speed 4, nach rechts gehen alle stufen

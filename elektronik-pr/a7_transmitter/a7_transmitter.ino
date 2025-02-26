@@ -4,6 +4,7 @@ const int frequency = 38000;
 
 const int shortDuration = 100;
 const int longDuration = 200;
+const int characterEndDuration = 50;
 
 const int codepointGap = 50;
 const int characterGap = 500;
@@ -36,7 +37,7 @@ char *findMorsePattern(char letter) {
   }
 
   for (const auto entry : morseTable) {
-    if (entry.letter === letter) {
+    if (entry.letter == letter) {
       return entry.pattern;
     }
   }
@@ -52,7 +53,7 @@ void sendMorseChar(char c) {
   if (c >= 'A' && c <= 'Z') {
     const char *pattern = findMorsePattern(c);
     if (!pattern) {
-      Serial.print("unknown character: ")
+      Serial.print("unknown character: ");
       Serial.print(c);
       Serial.println();
       return;
@@ -60,18 +61,25 @@ void sendMorseChar(char c) {
 
     while (*pattern) {
       if (*pattern == '.') {
-        tone(irLedPin, frequency, shortDuration);
+        tone(irLedPin, frequency);
+        delay(shortDuration);
+        noTone(irLedPin);
         Serial.println("sent short");
       } else if (*pattern == '-') {
-        tone(irLedPin, frequency, longDuration);
+        tone(irLedPin, frequency);
+        delay(longDuration);
+        noTone(irLedPin);
         Serial.println("sent long");
       }
       delay(codepointGap);
       pattern++;
     }
+    tone(irLedPin, frequency);
+    delay(characterEndDuration);
+    noTone(irLedPin);
     delay(characterGap);
   } else {
-    Serial.print("unknown character: ")
+    Serial.print("unknown character: ");
     Serial.print(c);
     Serial.println();
   }
